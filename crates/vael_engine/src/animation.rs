@@ -2,7 +2,7 @@
 //!
 //! O núcleo (bind/rig, blend de locomoção, play helpers, hit-react,
 //! `drive_player_animation`, `PendingGesture`) vive no
-//! `bevy_ext_engine::animation` (exit5/G-2); o caminho `viber::animation`
+//! `bevy_ext_engine::animation` (exit5/G-2); o caminho `vael_engine::animation`
 //! reexporta-o em baixo. Ficam AQUI os sistemas que leem contratos do
 //! monólito: `drive_character_animation` e `freeze_distant_animation` leem o
 //! raio de ativação do script (`crate::luau::ScriptActivation`) e o

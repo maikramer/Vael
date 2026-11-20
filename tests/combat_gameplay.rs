@@ -885,7 +885,7 @@ fn closing_on_an_archer_between_arrows_denies_the_second_shot() -> Result<()> {
 #[test]
 fn counterbeat_answers_from_the_dodge_origin_once_per_target() -> Result<()> {
     use std::sync::{Arc, RwLock};
-    use viber::luau::game::{GameStore, game_to_json_store, install};
+    use vael_engine::luau::game::{GameStore, game_to_json_store, install};
 
     let lua = arena()?;
     let store = Arc::new(RwLock::new(GameStore::default()));

@@ -14,7 +14,7 @@ use bevy::mesh::VertexAttributeValues;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy_elements::{SurfaceWeathering, Weather, WorldClock};
-use viber::luau::ScriptProps;
+use vael_engine::luau::ScriptProps;
 
 const VARIANTS: u32 = 24;
 const WIDTH: usize = 192;
@@ -31,8 +31,8 @@ impl Plugin for QuarryPlugin {
             .register_type::<crystal::CrystalGrowth>()
             .add_observer(restore::remember)
             .add_systems(
-                viber::scene_loader::SceneLoad,
-                (|mut q: ResMut<Quarry>| q.removed.clear()).before(viber::recipes::spawn::startup),
+                vael_engine::scene_loader::SceneLoad,
+                (|mut q: ResMut<Quarry>| q.removed.clear()).before(vael_engine::recipes::spawn::startup),
             )
             .add_systems(Update, (place, crystal::grow, weather_stone).chain());
     }
@@ -406,13 +406,13 @@ fn weather_stone(
     quarry.next_sample = now + 1.;
     let hour = clock.hours_since_2000();
     let elapsed = (hour - quarry.last_hour.replace(hour).unwrap_or(hour)).clamp(0., 24.) as f32;
-    let coverage = viber::luau::game::game_get_json(MOSS_KEY)
+    let coverage = vael_engine::luau::game::game_get_json(MOSS_KEY)
         .and_then(|v| v.as_f64())
         .unwrap_or(INITIAL_MOSS as f64)
         .clamp(0., 1.) as f32;
     let grown = grow(coverage, surface.wetness, weather.temperature_c, elapsed);
     if (grown - coverage).abs() > f32::EPSILON {
-        viber::luau::game::apply_patch_json(&BTreeMap::from([(
+        vael_engine::luau::game::apply_patch_json(&BTreeMap::from([(
             MOSS_KEY.to_string(),
             serde_json::json!(grown),
         )]));
@@ -494,8 +494,8 @@ mod tests {
     }
     #[test]
     fn lateral_walls_block_hero_capsule_and_step_probe_across_all_variants() {
-        let step_probe_y = viber::player::HERO_STEP_HEIGHT + 0.05;
-        let max_walkable_normal_y = viber::player::HERO_MAX_SLOPE_DEG.to_radians().cos();
+        let step_probe_y = vael_engine::player::HERO_STEP_HEIGHT + 0.05;
+        let max_walkable_normal_y = vael_engine::player::HERO_MAX_SLOPE_DEG.to_radians().cos();
         for id in 0..VARIANTS {
             let (mesh, mut hull, _) = formation(id);
             let Some(VertexAttributeValues::Float32x3(points)) =
@@ -520,7 +520,7 @@ mod tests {
                     let ray_dir = Vec3::new(-dir_xz.x, 0.0, -dir_xz.y);
                     let ray_origin = Vec3::new(
                         v_max.x + dir_xz.x * 2.0,
-                        viber::player::HERO_FLOAT_HEIGHT + viber::player::HERO_RADIUS,
+                        vael_engine::player::HERO_FLOAT_HEIGHT + vael_engine::player::HERO_RADIUS,
                         v_max.y + dir_xz.y * 2.0,
                     );
                     let (toi, normal) = hull
@@ -545,12 +545,12 @@ mod tests {
                         Quat::IDENTITY,
                         probe,
                         Vec3::NEG_Y,
-                        viber::player::HERO_STEP_HEIGHT + 0.15,
+                        vael_engine::player::HERO_STEP_HEIGHT + 0.15,
                         true,
                     ) {
                         let surface = probe.y - down_dist;
                         let steppable =
-                            (0.03..=viber::player::HERO_STEP_HEIGHT).contains(&surface)
+                            (0.03..=vael_engine::player::HERO_STEP_HEIGHT).contains(&surface)
                                 && down_normal.y >= 0.95;
                         assert!(
                             !steppable,

@@ -29,8 +29,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use bevy::prelude::*;
 use bevy_ext_core::MenusOpen;
 use serde_json::Value;
-use viber::ui::modal::UiModalsOpen;
-use viber::worldsys::WeatherState;
+use vael_engine::ui::modal::UiModalsOpen;
+use vael_engine::worldsys::WeatherState;
 
 use crate::components::PlayerVitals;
 use crate::content::VaelContent;

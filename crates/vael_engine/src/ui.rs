@@ -1,7 +1,7 @@
 //! UI declarativa — SHIM sobre o crate `bevy_ext_ui` (exit3/wave-c).
 //!
 //! A árvore inteira (`collect`/`runtime`/`style`/`script`/`tree`/`widgets`/
-//! `modal`/`bind`… — ~13k lin) vive no crate; os caminhos `viber::ui::*` e os
+//! `modal`/`bind`… — ~13k lin) vive no crate; os caminhos `vael_engine::ui::*` e os
 //! TypePaths (`viber::ui::…`, congelados lá) continuam a resolver e os tipos
 //! são OS MESMOS no jogo. O que aqui ficou é o GLUE que o crate não pode ter
 //! (os TODO(viber-exit) dele nomeiam o anfitrião):

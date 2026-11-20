@@ -166,7 +166,7 @@ pub fn apply_attachments(
                 pending.0.push((owner, request, next_age));
             } else {
                 warn!(
-                    target: "viber::attachment",
+                    target: "vael::attachment",
                     "osso '{}' não encontrado em {:.0} s — '{}' não anexado (o anterior fica)",
                     request.bone,
                     ATTACH_BONE_WAIT_SECS,

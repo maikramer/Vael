@@ -38,7 +38,7 @@ use bevy_ext_scene::{
 use bevy_ext_world::bsn::WorldNode;
 use bevy_ext_world::bsn::specs;
 use jackdaw_scene_types::{CustomProperties, SceneNodeId};
-use viber::scene::SceneSource;
+use vael_engine::scene::SceneSource;
 
 /// A entidade tem os specs/props do nó como componentes (espelho do load):
 /// os componentes passam a ser a verdade, e removê-los conta.
@@ -320,19 +320,19 @@ fn adopt_one(
         children: Vec::new(),
         origin: Some(origin.clone()),
     };
-    let parsed = viber::recipes::parse_world(&[], std::slice::from_ref(&xml))
+    let parsed = vael_engine::recipes::parse_world(&[], std::slice::from_ref(&xml))
         .map_err(|err| format!("<{}>: {err:#}", node.tag))?;
     let Some(spec) = parsed.entities.first() else {
         return Err(format!("<{}> não gera entidade", node.tag));
     };
-    if !viber::recipes::spawn::spawns_incrementally(spec) {
+    if !vael_engine::recipes::spawn::spawns_incrementally(spec) {
         return Err(format!("<{}> só nasce ao recarregar o mundo", node.tag));
     }
     // Regista antes de montar: o observer da `SceneSource` põe o id.
     specs::record_node(&origin, specs::RecordedNode { attrs, ..recorded });
     specs::set_node_specs(&origin, node_specs);
     specs::record_node_id_pub(&origin, id);
-    let spawned = viber::recipes::spawn::spawn_specs(world, &parsed.entities, parent)
+    let spawned = vael_engine::recipes::spawn::spawn_specs(world, &parsed.entities, parent)
         .map_err(|err| format!("<{}>: {err}", node.tag))?;
     let Some(&adopted) = spawned.first() else {
         return Ok(());
@@ -397,9 +397,9 @@ fn apply_one(world: &mut World, entity: Entity, props_only: bool) -> Result<(), 
         let props = script_props(&attrs);
         let mut target = world.entity_mut(entity);
         if props.is_empty() {
-            target.remove::<viber::luau::ScriptProps>();
+            target.remove::<vael_engine::luau::ScriptProps>();
         } else {
-            target.insert(viber::luau::ScriptProps(Arc::new(props)));
+            target.insert(vael_engine::luau::ScriptProps(Arc::new(props)));
         }
         specs::set_node_specs(&source, node_specs);
         info!("vael: props de `{name}` actualizadas ao vivo (Jackdaw)");
@@ -436,7 +436,7 @@ fn apply_one(world: &mut World, entity: Entity, props_only: bool) -> Result<(), 
         children,
         origin: Some(source.clone()),
     };
-    let parsed = viber::recipes::parse_world(&[], std::slice::from_ref(&xml))
+    let parsed = vael_engine::recipes::parse_world(&[], std::slice::from_ref(&xml))
         .map_err(|err| format!("{name}: {err:#}"))?;
     if parsed.entities.is_empty() {
         return Ok(());
@@ -444,7 +444,7 @@ fn apply_one(world: &mut World, entity: Entity, props_only: bool) -> Result<(), 
     if let Some(bad) = parsed
         .entities
         .iter()
-        .find(|spec| !viber::recipes::spawn::spawns_incrementally(spec))
+        .find(|spec| !vael_engine::recipes::spawn::spawns_incrementally(spec))
     {
         return Err(format!(
             "{name}: <{}> só muda ao recarregar o mundo",
@@ -476,7 +476,7 @@ fn apply_one(world: &mut World, entity: Entity, props_only: bool) -> Result<(), 
             has_children,
         },
     );
-    viber::recipes::spawn::spawn_specs(world, &parsed.entities, parent)
+    vael_engine::recipes::spawn::spawn_specs(world, &parsed.entities, parent)
         .map_err(|err| format!("{name}: {err}"))?;
     info!("vael: `{name}` re-spawnado com a edição do Jackdaw");
     Ok(())

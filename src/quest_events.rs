@@ -32,8 +32,8 @@ use bevy::prelude::*;
 use bevy_ext_core::{SfxClip, SfxEvent};
 use mlua::Lua;
 use serde_json::Value as Json;
-use viber::luau::components::ScriptToast;
-use viber::luau::game::{apply_patch_json, game_to_json_process};
+use vael_engine::luau::components::ScriptToast;
+use vael_engine::luau::game::{apply_patch_json, game_to_json_process};
 
 use crate::compat::env_enabled;
 use crate::components::{QuestLog, VaelPlayer};
@@ -697,7 +697,7 @@ impl Plugin for VaelQuestEventsPlugin {
             // dos scripts do frame lerem a flag.
             .add_systems(
                 PreUpdate,
-                enforce_quest_events_gate.run_if(viber::app::scripts_enabled),
+                enforce_quest_events_gate.run_if(vael_engine::app::scripts_enabled),
             )
             .add_systems(
                 Update,
@@ -705,8 +705,8 @@ impl Plugin for VaelQuestEventsPlugin {
                     .chain()
                     // Os sistemas leem o que o Lua acabou de fazer no frame e
                     // escrevem o estado de voltar ao `viber.game()`.
-                    .after(viber::luau::bms_bridge::apply_bms_commands)
-                    .run_if(viber::app::scripts_enabled),
+                    .after(vael_engine::luau::bms_bridge::apply_bms_commands)
+                    .run_if(vael_engine::app::scripts_enabled),
             );
     }
 }
@@ -820,7 +820,7 @@ fn ensure_gate(kv: &mut QuestKv, rust: bool) {
 /// pode deixar o Lua a saltar os relatos numa sessão sem Rust.
 fn enforce_quest_events_gate(config: Res<VaelQuestEventsConfig>) {
     // Store do processo: o `viber.game()` de todos os contextos BMS lê daqui.
-    let current = viber::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
+    let current = vael_engine::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
     if config.rust == current {
         return;
     }
@@ -1490,12 +1490,12 @@ mod tests {
 
     #[test]
     fn gate_do_save_e_corrigido_antes_dos_scripts() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .insert_resource(VaelQuestEventsConfig { rust: false })
@@ -1505,7 +1505,7 @@ mod tests {
         // Save escrito com o gate ligado: a sessão normal apaga a flag.
         let mut patch = QuestKv::new();
         patch.insert(RUST_GATE_KEY.to_string(), Json::Bool(true));
-        viber::luau::game::apply_patch_json(&patch);
+        vael_engine::luau::game::apply_patch_json(&patch);
         app.update();
         assert!(
             !matches!(
@@ -1526,17 +1526,17 @@ mod tests {
 
     #[test]
     fn sistema_drena_o_abate_e_escreve_no_viber_game() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_com_quests();
         {
             let mut patch = QuestKv::new();
             patch.insert("q.wolves".to_string(), Json::String(STATE_ACTIVE.into()));
-            viber::luau::game::apply_patch_json(&patch);
+            vael_engine::luau::game::apply_patch_json(&patch);
         }
         app.world()
             .resource::<QuestEventQueue>()

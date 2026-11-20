@@ -24,9 +24,9 @@ use bevy::prelude::*;
 use bevy::tasks::{AsyncComputeTaskPool, Task, futures::check_ready};
 use bevy_ext_world::bsn::{WorldNode, WorldOrigin};
 use bevy_flora::PooledTree;
-use viber::animation::CharacterAnimator;
-use viber::player::Player;
-use viber::terrain::{SnowShelter, SnowState, TerrainRuntime};
+use vael_engine::animation::CharacterAnimator;
+use vael_engine::player::Player;
+use vael_engine::terrain::{SnowShelter, SnowState, TerrainRuntime};
 
 use crate::environment::elements_enabled;
 use crate::ground::{env_enabled, interior_file, is_ground_name, snow_enabled};
@@ -128,7 +128,7 @@ fn prop_root(
     parents: &Query<&ChildOf>,
     nodes: &Query<&WorldNode>,
     origins: &Query<&WorldOrigin>,
-    gltfs: &Query<&viber::gltf_residency::GltfSceneSpec>,
+    gltfs: &Query<&vael_engine::gltf_residency::GltfSceneSpec>,
 ) -> Option<(Entity, String)> {
     let mut current = start;
     for _ in 0..24 {
@@ -172,9 +172,9 @@ fn discover(
     parents: Query<&ChildOf>,
     nodes: Query<&WorldNode>,
     origins: Query<&WorldOrigin>,
-    gltfs: Query<&viber::gltf_residency::GltfSceneSpec>,
-    stones: Query<Option<&viber::scene::SceneSource>, With<crate::rocks::QuarryStone>>,
-    scene: Option<Res<viber::scene_loader::CurrentScene>>,
+    gltfs: Query<&vael_engine::gltf_residency::GltfSceneSpec>,
+    stones: Query<Option<&vael_engine::scene::SceneSource>, With<crate::rocks::QuarryStone>>,
+    scene: Option<Res<vael_engine::scene_loader::CurrentScene>>,
     blocked: Query<(), Blocked>,
     mut queue: ResMut<CapQueue>,
 ) {
@@ -348,7 +348,7 @@ fn build(
             let mut shelter_cells = HashSet::new();
             let grid = CapGrid::rasterize(&tris).filter(|grid| {
                 for (xz, top) in grid.top_cells() {
-                    let cell = (xz / viber::terrain::ground::SNOW_CELL_M)
+                    let cell = (xz / vael_engine::terrain::ground::SNOW_CELL_M)
                         .floor()
                         .as_ivec2();
                     if !shelter_cells.contains(&cell)

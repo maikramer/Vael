@@ -484,7 +484,7 @@ impl Plugin for VaelTravelPlugin {
                     enforce_travel_gate,
                     update_travel_state.after(crate::state_sync::sync_state_from_lua),
                 )
-                    .run_if(viber::app::scripts_enabled),
+                    .run_if(vael_engine::app::scripts_enabled),
             );
     }
 }
@@ -512,7 +512,7 @@ fn enforce_travel_gate(config: Res<VaelTravelConfig>) {
 /// Escreve a chave só quando o valor guardado não corresponde ao modo — no
 /// STORE do processo, o `viber.game()` de todos os contextos BMS.
 fn write_gate(rust: bool) {
-    let on = viber::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
+    let on = vael_engine::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
     if on != rust {
         let mut patch = std::collections::BTreeMap::new();
         patch.insert(
@@ -523,7 +523,7 @@ fn write_gate(rust: bool) {
                 JsonValue::Null
             },
         );
-        viber::luau::game::apply_patch_json(&patch);
+        vael_engine::luau::game::apply_patch_json(&patch);
     }
 }
 
@@ -559,7 +559,7 @@ pub(crate) fn install(
         "travel_landmarks",
         [rules = Arc::clone(&rules), state = state.clone()],
         move |lua, ()| {
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let snapshot = state.get();
             let rows = lua.create_table()?;
             for (index, mark) in rules.landmarks.iter().enumerate() {
@@ -596,7 +596,7 @@ pub(crate) fn install(
             let Some(mark) = rules.landmarks.get(nearest.index) else {
                 return Ok(Value::Nil);
             };
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let position = snapshot.positions.get(&mark.name).copied();
             let row = landmark_row(lua, &rules, &game, mark, position, Some(nearest.distance))?;
             Ok(Value::Table(row))
@@ -612,7 +612,7 @@ pub(crate) fn install(
             if biome.is_empty() {
                 return Ok(false);
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             game.set(format!("{BIOME_KEY_PREFIX}{biome}"), true)?;
             Ok(true)
         }
@@ -626,7 +626,7 @@ pub(crate) fn install(
         if biome.is_empty() {
             return Ok(false);
         }
-        let game = viber::luau::game::game_proxy(lua)?;
+        let game = vael_engine::luau::game::game_proxy(lua)?;
         let key = format!("{BIOME_KEY_PREFIX}{biome}");
         Ok(matches!(game.get::<Value>(key)?, Value::Boolean(true)))
     });
@@ -657,7 +657,7 @@ pub(crate) fn install(
             if name.is_empty() || rules.get(&name).is_none() {
                 return Ok(false);
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             game.set("pin", name)?;
             Ok(true)
         }

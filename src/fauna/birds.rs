@@ -6,7 +6,7 @@ use bevy_flora::PooledTree;
 mod perches;
 use perches::{Perches, Site, survey_perches};
 use std::{collections::HashSet, f32::consts::TAU};
-use viber::{player::Player, scene_loader::SceneEntity, terrain::TerrainRuntime};
+use vael_engine::{player::Player, scene_loader::SceneEntity, terrain::TerrainRuntime};
 
 pub(super) struct WoodlandBirdsPlugin;
 

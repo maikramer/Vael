@@ -256,7 +256,7 @@ pub(crate) fn vael_table(lua: &Lua) -> mlua::Result<Table> {
 
 /// (testes) Instala `viber.game()` a devolver a tabela dada.
 ///
-/// Os módulos leem o jogo por `viber::luau::game::game_proxy` (o
+/// Os módulos leem o jogo por `vael_engine::luau::game::game_proxy` (o
 /// `viber_game` do registry morreu no exit4/F3), mas os testes montam a VM à
 /// mão em vez do `LuaScriptHost` — esta é a peça mínima para os helpers
 /// `lua_com_bridge` continuarem a semear um tabela limpa. Cria o global
@@ -327,7 +327,7 @@ pub(crate) fn install_shared(lua: &Lua, rules: Arc<VaultRules>) -> mlua::Result<
             if kind.is_empty() {
                 return Ok(0i64);
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = BTreeMap::new();
             if let Some(count) = read_item(&game, &kind)? {
                 kv.insert(item_key(&kind), count);
@@ -346,7 +346,7 @@ pub(crate) fn install_shared(lua: &Lua, rules: Arc<VaultRules>) -> mlua::Result<
             if kind.is_empty() {
                 return Ok(0i64);
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = BTreeMap::new();
             if let Some(count) = read_item(&game, &kind)? {
                 kv.insert(item_key(&kind), count);
@@ -371,7 +371,7 @@ pub(crate) fn install_shared(lua: &Lua, rules: Arc<VaultRules>) -> mlua::Result<
             if kind.is_empty() {
                 return Ok(false);
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = BTreeMap::new();
             if let Some(count) = read_item(&game, &kind)? {
                 kv.insert(item_key(&kind), count);
@@ -390,7 +390,7 @@ pub(crate) fn install_shared(lua: &Lua, rules: Arc<VaultRules>) -> mlua::Result<
         "seed_starting",
         [rules = Arc::clone(&rules)],
         move |lua, ()| {
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             // Só o gate (`gold`/`potion`) e as chaves do kit: um valor
             // não numérico conta como PRESENTE, como no Lua.
             let mut keys: Vec<&str> = rules.starting.keys().map(String::as_str).collect();

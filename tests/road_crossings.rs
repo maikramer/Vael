@@ -2,7 +2,7 @@
 use std::{collections::HashMap, path::Path};
 
 use bevy::math::{Affine3A, IVec2, Quat, Vec2, Vec3, Vec3Swizzles};
-use viber::{
+use vael_engine::{
     physics::ColliderShape,
     recipes::{
         EntitySpec, parse_world,
@@ -46,7 +46,7 @@ fn bridge_decks(nodes: &[EntitySpec], parent: Affine3A, decks: &mut Vec<(String,
 #[test]
 fn main_world_roads_reach_the_plaza_and_meet_both_ends_of_every_bridge() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-    let world = viber::xml::include::load_world_in(&root.join("world.bsn"), root).unwrap();
+    let world = vael_engine::xml::include::load_world_in(&root.join("world.bsn"), root).unwrap();
     let scene = parse_world(&world.root_attrs, &world.nodes).unwrap();
     let mut decks = Vec::new();
     bridge_decks(&scene.entities, Affine3A::IDENTITY, &mut decks);

@@ -11,10 +11,10 @@ use bevy::prelude::*;
 use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use bevy_ext_core::{SfxClip, SfxEvent};
 use serde_json::{Value, json};
-use viber::luau::components::ScriptToast;
-use viber::luau::game::{apply_patch_json, game_to_json_process};
-use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use viber::ui::UiWriter;
+use vael_engine::luau::components::ScriptToast;
+use vael_engine::luau::game::{apply_patch_json, game_to_json_process};
+use vael_engine::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use vael_engine::ui::UiWriter;
 
 use crate::save::VaelSave;
 
@@ -26,7 +26,7 @@ pub const TELEPORT_MAX_DROP: f32 = 400.0;
 pub const TELEPORT_SKIN: f32 = 0.02;
 
 fn landing_position(
-    terrain: Option<&viber::terrain::runtime::TerrainRuntime>,
+    terrain: Option<&vael_engine::terrain::runtime::TerrainRuntime>,
     requested: Vec3,
 ) -> Vec3 {
     let Some(terrain) = terrain else {
@@ -53,8 +53,8 @@ pub fn physics_ground_below(
 ) -> Option<f32> {
     // O `SpatialQuery` do Avian é um SystemParam: o raio (com a exclusão da
     // hierarquia do prop e dos sensores) vive na engine, partilhado com o
-    // teleporte do `viber::player`.
-    viber::player::physics_ground_below(world, x, z, from_y, max_drop, exclude)
+    // teleporte do `vael_engine::player`.
+    vael_engine::player::physics_ground_below(world, x, z, from_y, max_drop, exclude)
 }
 
 /// Y de aterragem de um teleporte resolvido contra a física, com o terreno
@@ -75,7 +75,7 @@ pub fn teleport_landing(
     ) {
         return Vec3::new(requested.x, surface + TELEPORT_SKIN, requested.z);
     }
-    let terrain = world.get_resource::<viber::terrain::runtime::TerrainRuntime>();
+    let terrain = world.get_resource::<vael_engine::terrain::runtime::TerrainRuntime>();
     landing_position(terrain, requested)
 }
 
@@ -198,7 +198,7 @@ fn drop_purse(world: &mut World, position: Vec3) {
 
 /// `(dying, death_pending)` do `viber.game()`.
 fn death_flags() -> (f32, bool) {
-    use viber::luau::game::{game_value_to_json, with_game_store};
+    use vael_engine::luau::game::{game_value_to_json, with_game_store};
 
     with_game_store(|store| {
         let dying = store.get("dying").map(game_value_to_json);
@@ -269,7 +269,7 @@ impl Plugin for VaelRespawnPlugin {
             .add_systems(
                 Update,
                 watch_death_before_tick
-                    .after(viber::luau::bms_bridge::apply_bms_commands)
+                    .after(vael_engine::luau::bms_bridge::apply_bms_commands)
                     .before(crate::rules_authority::VaelRulesSet),
             )
             .add_systems(
@@ -324,7 +324,7 @@ pub fn respawn_now(world: &mut World, spawn: Vec3, flasks: u32) {
     }
     // O patch vai para o STORE do processo — o `viber.game()` de todos os
     // contextos BMS lê daqui (sem host, sem handle mlua).
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
     if let Some(writer) = world.get_resource::<UiWriter>() {
         writer.open("death", false);
         writer.set_visible("hud", true);
@@ -341,7 +341,7 @@ pub fn respawn_now(world: &mut World, spawn: Vec3, flasks: u32) {
             // limpá-lo aqui evita um teleporte fantasma no próximo load.
             let mut clear = BTreeMap::new();
             clear.insert("pending_respawn".to_string(), json!(false));
-            viber::luau::game::apply_patch_json(&clear);
+            vael_engine::luau::game::apply_patch_json(&clear);
             teleport_player(world, spawn);
         }
     } else {
@@ -443,18 +443,18 @@ mod tests {
     /// têm de sair daqui (paridade com `drop_purse`/`sound_at_player`).
     #[test]
     fn a_morte_no_rust_larga_a_bolsa_e_toca_game_over() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock do store");
-        viber::luau::game::restore_game_json(&BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&BTreeMap::new());
         let (mut world, _player) = mundo_com_morte("main");
         let mut seed = BTreeMap::new();
         seed.insert("item.gold".into(), json!(100));
-        viber::luau::game::apply_patch_json(&seed);
+        vael_engine::luau::game::apply_patch_json(&seed);
 
         start_death_side_effects(&mut world);
 
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(75));
         assert_eq!(kv.get("lost_gold").and_then(Value::as_i64), Some(25));
         assert_eq!(kv.get("lost_x").and_then(Value::as_f64), Some(1.0));
@@ -475,18 +475,18 @@ mod tests {
     /// continua (o `start_death` do Lua não tem portão de cena para o som).
     #[test]
     fn num_interior_a_morte_nao_larga_bolsa() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock do store");
-        viber::luau::game::restore_game_json(&BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&BTreeMap::new());
         let (mut world, _player) = mundo_com_morte("interiors/chapel");
         let mut seed = BTreeMap::new();
         seed.insert("item.gold".into(), json!(100));
-        viber::luau::game::apply_patch_json(&seed);
+        vael_engine::luau::game::apply_patch_json(&seed);
 
         start_death_side_effects(&mut world);
 
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(100));
         assert!(!kv.contains_key("lost_gold"), "sem bolsa num interior");
         let sfx: Vec<SfxEvent> = world
@@ -501,18 +501,18 @@ mod tests {
     /// fica vazio e nada muda no store.
     #[test]
     fn sem_ouro_para_a_bolsa_nao_ha_patch() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock do store");
-        viber::luau::game::restore_game_json(&BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&BTreeMap::new());
         let (mut world, _player) = mundo_com_morte("main");
         let mut seed = BTreeMap::new();
         seed.insert("item.gold".into(), json!(3));
-        viber::luau::game::apply_patch_json(&seed);
+        vael_engine::luau::game::apply_patch_json(&seed);
 
         start_death_side_effects(&mut world);
 
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(3));
         assert!(!kv.contains_key("lost_gold"), "floor(3 * 0.25) = 0");
     }
@@ -531,10 +531,10 @@ mod tests {
         use bevy_ext_puppet::prelude::*;
         use bevy_ext_puppet::skeleton::spawn_test_skeleton_world;
 
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock do store");
-        viber::luau::game::restore_game_json(&BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&BTreeMap::new());
 
         let mut app = App::new();
         app.add_plugins((

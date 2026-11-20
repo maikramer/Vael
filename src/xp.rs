@@ -289,7 +289,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
         "ensure_xp",
         [rules = Arc::clone(&rules)],
         move |lua, ()| {
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_xp(&game)?;
             ensure_xp(&mut kv, &rules);
             write_xp(&game, &kv)
@@ -306,7 +306,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
             if !gain.is_finite() || gain <= 0.0 {
                 return Ok(());
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_xp(&game)?;
             add_xp(&mut kv, &rules, gain);
             write_xp(&game, &kv)
@@ -323,7 +323,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
             if !n.is_finite() || n <= 0.0 {
                 return Ok(());
             }
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_xp(&game)?;
             // O Lua chama `ensure_xp()` antes de somar.
             ensure_xp(&mut kv, &rules);

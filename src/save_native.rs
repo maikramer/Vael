@@ -21,14 +21,14 @@ use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use moonshine_save::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use viber::input_map::{Action, ActionMap};
-use viber::locale::Locale;
-use viber::luau::game::{game_to_json_process, restore_game_json};
-use viber::music::AudioMixerSettings;
-use viber::save::SaveRequest;
-use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use viber::terrain::runtime::TerrainRuntime;
-use viber::ui::UiWriter;
+use vael_engine::input_map::{Action, ActionMap};
+use vael_engine::locale::Locale;
+use vael_engine::luau::game::{game_to_json_process, restore_game_json};
+use vael_engine::music::AudioMixerSettings;
+use vael_engine::save::SaveRequest;
+use vael_engine::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use vael_engine::terrain::runtime::TerrainRuntime;
+use vael_engine::ui::UiWriter;
 
 use crate::boat::BoatStates;
 use crate::save::{SavedCalendar, VAEL_SAVE_VERSION, VaelSave};
@@ -55,7 +55,7 @@ pub struct VaelSaveFile {
     pub came_from_scene: Option<String>,
     pub came_from_portal: Option<String>,
     pub locale: String,
-    pub terrain_patches: Vec<viber::terrain::delta::DeltaPatch>,
+    pub terrain_patches: Vec<vael_engine::terrain::delta::DeltaPatch>,
     pub action_keys_json: String,
     pub world_kv_json: String,
     pub save_json: String,
@@ -100,7 +100,7 @@ fn register_save_types(app: &mut App) {
     app.register_type::<VaelSaveFile>()
         .register_type::<Vec3>()
         .register_type::<Vec2>()
-        .register_type::<viber::terrain::delta::DeltaPatch>();
+        .register_type::<vael_engine::terrain::delta::DeltaPatch>();
 }
 
 impl Plugin for VaelNativeSavePlugin {
@@ -114,7 +114,7 @@ impl Plugin for VaelNativeSavePlugin {
             .add_observer(on_native_loaded)
             .add_systems(
                 Update,
-                process_save_requests.after(viber::luau::bms_bridge::apply_bms_commands),
+                process_save_requests.after(vael_engine::luau::bms_bridge::apply_bms_commands),
             )
             .add_systems(
                 PostUpdate,
@@ -145,7 +145,7 @@ fn process_save_requests(world: &mut World) {
     // o loader está ocupado). O pedido fica em `SaveRequest` e volta a ser
     // tentado no frame seguinte.
     if world
-        .get_resource::<viber::scene_loader::SceneLoader>()
+        .get_resource::<vael_engine::scene_loader::SceneLoader>()
         .is_some_and(|loader| loader.busy())
     {
         return;
@@ -528,7 +528,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
             }
         }
     }
-    world.insert_resource(viber::save::PendingSavePatches(
+    world.insert_resource(vael_engine::save::PendingSavePatches(
         payload.terrain_patches.clone(),
     ));
     let current = world.get_resource::<CurrentScene>().cloned();
@@ -557,7 +557,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
             // principal com a pose guardada é melhor do que ficar na cena
             // atual (o título) com o estado carregado. O `came_from` do save
             // pertence à cena que já não existe — não se repõe.
-            let main = viber::project::MAIN_SCENE;
+            let main = vael_engine::project::MAIN_SCENE;
             let mut recovered = false;
             if payload.scene != main {
                 let mut fallback = ChangeScene::new(main, arrival);
@@ -1134,7 +1134,7 @@ mod tests {
 
     #[test]
     fn autumn_date_and_hour_survive_loading_a_slot() {
-        let _guard = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _guard = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .unwrap();
         let mut world = World::new();
@@ -1162,7 +1162,7 @@ mod tests {
 
     #[test]
     fn loading_mid_swim_restores_remaining_stamina_and_the_same_shore() {
-        let _lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().unwrap();
+        let _lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().unwrap();
         let mut world = World::new();
         world.init_resource::<VaelSave>();
         let bus = crate::player::HeroMotionBus::default();
@@ -1189,7 +1189,7 @@ mod tests {
     fn capture_e_apply_levam_as_poses_dos_barcos() {
         // O store de `viber.game()` é do processo e o `apply_payload` escreve
         // nele: o lock serializa com os outros testes que o tocam.
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock do store");
         let pose = BoatPose {
@@ -1223,7 +1223,7 @@ mod tests {
     /// física nem silenciar o áudio.
     #[test]
     fn apply_ignora_posicao_e_volumes_nao_finitos() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock do store");
         let mut world = World::new();

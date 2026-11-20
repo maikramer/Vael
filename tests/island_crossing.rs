@@ -11,7 +11,7 @@ use vael::{
     vault::VaultRules,
     xp::XpRules,
 };
-use viber::{
+use vael_engine::{
     recipes::{EntityKind, parse_world},
     terrain::{BrushGrid, heightmap::HeightMapU16, water::carve_lake},
 };
@@ -19,7 +19,7 @@ use viber::{
 #[test]
 fn the_island_requires_a_boat_and_the_altar_completes_the_return_trip() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-    let loaded = viber::xml::include::load_world_in(
+    let loaded = vael_engine::xml::include::load_world_in(
         &root.join("world/landmarks/lagos-das-vigilias.bsn"),
         root,
     )

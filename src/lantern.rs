@@ -25,13 +25,13 @@ use bevy::transform::TransformSystems;
 use bevy_ext_core::{MenusOpen, Player, SfxClip, SfxEvent};
 use mlua::Lua;
 use serde_json::Value;
-use viber::ambient::{
+use vael_engine::ambient::{
     ExternalLantern, LANTERN_MAX_INTENSITY, LANTERN_RANGE, TorchLightOverride, TravellerLantern,
 };
-use viber::attachment::find_bone;
-use viber::luau::components::ScriptToast;
-use viber::recipes::spawn::GltfScenePending;
-use viber::ui::UiModalsOpen;
+use vael_engine::attachment::find_bone;
+use vael_engine::luau::components::ScriptToast;
+use vael_engine::recipes::spawn::GltfScenePending;
+use vael_engine::ui::UiModalsOpen;
 
 use crate::content::{VaelContent, label};
 use crate::hud::save_lang;
@@ -265,7 +265,7 @@ fn sync_lantern_from_save(
 fn persist_lantern(on: bool) {
     let mut patch = BTreeMap::new();
     patch.insert(LANTERN_SAVE_KEY.to_string(), Value::Bool(on));
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
 }
 
 /// Botão da lanterna (`X` / `DPadUp`): alterna a lanterna de cintura.
@@ -386,7 +386,7 @@ fn mount_waist_lantern(
     commands.entity(bone).add_child(pivot);
 
     if let Some(asset_server) = asset_server.as_deref() {
-        let handle = viber::meshopt::load_gltf(asset_server, WAIST_LANTERN_GLB.to_string());
+        let handle = vael_engine::meshopt::load_gltf(asset_server, WAIST_LANTERN_GLB.to_string());
         let mesh_root = commands
             .spawn((
                 Name::new("vael:lanterna-cintura-malha"),
@@ -713,7 +713,7 @@ mod tests {
         let (mut app, _) = test_app();
         assert!(app.world().contains_resource::<ExternalLantern>());
         // Mesmo com noite a 100%, a lanterna começa apagada e escondida.
-        app.insert_resource(viber::worldsys::AtmosphereState {
+        app.insert_resource(vael_engine::worldsys::AtmosphereState {
             night: 1.0,
             ..Default::default()
         });

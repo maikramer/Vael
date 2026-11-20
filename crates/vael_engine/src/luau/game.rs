@@ -4,7 +4,7 @@
 //! proxy de `viber.game()` sobre o store plano partilhado, `viber.state()`,
 //! `viber.load`/`load_json`, `evict_module` (hot-reload/bridge) e a interop
 //! JSON do save (`game_to_json`/`restore_game_json`). Os caminhos históricos
-//! `viber::luau::game::*` continuam a resolver por este re-export.
+//! `vael_engine::luau::game::*` continuam a resolver por este re-export.
 //!
 //! Diferência visível: `viber.game()` é um PROXY (não uma tabela de VM
 //! registada) — os primitivos vivem no store do processo (o que o save

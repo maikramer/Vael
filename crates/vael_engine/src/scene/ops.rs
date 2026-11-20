@@ -637,7 +637,7 @@ pub fn parse_ops(json: &str) -> Result<Vec<EditOp>> {
             .ok_or_else(|| anyhow!("ops: objeto sem campo `ops`"))?,
         other => other,
     };
-    serde_json::from_value(array).context("ops: formato inválido (ver viber::scene::ops)")
+    serde_json::from_value(array).context("ops: formato inválido (ver vael_engine::scene::ops)")
 }
 
 pub fn op_name(op: &EditOp) -> &'static str {

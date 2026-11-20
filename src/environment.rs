@@ -38,8 +38,8 @@ use bevy_elements::{
 use bevy_ext_core::Player;
 use bevy_ext_core::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use mlua::{Lua, Value};
-use viber::postfx::{ExternalExposure, PostFxState};
-use viber::worldsys::{
+use vael_engine::postfx::{ExternalExposure, PostFxState};
+use vael_engine::worldsys::{
     AtmosphereState, BiomeRegions, InteriorLighting, WeatherState, rain_scale_at,
 };
 
@@ -279,9 +279,9 @@ impl Plugin for VaelEnvironmentPlugin {
                     // O `SunState` do crate é escrito no set `Celestial`; o
                     // `AtmosphereState` da engine no `atmosphere_drive`.
                     .after(ElementsSystems::Celestial)
-                    .after(viber::worldsys::atmosphere_drive)
-                    .after(viber::worldsys::interior_lighting_drive)
-                    .after(viber::worldsys::interior_lighting_apply),
+                    .after(vael_engine::worldsys::atmosphere_drive)
+                    .after(vael_engine::worldsys::interior_lighting_drive)
+                    .after(vael_engine::worldsys::interior_lighting_apply),
             )
             // Piso de exposição nocturna (ver `night_exposure_floor`).
             .add_systems(
@@ -305,8 +305,8 @@ impl Plugin for VaelEnvironmentPlugin {
                 // antes do `UiSet::Bind`, para o HUD ler a hora NO MESMO frame.
                 bridge_ui_clock
                     .after(ElementsSystems::Clock)
-                    .after(viber::ui::collect::collect_ui_data)
-                    .before(viber::ui::UiSet::Bind),
+                    .after(vael_engine::ui::collect::collect_ui_data)
+                    .before(vael_engine::ui::UiSet::Bind),
             );
         info!(
             hour = start_hour_or(scene.start_hour),
@@ -325,7 +325,7 @@ impl Plugin for VaelEnvironmentPlugin {
 /// "já spawnei") — depois de "Continuar" o céu ficava preto.
 fn persist_on_add<C: Component>(add: On<Add<C>>, mut commands: Commands) {
     if let Ok(mut entity) = commands.get_entity(add.entity) {
-        entity.insert(viber::scene_loader::Persistent);
+        entity.insert(vael_engine::scene_loader::Persistent);
     }
 }
 
@@ -336,7 +336,7 @@ fn persist_sky_meshes(mut commands: Commands, named: Query<(Entity, &Name), With
         if matches!(name.as_str(), "Stars" | "Moon disc") {
             commands
                 .entity(entity)
-                .insert(viber::scene_loader::Persistent);
+                .insert(vael_engine::scene_loader::Persistent);
         }
     }
 }
@@ -468,7 +468,7 @@ impl VaelEnvControl {
 /// `config.yaml`.
 fn attach_elements_camera(
     mut commands: Commands,
-    cameras: Query<(Entity, &Camera), (With<Camera3d>, With<viber::recipes::spawn::OrbitCamera>)>,
+    cameras: Query<(Entity, &Camera), (With<Camera3d>, With<vael_engine::recipes::spawn::OrbitCamera>)>,
     marked: Query<Entity, With<ElementsCamera>>,
     mut candidate: Local<Option<Entity>>,
     mut streak: Local<u32>,
@@ -566,7 +566,7 @@ fn bridge_atmosphere(
     if interior.as_deref().is_some_and(|state| state.active) {
         return;
     }
-    let mut next = viber::worldsys::atmosphere_for_elevation(sun.altitude_deg);
+    let mut next = vael_engine::worldsys::atmosphere_for_elevation(sun.altitude_deg);
     next.sun_dir = sun.direction;
     next.moon_dir = sun.moon_direction;
     // A chuva fecha um pouco a exposição (o mesmo law do `atmosphere_drive`).
@@ -713,14 +713,14 @@ fn undo_exposure_kick(
 fn apply_exposure_kick(
     postfx: Option<Res<PostFxState>>,
     mut kick: ResMut<VaelExposureKick>,
-    terrain: Option<Res<viber::terrain::TerrainRuntime>>,
+    terrain: Option<Res<vael_engine::terrain::TerrainRuntime>>,
     mut cameras: Query<(Entity, &ElementsCamera, &GlobalTransform, &mut bevy::camera::Exposure)>,
 ) {
     let ev = postfx.as_deref().map_or(0.0, |state| {
         state.kick + (state.ev100 - state.target_ev100).max(0.0)
     });
     for (entity, camera, tf, mut exposure) in &mut cameras {
-        use viber::terrain::HeightField;
+        use vael_engine::terrain::HeightField;
         let mut ev = ev;
         if camera.auto_exposure && let Some(terrain) = terrain.as_deref() {
             let eye = tf.translation();
@@ -874,7 +874,7 @@ struct VaelInteriorBlocker;
 /// estiver activo; fora é removido.
 fn interior_precipitation(
     interior: Option<Res<InteriorLighting>>,
-    cameras: viber::editor_camera::EyeCameraQuery,
+    cameras: vael_engine::editor_camera::EyeCameraQuery,
     mut commands: Commands,
     mut blockers: Query<
         (Entity, &mut Transform, &mut PrecipitationBlocker),
@@ -884,7 +884,7 @@ fn interior_precipitation(
     let inside = interior.as_deref().is_some_and(|state| state.active);
     let Some(center) = cameras
         .iter()
-        .find(|(_, cam, target)| viber::editor_camera::is_window_camera(*cam, *target))
+        .find(|(_, cam, target)| vael_engine::editor_camera::is_window_camera(*cam, *target))
         .map(|(tf, _, _)| tf.translation())
     else {
         for (entity, _, _) in &blockers {
@@ -937,7 +937,7 @@ fn interior_precipitation(
 fn bridge_ui_clock(
     clock: Res<WorldClock>,
     weather: Res<Weather>,
-    mut data: ResMut<viber::ui::UiData>,
+    mut data: ResMut<vael_engine::ui::UiData>,
     mut last_hm: Local<Option<(u32, u32)>>,
 ) {
     let minutes = (clock.hour * 60.0).rem_euclid(1440.0);
@@ -1425,9 +1425,9 @@ fn fit_vael_sun_cascades(
         }
         Some(
             bevy::light::CascadeShadowConfigBuilder {
-                num_cascades: viber::recipes::sun_shadow_cascades(),
+                num_cascades: vael_engine::recipes::sun_shadow_cascades(),
                 first_cascade_far_bound: 12.0,
-                maximum_distance: viber::recipes::sun_shadow_distance(),
+                maximum_distance: vael_engine::recipes::sun_shadow_distance(),
                 ..default()
             }
             .build(),

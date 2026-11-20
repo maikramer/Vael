@@ -7,11 +7,11 @@ use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_ext_engine::camera_glue::CameraShake;
-use viber::luau::{LuaScriptRef, ScriptProps};
-use viber::particles::spawn_burst;
-use viber::recipes::spawn::{GltfScenePending, PendingWorld, startup};
-use viber::recipes::{EntityKind, EntitySpec};
-use viber::scene_loader::{CurrentScene, SceneEntity, SceneLoad};
+use vael_engine::luau::{LuaScriptRef, ScriptProps};
+use vael_engine::particles::spawn_burst;
+use vael_engine::recipes::spawn::{GltfScenePending, PendingWorld, startup};
+use vael_engine::recipes::{EntityKind, EntitySpec};
+use vael_engine::scene_loader::{CurrentScene, SceneEntity, SceneLoad};
 
 use crate::collect_fx::{
     HitFlashQueue, IgnoreOutline, PickupGroundRing, PickupOrbitGlint, subtle_camera_shake,
@@ -183,7 +183,7 @@ fn attach(mut commands: Commands, new: Query<(Entity, &ScriptProps), Added<Scrip
 // for real support before gravity starts, including after fast travel.
 fn activate(
     mut commands: Commands,
-    hero: Query<(Entity, &GlobalTransform), With<viber::player::Player>>,
+    hero: Query<(Entity, &GlobalTransform), With<vael_engine::player::Player>>,
     props: Query<(Entity, &GlobalTransform, &RigidBody), With<Breakable>>,
     spatial: SpatialQuery,
     sensors: Query<(), With<Sensor>>,
@@ -350,7 +350,7 @@ impl Art {
                 Color::srgba(0.98, 0.68, 0.28, 0.68),
                 LinearRgba::rgb(3.0, 1.65, 0.45),
             ),
-            vial: viber::meshopt::load_gltf(server, VIAL.to_owned()),
+            vial: vael_engine::meshopt::load_gltf(server, VIAL.to_owned()),
         }
     }
 
@@ -378,7 +378,7 @@ fn strike(
     mut props: Query<(Entity, &GlobalTransform, &mut Breakable)>,
     spatial: SpatialQuery,
     sensors: Query<(), With<Sensor>>,
-    hero: Query<Entity, With<viber::player::Player>>,
+    hero: Query<Entity, With<vael_engine::player::Player>>,
     server: Res<AssetServer>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,

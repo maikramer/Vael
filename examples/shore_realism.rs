@@ -14,19 +14,19 @@ use bevy::math::{EulerRot, Quat, Vec2, Vec3};
 use bevy::transform::components::{GlobalTransform, Transform};
 use bevy_ext_world::PlacedInstance;
 use bevy_ext_world::vinst;
-use viber::app::load_world;
-use viber::recipes::spawn::{PendingTerrain, collect_terrain};
-use viber::recipes::{EntityKind, EntitySpec, Shape, TransformSpec};
-use viber::terrain::brush::BrushGrid;
-use viber::terrain::features::apply_features;
-use viber::terrain::heightmap::{AhgtMeta, HeightMapU16};
-use viber::terrain::roads::RoadPath;
-use viber::terrain::shore_rocks::{
+use vael_engine::app::load_world;
+use vael_engine::recipes::spawn::{PendingTerrain, collect_terrain};
+use vael_engine::recipes::{EntityKind, EntitySpec, Shape, TransformSpec};
+use vael_engine::terrain::brush::BrushGrid;
+use vael_engine::terrain::features::apply_features;
+use vael_engine::terrain::heightmap::{AhgtMeta, HeightMapU16};
+use vael_engine::terrain::roads::RoadPath;
+use vael_engine::terrain::shore_rocks::{
     ShoreRockPlacement, ShoreRocksSpec, lake_rock_clusters, river_rock_clusters,
 };
-use viber::terrain::splat::{Biome, BiomeField};
-use viber::terrain::voxel::paths::nearest_on_path;
-use viber::terrain::water::{
+use vael_engine::terrain::splat::{Biome, BiomeField};
+use vael_engine::terrain::voxel::paths::nearest_on_path;
+use vael_engine::terrain::water::{
     LakeSpec, RiverSpec, WaterBody, WaterKind, bank_erosion_fbm, bank_erosion_rill,
     river_outer_bias, station_curvatures,
 };
@@ -337,7 +337,7 @@ impl ProtectField {
     fn build(
         entities: &[EntitySpec],
         pending: &PendingTerrain,
-        feat_result: &viber::terrain::features::FeatureResult,
+        feat_result: &vael_engine::terrain::features::FeatureResult,
     ) -> Self {
         let mut out = Self {
             pads: feat_result
@@ -1099,7 +1099,7 @@ struct DeltaStats {
 fn verify_terrain_delta(
     orig: &BrushGrid,
     work: &BrushGrid,
-    feat_result: &viber::terrain::features::FeatureResult,
+    feat_result: &vael_engine::terrain::features::FeatureResult,
     protect: &ProtectField,
 ) -> Result<DeltaStats> {
     let mut changed = 0usize;
@@ -1283,7 +1283,7 @@ struct PlacedRock {
 
 fn generate_shore_rocks(
     pending: &PendingTerrain,
-    feat_result: &viber::terrain::features::FeatureResult,
+    feat_result: &vael_engine::terrain::features::FeatureResult,
     grid: &BrushGrid,
     protect: &ProtectField,
     biomes: &BiomeField,

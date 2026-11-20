@@ -38,10 +38,10 @@ pub(super) fn grow(
         return;
     }
     let hour = clock.hours_since_2000();
-    let epoch = viber::luau::game::game_get_json(EPOCH)
+    let epoch = vael_engine::luau::game::game_get_json(EPOCH)
         .and_then(|v| v.as_f64())
         .unwrap_or_else(|| {
-            viber::luau::game::apply_patch_json(&BTreeMap::from([(
+            vael_engine::luau::game::apply_patch_json(&BTreeMap::from([(
                 EPOCH.to_string(),
                 serde_json::json!(hour),
             )]));

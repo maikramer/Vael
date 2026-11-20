@@ -25,7 +25,7 @@
 
 use bevy::prelude::*;
 use jackdaw_scene_types::SceneNodeId;
-use viber::scene::SceneSource;
+use vael_engine::scene::SceneSource;
 
 pub struct VaelEditorLinkPlugin;
 

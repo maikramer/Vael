@@ -14,10 +14,10 @@ use bevy::reflect::Reflect;
 use bevy_elements::{CivilDate, Season, Weather};
 use bevy_pf::prelude::*;
 use serde_json::Value;
-use viber::ui::UiData;
-use viber::ui::UiModalsOpen;
-use viber::ui::script::UiScriptBinds;
-use viber::ui::writer::UiWriter;
+use vael_engine::ui::UiData;
+use vael_engine::ui::UiModalsOpen;
+use vael_engine::ui::script::UiScriptBinds;
+use vael_engine::ui::writer::UiWriter;
 
 use crate::content::{VaelContent, label};
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};

@@ -4527,12 +4527,12 @@ fn apply_one(world: &mut World, op: DebugOp, warnings: &mut Vec<String>) -> bool
         DebugOp::Toast(msg) => {
             match world.get_resource_mut::<Messages<crate::luau::ScriptToast>>() {
                 Some(mut messages) => {
-                    info!(target: "viber::luau", "[toast/debug] {msg}");
+                    info!(target: "vael::luau", "[toast/debug] {msg}");
                     messages.write(crate::luau::ScriptToast(msg));
                 }
                 None => {
                     warnings.push("plugin de toasts indisponível — mensagem só no log".into());
-                    info!(target: "viber::luau", "[toast/debug] {msg}");
+                    info!(target: "vael::luau", "[toast/debug] {msg}");
                 }
             }
             true

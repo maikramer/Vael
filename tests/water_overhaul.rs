@@ -9,30 +9,30 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use bevy::time::TimeUpdateStrategy;
-use viber::ambient::AmbientPlugin;
-use viber::terrain::brush::BrushGrid;
-use viber::terrain::delta::DeltaGrid;
-use viber::terrain::paint::PaintGrid;
-use viber::terrain::runtime::TerrainRuntime;
-use viber::terrain::spec::TerrainSpec;
-use viber::terrain::splat::SplatTuning;
-use viber::terrain::voxel::VoxelField;
-use viber::terrain::water::{
+use vael_engine::ambient::AmbientPlugin;
+use vael_engine::terrain::brush::BrushGrid;
+use vael_engine::terrain::delta::DeltaGrid;
+use vael_engine::terrain::paint::PaintGrid;
+use vael_engine::terrain::runtime::TerrainRuntime;
+use vael_engine::terrain::spec::TerrainSpec;
+use vael_engine::terrain::splat::SplatTuning;
+use vael_engine::terrain::voxel::VoxelField;
+use vael_engine::terrain::water::{
     LakeSpec, RiverSpec, WaterBody, carve_lake, carve_river, lake_water_mesh_dense,
     river_water_mesh_dense,
 };
-use viber::terrain::water_buoyancy::{FloatState, FloatingBody, WaterBuoyancyPlugin};
-use viber::terrain::water_fx::{
+use vael_engine::terrain::water_buoyancy::{FloatState, FloatingBody, WaterBuoyancyPlugin};
+use vael_engine::terrain::water_fx::{
     WADE_ENTER_DEPTH, WaterContact, WaterFxPlugin, compute_entry_impulse, compute_wake_impulse,
     swept_entry_xz,
 };
-use viber::terrain::water_material::{WATER_WGSL, WaterExtension, WaterMaterial, WaterUniforms};
-use viber::terrain::water_waves::{
+use vael_engine::terrain::water_material::{WATER_WGSL, WaterExtension, WaterMaterial, WaterUniforms};
+use vael_engine::terrain::water_waves::{
     DOMAIN_GRID_SIZE, WATER_WAVES_WGSL, WaterKinematics, WaterWavePlugin, WaterWaveWorld,
     compute_iwave_kernel, rasterize_domain_into_bytes,
 };
-use viber::water_ssr::WATER_SSR_WGSL;
-use viber::worldsys::{AtmosphereState, WeatherState};
+use vael_engine::water_ssr::WATER_SSR_WGSL;
+use vael_engine::worldsys::{AtmosphereState, WeatherState};
 
 fn make_flat_grid(world_size: f32, side: usize, y_m: f32) -> BrushGrid {
     let max_h = 50.0_f32;
@@ -207,7 +207,7 @@ fn two_pass_water_materials_sync_with_atmosphere_weather_and_preserve_passes() {
         rain: 0.85,
         cycle: true,
     });
-    app.add_plugins(viber::terrain::water_bridge::WaterBridgePlugin);
+    app.add_plugins(vael_engine::terrain::water_bridge::WaterBridgePlugin);
 
     let absorb_handle =
         app.world_mut()
@@ -361,7 +361,7 @@ fn water_contact_queues_swept_craters_and_kelvin_wakes_without_legacy_discs() {
     );
 
     // Ensure no legacy floating Ripple entities were spawned.
-    let mut ripple_q = app.world_mut().query::<&viber::terrain::water_fx::Ripple>();
+    let mut ripple_q = app.world_mut().query::<&vael_engine::terrain::water_fx::Ripple>();
     assert_eq!(ripple_q.iter(app.world()).count(), 0);
 }
 
@@ -387,7 +387,7 @@ fn water_shaders_preserve_two_pass_and_ssr_contracts() {
 
 #[test]
 fn depth_regimes_and_shore_friction_stratify_impulses() {
-    use viber::terrain::water_fx::{WaterDepthZone, classify_depth_zone};
+    use vael_engine::terrain::water_fx::{WaterDepthZone, classify_depth_zone};
     assert_eq!(classify_depth_zone(0.22), WaterDepthZone::Shallow);
     assert_eq!(classify_depth_zone(0.60), WaterDepthZone::Wading);
     assert_eq!(classify_depth_zone(1.25), WaterDepthZone::Deep);
@@ -401,8 +401,8 @@ fn depth_regimes_and_shore_friction_stratify_impulses() {
 #[test]
 fn river_current_collides_with_boulders_and_updates_when_broken() {
     use avian3d::prelude::Collider;
-    use viber::terrain::water_obstacles::{WaterObstacle, deflect_flow_by_obstacles};
-    use viber::terrain::water_waves::rasterize_domain_with_obstacles;
+    use vael_engine::terrain::water_obstacles::{WaterObstacle, deflect_flow_by_obstacles};
+    use vael_engine::terrain::water_waves::rasterize_domain_with_obstacles;
 
     let mut grid = make_flat_grid(256.0, 128, 12.0);
     let mut river_spec = RiverSpec::default();
@@ -459,7 +459,7 @@ fn river_current_collides_with_boulders_and_updates_when_broken() {
         std::time::Duration::from_secs_f32(1.0 / 60.0),
     ));
     // Os obstáculos vêm dos colliders avian via o adapter do jogo.
-    app.add_plugins(viber::terrain::water_bridge::WaterBridgePlugin);
+    app.add_plugins(vael_engine::terrain::water_bridge::WaterBridgePlugin);
     app.insert_resource(rt);
 
     let rock_entity = app

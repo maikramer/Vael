@@ -7,7 +7,7 @@
 //!
 //! Os contratos ([`ExternalSayPresenter`], [`localized`],
 //! [`localized_lines`]) foram para o `bevy_ext_core` (onda exit2/luau) —
-//! reexportados aqui para `viber::dialogue::…` continuar a resolver. O
+//! reexportados aqui para `vael_engine::dialogue::…` continuar a resolver. O
 //! BALÃO nativo ([`show_balloon`]) cá fica: escreve no `HudBalloon` do HUD,
 //! um tipo de serviço que o core não pode ter.
 

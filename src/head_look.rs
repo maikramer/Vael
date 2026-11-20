@@ -1,10 +1,10 @@
 //! Look-at da cabeça: quem olha para quem.
 //!
-//! A primitiva vive na engine (`viber::ik::HeadLookAt` — arco clampado 40°,
+//! A primitiva vive na engine (`vael_engine::ik::HeadLookAt` — arco clampado 40°,
 //! slerp amortecido). O jogo decide os alvos: NPCs com script e criaturas
 //! hostis viram a cabeça para o herói dentro do alcance, e voltam ao olhar
 //! calado (peso 0) quando ele sai de cena ou do alcance. O componente só
-//! entra em rigs com pernas já ligadas ao IK (`viber::ik::FootIkRigs`) —
+//! entra em rigs com pernas já ligadas ao IK (`vael_engine::ik::FootIkRigs`) —
 //! caixas/portas com script não têm cabeça para virar.
 //!
 //! O componente é NOSSO: quando a entidade deixa de ser elegível (perde o
@@ -14,8 +14,8 @@
 use bevy::platform::collections::HashMap;
 use bevy::prelude::*;
 use bevy_ext_core::{Player, vitals::Hostile};
-use viber::ik::{FootIkRigs, HEAD_LOOK_WEIGHT, HeadLookAt};
-use viber::luau::components::LuaScriptRef;
+use vael_engine::ik::{FootIkRigs, HEAD_LOOK_WEIGHT, HeadLookAt};
+use vael_engine::luau::components::LuaScriptRef;
 
 /// Alcance do olhar: quem tem script (townsfolk, mercadores) até 6 m.
 const NPC_RANGE: f32 = 6.0;
@@ -118,8 +118,8 @@ fn drive_head_look(
 mod tests {
     use super::*;
     use bevy_ext_core::vitals::Hostile;
-    use viber::ik::FootIkLeg;
-    use viber::luau::components::LuaScriptRef;
+    use vael_engine::ik::FootIkLeg;
+    use vael_engine::luau::components::LuaScriptRef;
 
     fn app() -> App {
         let mut app = App::new();

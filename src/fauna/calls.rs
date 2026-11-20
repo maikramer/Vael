@@ -2,7 +2,7 @@
 use super::birds::WoodlandBird;
 use bevy::{camera::RenderTarget, prelude::*};
 use bevy_kira_audio::{AudioChannel, AudioControl, AudioSource};
-use viber::music::{AmbienceBus, linear_to_db};
+use vael_engine::music::{AmbienceBus, linear_to_db};
 
 #[derive(Resource)]
 pub(super) struct Calls {
@@ -52,7 +52,7 @@ fn play(
 pub(super) fn load(
     mut commands: Commands,
     server: Res<AssetServer>,
-    config: Option<Res<viber::config::GameConfig>>,
+    config: Option<Res<vael_engine::config::GameConfig>>,
 ) {
     let dir = config
         .as_deref()

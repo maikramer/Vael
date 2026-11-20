@@ -53,7 +53,7 @@ use crate::components::VaelPlayer;
 use crate::vault::{vael_fn, vael_table};
 
 /// Camada do corpo (tnua) do herói.
-pub use viber::player::HERO_LAYER_BIT;
+pub use vael_engine::player::HERO_LAYER_BIT;
 
 /// Só se montam corpos até esta distância do herói (m).
 const MAX_DISTANCE: f32 = 80.0;
@@ -251,7 +251,7 @@ impl Plugin for VaelPuppetPlugin {
                 (
                     // Antes do ragdoll passivo: um cadáver bípede fica com o
                     // corpo do puppet (o `RagdollDeath` sai).
-                    die_physically.before(viber::ragdoll::start_ragdolls),
+                    die_physically.before(vael_engine::ragdoll::start_ragdolls),
                     react_to_script_commands,
                     react_to_actor_bumps,
                     apply_requests,
@@ -267,7 +267,7 @@ impl Plugin for VaelPuppetPlugin {
             .configure_sets(
                 PostUpdate,
                 PuppetSystems::Capture
-                    .after(viber::ik::bone_offsets_system)
+                    .after(vael_engine::ik::bone_offsets_system)
                     .after(crate::animation::relax_inward_palms),
             );
     }
@@ -424,7 +424,7 @@ pub struct PuppetBuilder<'w, 's> {
             Has<PuppetIncompatible>,
             Has<VaelPlayer>,
             &'static GlobalTransform,
-            Option<&'static viber::luau::LuaScriptRef>,
+            Option<&'static vael_engine::luau::LuaScriptRef>,
             Option<&'static Name>,
         ),
     >,
@@ -489,7 +489,7 @@ fn die_physically(
     builder: PuppetBuilder,
     corpses: Query<
         (Entity, Option<&PuppetLastHit>, &GlobalTransform),
-        (Added<viber::corpse::Corpse>, Without<VaelPlayer>),
+        (Added<vael_engine::corpse::Corpse>, Without<VaelPlayer>),
     >,
 ) {
     let now = time.elapsed_secs();
@@ -498,7 +498,7 @@ fn die_physically(
             continue;
         }
         // O puppet substitui o ragdoll passivo.
-        commands.entity(entity).remove::<viber::ragdoll::RagdollDeath>();
+        commands.entity(entity).remove::<vael_engine::ragdoll::RagdollDeath>();
         let (part, impulse) = match last {
             Some(h) if now - h.at <= LAST_HIT_WINDOW => (h.part, h.impulse * 1.5),
             // Sem golpe recente (veneno, queda): cai para trás.
@@ -519,7 +519,7 @@ fn react_to_script_commands(
     mut messages: MessageReader<ScriptCommandMessage>,
     builder: PuppetBuilder,
     transforms: Query<&GlobalTransform>,
-    corpses: Query<(), With<viber::corpse::Corpse>>,
+    corpses: Query<(), With<vael_engine::corpse::Corpse>>,
     hero: Query<(Entity, &GlobalTransform), With<VaelPlayer>>,
 ) {
     // Um golpe chega como `hit_flash` + `entity_knockback` no mesmo frame.
@@ -621,10 +621,10 @@ fn react_to_actor_bumps(
     actors: Query<(
         &GlobalTransform,
         Has<VaelPlayer>,
-        Has<viber::corpse::Corpse>,
+        Has<vael_engine::corpse::Corpse>,
         Option<&PuppetState>,
         Option<&PuppetConfig>,
-        Option<&viber::luau::LuaScriptRef>,
+        Option<&vael_engine::luau::LuaScriptRef>,
         Option<&Name>,
     )>,
     mut cooldowns: Local<HashMap<Entity, f32>>,
@@ -875,7 +875,7 @@ fn apply_requests(
 
 /// Verifica se o herói está vivo nas fontes autoritativas (`viber.game()` / `PlayerVitals`).
 fn hero_known_alive(vitals: Option<&crate::components::PlayerVitals>) -> bool {
-    use viber::luau::game::{game_value_to_json, with_game_store};
+    use vael_engine::luau::game::{game_value_to_json, with_game_store};
 
     let from_store = with_game_store(|store| {
         let hp = store
@@ -957,8 +957,8 @@ fn calm_kinematic_motion(
         (
             Entity,
             &PuppetState,
-            Has<viber::physics_fx::Knockback>,
-            Option<&mut viber::ai::AiLocomotion>,
+            Has<vael_engine::physics_fx::Knockback>,
+            Option<&mut vael_engine::ai::AiLocomotion>,
         ),
         Without<VaelPlayer>,
     >,
@@ -968,7 +968,7 @@ fn calm_kinematic_motion(
             continue;
         }
         if has_kb {
-            commands.entity(entity).remove::<viber::physics_fx::Knockback>();
+            commands.entity(entity).remove::<vael_engine::physics_fx::Knockback>();
         }
         if let Some(mut loco) = loco {
             loco.halt();
@@ -986,7 +986,7 @@ fn calm_kinematic_motion(
 fn handle_puppet_events(
     mut commands: Commands,
     mut events: MessageReader<PuppetEvent>,
-    mut shake: Option<ResMut<viber::camera::CameraShake>>,
+    mut shake: Option<ResMut<vael_engine::camera::CameraShake>>,
     puppets: Query<(&PuppetSense, &PuppetConfig, &GlobalTransform)>,
     hero: Query<&GlobalTransform, With<VaelPlayer>>,
 ) {
@@ -1002,7 +1002,7 @@ fn handle_puppet_events(
             PuppetEventKind::ModeChanged { from: PuppetMode::Falling, to: PuppetMode::Down } => {
                 let heavy = cfg.total_mass >= 100.0;
                 let count = if heavy { 10 } else { 5 };
-                viber::particles::spawn_burst(&mut commands, &dust, ground_pos, count);
+                vael_engine::particles::spawn_burst(&mut commands, &dust, ground_pos, count);
                 if heavy
                     && let Some(hpos) = hero_pos
                 {
@@ -1015,9 +1015,9 @@ fn handle_puppet_events(
                 }
             }
             PuppetEventKind::GettingUp { face_up } => {
-                viber::particles::spawn_burst(&mut commands, &dust, ground_pos, 3);
+                vael_engine::particles::spawn_burst(&mut commands, &dust, ground_pos, 3);
                 let clip = if face_up { "getup_back" } else { "getup_front" };
-                commands.trigger(viber::luau::runtime::UnboundGesture {
+                commands.trigger(vael_engine::luau::runtime::UnboundGesture {
                     entity: ev.puppet,
                     name: clip.to_string(),
                     speed: 1.0,
@@ -1026,7 +1026,7 @@ fn handle_puppet_events(
             PuppetEventKind::BodyImpact { point, impulse, speed, .. } => {
                 if speed >= 2.2 || impulse >= 16.0 {
                     let count = if impulse >= 40.0 || speed >= 5.0 { 7 } else { 3 };
-                    viber::particles::spawn_burst(&mut commands, &dust, point + Vec3::Y * 0.04, count);
+                    vael_engine::particles::spawn_burst(&mut commands, &dust, point + Vec3::Y * 0.04, count);
                     if cfg.total_mass >= 90.0
                         && impulse >= 35.0
                         && let Some(hpos) = hero_pos
@@ -1041,15 +1041,15 @@ fn handle_puppet_events(
                 }
             }
             PuppetEventKind::WallBraced { point, .. } => {
-                viber::particles::spawn_burst(&mut commands, &dust, point, 2);
+                vael_engine::particles::spawn_burst(&mut commands, &dust, point, 2);
             }
             PuppetEventKind::StepTaken { point, .. } => {
                 if cfg.total_mass >= 100.0 {
-                    viber::particles::spawn_burst(&mut commands, &dust, point + Vec3::Y * 0.03, 2);
+                    vael_engine::particles::spawn_burst(&mut commands, &dust, point + Vec3::Y * 0.03, 2);
                 }
             }
             PuppetEventKind::Tripped { .. } => {
-                viber::particles::spawn_burst(&mut commands, &dust, ground_pos, 3);
+                vael_engine::particles::spawn_burst(&mut commands, &dust, ground_pos, 3);
             }
             PuppetEventKind::ModeChanged { .. } | PuppetEventKind::RootMoved => {}
         }

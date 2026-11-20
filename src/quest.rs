@@ -719,7 +719,7 @@ pub(crate) fn install_shared(
             xp = Arc::clone(&xp)
         ],
         move |lua, (action, value): (String, Option<String>)| {
-            let before = viber::luau::game::game_snapshot_vm(lua);
+            let before = vael_engine::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let ok = opening::apply(
                 &rules,
@@ -742,7 +742,7 @@ pub(crate) fn install_shared(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let kv = read_keys(&game, &[quest_key(&id)])?;
             Ok(quest_state(&rules, &kv, &id))
         }
@@ -755,7 +755,7 @@ pub(crate) fn install_shared(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let kv = read_keys(
                 &game,
                 &[
@@ -779,7 +779,7 @@ pub(crate) fn install_shared(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let kv = read_keys(&game, &[key_with(&id, "stage")])?;
             let view = quest_objective(&rules, &kv, &id);
             let obj = lua.create_table()?;
@@ -805,7 +805,7 @@ pub(crate) fn install_shared(
             let Some(def) = rules.quests.get(&id) else {
                 return Ok(false);
             };
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut keys: Vec<String> = def.requires.iter().map(|other| quest_key(other)).collect();
             keys.extend([
                 "campaign.opening".into(),
@@ -824,7 +824,7 @@ pub(crate) fn install_shared(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             // A cadeia é curta (máx. 16 saltos): só os estados percorridos.
             let mut keys = Vec::new();
             let mut current = id.as_str();
@@ -851,7 +851,7 @@ pub(crate) fn install_shared(
         move |lua, (id, n): (Option<String>, Option<Value>)| {
             let id = id.unwrap_or_default();
             let n = lua_tonumber(n.unwrap_or(Value::Nil));
-            let before = viber::luau::game::game_snapshot_vm(lua);
+            let before = vael_engine::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let out = quest_set_progress(&rules, &mut kv, &id, n);
             write_kv(lua, &before, &kv);
@@ -873,7 +873,7 @@ pub(crate) fn install_shared(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let before = viber::luau::game::game_snapshot_vm(lua);
+            let before = vael_engine::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let ok = quest_accept(&rules, &mut kv, &id);
             write_kv(lua, &before, &kv);
@@ -892,7 +892,7 @@ pub(crate) fn install_shared(
         ],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let before = viber::luau::game::game_snapshot_vm(lua);
+            let before = vael_engine::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let out = quest_turn_in(&rules, &vault, &xp, &mut kv, &id);
             write_kv(lua, &before, &kv);
@@ -1470,12 +1470,12 @@ mod tests {
 
     #[test]
     fn bridge_le_e_escreve_o_estado_das_quests() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let (lua, game) = lua_com_bridge();
         game.raw_set("q.wolves", STATE_READY).expect("estado");
         game.raw_set("q.wolves.n", 3).expect("progresso");
@@ -1543,12 +1543,12 @@ mod tests {
 
     #[test]
     fn bridge_avanca_etapa_e_devolve_os_toasts() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let (lua, game) = lua_com_bridge();
         assert!(
             lua.load("return viber.vael.quest_accept('staged')")

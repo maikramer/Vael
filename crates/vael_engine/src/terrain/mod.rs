@@ -3,7 +3,7 @@
 //! # SHIM (fase D de `docs/DELETE-MONOLITH.md`)
 //!
 //! O runtime vive no [`bevy_ext_terrain_runtime`] — o glob em baixo re-exporta
-//! o crate inteiro, por isso TODOS os caminhos `crate::terrain::…`/`viber::
+//! o crate inteiro, por isso TODOS os caminhos `crate::terrain::…`/`vael_engine::
 //! terrain::…` históricos (módulos e itens) continuam a resolver: os 98 usos
 //! de `terrain::runtime`, o `TerrainPlugin`/`TerrainFeaturesPlugin` que o
 //! `app.rs` registra, os tipos reflectidos que o Vael e os saves citam.

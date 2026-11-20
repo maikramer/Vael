@@ -17,7 +17,7 @@
 //!   menu, gravado no save): quando muda, os `Binding` são refeitos.
 //!
 //! O `gather_actions` da engine fica parado
-//! (`viber::input_map::ExternalActionState`): [`write_action_state`] é o
+//! (`vael_engine::input_map::ExternalActionState`): [`write_action_state`] é o
 //! único escritor do `ActionState`.
 //!
 //! No Play do Jackdaw o editor reencaminha o input como mensagens normais do
@@ -31,7 +31,7 @@ use jackdaw_input::prelude::{
     Action as InputAction, ActionOf, ActionSettings, ActionSystems, Binding, BindingOf, Condition,
     ContextActivity, ContextPriority, InputActionPlugin, InputContext, InputSources, TriggerState,
 };
-use viber::input_map::{Action, ActionMap, ActionState};
+use vael_engine::input_map::{Action, ActionMap, ActionState};
 
 /// Contexto de jogo (andar, saltar, atacar, …).
 #[derive(Component, Debug, Clone, Copy)]
@@ -162,7 +162,7 @@ impl Plugin for VaelInputPlugin {
         }
         // O `gather_actions` da engine pára: quem escreve o `ActionState`
         // é este módulo.
-        app.init_resource::<viber::input_map::ExternalActionState>()
+        app.init_resource::<vael_engine::input_map::ExternalActionState>()
             .init_resource::<ActionMap>()
             .init_resource::<ActionState>()
             .init_resource::<VaelUiActions>()
@@ -183,15 +183,15 @@ impl Plugin for VaelInputPlugin {
                     write_action_state
                         .in_set(VaelInputSystems)
                         .after(ActionSystems)
-                        .after(viber::input_map::gather_actions),
+                        .after(vael_engine::input_map::gather_actions),
                 ),
             );
     }
 }
 
 fn key_of(name: &str) -> Option<KeyCode> {
-    match viber::luau::input_code_from_str(name)? {
-        viber::luau::InputCode::Key(key) => Some(key),
+    match vael_engine::luau::input_code_from_str(name)? {
+        vael_engine::luau::InputCode::Key(key) => Some(key),
         _ => None,
     }
 }
@@ -347,7 +347,7 @@ fn sync_mapped_bindings(
 /// Com uma `<UiInput>` focada (barra de fala) as teclas são texto: o
 /// teclado sai de todos os contextos, modificadores incluídos.
 fn gate_keyboard_while_typing(
-    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    typing: Option<Res<vael_engine::ui::widgets::UiFocusedInput>>,
     mut sources: ResMut<InputSources>,
 ) {
     let keyboard = !typing.is_some_and(|focus| focus.0.is_some());
@@ -586,7 +586,7 @@ mod tests {
     #[test]
     fn a_escrever_nada_dispara() {
         let mut app = app();
-        app.insert_resource(viber::ui::widgets::UiFocusedInput(Some(
+        app.insert_resource(vael_engine::ui::widgets::UiFocusedInput(Some(
             Entity::PLACEHOLDER,
         )));
         press(&mut app, KeyCode::KeyW);

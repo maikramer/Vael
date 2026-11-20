@@ -9,8 +9,8 @@
 //! no-ops (sem paths de clips, sem zona de cena/bioma) — o jogo compila e
 //! corre, mas em silêncio.
 //!
-//! O análogo no Vael: `app.add_plugins(viber::audio_host::AudioHostPlugin);`
-//! junto do registo dos sistemas `viber::music::*`.
+//! O análogo no Vael: `app.add_plugins(vael_engine::audio_host::AudioHostPlugin);`
+//! junto do registo dos sistemas `vael_engine::music::*`.
 
 use std::sync::Arc;
 

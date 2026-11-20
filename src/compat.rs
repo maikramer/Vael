@@ -134,14 +134,14 @@ pub(crate) fn write_number(game: &Table, key: &str, value: f64) -> mlua::Result<
 /// Arrays/objetos não entram (o estado plano do save também não os
 /// persiste) e `null` remove a chave.
 pub(crate) fn apply_game_patch(lua: &Lua, patch: &std::collections::BTreeMap<String, Json>) {
-    let Ok(game) = viber::luau::game::game_proxy(lua) else {
+    let Ok(game) = vael_engine::luau::game::game_proxy(lua) else {
         return;
     };
     for (key, value) in patch {
         if matches!(value, Json::Array(_) | Json::Object(_)) {
             continue;
         }
-        let Ok(lua_value) = viber::luau::game::json_to_lua(lua, value) else {
+        let Ok(lua_value) = vael_engine::luau::game::json_to_lua(lua, value) else {
             continue;
         };
         let _ = game.set(key.as_str(), lua_value);

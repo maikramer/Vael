@@ -2,7 +2,7 @@
 use super::*;
 use avian3d::prelude::Collider;
 use bevy_elements::WorldClock;
-use viber::luau::components::LuaScriptRef;
+use vael_engine::luau::components::LuaScriptRef;
 
 const SPROUT_AFTER_DAYS: f64 = 1.0;
 const MATURE_AFTER_DAYS: f64 = 3.0;
@@ -97,7 +97,7 @@ pub(super) fn grow(
             None => {
                 let day = root.key.as_deref().map_or(today, |key| {
                     let field = format!("flora-fell.{key}.day");
-                    let saved = viber::luau::game::game_get_json(&field)
+                    let saved = vael_engine::luau::game::game_get_json(&field)
                         .or_else(|| save.as_ref()?.legacy.get(&field).cloned());
                     if let Some(day) = saved.and_then(|v| v.as_f64()) {
                         return day;
@@ -105,7 +105,7 @@ pub(super) fn grow(
                     if let Some(save) = save.as_mut() {
                         save.legacy.insert(field.clone(), json!(today));
                     }
-                    viber::luau::game::apply_patch_json(&BTreeMap::from([(field, json!(today))]));
+                    vael_engine::luau::game::apply_patch_json(&BTreeMap::from([(field, json!(today))]));
                     today
                 });
                 root.cut_day = Some(day);
@@ -159,7 +159,7 @@ pub(super) fn grow(
                     save.legacy.remove(field);
                 }
             }
-            viber::luau::game::apply_patch_json(&patch);
+            vael_engine::luau::game::apply_patch_json(&patch);
         }
     }
 }

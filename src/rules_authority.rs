@@ -35,10 +35,10 @@ use std::collections::BTreeMap;
 use bevy::prelude::*;
 use bevy_ext_core::MenusOpen;
 use serde_json::Value;
-use viber::luau::game::{apply_patch_json, game_to_json_process};
-use viber::scene_loader::CurrentScene;
-use viber::ui::modal::UiModalsOpen;
-use viber::worldsys::WeatherState;
+use vael_engine::luau::game::{apply_patch_json, game_to_json_process};
+use vael_engine::scene_loader::CurrentScene;
+use vael_engine::ui::modal::UiModalsOpen;
+use vael_engine::worldsys::WeatherState;
 
 use crate::components::PlayerVitals;
 use crate::content::VaelContent;
@@ -299,9 +299,9 @@ impl Plugin for VaelRulesAuthorityPlugin {
                     .in_set(VaelRulesSet)
                     // O tick LÊ o que o Lua acabou de fazer no frame e escreve
                     // as vitais de volta para o `viber.game()`.
-                    .after(viber::luau::bms_bridge::apply_bms_commands)
-                    .run_if(viber::app::scripts_enabled)
-                    .run_if(viber::scene_loader::scene_settled),
+                    .after(vael_engine::luau::bms_bridge::apply_bms_commands)
+                    .run_if(vael_engine::app::scripts_enabled)
+                    .run_if(vael_engine::scene_loader::scene_settled),
             );
     }
 }
@@ -316,7 +316,7 @@ fn apply_rust_gate(config: Res<VaelRulesConfig>) {
     // `viber.game()` (o store é o proxy de sempre).
     let mut patch = BTreeMap::new();
     patch.insert(RUST_GATE_KEY.to_string(), Value::Bool(true));
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
     info!(
         gate = RUST_GATE_KEY,
         "vael: autoridade Rust das vitais/status/morte ligada"
@@ -836,10 +836,10 @@ mod tests {
 
     #[test]
     fn morte_armada_pelo_tick_emite_o_sinal_para_o_caminho_rust() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
 
         #[derive(Resource, Default)]
         struct DeathSignals(Vec<VaelDeathStarted>);
@@ -863,7 +863,7 @@ mod tests {
         let mut patch = BTreeMap::new();
         patch.insert("hp".to_string(), json!(0));
         patch.insert("max_hp".to_string(), json!(100));
-        viber::luau::game::apply_patch_json(&patch);
+        vael_engine::luau::game::apply_patch_json(&patch);
         app.update();
         app.update();
 

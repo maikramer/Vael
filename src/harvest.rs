@@ -37,19 +37,19 @@ use chips::{HitQueue, ToolHit};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
-use viber::feedback::DamageNumberEvent;
-use viber::interact::{InteractionFocus, range_scale};
-use viber::luau::components::{ScriptInteraction, ScriptProps};
-use viber::menus::MenusOpen;
-use viber::physics_fx::Falling;
-use viber::player::Player;
-use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
-use viber::scene::SceneSource;
-use viber::scene_loader::{CurrentScene, SceneEpoch};
-use viber::ui::ScriptBindValue;
-use viber::ui::script::UiScriptBinds;
-use viber::ui::widgets::UiFocusedInput;
-use viber::vitals::Health;
+use vael_engine::feedback::DamageNumberEvent;
+use vael_engine::interact::{InteractionFocus, range_scale};
+use vael_engine::luau::components::{ScriptInteraction, ScriptProps};
+use vael_engine::menus::MenusOpen;
+use vael_engine::physics_fx::Falling;
+use vael_engine::player::Player;
+use vael_engine::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
+use vael_engine::scene::SceneSource;
+use vael_engine::scene_loader::{CurrentScene, SceneEpoch};
+use vael_engine::ui::ScriptBindValue;
+use vael_engine::ui::script::UiScriptBinds;
+use vael_engine::ui::widgets::UiFocusedInput;
+use vael_engine::vitals::Health;
 
 use crate::VaelProjectRoot;
 use crate::compat::env_enabled;
@@ -144,7 +144,7 @@ pub struct Harvestable {
     pub popup: String,
     /// Cor do popup em RGB linear-ish (3 ou 6 dígitos hex).
     pub popup_color: [f32; 3],
-    /// Alcance AUTORADO; o efetivo é `viber::interact::scaled_range`.
+    /// Alcance AUTORADO; o efetivo é `vael_engine::interact::scaled_range`.
     pub range: f32,
     /// Altura do corte acima da base (`cut-height`, m): o `bevy_flora` corta
     /// a árvore aí e o toco fica com essa altura.
@@ -573,7 +573,7 @@ fn process_pending_fell(
                 .try_remove::<(
                     Harvestable,
                     ScriptInteraction,
-                    viber::luau::components::LuaScriptRef,
+                    vael_engine::luau::components::LuaScriptRef,
                 )>()
                 .insert(Falling {
                     axis: Vec3::new(direction.z, 0.0, -direction.x),
@@ -625,12 +625,12 @@ fn read_harvest_buttons(
     mut input: ResMut<HarvestToolInput>,
     keys: Option<Res<ButtonInput<KeyCode>>>,
     mouse: Option<Res<ButtonInput<MouseButton>>>,
-    map: Option<Res<viber::input_map::ActionMap>>,
+    map: Option<Res<vael_engine::input_map::ActionMap>>,
     pads: Query<&Gamepad>,
 ) {
     let button = map
         .as_ref()
-        .and_then(|map| map.bindings.get(&viber::input_map::Action::Attack))
+        .and_then(|map| map.bindings.get(&vael_engine::input_map::Action::Attack))
         .and_then(|b| b.pad.as_deref())
         .and_then(crate::input::pad_of);
     input.held = keys.is_some_and(|k| k.pressed(attack_key(map.as_deref())))
@@ -710,7 +710,7 @@ impl Plugin for VaelHarvestPlugin {
                 PostUpdate,
                 mining::constrain
                     .after(bevy::app::AnimationSystems)
-                    .after(viber::ik::bone_offsets_system)
+                    .after(vael_engine::ik::bone_offsets_system)
                     .before(bevy::transform::TransformSystems::Propagate),
             )
             .init_resource::<PendingReplacementScales>()
@@ -734,10 +734,10 @@ impl Plugin for VaelHarvestPlugin {
             // (`flora-fell.*`). O gate só controla os recursos colhidos à mão.
             .add_systems(PostStartup, (attach_harvestables, reap_on_load).chain())
             .add_systems(
-                viber::scene_loader::SceneLoad,
+                vael_engine::scene_loader::SceneLoad,
                 (attach_harvestables, reap_on_load)
                     .chain()
-                    .after(viber::recipes::spawn::startup),
+                    .after(vael_engine::recipes::spawn::startup),
             )
             // Props que nascem DEPOIS do load (spawn de script, `live_edit` do
             // Jackdaw): o `PostStartup`/`SceneLoad` não os vê e o caminho Lua
@@ -780,7 +780,7 @@ impl Plugin for VaelHarvestPlugin {
             .add_systems(
                 PostUpdate,
                 apply_replacement_scales
-                    .after(viber::recipes::spawn::apply_script_spawns)
+                    .after(vael_engine::recipes::spawn::apply_script_spawns)
                     .before(bevy::transform::TransformSystems::Propagate),
             )
             .init_resource::<BuckFocus>();
@@ -985,7 +985,7 @@ fn mark_harvested(save: Option<&mut VaelSave>, key: &str) {
     }
     let mut patch = BTreeMap::new();
     patch.insert(format!("harvested.{key}"), Json::Bool(true));
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
 }
 
 /// Guarda a pose/escala do substituto (`stump.<chave>.*`), como o Lua.
@@ -1008,7 +1008,7 @@ fn store_stump(save: Option<&mut VaelSave>, key: &str, proto: &str, position: Ve
             save.legacy.insert(name.clone(), value.clone());
         }
     }
-    viber::luau::game::apply_patch_json(&fields.into_iter().collect::<BTreeMap<_, _>>());
+    vael_engine::luau::game::apply_patch_json(&fields.into_iter().collect::<BTreeMap<_, _>>());
 }
 
 /// Guarda o estado do tombo de uma árvore procedural (`flora-fell.<chave>.*`):
@@ -1035,7 +1035,7 @@ fn store_flora_fell(
             save.legacy.insert(name.clone(), value.clone());
         }
     }
-    viber::luau::game::apply_patch_json(&fields.into_iter().collect::<BTreeMap<_, _>>());
+    vael_engine::luau::game::apply_patch_json(&fields.into_iter().collect::<BTreeMap<_, _>>());
 }
 
 /// Marca a árvore deitada como retalhada em toros (`flora-fell.<chave>.bucked`).
@@ -1049,7 +1049,7 @@ fn store_flora_bucked(save: Option<&mut VaelSave>, key: &str) {
     }
     let mut patch = BTreeMap::new();
     patch.insert(name, Json::Bool(true));
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
 }
 
 /// Estado de uma árvore tombada com o `bevy_flora`, lido do save.
@@ -1273,12 +1273,12 @@ fn apply_gate(rust: bool) {
         GatePatch::Unchanged => {}
     }
     if !patch.is_empty() {
-        viber::luau::game::apply_patch_json(&patch);
+        vael_engine::luau::game::apply_patch_json(&patch);
     }
 }
 
 fn read_gate() -> Option<bool> {
-    viber::luau::game::game_get_json(RUST_GATE_KEY).map(|v| v.as_bool().unwrap_or(false))
+    vael_engine::luau::game::game_get_json(RUST_GATE_KEY).map(|v| v.as_bool().unwrap_or(false))
 }
 
 /// Marca pedras e árvores cujo número de golpes escala proporcionalmente ao
@@ -1559,11 +1559,11 @@ fn update_harvest_focus(
     config: Res<VaelHarvestConfig>,
     buttons: Res<HarvestToolInput>,
     menus: Option<Res<MenusOpen>>,
-    modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
+    modals: Option<Res<vael_engine::ui::modal::UiModalsOpen>>,
     scene: Option<Res<CurrentScene>>,
     vitals: Option<Res<PlayerVitals>>,
     mut ui: Option<ResMut<UiScriptBinds>>,
-    map: Option<Res<viber::input_map::ActionMap>>,
+    map: Option<Res<vael_engine::input_map::ActionMap>>,
 ) {
     focus.cooldown = (focus.cooldown - time.delta_secs()).max(0.0);
     focus.grip_remaining = (focus.grip_remaining - time.delta_secs()).max(0.0);
@@ -1660,8 +1660,8 @@ fn update_harvest_focus(
 
 /// A tecla de "atacar" do `ActionMap` (J por defeito): a do prompt `[J]` e
 /// a que o `InteractionFocus` arbitra entre alvos.
-fn attack_key(map: Option<&viber::input_map::ActionMap>) -> KeyCode {
-    map.and_then(|map| crate::input::action_key(map, viber::input_map::Action::Attack))
+fn attack_key(map: Option<&vael_engine::input_map::ActionMap>) -> KeyCode {
+    map.and_then(|map| crate::input::action_key(map, vael_engine::input_map::Action::Attack))
         .unwrap_or(KeyCode::KeyJ)
 }
 
@@ -1736,8 +1736,8 @@ fn spawn_felled_tree(
 fn harvest_input(
     mut commands: Commands,
     keys: Option<Res<ButtonInput<KeyCode>>>,
-    actions: Option<Res<viber::input_map::ActionState>>,
-    map: Option<Res<viber::input_map::ActionMap>>,
+    actions: Option<Res<vael_engine::input_map::ActionState>>,
+    map: Option<Res<vael_engine::input_map::ActionMap>>,
     mut focus: ResMut<HarvestFocus>,
     mut save: Option<ResMut<VaelSave>>,
     content: Option<Res<VaelContent>>,
@@ -1854,7 +1854,7 @@ fn harvest_input(
         services.mining.begin(entity);
         commands
             .entity(hero)
-            .insert(viber::animation::PendingGesture {
+            .insert(vael_engine::animation::PendingGesture {
                 name: tool.into(),
                 duration: Some(duration),
                 speed: 1.,
@@ -1900,7 +1900,7 @@ fn harvest_input(
         focus.cooldown = SWING_COOLDOWN;
         commands
             .entity(hero)
-            .insert(viber::animation::PendingGesture {
+            .insert(vael_engine::animation::PendingGesture {
                 name: "gather".into(),
                 duration: Some(0.55),
                 speed: 1.0,
@@ -2057,7 +2057,7 @@ fn harvest_input(
             commands.entity(entity).try_remove::<(
                 Harvestable,
                 ScriptInteraction,
-                viber::luau::components::LuaScriptRef,
+                vael_engine::luau::components::LuaScriptRef,
             )>();
             commands.entity(entity).try_insert(Falling {
                 axis: Vec3::new(direction.z, 0.0, -direction.x),
@@ -2125,18 +2125,18 @@ fn patch_rewards(kind: &str, inventory: &Inventory, xp: &XpState) {
         };
         patch.insert(key.to_string(), json!(value));
     }
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
 }
 
 fn read_game_i64(key: &str) -> Option<i64> {
-    viber::luau::game::game_get_json(key)
+    vael_engine::luau::game::game_get_json(key)
         .and_then(|v| v.as_f64())
         .filter(|value| value.is_finite())
         .map(|value| value as i64)
 }
 
 fn read_game_f64(key: &str) -> Option<f64> {
-    viber::luau::game::game_get_json(key)
+    vael_engine::luau::game::game_get_json(key)
         .and_then(|v| v.as_f64())
         .filter(|value| value.is_finite())
 }
@@ -2188,7 +2188,7 @@ fn show_popup(commands: &mut Commands, position: Vec3, text: String, color: [f32
 fn kv_snapshot(save: Option<&VaelSave>) -> BTreeMap<String, Json> {
     // Store do processo primeiro (o `viber.game()` dos contextos BMS); sem
     // chaves (arranque), o legacy do save.
-    let kv = viber::luau::game::game_to_json_process();
+    let kv = vael_engine::luau::game::game_to_json_process();
     if !kv.is_empty() {
         return kv;
     }
@@ -2485,8 +2485,8 @@ fn tree_landed_feedback(
 fn buck_felled_trees(
     mut commands: Commands,
     keys: Option<Res<ButtonInput<KeyCode>>>,
-    actions: Option<Res<viber::input_map::ActionState>>,
-    map: Option<Res<viber::input_map::ActionMap>>,
+    actions: Option<Res<vael_engine::input_map::ActionState>>,
+    map: Option<Res<vael_engine::input_map::ActionMap>>,
     time: Res<Time>,
     mut focus: ResMut<BuckFocus>,
     interaction: Option<Res<InteractionFocus>>,
@@ -2629,7 +2629,7 @@ mod tests {
     use bevy::input::ButtonInput;
     use std::path::PathBuf;
     use std::sync::Arc;
-    use viber::xml::NodeOrigin;
+    use vael_engine::xml::NodeOrigin;
 
     fn props(pairs: &[(&str, &str)]) -> Vec<(String, String)> {
         pairs
@@ -2990,7 +2990,7 @@ mod tests {
             .expect("prompt publicado");
         assert_eq!(interaction.key, KeyCode::KeyJ);
         assert_eq!(interaction.label, "Cortar");
-        assert!((interaction.range - viber::interact::scaled_range(3.5)).abs() < 1e-5);
+        assert!((interaction.range - vael_engine::interact::scaled_range(3.5)).abs() < 1e-5);
 
         // Move o prop para longe: o prompt tem de sair.
         if let Some(mut transform) = app.world_mut().get_mut::<GlobalTransform>(prop) {
@@ -3080,7 +3080,7 @@ mod tests {
         app.update();
         assert_eq!(
             app.world()
-                .get::<viber::animation::PendingGesture>(hero)
+                .get::<vael_engine::animation::PendingGesture>(hero)
                 .unwrap()
                 .name,
             "mine"
@@ -3268,10 +3268,10 @@ mod tests {
 
     #[test]
     fn golpe_final_quebra_marca_e_despawna() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
         let _player = spawn_player(&mut app);
@@ -3343,10 +3343,10 @@ mod tests {
     /// (o bevy_flora tomba e deixa o toco) e guarda a direcção no save.
     #[test]
     fn tombo_de_arvore_procedural_insere_fell_tree() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
         app.insert_resource(bevy_elements::WorldClock::new(
@@ -3434,10 +3434,10 @@ mod tests {
     /// origem do mundo, à escala 1.
     #[test]
     fn reap_restaura_a_arvore_com_a_pose_global_da_estacao() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         let _player = spawn_player(&mut app);
         let group = app
@@ -3499,10 +3499,10 @@ mod tests {
     /// `reap_saved` não despawna: repõe a árvore já deitada.
     #[test]
     fn reap_restaura_arvore_deitada_do_save() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
         let _player = spawn_player(&mut app);
@@ -3638,10 +3638,10 @@ mod tests {
     /// `[J]` numa árvore deitada retalha-a em toros e marca o save.
     #[test]
     fn j_na_arvore_deitada_insere_buck_tree() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         let _player = spawn_player(&mut app);
         // Uma árvore já deitada não é um `Harvestable` (foi cortada): sem isto
@@ -3691,7 +3691,7 @@ mod tests {
         app.update();
         let gesture = app
             .world()
-            .get::<viber::animation::PendingGesture>(hero)
+            .get::<vael_engine::animation::PendingGesture>(hero)
             .unwrap();
         assert_eq!(gesture.name, "mine");
         finish_chop(&mut app); // 300 ms, ainda antes do contacto da picareta.
@@ -3732,10 +3732,10 @@ mod tests {
 
     #[test]
     fn reap_apaga_o_prop_do_save_e_preserva_os_outros() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = App::new();
         app.add_plugins(MinimalPlugins);
         let harvested_key = "tree@world/forest.xml#1";
@@ -3769,12 +3769,12 @@ mod tests {
 
     #[test]
     fn patch_rewards_escreve_o_xp_quando_nao_ha_recurso() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let inventory = Inventory::default();
         let xp = XpState {
             xp: HARVEST_XP as i64,
@@ -3784,7 +3784,7 @@ mod tests {
             ..Default::default()
         };
         patch_rewards("", &inventory, &xp);
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert_eq!(
             kv.get(KEY_XP).and_then(Json::as_f64),
             Some(HARVEST_XP),
@@ -3875,19 +3875,19 @@ mod tests {
 
     #[test]
     fn gate_escreve_e_apaga_a_chave_no_viber_game() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
 
         apply_gate(true);
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert_eq!(kv.get(RUST_GATE_KEY), Some(&Json::Bool(true)));
 
         apply_gate(false);
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert!(
             !kv.contains_key(RUST_GATE_KEY),
             "gate desligado sai do store"

@@ -129,7 +129,7 @@ pub use xp::{VaelXpPlugin, XpGain, XpRules};
 #[reflect(Resource)]
 pub struct VaelProjectRoot(pub PathBuf);
 
-/// Plugin do jogo. A engine já montou a App ([`viber::app::build_app`]);
+/// Plugin do jogo. A engine já montou a App ([`vael_engine::app::build_app`]);
 /// isto acrescenta apenas o que é do Vael.
 pub struct VaelPlugin;
 
@@ -205,7 +205,7 @@ impl Plugin for VaelPlugin {
             VaelWorldTextPlugin,
             // Falas no mundo (`bevy_speech_bubbles`): o `viber.say` deixa de
             // escrever no balão do HUD e passa a ser um balão sobre o NPC.
-            VaelSpeechPlugin::<viber::recipes::spawn::OrbitCamera>::default(),
+            VaelSpeechPlugin::<vael_engine::recipes::spawn::OrbitCamera>::default(),
             // Árvores procedurais (`bevy_flora`) na entrada da cidade: teste
             // A/B contra os GLB, atrás do gate `VAEL_FLORA`.
             VaelFloraPlugin,

@@ -1546,7 +1546,7 @@ fn qa_apply(world: &mut World) {
         return;
     };
     // A REPL dedicada do `bevy_ext_luau` (recurso da app, criado à pressa) —
-    // o host antigo (`viber::luau::host::LuaScriptHost`) morreu; o store do
+    // o host antigo (`vael_engine::luau::host::LuaScriptHost`) morreu; o store do
     // estado é do processo e a REPL existe desde o primeiro frame.
     let lua = bevy_ext_luau::repl::repl_or_init(world);
     if !pending.kv_done {
@@ -1555,7 +1555,7 @@ fn qa_apply(world: &mut World) {
         pending.kv_done = true;
     }
     let ready = world
-        .get_resource::<viber::world_ready::WorldReadiness>()
+        .get_resource::<vael_engine::world_ready::WorldReadiness>()
         .is_none_or(|readiness| readiness.ready);
     if !ready {
         world.resource_mut::<QaRuntime>().pending = Some(pending);
@@ -1592,8 +1592,8 @@ fn qa_apply(world: &mut World) {
         warnings = pending.plan.warnings.len(),
         "vael qa: cenário aplicado"
     );
-    if world.contains_resource::<Messages<viber::luau::components::ScriptToast>>() {
-        world.write_message(viber::luau::components::ScriptToast(format!(
+    if world.contains_resource::<Messages<vael_engine::luau::components::ScriptToast>>() {
+        world.write_message(vael_engine::luau::components::ScriptToast(format!(
             "QA: {}",
             pending.name
         )));
@@ -1641,8 +1641,8 @@ fn seed_qa_globals(plan: &Plan) {
 }
 
 fn apply_kv(lua: &mlua::Lua, plan: &Plan) {
-    let current = viber::luau::game::game_to_json(lua);
-    viber::luau::game::apply_patch(lua, &reset_patch(&current, &plan.kv));
+    let current = vael_engine::luau::game::game_to_json(lua);
+    vael_engine::luau::game::apply_patch(lua, &reset_patch(&current, &plan.kv));
     let globals = lua.globals();
     let _ = globals.set("vael_qa_god", plan.god);
     if plan.dev {
@@ -1749,7 +1749,7 @@ fn install(
                     .map(|loaded| loaded.scenario.expect.clone())
                     .unwrap_or_default(),
             };
-            let kv = viber::luau::game::game_to_json(lua);
+            let kv = vael_engine::luau::game::game_to_json(lua);
             let failures = check(&rules, &kv, &expect);
             let out = lua.create_table()?;
             out.set("ok", failures.is_empty())?;
@@ -1764,7 +1764,7 @@ fn install(
         "qa_snapshot",
         [rules = Arc::clone(&rules)],
         move |lua, ()| {
-            let kv = viber::luau::game::game_to_json(lua);
+            let kv = vael_engine::luau::game::game_to_json(lua);
             Ok(serde_json::to_string_pretty(&snapshot(&rules, &kv)).unwrap_or_default())
         }
     );

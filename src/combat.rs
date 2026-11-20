@@ -347,7 +347,7 @@ pub(crate) fn install_with_session(
         ],
         move |lua, now: Option<Value>| {
             let now = lua_number(now.unwrap_or(Value::Nil));
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = CombatKv::default();
             let mut session = lock_session(&session);
             session.load(&game, &mut kv)?;
@@ -368,7 +368,7 @@ pub(crate) fn install_with_session(
         move |lua, (amount, now): (Option<Value>, Option<Value>)| {
             let amount = lua_number(amount.unwrap_or(Value::Nil));
             let now = lua_number(now.unwrap_or(Value::Nil));
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_vitals(&game)?;
             {
                 let mut session = lock_session(&session);
@@ -391,7 +391,7 @@ pub(crate) fn install_with_session(
         "heal_player",
         move |lua, amount: Option<Value>| {
             let amount = lua_number(amount.unwrap_or(Value::Nil));
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_vitals(&game)?;
             let healed = heal(&mut kv, amount);
             write_vitals(&game, &kv)?;
@@ -411,7 +411,7 @@ pub(crate) fn install_with_session(
                 Value::Number(n) => n,
                 _ => 0.0,
             };
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_vitals(&game)?;
             grant_iframes(&mut kv, secs);
             write_iframes(&game, &kv)

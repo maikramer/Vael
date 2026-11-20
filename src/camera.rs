@@ -9,7 +9,7 @@ use bevy::prelude::*;
 use bevy_ext_core::{LOOK_PIVOT_HEIGHT, Player};
 // `ScriptCameraFree`/`CameraSnapshot` são os da engine: o `viber.camera_*` do
 // Lua escreve neles. As cópias do `bevy_ext_core` ainda não são as mesmas.
-use viber::camera::{CameraSnapshot, ScriptCameraFree};
+use vael_engine::camera::{CameraSnapshot, ScriptCameraFree};
 
 use bevy_ext_core::InteriorSceneConfig;
 use bevy_ext_engine::camera_glue::{
@@ -17,7 +17,7 @@ use bevy_ext_engine::camera_glue::{
     auto_camera_yaw, behind_yaw_deg, camera_offset, kick_spring_step, low_pass_factor, noise_pm1,
     shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
 };
-use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
+use vael_engine::recipes::spawn::{AutoOrbit, OrbitCamera};
 
 use crate::player::PlayerMovementSet;
 
@@ -33,7 +33,7 @@ fn no_editor_camera(
 /// Uma cinemática a tocar é dona da câmara: o `drive_camera` da engine
 /// escreve o mesmo `OrbitCamera` e, sem esta guarda, quem ganhava era o
 /// agendamento (os dois correm no `PostUpdate`, antes da propagação).
-fn no_cinematic(playback: Option<Res<viber::cinematic::CinematicPlayback>>) -> bool {
+fn no_cinematic(playback: Option<Res<vael_engine::cinematic::CinematicPlayback>>) -> bool {
     playback.is_none_or(|playback| playback.playing().is_none())
 }
 
@@ -48,7 +48,7 @@ impl Plugin for VaelCameraPlugin {
             .init_resource::<CameraSnapshot>()
             // A engine inicializa-o sempre; o `init` aqui é para apps mínimas
             // de teste que montem só esta parte.
-            .init_resource::<viber::cinematic::CinematicPlayback>()
+            .init_resource::<vael_engine::cinematic::CinematicPlayback>()
             .add_observer(mark_shadow_lod_origin);
         app.add_systems(
             Update,
@@ -93,7 +93,7 @@ fn orbit_camera_follow(
     names: Query<(Entity, &Name)>,
     globals: Query<&GlobalTransform>,
     players: Query<&GlobalTransform, With<Player>>,
-    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+    runtime: Option<Res<vael_engine::terrain::runtime::TerrainRuntime>>,
 ) {
     let has_player = players.iter().next().is_some();
     for (mut cam, settings) in &mut cameras {
@@ -192,10 +192,10 @@ fn third_person_camera(
         Without<OrbitCamera>,
     >,
     parents: Query<&GlobalTransform>,
-    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+    runtime: Option<Res<vael_engine::terrain::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
     a11y: Option<Res<bevy_ext_core::a11y::A11y>>,
-    modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
+    modals: Option<Res<vael_engine::ui::modal::UiModalsOpen>>,
     mut title_framing: Local<f32>,
     mut conversation: crate::speech::ConversationShot,
 ) {
@@ -599,8 +599,8 @@ mod tests {
 
     #[test]
     fn conversation_frames_the_focused_pair_and_releases_the_orbit() {
-        use viber::interact::InteractionFocus;
-        use viber::luau::{ScriptSay, ScriptToast};
+        use vael_engine::interact::InteractionFocus;
+        use vael_engine::luau::{ScriptSay, ScriptToast};
 
         let mut app = App::new();
         app.add_plugins((

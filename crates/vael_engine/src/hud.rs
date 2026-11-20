@@ -3,7 +3,7 @@
 //! Os widgets (compass/minimap/waypoint/elements/interact/menu/vitals/
 //! markers/widgets) vivem no `bevy_ext_engine::hud` com os TypePaths
 //! `viber::hud::…` congelados lá; a arte (`hud_assets`) já era do twin
-//! desde a exit2/hubs. O caminho `viber::hud::*` resolve por aqui.
+//! desde a exit2/hubs. O caminho `vael_engine::hud::*` resolve por aqui.
 
 pub use bevy_ext_engine::hud::assets;
 pub use bevy_ext_engine::hud::compass;

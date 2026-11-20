@@ -1,7 +1,7 @@
 //! O clima do `bevy_elements` a chegar ao chão do Vael.
 //!
 //! O terreno `.ahgt` não é o do crate. Aqui só se escrevem os resources que
-//! [`viber::terrain::ground`] já sabe desenhar: clima e foco do manto, o
+//! [`vael_engine::terrain::ground`] já sabe desenhar: clima e foco do manto, o
 //! campo de rastos (`TrailGround` + `Imprint`) e a sombra das nuvens. Os
 //! props exteriores passam a `WeatheredMaterial`.
 //!
@@ -16,10 +16,10 @@ use bevy_elements::{
 };
 use bevy_ext_world::bsn::{WorldNode, WorldOrigin};
 use bevy_flora::PooledTree;
-use viber::ai::AiLocomotion;
-use viber::animation::CharacterAnimator;
-use viber::player::Player;
-use viber::terrain::{
+use vael_engine::ai::AiLocomotion;
+use vael_engine::animation::CharacterAnimator;
+use vael_engine::player::Player;
+use vael_engine::terrain::{
     GroundCloudField, GroundTrailField, SnowClimate, SnowFocus, SnowSeed, SnowShelter,
     TerrainRuntime,
 };
@@ -53,8 +53,8 @@ fn snow_debug(
     imprints: Query<(&GlobalTransform, &Imprint)>,
     player: Query<&GlobalTransform, With<Player>>,
     terrain: Option<Res<TerrainRuntime>>,
-    pack: Option<Res<viber::terrain::SnowState>>,
-    rigs: Query<&viber::ik::FootIkRigs, With<Player>>,
+    pack: Option<Res<vael_engine::terrain::SnowState>>,
+    rigs: Query<&vael_engine::ik::FootIkRigs, With<Player>>,
     bones: Query<&GlobalTransform>,
 ) {
     if time.elapsed_secs() < *next {
@@ -278,7 +278,7 @@ fn sync_soles(
     weathering: Option<Res<SurfaceWeathering>>,
     players: Query<(Entity, &GlobalTransform), With<Player>>,
     npcs: Query<(Entity, &GlobalTransform), (With<AiLocomotion>, Without<Player>)>,
-    rigs: Query<&viber::ik::FootIkRigs>,
+    rigs: Query<&vael_engine::ik::FootIkRigs>,
     bones: Query<&GlobalTransform, Without<Sole>>,
     mut soles: Query<(Entity, &Sole, &mut Transform)>,
 ) {
@@ -446,7 +446,7 @@ pub fn is_ground_name(name: &str) -> bool {
 }
 
 fn push_pack_snow(
-    pack: Option<Res<viber::terrain::SnowState>>,
+    pack: Option<Res<vael_engine::terrain::SnowState>>,
     weathering: Option<ResMut<SurfaceWeathering>>,
 ) {
     let (Some(pack), Some(mut weathering)) = (pack, weathering) else {
@@ -456,7 +456,7 @@ fn push_pack_snow(
         return;
     }
     let depth = pack.reference_depth();
-    let cover = viber::terrain::ground::snow_coverage(depth);
+    let cover = vael_engine::terrain::ground::snow_coverage(depth);
     if (weathering.snow_depth_m - depth).abs() > 1e-4 {
         weathering.snow_depth_m = depth;
     }

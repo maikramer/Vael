@@ -29,7 +29,7 @@ use crate::terrain::water::{LakeSpec, RiverSpec};
 ///
 /// Movido ao `bevy_ext_engine::camera` (onda exit2/hubs; TypePath
 /// `viber::recipes::spawn` congelado lá) — reexportado aqui para
-/// `viber::recipes::spawn::OrbitCamera` continuar a resolver e para o
+/// `vael_engine::recipes::spawn::OrbitCamera` continuar a resolver e para o
 /// spawn, o `player_movement` e a câmara (`camera_glue`) partilharem
 /// UM tipo.
 pub use bevy_ext_engine::camera::OrbitCamera;
@@ -3003,7 +3003,7 @@ pub fn apply_script_spawns(world: &mut World) {
     let missing: usize = requests.iter().filter(|(_, s)| s.is_none()).count();
     if missing > 0 {
         warn!(
-            target: "viber::luau",
+            target: "vael::luau",
             "viber.spawn_prototype: {missing} pedido(s) com prototype inexistente (descartados)"
         );
     }
@@ -3101,7 +3101,7 @@ pub fn apply_script_spawns(world: &mut World) {
     for (entity, cb) in spawned {
         let Some(cb) = cb else { continue };
         if let Err(e) = cb.call::<()>(entity.to_bits() as i64) {
-            warn!(target: "viber::luau", "viber.spawn_prototype callback: {e}");
+            warn!(target: "vael::luau", "viber.spawn_prototype callback: {e}");
         }
     }
 }

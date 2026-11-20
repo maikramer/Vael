@@ -71,7 +71,7 @@ pub(crate) fn rescue_swimmer(
 ) {
     use crate::boat::{Boat, RidingBoat};
     use avian3d::prelude::{LinearVelocity, Position, RigidBodyDisabled};
-    use viber::luau::components::ScriptToast;
+    use vael_engine::luau::components::ScriptToast;
 
     let vessel = boat.and_then(|name| {
         world
@@ -92,7 +92,7 @@ pub(crate) fn rescue_swimmer(
         // Saves anteriores ao fôlego podem começar a meio de um lago sem margem registada.
         let from = shore.filter(|p| p.is_finite()).unwrap_or_else(|| {
             let ground = world
-                .get_resource::<viber::terrain::TerrainRuntime>()
+                .get_resource::<vael_engine::terrain::TerrainRuntime>()
                 .map_or(0.0, |rt| rt.sample(0.0, 0.0));
             Vec3::Y * (ground + 0.3)
         });
@@ -112,7 +112,7 @@ pub(crate) fn rescue_swimmer(
     };
     if world.contains_resource::<Messages<ScriptToast>>() {
         let message = world
-            .get_resource::<viber::locale::Locale>()
+            .get_resource::<vael_engine::locale::Locale>()
             .and_then(|locale| locale.table.get(message_key))
             .map_or_else(|| fallback.to_owned(), Clone::clone);
         world.write_message(ScriptToast(message));

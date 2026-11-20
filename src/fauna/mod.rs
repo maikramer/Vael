@@ -6,9 +6,9 @@ use visuals::FaunaVisual;
 
 use bevy::prelude::*;
 use std::f32::consts::TAU;
-use viber::player::Player;
-use viber::scene_loader::{CurrentScene, SceneEntity};
-use viber::terrain::TerrainRuntime;
+use vael_engine::player::Player;
+use vael_engine::scene_loader::{CurrentScene, SceneEntity};
+use vael_engine::terrain::TerrainRuntime;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Species {
@@ -187,7 +187,7 @@ fn animate(
     time: Res<Time>,
     terrain: Option<Res<TerrainRuntime>>,
     player: Query<&GlobalTransform, With<Player>>,
-    mut waves: Option<ResMut<viber::terrain::WaterWaveWorld>>,
+    mut waves: Option<ResMut<vael_engine::terrain::WaterWaveWorld>>,
     mut foxes: Local<Vec<Vec2>>,
     mut alarms: MessageWriter<calls::FoxAlarm>,
     mut animals: Query<(
@@ -262,7 +262,7 @@ fn animate(
                 && (landed || emerged)
                 && let Some(sim) = waves.as_deref_mut()
             {
-                sim.push_impulse(viber::terrain::WaveImpulseRequest {
+                sim.push_impulse(vael_engine::terrain::WaveImpulseRequest {
                     pos: next,
                     vel: heading * speed,
                     radius: if landed { 0.46 } else { 0.30 },

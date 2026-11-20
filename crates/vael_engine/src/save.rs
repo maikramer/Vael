@@ -16,7 +16,7 @@
 // O envelope, os slots e a ponte de save/load (`SaveGame`, `SaveRequest`,
 // `PendingSavePatches`, `apply_pending_save_patches`, ...) têm definição
 // CANÓNICA no `bevy_save_slots` (`bevy_ext_save`, onda exit2/luau) — o
-// caminho `viber::save::…` continua a resolver e o host Luau escreve O
+// caminho `vael_engine::save::…` continua a resolver e o host Luau escreve O
 // MESMO recurso.
 pub use bevy_save_slots::*;
 //

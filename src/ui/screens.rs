@@ -19,14 +19,14 @@ use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use bevy_pf::prelude::*;
 use serde_json::{Value, json};
-use viber::a11y::A11y;
-use viber::locale::Locale;
-use viber::luau::components::ScriptToast;
-use viber::music::AudioMixerSettings;
-use viber::save::SaveRequest;
-use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use viber::ui::scale::UiUserScale;
-use viber::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
+use vael_engine::a11y::A11y;
+use vael_engine::locale::Locale;
+use vael_engine::luau::components::ScriptToast;
+use vael_engine::music::AudioMixerSettings;
+use vael_engine::save::SaveRequest;
+use vael_engine::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use vael_engine::ui::scale::UiUserScale;
+use vael_engine::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
 
 use crate::content::{ItemDef, QuestDef, VaelContent, label};
 use crate::economy::{
@@ -279,14 +279,14 @@ impl ScreensVm {
 
 fn game_kv(_world: &World) -> BTreeMap<String, Value> {
     // Store do processo: o `viber.game()` de todos os contextos BMS.
-    viber::luau::game::game_to_json_process()
+    vael_engine::luau::game::game_to_json_process()
 }
 
 fn patch_game(_world: &mut World, patch: BTreeMap<String, Value>) {
     if patch.is_empty() {
         return;
     }
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
 }
 
 /// Registo de ações observáveis pelo juiz, no store do jogo (o mesmo onde
@@ -527,7 +527,7 @@ fn death_should_open(save: &VaelSave, modal_open: bool) -> bool {
 /// `death_pending` do store VIVO (`viber.game()`), mais fresco que o
 /// [`VaelSave`] (snapshot a 10 Hz). `None` quando a chave não existe.
 fn death_pending_live() -> Option<bool> {
-    viber::luau::game::game_get_bool("death_pending")
+    vael_engine::luau::game::game_get_bool("death_pending")
 }
 
 /// Abre o ecrã de morte quando a autoridade o pede. Com a autoridade de
@@ -2069,7 +2069,7 @@ pub fn build_rules(
 }
 
 pub fn hide_legacy_roots(
-    registry: Option<Res<viber::ui::UiRegistry>>,
+    registry: Option<Res<vael_engine::ui::UiRegistry>>,
     writer: Option<Res<UiWriter>>,
     mut done: Local<bool>,
 ) {
@@ -2298,7 +2298,7 @@ pub fn journal_tab_keys(
     keys: Option<Res<ButtonInput<KeyCode>>>,
     modals: Option<Res<UiModalsOpen>>,
     tabs: Option<Res<UiTabs>>,
-    focus: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    focus: Option<Res<vael_engine::ui::widgets::UiFocusedInput>>,
     writer: Option<Res<UiWriter>>,
 ) {
     let (Some(keys), Some(modals), Some(writer)) = (keys, modals, writer) else {
@@ -2633,7 +2633,7 @@ mod tests {
 
     #[test]
     fn journal_spends_a_live_reward_only_once_before_sync() {
-        use viber::luau::game::{restore_game_json, test_support::PROCESS_STORE_TEST_LOCK};
+        use vael_engine::luau::game::{restore_game_json, test_support::PROCESS_STORE_TEST_LOCK};
         let _guard = PROCESS_STORE_TEST_LOCK.lock().unwrap();
         let mut world = World::new();
         world.insert_resource(VaelContent::load(std::path::Path::new(env!(

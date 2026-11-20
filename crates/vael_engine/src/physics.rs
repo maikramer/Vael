@@ -13,7 +13,7 @@
 //!
 //! * `VoxelCollider` — `bevy_ext_core` (o `bevy_ext_nav` filtra obstáculos pelo
 //!   MESMO tipo que a física insere), re-exportado pelo `bevy_ext_physics`.
-//! * `TerrainCollisionStatus` — `bevy_ext_physics` (`viber::physics`).
+//! * `TerrainCollisionStatus` — `bevy_ext_physics` (`vael_engine::physics`).
 //! * `ColumnColliderBake`/`PHYSICS_CHUNK_RADIUS`/`column_xz_distance`/
 //!   `nearest_column_distance` — `bevy_ext_terrain_runtime::host` (o contrato
 //!   do host para a física do terreno).

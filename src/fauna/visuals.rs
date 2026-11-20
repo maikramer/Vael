@@ -55,7 +55,7 @@ fn attach_scenes(
 ) {
     for (entity, visual) in &waiting {
         let model = models.0.entry(visual.species).or_insert_with(|| Model {
-            gltf: viber::meshopt::load_gltf(
+            gltf: vael_engine::meshopt::load_gltf(
                 &server,
                 format!("assets/meshes/fauna/{}_lod0.glb", visual.species),
             ),
@@ -160,7 +160,7 @@ mod tests {
         app.register_asset_source(
             AssetSourceId::Default,
             AssetSourceBuilder::new(move || {
-                Box::new(viber::meshopt::MeshoptAssetReader::new(Box::new(
+                Box::new(vael_engine::meshopt::MeshoptAssetReader::new(Box::new(
                     FileAssetReader::new(&pool),
                 )))
             }),

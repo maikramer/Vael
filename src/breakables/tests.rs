@@ -33,8 +33,8 @@ fn authored_props_in_town_and_interiors_get_one_body_per_model() {
         ("world.bsn", [30, 30, 0]),
         ("scenes/interiors/house_a.bsn", [1, 1, 1]),
     ] {
-        let doc = viber::xml::include::load_world_in(&root.join(scene), root).unwrap();
-        let mut scene_data = viber::recipes::parse_world(&doc.root_attrs, &doc.nodes).unwrap();
+        let doc = vael_engine::xml::include::load_world_in(&root.join(scene), root).unwrap();
+        let mut scene_data = vael_engine::recipes::parse_world(&doc.root_attrs, &doc.nodes).unwrap();
         let mut totals = [0; 3];
         for node in &mut scene_data.entities {
             prepare_node(node);

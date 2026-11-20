@@ -1,6 +1,6 @@
 //! Barcos do Vael — casco procedural, física de flutuação e condução a remo.
 //!
-//! O barco é uma entidade própria com [`viber::terrain::FloatingBody`] (a
+//! O barco é uma entidade própria com [`vael_engine::terrain::FloatingBody`] (a
 //! engine integra Arquimedes, corrente e encalhe) e [`Boat`] (este módulo
 //! aplica o impulso dos remos). O herói continua a ser a entidade do
 //! `Player`: ao entrar, o `RigidBodyDisabled` desliga o corpo do herói
@@ -33,9 +33,9 @@ use bevy_ext_water::buoyancy::avian::{AvianBuoyancyPlugin, AvianFloating};
 use serde::{Deserialize, Serialize};
 
 use crate::player::VaelController;
-use viber::recipes::spawn::OrbitCamera;
-use viber::terrain::runtime::TerrainRuntime;
-use viber::terrain::{
+use vael_engine::recipes::spawn::OrbitCamera;
+use vael_engine::terrain::runtime::TerrainRuntime;
+use vael_engine::terrain::{
     FloatState, FloatingBody, WaterKinematics, WaterWaveWorld, WaveImpulseRequest,
 };
 
@@ -507,7 +507,7 @@ impl Plugin for VaelBoatPlugin {
                     .after(avian3d::prelude::PhysicsSystems::StepSimulation)
                     .before(avian3d::prelude::PhysicsSystems::Writeback),
             )
-            .add_systems(viber::scene_loader::SceneLoad, despawn_boats_on_scene_load)
+            .add_systems(vael_engine::scene_loader::SceneLoad, despawn_boats_on_scene_load)
             .add_systems(
                 Update,
                 (
@@ -523,12 +523,12 @@ impl Plugin for VaelBoatPlugin {
                 )
                     .chain()
                     .after(crate::player::PlayerMovementSet)
-                    .before(viber::animation::drive_player_animation)
+                    .before(vael_engine::animation::drive_player_animation)
                     .run_if(crate::player::no_editor_camera),
             )
             .add_systems(
                 Update,
-                rowing::sync_rowing_clip.after(viber::animation::drive_player_animation),
+                rowing::sync_rowing_clip.after(vael_engine::animation::drive_player_animation),
             )
             .add_systems(
                 PostUpdate,
@@ -592,7 +592,7 @@ fn spawn_boats(
     mut spawned: ResMut<BoatsSpawned>,
     assets: Option<Res<BoatAssets>>,
     terrain: Option<Res<TerrainRuntime>>,
-    scene: Option<Res<viber::scene_loader::CurrentScene>>,
+    scene: Option<Res<vael_engine::scene_loader::CurrentScene>>,
     root: Option<Res<crate::VaelProjectRoot>>,
     states: Option<Res<BoatStates>>,
 ) {
@@ -609,7 +609,7 @@ fn spawn_boats(
     if scene
         .as_ref()
         .and_then(|scene| scene.id.as_deref())
-        .is_some_and(|id| id != viber::project::MAIN_SCENE)
+        .is_some_and(|id| id != vael_engine::project::MAIN_SCENE)
     {
         spawned.0 = true;
         return;
@@ -665,17 +665,17 @@ fn spawn_boats(
             let sample = |p: Vec2| {
                 terrain
                     .water_domain_at(p.x, p.y)
-                    .map(|d| viber::terrain::FloatSample {
+                    .map(|d| vael_engine::terrain::FloatSample {
                         surface_y: Some(d.surface_y),
                         bed_y: terrain.in_field(p.x, p.y).then(|| terrain.sample(p.x, p.y)),
                         flow: d.flow,
                     })
-                    .unwrap_or(viber::terrain::FloatSample::dry(
+                    .unwrap_or(vael_engine::terrain::FloatSample::dry(
                         terrain.in_field(p.x, p.y).then(|| terrain.sample(p.x, p.y)),
                     ))
             };
             for _ in 0..4 {
-                viber::terrain::water_buoyancy::step_float(
+                vael_engine::terrain::water_buoyancy::step_float(
                     &body,
                     &mut state,
                     &mut position,
@@ -946,7 +946,7 @@ fn drive_boat_states(
 }
 
 fn interaction_just_pressed(
-    actions: Option<&viber::input_map::ActionState>,
+    actions: Option<&vael_engine::input_map::ActionState>,
     keys: &ButtonInput<KeyCode>,
 ) -> bool {
     actions.map_or_else(
@@ -977,8 +977,8 @@ fn recover_missing_boat(
 fn board_or_leave_boat(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
-    actions: Option<Res<viber::input_map::ActionState>>,
-    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    actions: Option<Res<vael_engine::input_map::ActionState>>,
+    typing: Option<Res<vael_engine::ui::widgets::UiFocusedInput>>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
     terrain: Option<Res<TerrainRuntime>>,
     spatial: avian3d::prelude::SpatialQuery,
@@ -1099,8 +1099,8 @@ fn board_or_leave_boat(
 fn drive_boats(
     time: Res<Time>,
     keys: Res<ButtonInput<KeyCode>>,
-    actions: Option<Res<viber::input_map::ActionState>>,
-    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    actions: Option<Res<vael_engine::input_map::ActionState>>,
+    typing: Option<Res<vael_engine::ui::widgets::UiFocusedInput>>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
     terrain: Option<Res<TerrainRuntime>>,
     mut waves: Option<ResMut<WaterWaveWorld>>,

@@ -30,12 +30,12 @@ use bevy_mod_outline::{
     InheritOutline, OutlineAlphaMask, OutlinePlugin, OutlineStencil, OutlineStencilEnabled,
     OutlineVolume, OutlineWarmUp, PropagateOutline, StopPropagateOutline, TextureChannel,
 };
-use viber::interact::{InteractionFocus, range_scale};
-use viber::luau::components::{LuaScriptRef, ScriptInteraction};
-use viber::menus::MenusOpen;
-use viber::player::Player;
-use viber::scene_loader::CurrentScene;
-use viber::vitals::Health;
+use vael_engine::interact::{InteractionFocus, range_scale};
+use vael_engine::luau::components::{LuaScriptRef, ScriptInteraction};
+use vael_engine::menus::MenusOpen;
+use vael_engine::player::Player;
+use vael_engine::scene_loader::CurrentScene;
+use vael_engine::vitals::Health;
 
 use crate::breakables::{Breakable, PickupKind, PropPickup};
 use crate::collect_fx::{HitFlashQueue, IgnoreOutline, ImpactWobble, apply_impact_wobble};
@@ -277,7 +277,7 @@ struct OutlineGateCtx<'w> {
     buck_focus: Option<Res<'w, BuckFocus>>,
     interaction_focus: Option<Res<'w, InteractionFocus>>,
     menus: Option<Res<'w, MenusOpen>>,
-    modals: Option<Res<'w, viber::ui::modal::UiModalsOpen>>,
+    modals: Option<Res<'w, vael_engine::ui::modal::UiModalsOpen>>,
     scene: Option<Res<'w, CurrentScene>>,
     vitals: Option<Res<'w, PlayerVitals>>,
 }

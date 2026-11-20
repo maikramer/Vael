@@ -12,8 +12,8 @@
 
 use bevy::prelude::*;
 use bevy_ext_core::animation::normalize_clip_name;
-use viber::ik::{FootIkRigs, SpringBoneChain};
-use viber::luau::components::LuaScriptRef;
+use vael_engine::ik::{FootIkRigs, SpringBoneChain};
+use vael_engine::luau::components::LuaScriptRef;
 
 /// Prefixo normalizado do osso raiz da pluma (cadeia de crina da pipeline de
 /// rigging — o mesmo nome em todos os quadrúpedes gerados).

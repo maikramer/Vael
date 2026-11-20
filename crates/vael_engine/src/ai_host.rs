@@ -9,8 +9,8 @@
 //! movem-se sem snap ao terreno (o comportamento headless dos testes do
 //! crate).
 //!
-//! O análogo no Vael: `app.add_plugins(viber::ai_host::AiHostPlugin);`
-//! junto do registo dos plugins `viber::ai::*`.
+//! O análogo no Vael: `app.add_plugins(vael_engine::ai_host::AiHostPlugin);`
+//! junto do registo dos plugins `vael_engine::ai::*`.
 
 use bevy::prelude::*;
 

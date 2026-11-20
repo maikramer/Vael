@@ -102,22 +102,22 @@ jackdaw_scene_types = "0.20"
 jackdaw_bsn = "0.20"
 # Estados de animação autorados no editor (`src/animation.rs`).
 jackdaw_animation_runtime = "0.20"
-# Mesma versão/features do Viber (o Cargo unifica): a bridge do cofre mexe
+# Mesma versão/features da engine (o Cargo unifica): a bridge do cofre mexe
 # diretamente na tabela `viber_game` da VM partilhada.
 mlua = { version = "0.12", features = ["luau", "vendored", "send"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 # Esquemas e validação do conteúdo (sem Bevy), partilhados com o editor.
 vael-content = { path = "content" }
-# Runtime de gameplay: o código do Viber mudou-se para o monorepo
-# bevy_extensions como crate transitório. O alias `viber` preserva todos
-# os imports `viber::` do jogo. TODO(viber-exit): dividir em pacotes finais.
-viber = { package = "vael_engine", path = "crates/vael_engine", features = ["ai"] }
+# Runtime de gameplay do jogo (herdou o código do monólito apagado; os
+# TypePaths no wire continuam `bevy_ext_viber_engine::…` — ver
+# crates/vael_engine/Cargo.toml).
+vael_engine = { package = "vael_engine", path = "crates/vael_engine", features = ["ai"] }
 # Runtime de debug/ferramentas: regista `vael-tools/*` no `bevy_remote` do
-# jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
+# jogo. O `vael_engine` continua a ser o runtime de gameplay nesta fase.
 bevy_ext_bridge_runtime = { path = "../bevy_extensions/crates/bevy_ext_bridge_runtime" }
 # Save/load próprio do Vael: mundo refletido (recursos + componentes) em RON
-# por slot. Substitui o `SavePlugin` do Viber quando `external_save: true`.
+# por slot. Substitui o `SavePlugin` da engine antiga quando `external_save: true`.
 moonshine-save = "0.8" 
 # Character controller do herói (o controller/collider nascem no spawner da
 # engine; o movimento passa a ser nosso com `player_camera:false`).
@@ -136,9 +136,10 @@ bevy_ext_elements = { path = "../bevy_extensions/crates/bevy_ext_elements" }
 bevy_ext_flora = { path = "../bevy_extensions/crates/bevy_ext_flora" }
 bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
 bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
-# Sem `bevy_ext_ui`: a UI que a engine lê é a `viber::ui::*` (UiData,
-# UiWriter, UiModalsOpen…), e o mesmo para `viber::camera::{ScriptCameraFree,
-# CameraSnapshot}` e `viber::hud::markers::*`. A cópia do `bevy_ext_ui` era
+# Sem `bevy_ext_ui`: a UI que a engine lê é a `vael_engine::ui::*` (UiData,
+# UiWriter, UiModalsOpen…), e o mesmo para `vael_engine::camera::{ScriptCameraFree,
+# CameraSnapshot}` e `vael_engine::hud::markers::*` (os TypePaths `viber::ui::…`
+# no wire ficam congelados). A cópia do `bevy_ext_ui` era
 # de tipos DIFERENTES (2026-11-14: importá-los deixava o HUD/modais/marcadores
 # a escrever em recursos que ninguém lia); a wave C unificou a camada de dados
 # no crate, mas o Vael continua pelos shims `viber::ui`.
@@ -148,9 +149,9 @@ bevy_ext_save = { path = "../bevy_extensions/crates/bevy_ext_save" }
 # são os runtimes IA (path-deps CelerAI do próprio crate).
 bevy_ext_luau = { path = "../bevy_extensions/crates/bevy_ext_luau", features = ["ui", "nlu", "decision"] }
 # Glue do engine extraído: feedback, câmara de editor, camera-glue e HUD
-# assets. Type-idêntico aos gémeos `viber::*` via re-export.
+# assets. Type-idêntico aos gémeos `vael_engine::*` via re-export.
 bevy_ext_engine = { path = "../bevy_extensions/crates/bevy_ext_engine" }
-# Física extraída (plugin/colisores): type-idêntico a `viber::physics`.
+# Física extraída (plugin/colisores): TypePaths `viber::physics` congelados.
 bevy_ext_physics = { path = "../bevy_extensions/crates/bevy_ext_physics" }
 # Corpos físicos dos personagens (Euphoria-style): `src/puppet.rs`.
 bevy_ext_puppet = { path = "../bevy_extensions/crates/bevy_ext_puppet" }
@@ -198,8 +199,9 @@ incremental = false
 codegen-units = 1
 lto = "thin"
 
-# O `[patch]` do `bevy_ext_viber_engine` NÃO atravessa as path-deps: sem
-# esta tabela o jogo (que compila o `viber` por path) resolveria o
+# O `[patch]` do `bevy_ext_viber_engine` (lib name congelado) NÃO atravessa
+# as path-deps: sem
+# esta tabela o jogo (que compila o `vael_engine` por path) resolveria o
 # `rerecast` limpo do crates.io (0.5.1), enquanto a engine standalone e os
 # testes dela usam o fork do vendor com os dois fixes de robustez
 # (`../bevy_extensions/vendor/rerecast/VIBER_PATCH.md`).

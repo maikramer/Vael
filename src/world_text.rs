@@ -169,7 +169,7 @@ impl Plugin for VaelWorldTextPlugin {
                 (
                     // Os scripts escrevem `viber.damage_number` no
                     // `luau_update`; ler depois evita um frame de atraso.
-                    queue_damage_numbers.after(viber::luau::bms_bridge::apply_bms_commands),
+                    queue_damage_numbers.after(vael_engine::luau::bms_bridge::apply_bms_commands),
                     activate_world_text,
                     animate_world_text,
                 )
@@ -244,7 +244,7 @@ fn activate_world_text(
     mut cursor: Local<usize>,
     pool: Res<WorldTextPool>,
     mut incoming: MessageReader<WorldTextEvent>,
-    camera: viber::editor_camera::EyeCameraQuery,
+    camera: vael_engine::editor_camera::EyeCameraQuery,
     mut slots: Query<(
         &mut WorldTextSlot,
         &mut Text3d,
@@ -262,7 +262,7 @@ fn activate_world_text(
     // de perfil.
     let rotation = camera
         .iter()
-        .find(|(_, cam, target)| viber::editor_camera::is_window_camera(*cam, *target))
+        .find(|(_, cam, target)| vael_engine::editor_camera::is_window_camera(*cam, *target))
         .map(|(transform, _, _)| transform.rotation())
         .unwrap_or(Quat::IDENTITY);
     for event in incoming.read() {
@@ -305,7 +305,7 @@ fn activate_world_text(
 #[allow(clippy::type_complexity)]
 fn animate_world_text(
     time: Res<Time>,
-    camera: viber::editor_camera::EyeCameraQuery,
+    camera: vael_engine::editor_camera::EyeCameraQuery,
     mut slots: Query<(
         &mut WorldTextSlot,
         &mut Transform,
@@ -316,7 +316,7 @@ fn animate_world_text(
 ) {
     let rotation = camera
         .iter()
-        .find(|(_, cam, target)| viber::editor_camera::is_window_camera(*cam, *target))
+        .find(|(_, cam, target)| vael_engine::editor_camera::is_window_camera(*cam, *target))
         .map(|(transform, _, _)| transform.rotation())
         .unwrap_or(Quat::IDENTITY);
     let dt = time.delta_secs();

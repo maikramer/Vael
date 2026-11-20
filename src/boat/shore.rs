@@ -3,11 +3,11 @@ use super::{Boat, HULL_HALF, RidingBoat};
 use avian3d::prelude::{Collider, Sensor, ShapeCastConfig, SpatialQuery, SpatialQueryFilter};
 use bevy::prelude::*;
 use bevy_ext_core::Player;
-use viber::input_map::{Action, ActionMap};
-use viber::luau::components::ScriptInteraction;
-use viber::physics::VoxelCollider;
-use viber::player::{HERO_CAPSULE_CENTER, HERO_RADIUS};
-use viber::terrain::TerrainRuntime;
+use vael_engine::input_map::{Action, ActionMap};
+use vael_engine::luau::components::ScriptInteraction;
+use vael_engine::physics::VoxelCollider;
+use vael_engine::player::{HERO_CAPSULE_CENTER, HERO_RADIUS};
+use vael_engine::terrain::TerrainRuntime;
 
 #[derive(Component)]
 pub(super) struct Landing(pub Vec3);
@@ -34,7 +34,7 @@ pub(super) fn update_landing(
     map: Option<Res<ActionMap>>,
     time: Res<Time>,
     mut next_check: Local<f32>,
-    actions: Option<Res<viber::input_map::ActionState>>,
+    actions: Option<Res<vael_engine::input_map::ActionState>>,
     keys: Res<ButtonInput<KeyCode>>,
 ) {
     let rider = riders.iter().next();

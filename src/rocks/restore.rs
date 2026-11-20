@@ -3,7 +3,7 @@ use super::{Quarry, QuarryStone};
 use crate::harvest::{Harvestable, reaped_key};
 use crate::save::VaelSave;
 use bevy::prelude::*;
-use viber::{luau::ScriptProps, scene::SceneSource};
+use vael_engine::{luau::ScriptProps, scene::SceneSource};
 
 pub(super) struct Deposit {
     parent: Entity,
@@ -71,7 +71,7 @@ pub(crate) fn reload(world: &mut World) {
                 || std::iter::once(&h.name)
                     .chain(h.stable_key.iter())
                     .any(|k| {
-                        viber::luau::game::game_get_json(&format!("harvested.{k}"))
+                        vael_engine::luau::game::game_get_json(&format!("harvested.{k}"))
                             .is_some_and(|v| v == true)
                     })
             {

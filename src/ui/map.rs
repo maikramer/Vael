@@ -11,11 +11,11 @@ use bevy_ext_core::{Player, TeleportSettle};
 use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_pf::prelude::*;
 use serde_json::{Value, json};
-use viber::hud::markers::HudMarkers;
-use viber::luau::components::ScriptToast;
-use viber::terrain::runtime::TerrainRuntime;
-use viber::ui::UiModalsOpen;
-use viber::ui::widgets::UiFocusedInput;
+use vael_engine::hud::markers::HudMarkers;
+use vael_engine::luau::components::ScriptToast;
+use vael_engine::terrain::runtime::TerrainRuntime;
+use vael_engine::ui::UiModalsOpen;
+use vael_engine::ui::widgets::UiFocusedInput;
 
 use crate::content::{VaelContent, label};
 use crate::save::VaelSave;
@@ -100,7 +100,7 @@ fn sfx(world: &mut World, clip: SfxClip, position: Option<Vec3>) {
 
 fn patch_game(_world: &mut World, patch: std::collections::BTreeMap<String, Value>) {
     // Store do processo: o `viber.game()` de todos os contextos BMS.
-    viber::luau::game::apply_patch_json(&patch);
+    vael_engine::luau::game::apply_patch_json(&patch);
 }
 
 fn player_position(world: &mut World) -> Option<[f32; 3]> {
@@ -142,7 +142,7 @@ fn sign_nearest(world: &mut World) {
     // O `VaelSave` é um snapshot a 10 Hz: sem ler também o store vivo, dois
     // [F] no mesmo marco (antes do snapshot) assinavam e reportavam a visita
     // duas vezes.
-    let live = viber::luau::game::game_to_json_process();
+    let live = vael_engine::luau::game::game_to_json_process();
     let marked_live =
         |name: &str| matches!(live.get(&format!("mark.{name}")), Some(Value::Bool(true)));
     for mark in &rules.landmarks {
@@ -244,7 +244,7 @@ fn pin_mark(world: &mut World, name: &str) {
         return;
     };
     let scene = world
-        .get_resource::<viber::scene_loader::CurrentScene>()
+        .get_resource::<vael_engine::scene_loader::CurrentScene>()
         .and_then(|scene| scene.id.clone());
     let in_main = scene.as_deref().is_none_or(|id| id == "main");
     if in_main && mark_position(world, name).is_none() {

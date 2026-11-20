@@ -30,22 +30,22 @@ use bevy_ext_grass::{
     GrassSettingsSpec, GrassSettingsSpecValue, GrassSite, GrassStyleSpec, GrassStyleSpecSet,
     GrassTerrain, GrassTint, GrassTrampler, GrassTramplerDisc, GrassWind,
 };
-use viber::ai::AiLocomotion;
-use viber::animation::CharacterAnimator;
-use viber::graphics::{self, GraphicsPreset};
-use viber::player::Player;
-use viber::profiler::{Group, timed};
-use viber::scene_loader::SceneEpoch;
-use viber::spawner::{SpawnExclusion, SpawnExclusions};
-use viber::terrain::brush::BrushGrid;
-use viber::terrain::cliffs::CliffMask;
-use viber::terrain::delta::{DeltaGrid, EditedBase};
-use viber::terrain::pads::ResolvedPad;
-use viber::terrain::roads::RoadPath;
-use viber::terrain::runtime::TerrainRuntime;
-use viber::terrain::voxel::{HeightField, VoxelField};
-use viber::terrain::water::WaterBody;
-use viber::worldsys::{AtmosphereState, BiomeRegions, DayCycleState, WeatherState};
+use vael_engine::ai::AiLocomotion;
+use vael_engine::animation::CharacterAnimator;
+use vael_engine::graphics::{self, GraphicsPreset};
+use vael_engine::player::Player;
+use vael_engine::profiler::{Group, timed};
+use vael_engine::scene_loader::SceneEpoch;
+use vael_engine::spawner::{SpawnExclusion, SpawnExclusions};
+use vael_engine::terrain::brush::BrushGrid;
+use vael_engine::terrain::cliffs::CliffMask;
+use vael_engine::terrain::delta::{DeltaGrid, EditedBase};
+use vael_engine::terrain::pads::ResolvedPad;
+use vael_engine::terrain::roads::RoadPath;
+use vael_engine::terrain::runtime::TerrainRuntime;
+use vael_engine::terrain::voxel::{HeightField, VoxelField};
+use vael_engine::terrain::water::WaterBody;
+use vael_engine::worldsys::{AtmosphereState, BiomeRegions, DayCycleState, WeatherState};
 
 // ───────────────────────────────────────────────────────────── biomas
 
@@ -68,7 +68,7 @@ fn biome_id(id: &str) -> u16 {
 
 fn biome_in_polys(biomes: &[(u16, Vec<[f32; 2]>)], p: Vec2) -> u16 {
     for (id, polygon) in biomes {
-        if viber::ambient::point_in_polygon(p.x, p.y, polygon) {
+        if vael_engine::ambient::point_in_polygon(p.x, p.y, polygon) {
             return *id;
         }
     }
@@ -93,7 +93,7 @@ pub struct VaelTerrain {
     roads: Vec<RoadPath>,
     /// Treliça do pavimento: a relva cresce nas juntas do decal antigo, mas não
     /// por cima de uma praça ou de uma rua pavimentada.
-    paving: Arc<viber::terrain::paving::PavingGrid>,
+    paving: Arc<vael_engine::terrain::paving::PavingGrid>,
     pads: Vec<ResolvedPad>,
     cliffs: CliffMask,
     exclusions: Vec<SpawnExclusion>,
@@ -566,7 +566,7 @@ fn drive_tint(
 /// Cada campo de bioma branqueia pela média do manto nos pontos do polígono
 /// que caem na janela de neve. O `bevy_grass` só tem uma tinta por campo.
 fn drive_biome_snow(
-    pack: Option<Res<viber::terrain::SnowState>>,
+    pack: Option<Res<vael_engine::terrain::SnowState>>,
     regions: Option<Res<BiomeRegions>>,
     mut snow: ResMut<GrassBiomeSnow>,
     mut samples: Local<Vec<(u16, Vec<Vec2>)>>,
@@ -637,7 +637,7 @@ fn sample_polygon(polygon: &[[f32; 2]], cap: usize) -> Vec<Vec2> {
         let mut x = min.x;
         while x <= max.x && points.len() < cap {
             let point = Vec2::new(x, z);
-            if viber::ambient::point_in_polygon(point.x, point.y, polygon) {
+            if vael_engine::ambient::point_in_polygon(point.x, point.y, polygon) {
                 points.push(point);
             }
             x += step;
@@ -682,14 +682,14 @@ fn tag_tramplers(
 }
 
 /// Acrescenta o toggle "relva" ao painel Extras do profiler.
-fn register_profiler_extra(mut extras: Option<ResMut<viber::profiler::ProfilerExtras>>) {
+fn register_profiler_extra(mut extras: Option<ResMut<vael_engine::profiler::ProfilerExtras>>) {
     let Some(extras) = extras.as_mut() else {
         return;
     };
     if extras.items.iter().any(|item| item.id == "grass") {
         return;
     }
-    extras.items.push(viber::profiler::ProfilerExtra {
+    extras.items.push(vael_engine::profiler::ProfilerExtra {
         id: "grass",
         label: "relva",
         description: "campo de relva GPU (GrassSettings.enabled)",

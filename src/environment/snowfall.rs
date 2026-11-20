@@ -7,7 +7,7 @@ use bevy::prelude::*;
 use bevy::render::{render_resource::AsBindGroup, storage::ShaderBuffer};
 use bevy::shader::ShaderRef;
 use bevy_elements::{PrecipitationState, SunState};
-use viber::worldsys::InteriorLighting;
+use vael_engine::worldsys::InteriorLighting;
 
 pub(super) struct SnowfallPlugin;
 

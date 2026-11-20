@@ -58,14 +58,14 @@ use bevy_lights::{
     FIRE_EDGE_LUX, FireKind, Flame, FlameEmbers, FlamePlugin, FlameSite, FlameSmoke, FlickerPlugin,
     FocusRule, FuelBed, LightPool, LightPoolPlugin, LightsSystems, PoolCandidate, PoolLight, Rank,
 };
-use viber::ambient::{AuthoredShadowLight, TravellerLantern};
-use viber::particles::{AmbientFx, ParticleEmitter};
-use viber::player::Player;
-use viber::postfx::{NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target};
+use vael_engine::ambient::{AuthoredShadowLight, TravellerLantern};
+use vael_engine::particles::{AmbientFx, ParticleEmitter};
+use vael_engine::player::Player;
+use vael_engine::postfx::{NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target};
 // O `ParticleSpec` da ENGINE (o que o `AmbientFx` carrega), não o do
 // `bevy_ext_scene`: são tipos distintos com o mesmo nome.
-use viber::recipes::ParticleSpec;
-use viber::worldsys::AtmosphereState;
+use vael_engine::recipes::ParticleSpec;
+use vael_engine::worldsys::AtmosphereState;
 
 /// Distância máxima entre uma luz quente e um emissor de fogo para a adoptar.
 pub const ADOPT_RADIUS: f32 = 4.0;
@@ -584,7 +584,7 @@ fn fill_dark_fires(
 /// descarregamento só leva as entidades que o spawner marcou.
 fn despawn_filled_fires_on_scene_change(
     mut commands: Commands,
-    current: Option<Res<viber::scene_loader::CurrentScene>>,
+    current: Option<Res<vael_engine::scene_loader::CurrentScene>>,
     filled: Query<Entity, With<VaelFilledFire>>,
     mut last: Local<Option<String>>,
 ) {
@@ -629,7 +629,7 @@ fn lantern_shadow_by_night(
 ) {
     let night = atmosphere.map(|a| a.night).unwrap_or(0.0);
     let night_ok = config.max_shadowed > 0 && night >= config.shadow_night_min;
-    let lit_floor = viber::ambient::LANTERN_MAX_INTENSITY * 0.02;
+    let lit_floor = vael_engine::ambient::LANTERN_MAX_INTENSITY * 0.02;
     for (mut light, vis) in &mut lanterns {
         let lit = *vis != Visibility::Hidden && light.intensity >= lit_floor;
         let want = night_ok && lit;
@@ -1278,7 +1278,7 @@ mod tests {
             .spawn((
                 TravellerLantern,
                 PointLight {
-                    intensity: viber::ambient::LANTERN_MAX_INTENSITY,
+                    intensity: vael_engine::ambient::LANTERN_MAX_INTENSITY,
                     shadow_maps_enabled: false,
                     ..default()
                 },

@@ -1191,7 +1191,7 @@ pub fn overlay_body(
 }
 
 /// Nome curto de um sistema para o overlay: o último segmento do caminho
-/// (`viber::combat::melee` → `melee`), para três nomes caberem numa linha.
+/// (`vael_engine::combat::melee` → `melee`), para três nomes caberem numa linha.
 fn short_system_name(name: &str) -> &str {
     name.rsplit("::").next().unwrap_or(name)
 }
@@ -1286,7 +1286,7 @@ mod tests {
             123.4,
             Some(19.8),
             &[
-                ("viber::combat::melee".into(), 1.2),
+                ("vael::combat::melee".into(), 1.2),
                 ("ai::chase".into(), 0.4),
             ],
             2,

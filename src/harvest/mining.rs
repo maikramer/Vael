@@ -10,7 +10,7 @@ use avian3d::{
 };
 use bevy::transform::helper::TransformHelper;
 use std::sync::{Arc, Mutex};
-use viber::{animation::CharacterAnimator, attachment::AttachmentSlots};
+use vael_engine::{animation::CharacterAnimator, attachment::AttachmentSlots};
 
 const CONTACT_HOLD: f32 = 0.042;
 const SKIN: f32 = 0.004;

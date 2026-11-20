@@ -719,7 +719,7 @@ fn lock_stats(engine: &Arc<Mutex<StatEngine>>) -> MutexGuard<'_, StatEngine> {
 /// contagem do id pedido. O estado vem de `viber.game()` (proxy do store
 /// partilhado): `get`/`set` com metamétodos, não `raw_*`.
 fn read_state(lua: &Lua) -> mlua::Result<(Table, GearState)> {
-    let game = viber::luau::game::game_proxy(lua)?;
+    let game = vael_engine::luau::game::game_proxy(lua)?;
     let mut state = GearState::default();
     for slot in SLOTS {
         if let Value::String(text) = game.get::<Value>(gear_key(slot))? {
@@ -1416,7 +1416,7 @@ mod tests {
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
         install_xp(&lua, XpRules::default()).expect("xp");
         install(&lua, regras()).expect("gear");
-        let game = viber::luau::game::game_proxy(&lua).expect("viber.game");
+        let game = vael_engine::luau::game::game_proxy(&lua).expect("viber.game");
         game.set("item.machado", 1).expect("machado");
 
         let state: String = lua

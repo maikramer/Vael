@@ -3,7 +3,7 @@ use avian3d::prelude::{Sensor, SpatialQuery, SpatialQueryFilter};
 use bevy::prelude::*;
 use bevy_flora::{FloraIndex, FloraUnits, NodeKind, PooledTree, TreePool};
 use std::f32::consts::TAU;
-use viber::{player::Player, scene_loader::CurrentScene, terrain::TerrainRuntime};
+use vael_engine::{player::Player, scene_loader::CurrentScene, terrain::TerrainRuntime};
 
 #[derive(Clone, Copy)]
 pub(super) struct Perch {

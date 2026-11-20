@@ -48,8 +48,8 @@ impl Plugin for TimberPlugin {
                 track.after(bevy::transform::TransformSystems::Propagate),
             )
             .add_systems(
-                viber::scene_loader::SceneLoad,
-                restore.after(viber::recipes::spawn::startup),
+                vael_engine::scene_loader::SceneLoad,
+                restore.after(vael_engine::recipes::spawn::startup),
             );
     }
 }
@@ -245,7 +245,7 @@ fn release(
             continue;
         };
         let field = format!("flora-fell.{key}.detached");
-        if viber::luau::game::game_get_json(&field).is_some_and(|v| v == true) {
+        if vael_engine::luau::game::game_get_json(&field).is_some_and(|v| v == true) {
             commands.entity(tree).try_despawn();
             continue;
         }
@@ -321,7 +321,7 @@ fn release(
         }
         save.timber.insert(id, log);
         save.legacy.insert(field.clone(), Json::Bool(true));
-        viber::luau::game::apply_patch_json(&BTreeMap::from([(field, Json::Bool(true))]));
+        vael_engine::luau::game::apply_patch_json(&BTreeMap::from([(field, Json::Bool(true))]));
     }
 }
 

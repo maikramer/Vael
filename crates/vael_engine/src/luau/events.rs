@@ -3,7 +3,7 @@
 //! (a UI declarativa empurra `UiAction` para A MESMA fila que os scripts
 //! drenam); o `EVENT_QUEUE_CAP` é do `bevy_ext_engine`; a conversão para
 //! tabela e o fan-out por contexto correm no `bevy_ext_luau::events` (BMS).
-//! Os caminhos históricos `viber::luau::events::*` continuam a resolver.
+//! Os caminhos históricos `vael_engine::luau::events::*` continuam a resolver.
 
 pub use bevy_engine_core::scripting::{ScriptEventQueue, ScriptGameEvent};
 pub use bevy_ext_engine::luau::EVENT_QUEUE_CAP;

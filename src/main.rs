@@ -160,7 +160,7 @@ fn main() -> Result<()> {
 fn project_root(world: &Path) -> Result<PathBuf> {
     let requested = std::path::absolute(world)
         .map_err(|err| anyhow::anyhow!("mundo inválido: {} ({err})", world.display()))?;
-    viber::app::world_base_dir(&requested)
+    vael_engine::app::world_base_dir(&requested)
         .or_else(|| requested.parent().map(Path::to_path_buf))
         .ok_or_else(|| anyhow::anyhow!("não foi possível resolver a raiz do projeto"))
 }

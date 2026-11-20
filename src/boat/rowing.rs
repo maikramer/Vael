@@ -5,7 +5,7 @@ use super::{
 use bevy::prelude::*;
 use bevy_ext_core::Player;
 use bevy_ext_core::animation::{AnimState, AnimStateOverride, CharacterAnimator};
-use viber::ui::script::{ScriptBindValue, UiScriptBinds};
+use vael_engine::ui::script::{ScriptBindValue, UiScriptBinds};
 
 /// Choose the seat pose on the boarding frame, before the hero driver can
 /// mistake boarding from the water for a landing.

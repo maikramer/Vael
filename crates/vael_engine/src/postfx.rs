@@ -2,7 +2,7 @@
 //!
 //! A LENTE vive no `bevy_ext_postfx::runtime` (exit5/G-2; o módulo inteiro
 //! saiu — `PostFxPlugin`, drives, split-tone, key da lua, torch pool, aerial,
-//! testes). O caminho `viber::postfx::*` reexporta-o; os TypePaths
+//! testes). O caminho `vael_engine::postfx::*` reexporta-o; os TypePaths
 //! `viber::postfx::` ficam congelados no crate.
 //!
 //! Glue que FICOU no monólito (o twin não vê os módulos de jogo):

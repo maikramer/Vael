@@ -158,11 +158,11 @@ fn apply_elements(
 fn apply_postfx_settings(In(change): In<Option<Option<PostFxSettings>>>) {
     let Some(value) = change else { return };
     match value {
-        Some(settings) => viber::postfx::set_scene_profile(
+        Some(settings) => vael_engine::postfx::set_scene_profile(
             &settings.disabled_keys(),
             settings.ssao.then_some(settings.ssao_quality.name()),
         ),
-        None => viber::postfx::clear_scene_profile(),
+        None => vael_engine::postfx::clear_scene_profile(),
     }
 }
 

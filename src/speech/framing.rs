@@ -7,8 +7,8 @@ use bevy::transform::helper::TransformHelper;
 use bevy_ext_core::a11y::{A11y, subtitle_px};
 use bevy_ext_engine::camera_glue::low_pass_factor;
 use bevy_speech_bubbles::BalloonScale;
-use viber::hud::waypoint::WaypointArrowRoot;
-use viber::interact::InteractionFocus;
+use vael_engine::hud::waypoint::WaypointArrowRoot;
+use vael_engine::interact::InteractionFocus;
 
 #[derive(SystemParam)]
 pub(super) struct SpeakerGeometry<'w, 's> {

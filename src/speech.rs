@@ -30,9 +30,9 @@ use bevy_speech_bubbles::{
     BalloonScale, Bubble, BubbleAssets, BubbleKind, BubblePx, BubbleStyle, DefaultBalloonSkin,
     Emotion, SpeechBubblesPlugin, build_bubble, dwell_secs, track_bubbles,
 };
-use viber::interact::InteractionFocus;
-use viber::luau::{ScriptSay, ScriptToast};
-use viber::recipes::spawn::OrbitCamera;
+use vael_engine::interact::InteractionFocus;
+use vael_engine::luau::{ScriptSay, ScriptToast};
+use vael_engine::recipes::spawn::OrbitCamera;
 
 /// Serifada de leitura usada nos painéis do jogo, com maiúsculas e minúsculas.
 const FONT: &[u8] = include_bytes!("../ui/fonts/NotoSerifDisplay-Bold.ttf");
@@ -115,7 +115,7 @@ impl<C: Component> Plugin for VaelSpeechPlugin<C> {
                 Update,
                 (
                     present_spoken_lines
-                        .after(viber::luau::bms_bridge::apply_bms_commands)
+                        .after(vael_engine::luau::bms_bridge::apply_bms_commands)
                         .before(track_bubbles::<C>),
                     // Antes do `track_bubbles`: um balão velho nunca é
                     // despawnado pela crate com os assets ainda vivos.
@@ -439,7 +439,7 @@ mod tests {
     #[test]
     fn nested_mesh_sets_the_tip_and_only_the_crossing_waypoint_yields() {
         use bevy::camera::{ComputedCameraValues, RenderTargetInfo, primitives::Aabb};
-        use viber::hud::waypoint::WaypointArrowRoot;
+        use vael_engine::hud::waypoint::WaypointArrowRoot;
 
         let mut app = headless_app();
         let eye = Transform::from_xyz(0., 1.6, 4.);

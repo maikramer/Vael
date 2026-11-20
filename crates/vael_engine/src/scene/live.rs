@@ -17,7 +17,7 @@ pub struct SceneEdited {
 }
 
 /// Regista a mensagem e o histórico. O documento é inserido por quem conhece o mundo
-/// (`viber::app::build_app`).
+/// (`vael_engine::app::build_app`).
 pub struct ScenePlugin;
 
 impl Plugin for ScenePlugin {

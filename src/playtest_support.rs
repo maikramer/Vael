@@ -36,7 +36,7 @@ impl Plugin for VaelPlaytestPlugin {
     }
 }
 
-fn world_is_ready(readiness: Option<Res<viber::world_ready::WorldReadiness>>) -> bool {
+fn world_is_ready(readiness: Option<Res<vael_engine::world_ready::WorldReadiness>>) -> bool {
     readiness.is_none_or(|readiness| readiness.ready)
 }
 

@@ -17,7 +17,7 @@
 
 use bevy::prelude::*;
 use bevy_ext_core::{MenusOpen, Player};
-use viber::cinematic::{CinematicPlayback, PlayCinematic};
+use vael_engine::cinematic::{CinematicPlayback, PlayCinematic};
 
 use crate::save::VaelSave;
 
@@ -68,7 +68,7 @@ fn drive_cinematic_triggers(
     players: Query<&GlobalTransform, With<Player>>,
     playback: Option<Res<CinematicPlayback>>,
     menus: Option<Res<MenusOpen>>,
-    cinematics: Option<Res<viber::cinematic::CinematicLibrary>>,
+    cinematics: Option<Res<vael_engine::cinematic::CinematicLibrary>>,
     mut save: Option<ResMut<VaelSave>>,
     mut play: MessageWriter<PlayCinematic>,
 ) {
@@ -309,7 +309,7 @@ mod tests {
     fn id_sem_cinematica_nao_dispara_nem_queima_o_once() {
         let mut app = app();
         // Biblioteca sem o id: o `<Cinematic>` não existe no mundo.
-        app.insert_resource(viber::cinematic::CinematicLibrary(Default::default()));
+        app.insert_resource(vael_engine::cinematic::CinematicLibrary(Default::default()));
         player(&mut app, Vec3::ZERO);
         trigger(&mut app, "campo", Vec3::ZERO, 22.0, true);
         app.update();

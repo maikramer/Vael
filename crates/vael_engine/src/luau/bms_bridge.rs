@@ -66,7 +66,7 @@ fn warn_state(world: &mut World) -> Mut<'_, ScriptWarnState> {
 fn warn_once(world: &mut World, key: &str, message: &str) {
     let fresh = warn_state(world).once.insert(key.to_string());
     if fresh {
-        warn!(target: "viber::luau", "{message}");
+        warn!(target: "vael::luau", "{message}");
     }
 }
 
@@ -358,7 +358,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 return_pose: None,
             };
             if let Err(error) = crate::scene_loader::request_change(world, request) {
-                warn!(target: "viber::luau", "viber.change_scene: {error:#}");
+                warn!(target: "vael::luau", "viber.change_scene: {error:#}");
             }
         }
         ScriptCommand::TeleportPlayer { pos, exclude } => {
@@ -436,7 +436,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 .get_resource::<crate::locale::Locale>()
                 .map(|locale| crate::dialogue::localized_lines(&msg, Some(&locale.table)))
                 .unwrap_or(msg);
-            info!(target: "viber::luau", "[toast] {msg}");
+            info!(target: "vael::luau", "[toast] {msg}");
             world.write_message(ScriptToast(msg));
         }
         ScriptCommand::SetInteraction { entity, label, key, range } => {
@@ -508,7 +508,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                         .once
                         .insert(format!("gesture:{}", entity.to_bits()))
                 {
-                    warn!(target: "viber::luau",
+                    warn!(target: "vael::luau",
                         "viber.gesture('{name}'): nenhum clip do rig corresponde (clips: {clip_names:?})");
                 }
                 return;
@@ -593,7 +593,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
             {
                 // Sem `ReflectPlugin`/`Transform` no registo (app
                 // mínima): mantém a escrita directa de sempre.
-                warn!(target: "viber::luau", "viber.set_scale: {error}");
+                warn!(target: "vael::luau", "viber.set_scale: {error}");
                 if let Some(mut transform) = world.get_mut::<Transform>(entity) {
                     transform.scale = Vec3::splat(scale);
                 }
@@ -666,7 +666,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                     let bits = entity.to_bits();
                     let fresh = warn_state(world).once.insert(format!("vitals:{bits}"));
                     if fresh {
-                        warn!(target: "viber::luau",
+                        warn!(target: "vael::luau",
                             "viber.entity_damage: entidade sem Health — chama viber.entity_set_max_hp primeiro");
                     }
                 }
@@ -943,7 +943,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 // entidade voltar a respeitar o pai escondido.
                 Ok(false) => insert_visibility(world, entity, visible),
                 Err(error) => {
-                    warn!(target: "viber::luau", "viber.set_visible: {error}");
+                    warn!(target: "vael::luau", "viber.set_visible: {error}");
                     insert_visibility(world, entity, visible);
                 }
                 Ok(true) => {}
@@ -1059,7 +1059,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
             {
                 // Sem reflexão (app mínima): escrita directa de
                 // sempre, preservando a escala.
-                warn!(target: "viber::luau", "viber.set_pose: {error}");
+                warn!(target: "vael::luau", "viber.set_pose: {error}");
                 if let Some(mut transform) = world.get_mut::<Transform>(entity) {
                     let scale = transform.scale;
                     transform.translation = pos;

@@ -22,7 +22,7 @@
 use bevy::platform::collections::HashMap;
 use bevy::prelude::*;
 use jackdaw_animation_runtime::{AnimationSet, AnimationSources, AnimationState};
-use viber::animation::{AnimatedScene, CharacterAnimator};
+use vael_engine::animation::{AnimatedScene, CharacterAnimator};
 
 /// Estados de locomoção conduzidos pela velocidade, por ordem de rapidez.
 pub const LOCOMOTION: [&str; 3] = ["idle", "walk", "run"];
@@ -48,7 +48,7 @@ impl Plugin for VaelAnimationPlugin {
         app.add_systems(
             PostUpdate,
             relax_inward_palms
-                .after(viber::ik::bone_offsets_system)
+                .after(vael_engine::ik::bone_offsets_system)
                 .before(bevy_ext_puppet::PuppetSystems::Capture)
                 .before(bevy::transform::TransformSystems::Propagate),
         );
@@ -86,7 +86,7 @@ pub(crate) fn relax_inward_palms(mut hands: Query<(&Name, &mut Transform)>) {
 /// na entidade do personagem, que pode ser um antepassado do nó do modelo
 /// (o `GltfScene` dentro do NPC): sobe-se pelos pais até encontrar um deles.
 ///
-/// Ao ceder, a entidade ganha [`viber::ik::FootIk`]: o IK de pés (agora a
+/// Ao ceder, a entidade ganha [`vael_engine::ik::FootIk`]: o IK de pés (agora a
 /// pilha `bevy_skeleton_modifiers`, sem precisar de `CharacterAnimator`) passa
 /// a cobrir os NPCs autorados no Jackdaw — os rigs cedidos ficavam sem IK
 /// nenhum porque a query velha exigia o animator da engine.
@@ -97,11 +97,11 @@ pub fn cede_rig_to_jackdaw(
         &mut AnimationSet,
         Option<&AnimatedScene>,
         Option<&AnimationSources>,
-        Option<&viber::scene::SceneSource>,
-        Option<&viber::ik::FootIk>,
+        Option<&vael_engine::scene::SceneSource>,
+        Option<&vael_engine::ik::FootIk>,
     )>,
     parents: Query<&ChildOf>,
-    engine: Query<Has<viber::ik::FootIk>, Or<(With<AnimatedScene>, With<CharacterAnimator>)>>,
+    engine: Query<Has<vael_engine::ik::FootIk>, Or<(With<AnimatedScene>, With<CharacterAnimator>)>>,
     scenes: Query<&AnimatedScene>,
 ) {
     for (entity, mut set, scene, sources, origin, foot_ik) in &mut sets {
@@ -146,7 +146,7 @@ pub fn cede_rig_to_jackdaw(
                 if !has_foot_ik && foot_ik.is_none() {
                     // O IK novo (bevy_skeleton_modifiers) só precisa do marker
                     // e dos ossos — o bind da engine `ik` trata do resto.
-                    commands.entity(current).insert(viber::ik::FootIk);
+                    commands.entity(current).insert(vael_engine::ik::FootIk);
                 }
                 break;
             }
@@ -165,7 +165,7 @@ pub fn state_named<'a>(set: &'a AnimationSet, name: &str) -> Option<&'a str> {
 
 /// `viber.gesture` sem rig da engine → `AnimationState` do set do NPC.
 fn play_unbound_gesture(
-    gesture: On<viber::luau::runtime::UnboundGesture>,
+    gesture: On<vael_engine::luau::runtime::UnboundGesture>,
     children: Query<&Children>,
     mut sets: Query<(&AnimationSet, Option<&mut AnimationState>)>,
     mut commands: Commands,
@@ -349,7 +349,7 @@ mod tests {
             .id();
         app.update();
         app.world_mut()
-            .trigger(viber::luau::runtime::UnboundGesture {
+            .trigger(vael_engine::luau::runtime::UnboundGesture {
                 entity: npc,
                 name: "talk".into(),
                 speed: 1.0,

@@ -1,7 +1,7 @@
 //! Navigation: a real navmesh, real pathfinding and real local avoidance.
 //!
 //! SHIM (exit3/wave-c): a navegação vive no crate [`bevy_ext_nav`]; este
-//! módulo reexporta a árvore — os caminhos `viber::nav::*` (BRP, `viber.ecs`,
+//! módulo reexporta a árvore — os caminhos `vael_engine::nav::*` (BRP, `viber.ecs`,
 //! bridge) continuam a resolver e os tipos são OS MESMOS no jogo. O que aqui
 //! ficou é o ÚNICO ponto de ligação que o crate não pode ter: o contrato
 //! [`bevy_ext_nav::NavGround`] sobre o [`TerrainRuntime`] do runtime de

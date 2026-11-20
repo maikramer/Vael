@@ -1,6 +1,6 @@
 //! Espelho de prontidão para a bridge `vael-tools`.
 //!
-//! O véu de carregamento é do monólito (`viber::world_ready::WorldReadiness`);
+//! O véu de carregamento é do monólito (`vael_engine::world_ready::WorldReadiness`);
 //! o runtime da bridge (`bevy_ext_bridge_runtime`) é genérico e não conhece o
 //! monólito. Este sistema copia o estado para o [`BridgeReadiness`] do
 //! runtime, e o `vael-tools/ping` publica `ready` + `loading` na forma do
@@ -25,7 +25,7 @@ impl Plugin for BridgeReadyPlugin {
 }
 
 fn mirror(
-    readiness: Option<Res<viber::world_ready::WorldReadiness>>,
+    readiness: Option<Res<vael_engine::world_ready::WorldReadiness>>,
     mut bridge: ResMut<BridgeReadiness>,
 ) {
     let Some(r) = readiness else {

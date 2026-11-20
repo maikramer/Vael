@@ -28,9 +28,9 @@ use bevy::camera::RenderTarget;
 use bevy::prelude::*;
 use bevy_elements::{CivilDate, WorldClock};
 use bevy_flora::prelude::*;
-use viber::luau::ScriptProps;
-use viber::terrain::runtime::TerrainRuntime;
-use viber::worldsys::WeatherState;
+use vael_engine::luau::ScriptProps;
+use vael_engine::terrain::runtime::TerrainRuntime;
+use vael_engine::worldsys::WeatherState;
 
 use crate::components::VaelPlayer;
 use crate::settings::{SceneSetting, SceneSettingList};
@@ -657,7 +657,7 @@ fn install_ground(
 #[allow(clippy::too_many_arguments)]
 fn plant_grove(
     mut commands: Commands,
-    current: Option<Res<viber::scene_loader::CurrentScene>>,
+    current: Option<Res<vael_engine::scene_loader::CurrentScene>>,
     terrain: Option<Res<TerrainRuntime>>,
     ground: Option<Res<FloraGround>>,
     mut state: ResMut<FloraPools>,
@@ -804,7 +804,7 @@ fn canopy_calendar(date: CivilDate, hour: f64) -> FloraSeason {
 
 fn drive_flora_season(
     clock: Option<Res<WorldClock>>,
-    pack: Option<Res<viber::terrain::SnowState>>,
+    pack: Option<Res<vael_engine::terrain::SnowState>>,
     player: Query<&GlobalTransform, With<VaelPlayer>>,
     mut season: ResMut<FloraSeason>,
     mut calendar: Local<Option<(CivilDate, u8, FloraSeason)>>,

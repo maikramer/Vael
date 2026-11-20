@@ -11,7 +11,7 @@
 //! viber scene set name=well translation="4 0 3" --unset scale
 //! viber scene insert 'world/village.xml#' '<Entity name="cart" />'
 //! viber scene mv name=cart name=props --index 0
-//! viber scene apply ops.json                  # lote atómico (ver viber::scene::ops)
+//! viber scene apply ops.json                  # lote atómico (ver vael_engine::scene::ops)
 //! viber scene --live set name=well translation="4 0 3"   # na engine a correr (bridge)
 //! viber scene --live undo
 //! viber scene --live save                     # grava os ficheiros alterados na engine

@@ -10,8 +10,8 @@
 use std::time::Duration;
 
 use bevy::prelude::*;
-use viber::ui::script::{ScriptBindValue, UiScriptBinds};
-use viber::ui::{UiClicks, UiRegistry, UiSet, UiWriter};
+use vael_engine::ui::script::{ScriptBindValue, UiScriptBinds};
+use vael_engine::ui::{UiClicks, UiRegistry, UiSet, UiWriter};
 
 use crate::content::VaelContent;
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};
@@ -45,7 +45,7 @@ impl Plugin for VaelHudUiPlugin {
                 // `luau_update` (o `UiSet::Script` já corre depois dele).
                 combo_shake
                     .after(UiSet::Bind)
-                    .after(viber::luau::bms_bridge::apply_bms_commands)
+                    .after(vael_engine::luau::bms_bridge::apply_bms_commands)
                     .before(UiSet::Script),
             ),
         );

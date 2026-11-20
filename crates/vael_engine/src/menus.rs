@@ -202,7 +202,7 @@ fn toast_display_system(
     // empilhava muito mais do que TOAST_CAP linhas.
     let mut pending: Vec<String> = Vec::new();
     for toast in toasts.read() {
-        info!(target: "viber::toast", "{}", toast.0);
+        info!(target: "vael::toast", "{}", toast.0);
         spawned.write(ToastSpawned {
             text: toast.0.clone(),
         });

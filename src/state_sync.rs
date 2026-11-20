@@ -63,7 +63,7 @@ pub(crate) fn sync_state_from_lua(
     }
     // O store do processo É o `viber.game()` dos contextos BMS (o proxy lê
     // daqui) — ler por cima, sem handle mlua.
-    let kv = viber::luau::game::game_to_json_process();
+    let kv = vael_engine::luau::game::game_to_json_process();
     if kv.is_empty() {
         // O store ainda não tem chaves (arranque): não zerar estado.
         return;
@@ -115,7 +115,7 @@ fn ensure_rust_gate(rust: bool, kv: &BTreeMap<String, Value>) {
         patch.insert(RUST_GATE_KEY.to_string(), Value::Null);
     }
     if !patch.is_empty() {
-        viber::luau::game::apply_patch_json(&patch);
+        vael_engine::luau::game::apply_patch_json(&patch);
     }
 }
 
@@ -388,18 +388,18 @@ mod tests {
 
     #[test]
     fn gate_corrige_um_save_escrito_com_a_autoridade_ligada() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+        let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
             .expect("lock de teste do store");
         // Isolar o store do processo: testes em paralelo partilham-no
         // (o lock serializa; o restore limpa o que ficou de outros).
-        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut kv = BTreeMap::new();
         kv.insert(RUST_GATE_KEY.into(), json!(true));
 
         // Jogo normal: o gate que veio do save tem de sair.
         ensure_rust_gate(false, &kv);
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert!(
             !kv.contains_key(RUST_GATE_KEY),
             "VAEL_RULES_RUST=0 tem de devolver o tick ao Lua"
@@ -407,7 +407,7 @@ mod tests {
 
         // Autoridade ligada: volta a escrevê-lo (uma vez, depois é no-op).
         ensure_rust_gate(true, &kv);
-        let kv = viber::luau::game::game_to_json_process();
+        let kv = vael_engine::luau::game::game_to_json_process();
         assert_eq!(kv.get(RUST_GATE_KEY), Some(&json!(true)));
         ensure_rust_gate(true, &kv);
     }

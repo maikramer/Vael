@@ -670,7 +670,7 @@ pub(crate) fn install_shared(
         "shop_rows",
         [shop = Arc::clone(&shop)],
         move |lua, ()| {
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kinds: Vec<&str> = Vec::with_capacity(shop.catalog.len() + 1);
             kinds.push("gold");
             kinds.extend(shop.catalog.keys().map(String::as_str));
@@ -705,7 +705,7 @@ pub(crate) fn install_shared(
                     &trade_fail(TradeReason::UnknownAction, None, None, None),
                 );
             };
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = read_items(&game, &[id.as_str(), "gold"])?;
             let before = kv.clone();
             let out = shop_trade(&shop, &mut kv, action, &id);
@@ -747,7 +747,7 @@ pub(crate) fn install_shared(
             let Some(recipe) = craft.get(&id) else {
                 return Ok(Value::Nil);
             };
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let kv = read_items(&game, &craft_keys(recipe))?;
             Ok(match craft_status(&craft, &kv, &id) {
                 Some(status) => Value::String(lua.create_string(status.as_str())?),
@@ -763,7 +763,7 @@ pub(crate) fn install_shared(
         [craft = Arc::clone(&craft)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game = viber::luau::game::game_proxy(lua)?;
+            let game = vael_engine::luau::game::game_proxy(lua)?;
             let mut kv = match craft.get(&id) {
                 Some(recipe) => read_items(&game, &craft_keys(recipe))?,
                 None => BTreeMap::new(),

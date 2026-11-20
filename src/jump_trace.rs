@@ -22,7 +22,7 @@ impl Plugin for JumpTracePlugin {
 fn fixed_trace(
     q: Query<
         (&Position, &LinearVelocity, &TnuaController<VaelHeroScheme>),
-        With<viber::player::Player>,
+        With<vael_engine::player::Player>,
     >,
     sensors: Query<&bevy_tnua_avian3d::prelude::TnuaAvian3dSensorShape>,
     prox: Query<&bevy_tnua::TnuaProximitySensor>,
@@ -55,8 +55,8 @@ fn fixed_trace(
 fn frame_trace(
     q: Query<(
         &Transform,
-        &viber::player::Player,
-        Option<&viber::animation::CharacterAnimator>,
+        &vael_engine::player::Player,
+        Option<&vael_engine::animation::CharacterAnimator>,
     )>,
     time: Res<Time>,
 ) {
@@ -66,7 +66,7 @@ fn frame_trace(
             && p.vel_y.abs() < 0.05
             && !matches!(
                 state,
-                Some(viber::animation::AnimState::Fall | viber::animation::AnimState::Jump)
+                Some(vael_engine::animation::AnimState::Fall | vael_engine::animation::AnimState::Jump)
             )
         {
             continue;

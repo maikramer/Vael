@@ -11,8 +11,8 @@ use std::collections::BTreeMap;
 
 use bevy::prelude::*;
 use serde_json::Value;
-use viber::ui::UiSet;
-use viber::ui::script::{ScriptBindValue, UiScriptBinds};
+use vael_engine::ui::UiSet;
+use vael_engine::ui::script::{ScriptBindValue, UiScriptBinds};
 
 use crate::compat::json_number_like;
 use crate::content::{Objective, QuestDef, VaelContent, label};

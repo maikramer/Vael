@@ -2,7 +2,7 @@
 //! onda final do DELETE-MONOLITH). Os tipos vivem agora no
 //! `bevy_ext_luau::components` (os TypePaths `viber::luau::components` estão
 //! CONGELADOS lá — são chaves de save/BRP/reflexão do editor); os caminhos
-//! históricos `viber::luau::components::*` continuam a resolver e os tipos
+//! históricos `vael_engine::luau::components::*` continuam a resolver e os tipos
 //! são OS MESMOS no jogo.
 
 pub use bevy_ext_luau::components::*;

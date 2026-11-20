@@ -21,10 +21,10 @@ use std::sync::{Arc, Mutex};
 use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy_ext_engine::camera_glue::CameraShake;
-use viber::particles::spawn_burst;
-use viber::player::Player;
-use viber::recipes::ParticleSpec;
-use viber::scene_loader::SceneEntity;
+use vael_engine::particles::spawn_burst;
+use vael_engine::player::Player;
+use vael_engine::recipes::ParticleSpec;
+use vael_engine::scene_loader::SceneEntity;
 
 use crate::vault::{vael_fn, vael_table};
 

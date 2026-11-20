@@ -2,7 +2,7 @@
 //!
 //! Os CONTRATOS ([`Action`], [`Binding`], [`ActionMap`], [`ActionState`],
 //! TypePaths `viber::input_map` congelados) vivem no `bevy_ext_core` —
-//! reexportados aqui para `viber::input_map::…` continuar a resolver para O
+//! reexportados aqui para `vael_engine::input_map::…` continuar a resolver para O
 //! MESMO tipo (o netplay do `bevy_ext_engine` escreve o mesmo recurso).
 //!
 //! O PLUGIN cá fica: [`gather_actions`] respeita o foco de texto da UI

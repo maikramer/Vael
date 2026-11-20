@@ -11,14 +11,14 @@
 //!   `ScriptHostState`, converte e aplica os comandos dos scripts
 //!   ([`commands::ScriptCommand`], o vocabulário do applier), entrega
 //!   sinais como callbacks BMS e aplica o dreno pós-frame. O jogo regista
-//!   `viber::luau::bms_bridge::BmsBridgePlugin`.
+//!   `vael_engine::luau::bms_bridge::BmsBridgePlugin`.
 //! - [`commands`]: o enum dos comandos script→engine que o applier da ponte
 //!   consome. É QUASE o gémeo do `bevy_ext_luau::commands` (o conversor
 //!   `convert_bms_command` faz a tradução 1:1 + as variantes sem geméa
 //!   aplicadas inline) — unificá-los é cosmético e fica para depois.
 //! - [`ctx`]: só os registos de superfície (estradas/água por arco) que a
 //!   ponte publica pelo seam `SurfaceQueries` e a REPL do bridge consulta.
-//! - SHIMS: os caminhos históricos `viber::luau::*` (save/BRP/reflexão do
+//! - SHIMS: os caminhos históricos `vael_engine::luau::*` (save/BRP/reflexão do
 //!   editor) continuam a resolver por `pub use` dos donos novos
 //!   (`bevy_ext_luau` / `bevy_engine_core` / `bevy_ext_engine`):
 //!   [`components`], [`events`], [`exports`], [`game`], [`input`], [`nlu`],

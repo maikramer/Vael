@@ -2,13 +2,13 @@
 //! `docs/DELETE-MONOLITH.md`).
 //!
 //! O runtime de terreno vive no [`bevy_ext_terrain_runtime`]; os paths
-//! `viber::terrain::…` resolvem pelo shim (`pub use … as terrain`). O que
+//! `vael_engine::terrain::…` resolvem pelo shim (`pub use … as terrain`). O que
 //! fica aqui é o que NÃO pode ir para o crate: o walk do IR declarativo
 //! ([`crate::recipes::EntitySpec`]) que lê `<DayCycle>`, `<Weather>`,
 //! `<Lake>` e a `<HudElement tag="sky">` para configurar a especialização
 //! dos shaders — o IR de parsing não é dependência do crate.
 //!
-//! O `app.rs` do Vael cita `viber::terrain_host::{…}` no arranque
+//! O `app.rs` do Vael cita `vael_engine::terrain_host::{…}` no arranque
 //! (`shaders/{water,terrain_chunk}.wesl` são reescritos por mundo).
 
 pub use bevy_ext_terrain_runtime::layer_material::TerrainChunkConfig;

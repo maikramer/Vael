@@ -30,8 +30,8 @@ use bevy_tnua::{TnuaAnimatingState, TnuaAnimatingStateDirective, TnuaObstacleRad
 use bevy_tnua_physics_integration_layer::math::{AdjustPrecision, AsF32, Float, Vector3};
 use bevy_tnua_physics_integration_layer::spatial_ext::{TnuaPointProjectionResult, TnuaSpatialExt};
 use mlua::{Lua, Table, Value};
-use viber::luau::components::ScriptProps;
-use viber::recipes::spawn::OrbitCamera;
+use vael_engine::luau::components::ScriptProps;
+use vael_engine::recipes::spawn::OrbitCamera;
 
 use crate::components::VaelPlayer;
 
@@ -89,15 +89,15 @@ fn attach_climbable(
 }
 
 /// Config do tnua do herói do Vael — o mesmo tuning da engine
-/// (`viber::player::hero_config`) enquanto as duas apps não divergirem.
+/// (`vael_engine::player::hero_config`) enquanto as duas apps não divergirem.
 /// O asset é criado por altura de salto pelo `HeroPhysicsPlugin`.
 pub fn vael_hero_config(jump_height: f32) -> VaelHeroSchemeConfig {
     VaelHeroSchemeConfig {
         basis: TnuaBuiltinWalkConfig {
             speed: 1.0,
             // Medido a partir do disco elevado (HERO_SENSOR_LIFT na engine).
-            float_height: viber::player::HERO_FLOAT_HEIGHT + viber::player::HERO_SENSOR_LIFT,
-            cling_distance: viber::player::HERO_CLING_DISTANCE,
+            float_height: vael_engine::player::HERO_FLOAT_HEIGHT + vael_engine::player::HERO_SENSOR_LIFT,
+            cling_distance: vael_engine::player::HERO_CLING_DISTANCE,
             spring_strength: 400.0,
             spring_dampening: 1.2,
             acceleration: 60.0,
@@ -107,14 +107,14 @@ pub fn vael_hero_config(jump_height: f32) -> VaelHeroSchemeConfig {
             // O mesmo valor do antigo `COYOTE_TIME` do jogo.
             coyote_time: 0.1,
             free_fall_extra_gravity: 0.0,
-            max_slope: viber::player::HERO_MAX_SLOPE_DEG.to_radians(),
+            max_slope: vael_engine::player::HERO_MAX_SLOPE_DEG.to_radians(),
             // Headroom (sensor de teto que o walk basis cria sozinho): o
             // crouch precisa de saber se pode levantar. A distância é o topo
             // da cápsula de pé (origem = pegada).
             headroom: Some(TnuaBuiltinWalkHeadroom {
-                distance_to_collider_top: viber::player::HERO_CAPSULE_CENTER
-                    + viber::player::HERO_HALF_HEIGHT
-                    + viber::player::HERO_RADIUS,
+                distance_to_collider_top: vael_engine::player::HERO_CAPSULE_CENTER
+                    + vael_engine::player::HERO_HALF_HEIGHT
+                    + vael_engine::player::HERO_RADIUS,
                 sensor_extra_distance: 0.1,
             }),
             ..Default::default()
@@ -140,9 +140,9 @@ pub fn vael_hero_config(jump_height: f32) -> VaelHeroSchemeConfig {
         // Agachar: desce o corpo o mesmo que a cápsula encolhe
         // ([`HERO_CROUCH_HEIGHT`]) — os pés continuam à mesma cota.
         crouch: TnuaBuiltinCrouchConfig {
-            float_offset: -(viber::player::HERO_CAPSULE_CENTER
-                + viber::player::HERO_HALF_HEIGHT
-                + viber::player::HERO_RADIUS
+            float_offset: -(vael_engine::player::HERO_CAPSULE_CENTER
+                + vael_engine::player::HERO_HALF_HEIGHT
+                + vael_engine::player::HERO_RADIUS
                 - HERO_CROUCH_HEIGHT),
             ..Default::default()
         },
@@ -504,8 +504,8 @@ fn attach_controllers(
         (
             Entity,
             Option<&VaelController>,
-            Option<&viber::terrain::WaterKinematics>,
-            Option<&viber::animation::LocomotionProfile>,
+            Option<&vael_engine::terrain::WaterKinematics>,
+            Option<&vael_engine::animation::LocomotionProfile>,
             &mut Player,
         ),
         With<Player>,
@@ -524,7 +524,7 @@ fn attach_controllers(
         if profile.is_none() {
             commands
                 .entity(entity)
-                .insert(viber::animation::LocomotionProfile::authored(
+                .insert(vael_engine::animation::LocomotionProfile::authored(
                     HERO_WALK_CLIP_SPEED,
                     HERO_RUN_CLIP_SPEED,
                 ));
@@ -560,7 +560,7 @@ fn attach_controllers(
         if kin.is_none() {
             commands
                 .entity(entity)
-                .insert(viber::terrain::WaterKinematics {
+                .insert(vael_engine::terrain::WaterKinematics {
                     velocity: Vec3::ZERO,
                     body_radius: PLAYER_WATER_RADIUS,
                     contact_y_offset: 0.0,
@@ -687,7 +687,7 @@ impl TnuaSpatialExt for VaelSpatialExt<'_, '_> {
 }
 
 pub(crate) fn no_editor_camera(
-    cameras: Query<(), With<viber::editor_camera::EditorCamera>>,
+    cameras: Query<(), With<vael_engine::editor_camera::EditorCamera>>,
 ) -> bool {
     cameras.is_empty()
 }
@@ -709,9 +709,9 @@ impl Plugin for VaelPlayerPlugin {
             )
             .add_systems(PostStartup, (attach_controllers, attach_hero_radar))
             .add_systems(
-                viber::scene_loader::SceneLoad,
+                vael_engine::scene_loader::SceneLoad,
                 (attach_controllers, attach_hero_radar, attach_climbable)
-                    .after(viber::recipes::spawn::startup),
+                    .after(vael_engine::recipes::spawn::startup),
             )
             .add_systems(
                 Update,
@@ -732,7 +732,7 @@ impl Plugin for VaelPlayerPlugin {
                     // contra o `player_movement` da ENGINE (desligado com
                     // `player_camera:false`), por isso sem isto a animação
                     // via o estado de um frame atrás, ao acaso.
-                    .before(viber::animation::drive_player_animation)
+                    .before(vael_engine::animation::drive_player_animation)
                     .run_if(no_editor_camera),
             )
             .add_systems(
@@ -1007,8 +1007,8 @@ fn hero_crouch_collider_shape() -> avian3d::prelude::Collider {
         Vec3::Y * (HERO_CROUCH_HEIGHT / 2.0),
         Quat::IDENTITY,
         Collider::capsule(
-            viber::player::HERO_RADIUS,
-            HERO_CROUCH_HEIGHT - 2.0 * viber::player::HERO_RADIUS,
+            vael_engine::player::HERO_RADIUS,
+            HERO_CROUCH_HEIGHT - 2.0 * vael_engine::player::HERO_RADIUS,
         ),
     )])
 }
@@ -1046,7 +1046,7 @@ fn hero_crouch_collider(
                 commands
                     .entity(entity)
                     .remove::<CrouchedCollider>()
-                    .insert(viber::player::hero_collider());
+                    .insert(vael_engine::player::hero_collider());
             }
             _ => {}
         }
@@ -1142,18 +1142,18 @@ fn player_movement(
     keys: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
-    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
-    actions: Option<Res<viber::input_map::ActionState>>,
-    locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
+    typing: Option<Res<vael_engine::ui::widgets::UiFocusedInput>>,
+    actions: Option<Res<vael_engine::input_map::ActionState>>,
+    locomotion: Option<Res<vael_engine::luau::ownership::ScriptSystemOwners>>,
     rt_waves: (
-        Option<Res<viber::terrain::runtime::TerrainRuntime>>,
-        Option<Res<viber::terrain::WaterWaveWorld>>,
+        Option<Res<vael_engine::terrain::runtime::TerrainRuntime>>,
+        Option<Res<vael_engine::terrain::WaterWaveWorld>>,
         // Vento/amplitude das ondas: a cota da água que o herói sente é a
         // cota DESENHADA (gerstner), não o espelho plano.
-        Option<Res<viber::worldsys::WeatherState>>,
-        Option<Res<viber::terrain::water_material::WaterConfigResource>>,
+        Option<Res<vael_engine::worldsys::WeatherState>>,
+        Option<Res<vael_engine::terrain::water_material::WaterConfigResource>>,
     ),
-    collision: Option<Res<viber::physics::TerrainCollisionStatus>>,
+    collision: Option<Res<vael_engine::physics::TerrainCollisionStatus>>,
     interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     mut cameras: Query<&mut OrbitCamera>,
     bus: Option<Res<HeroMotionBus>>,
@@ -1170,8 +1170,8 @@ fn player_movement(
         Option<&mut Rotation>,
         Option<&mut TeleportSettle>,
         Option<&mut Knockback>,
-        Option<&viber::spawn_gate::SpawnGated>,
-        Option<&mut viber::terrain::WaterKinematics>,
+        Option<&vael_engine::spawn_gate::SpawnGated>,
+        Option<&mut vael_engine::terrain::WaterKinematics>,
         Option<&crate::boat::RidingBoat>,
     )>,
     mut sfx: MessageWriter<bevy_ext_core::SfxEvent>,
@@ -1190,7 +1190,7 @@ fn player_movement(
     // `viber.set_pose`): o controller a pé não escreve por cima.
     if locomotion
         .as_ref()
-        .is_some_and(|owners| owners.owns(viber::luau::ownership::SYSTEM_LOCOMOTION))
+        .is_some_and(|owners| owners.owns(vael_engine::luau::ownership::SYSTEM_LOCOMOTION))
     {
         if let Some(bus) = bus.as_deref() {
             bus.lock().at_rest = false;
@@ -1253,7 +1253,7 @@ fn player_movement(
                 let terrain_ready = collision
                     .as_deref()
                     .is_some_and(|status| status.is_ready(entity));
-                let rest = ground + viber::player::HERO_FLOAT_HEIGHT;
+                let rest = ground + vael_engine::player::HERO_FLOAT_HEIGHT;
                 let fell = py < rt.sample(px, pz) - VOID_RESCUE_DEPTH;
                 if fell || (!terrain_ready && py < rest) {
                     let y = if fell { rt.sample(px, pz) } else { rest };
@@ -1526,7 +1526,7 @@ fn player_movement(
         // Cota DESENHADA: o vértice da água recebe o Gerstner; nadar acompanha.
         let water_y = water_domain.map(|d| {
             d.surface_y
-                + viber::terrain::surface_height_at(
+                + vael_engine::terrain::surface_height_at(
                     transform.translation.xz(),
                     now,
                     wind,
@@ -2162,7 +2162,7 @@ fn player_movement(
                 // No vão da porta ou numa coluna voxel por assar, segurar
                 // toda a banda de repouso: esperar pela travessia da superfície
                 // deixava a gravidade e o snap alternar de frame para frame.
-                let rest_y = ground + viber::player::HERO_FLOAT_HEIGHT;
+                let rest_y = ground + vael_engine::player::HERO_FLOAT_HEIGHT;
                 if (interior_mode || !terrain_ready || settling)
                     && py <= rest_y
                     && controller.vel_y <= 0.0
@@ -2482,7 +2482,7 @@ mod tests {
                 ..default()
             })
             .init_resource::<ButtonInput<KeyCode>>()
-            .init_resource::<viber::input_map::ActionState>()
+            .init_resource::<vael_engine::input_map::ActionState>()
             .add_message::<bevy_ext_core::SfxEvent>()
             .add_systems(Update, player_movement);
         let hero = app
@@ -2496,12 +2496,12 @@ mod tests {
         app.update();
         assert!(resting());
         app.world_mut()
-            .resource_mut::<viber::input_map::ActionState>()
+            .resource_mut::<vael_engine::input_map::ActionState>()
             .move_x = 0.7;
         app.update();
         assert!(!resting());
         app.world_mut()
-            .resource_mut::<viber::input_map::ActionState>()
+            .resource_mut::<vael_engine::input_map::ActionState>()
             .move_x = 0.;
         app.world_mut()
             .get_mut::<Transform>(hero)

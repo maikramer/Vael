@@ -15,7 +15,7 @@ use bevy_ext_core::{
 use bevy_ext_puppet::prelude::{PuppetMode, PuppetSense, PuppetState};
 use std::sync::{Arc, Mutex};
 
-use viber::recipes::spawn::NpcCharacter;
+use vael_engine::recipes::spawn::NpcCharacter;
 
 /// Evento emitido quando dois personagens colidem com velocidade de aproximação
 /// significativa em [`ActorContactPlugin`]. Consumido por `puppet.rs` para
@@ -95,8 +95,8 @@ fn is_npc_script(path: &str) -> bool {
 fn footprint(hero: bool, hostile: bool, npc: bool, path: &str) -> Option<Footprint> {
     let (radius, height) = if hero {
         (
-            viber::player::HERO_RADIUS,
-            2.0 * viber::player::HERO_CAPSULE_CENTER,
+            vael_engine::player::HERO_RADIUS,
+            2.0 * vael_engine::player::HERO_CAPSULE_CENTER,
         )
     } else if hostile {
         match path {
@@ -277,7 +277,7 @@ type Actors = (
         With<LuaScriptRef>,
         With<NpcCharacter>,
     )>,
-    Without<viber::corpse::Corpse>,
+    Without<vael_engine::corpse::Corpse>,
     Without<RigidBodyDisabled>,
     Without<crate::boat::RidingBoat>,
 );
@@ -595,7 +595,7 @@ mod tests {
         );
         app.world_mut()
             .entity_mut(foe)
-            .insert(viber::corpse::Corpse { timer: 1.0 });
+            .insert(vael_engine::corpse::Corpse { timer: 1.0 });
         app.world_mut()
             .get_mut::<Transform>(hero)
             .unwrap()

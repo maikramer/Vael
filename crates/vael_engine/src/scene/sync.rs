@@ -200,7 +200,7 @@ pub fn sync_scene(world: &mut World) {
         patch_props(world, node);
     }
     info!(
-        target: "viber::scene",
+        target: "vael::scene",
         "scene sync: {} edit(s) — {posed} entit(ies) re-posed, {} failure(s)",
         edits.len(),
         failures.len()
@@ -503,7 +503,7 @@ fn push_biomes(world: &mut World) {
     }
     let repainted = crate::terrain::runtime::rebake_chunk_splats(world, tuning);
     info!(
-        target: "viber::scene",
+        target: "vael::scene",
         "scene sync: biomas — {repainted} chunk(s) re-baked"
     );
 }
@@ -558,7 +558,7 @@ fn push_paint(world: &mut World, rect: super::terrain::CellRect) {
         return;
     }
     let repainted = crate::terrain::runtime::repaint_chunks(world, corners.0, corners.1);
-    debug!(target: "viber::scene", "scene sync: paint {rect:?} — {repainted} chunk(s) repainted");
+    debug!(target: "vael::scene", "scene sync: paint {rect:?} — {repainted} chunk(s) repainted");
 }
 
 /// Aplica a pose do XML às entidades do nó; devolve quantas mudaram.

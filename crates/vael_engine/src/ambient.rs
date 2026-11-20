@@ -5,7 +5,7 @@
 //! - **Áudio** (SFX, loops de água/cachoeira/chuva) vive no
 //!   `bevy_ext_audio::{sfx, ambience}` — reexportado aqui, os sistemas que o
 //!   [`AmbientPlugin`] registava são OS DO CRATE (mesmos TypePaths
-//!   `viber::ambient`; o host publica `AudioPaths`/`AudioWorldState`);
+//!   `vael_engine::ambient`; o host publica `AudioPaths`/`AudioWorldState`);
 //! - **Névoa/bioma** vive no `bevy_ext_postfx::ambient` (a lente lê a mesma
 //!   paleta do `env`);
 //! - **Sombras de ponto, lanterna, gestos de NPC** vivem no
@@ -15,7 +15,7 @@
 //!
 //! Fica AQUI: o emissor visual de chuva (partículas do monólito) e o plugin,
 //! que ordena contra `worldsys`/`sky`/`particles` do monólito. O caminho
-//! `viber::ambient::*` continua a resolver por este módulo.
+//! `vael_engine::ambient::*` continua a resolver por este módulo.
 
 use bevy::prelude::*;
 

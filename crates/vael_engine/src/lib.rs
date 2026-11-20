@@ -23,12 +23,12 @@
 // `bevy_ext_scene`). O `terrain` e o `physics` JÁ são shims para os crates
 // extraídos; `a11y`/`locale`/`vitals`/`camera`/`feedback`/`editor_camera`
 // também (core/engine, exit2/luau).
-// Acessibilidade movida ao `bevy_ext_core`; o caminho `viber::a11y` continua
+// Acessibilidade movida ao `bevy_ext_core`; o caminho `vael_engine::a11y` continua
 // a resolver e o recurso é O MESMO (ver o `pub use` na lista em baixo).
 pub mod adaptive_quality;
 // IA movida ao `bevy_ext_ai` (exit4/G1): sentidos (`senses`), FSM simples,
 // serviço e o integrador de locomoção — os TypePaths `viber::ai`/`viber::
-// senses` ficam congelados no crate. O adaptador de host é o `ai_host`
+// senses` ficam congelados no crate (bevy_ext_ai). O adaptador de host é o `ai_host`
 // (o `Ground` do crate passa a ser o `TerrainRuntime` da engine).
 pub use bevy_ext_ai::ai as ai;
 pub mod ai_host;
@@ -37,7 +37,7 @@ pub mod animation;
 pub mod app;
 pub mod attachment;
 // Som 3D + oclusão movidos ao `bevy_ext_audio` (onda exit3/wave-b); o
-// caminho `viber::audio_space` reexporta o módulo e o TypePath do
+// caminho `vael_engine::audio_space` reexporta o módulo e o TypePath do
 // `SpatialOneShot` fica congelado lá.
 pub use bevy_ext_audio::audio_space as audio_space;
 // Contratos de HOST do `bevy_ext_audio` (exit4/G1): o espelho
@@ -50,11 +50,11 @@ pub mod bake;
 pub mod bridge;
 // Câmara de jogo (third-person/script/FX) movida ao `bevy_ext_engine`
 // (onda exit2/luau); os contratos (`OrbitCamera`, `ScriptCameraFree`,
-// `CameraSnapshot`) são do `bevy_ext_core` — o caminho `viber::camera`
+// `CameraSnapshot`) são do `bevy_ext_core` — o caminho `vael_engine::camera`
 // reexporta o módulo e os tipos são OS MESMOS no jogo.
 pub use bevy_ext_engine::camera_glue as camera;
 // Cinemáticas movidas ao `bevy_ext_engine` (exit5/G-2); o caminho
-// `viber::cinematic` reexporta o módulo e os TypePaths `viber::cinematic::`
+// `vael_engine::cinematic` reexporta o módulo e os TypePaths `viber::cinematic::`
 // ficam congelados no crate. O gémeo tem os formatadores de pose locais
 // (réplica dos `scene::pose` puros) e o gate de pausa por relva ocupada.
 pub use bevy_ext_engine::cinematic as cinematic;
@@ -63,7 +63,7 @@ pub mod cinematic_cli;
 // o MESMO tipo no jogo; o `fixture()` dos testes do audit também vem daí.
 pub use bevy_ext_engine::config as config;
 // Módulo movido ao `bevy_ext_physics` (onda exit2/hubs); o caminho
-// `viber::corpse` continua a resolver e o tipo é o MESMO no jogo.
+// `vael_engine::corpse` continua a resolver e o tipo é o MESMO no jogo.
 pub use bevy_ext_physics::corpse;
 pub mod decal_fx;
 pub mod dialogue;
@@ -72,7 +72,7 @@ pub mod draw_diag;
 // `EditorCameraPlugin` é o MESMO tipo no jogo.
 pub mod editor_camera;
 // Feedback de impacto movido ao `bevy_ext_engine` (onda exit2/hubs); o
-// caminho `viber::feedback` reexporta o módulo — o `FeedbackPlugin`
+// caminho `vael_engine::feedback` reexporta o módulo — o `FeedbackPlugin`
 // registado no `app.rs` é o do engine (mesma mensagem para o Vael).
 pub use bevy_ext_engine::feedback;
 pub mod foliage;
@@ -90,7 +90,7 @@ pub mod input_map;
 pub mod interact;
 pub mod lint;
 // Acessibilidade movida ao `bevy_ext_core` (onda exit2/luau); o caminho
-// `viber::a11y` reexporta o módulo — um só recurso `A11y` no jogo.
+// `vael_engine::a11y` reexporta o módulo — um só recurso `A11y` no jogo.
 pub use bevy_engine_core::a11y;
 // Texto localizado movido ao `bevy_ext_core` (onda exit2/luau); o host de
 // UI (`bevy_ext_ui::ui::host`) reexporta O MESMO `Locale`.
@@ -102,7 +102,7 @@ pub mod luau;
 pub mod menus;
 pub mod meshopt;
 // Música/buses/ducking/reverb movidos ao `bevy_ext_audio` (exit4/G1); o
-// caminho `viber::music` reexporta o módulo e os TypePaths `viber::music::`
+// caminho `vael_engine::music` reexporta o módulo e os TypePaths `viber::music::`
 // ficam congelados lá. O adaptador de host é o `audio_host` — o
 // `music_driver`/`script_sound_loops` do crate leem `AudioWorldState`/
 // `AudioPaths` em vez dos recursos da engine.
@@ -123,7 +123,7 @@ pub mod projectile;
 pub mod prop_tint;
 pub mod prune;
 // Ragdoll movido ao `bevy_ext_physics` (onda D): o caminho
-// `viber::ragdoll` reexporta o módulo e os tipos são OS MESMOS no jogo.
+// `vael_engine::ragdoll` reexporta o módulo e os tipos são OS MESMOS no jogo.
 pub use bevy_ext_physics::ragdoll;
 pub mod recipes;
 pub mod reflect;
@@ -135,7 +135,7 @@ pub mod scene;
 pub mod scene_loader;
 pub mod script_kind;
 // Sentidos (visão/audição da FSM) movidos ao `bevy_ext_ai` (exit4/G1); o
-// caminho `viber::senses` reexporta o módulo e os TypePaths `viber::senses::
+// caminho `vael_engine::senses` reexporta o módulo e os TypePaths `viber::senses::
 // …` ficam congelados no crate.
 pub use bevy_ext_ai::senses as senses;
 pub mod session;
@@ -149,7 +149,7 @@ pub mod terrain;
 /// Glue IR→shader do terreno (fase D de `docs/DELETE-MONOLITH.md`): o walk
 /// de `<DayCycle>`/`<Weather>`/`<Lake>`/`<Sky>` não pode viver no
 /// `bevy_ext_terrain_runtime` (o IR de parsing não é dependência dele). O
-/// `app.rs` do Vael cita `viber::terrain_host::{water_surface_config_from_world,
+/// `app.rs` do Vael cita `vael_engine::terrain_host::{water_surface_config_from_world,
 /// terrain_chunk_config_from_world}` no arranque.
 pub mod terrain_host;
 pub mod textures;
@@ -161,7 +161,7 @@ pub mod xml;
 
 // Drivers do mundo movidos ao `bevy_ext_engine` (exit5/G-2): relógio/sol/
 // clima/atmosfera/interior + seating/`place` no terreno + `PendingWorldSystems`
-// (o acumulador que o loader alimenta). O caminho `viber::worldsys` reexporta
+// (o acumulador que o loader alimenta). O caminho `vael_engine::worldsys` reexporta
 // o módulo e os TypePaths `viber::worldsys::` ficam congelados no crate; os
 // ESTADOS que a lente lê (`AtmosphereState`/`WeatherState`/`SunState`/biomas)
 // têm o dono único no `bevy_ext_postfx::env` desde a exit3/wave-c.

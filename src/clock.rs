@@ -16,7 +16,7 @@ use std::sync::{Arc, Mutex};
 use bevy::prelude::*;
 use bevy_elements::{Weather as ElementsWeather, WorldClock as ElementsWorldClock};
 use mlua::{Lua, Value};
-use viber::worldsys::{DayCycleState, WeatherState};
+use vael_engine::worldsys::{DayCycleState, WeatherState};
 
 use crate::vault::{vael_fn, vael_table};
 
