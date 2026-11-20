@@ -67,7 +67,7 @@ fn main() -> Result<()> {
     // antes de qualquer thread dos `DefaultPlugins` nascer — daí o `set_var`.
     if vael::elements_enabled() {
         // SAFETY: single-threaded, antes da composição da App.
-        unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
+        unsafe { std::env::set_var("VAEL_NO_IBL", "1") };
     }
     // Culling das malhas estáticas na GPU (`NoCpuCulling` + indirect draws).
     // O piloto do Bevy 0.19 era opt-in por causa de backends sem GPU culling
@@ -75,9 +75,9 @@ fn main() -> Result<()> {
     // ("GPU preprocessing is fully supported", log de arranque) e mediu-se
     // ~1,4 ms/frame de `check_visibility` a menos. Quem precisar do caminho
     // antigo põe `VIBER_GPU_CULLING=0`.
-    if std::env::var_os("VIBER_GPU_CULLING").is_none() {
+    if bevy_ext_core::envs::var("GPU_CULLING").is_none() {
         // SAFETY: idem — nenhuma outra thread lê o ambiente ainda.
-        unsafe { std::env::set_var("VIBER_GPU_CULLING", "1") };
+        unsafe { std::env::set_var("VAEL_GPU_CULLING", "1") };
     }
     // On Linux, CPAL double-buffers the ALSA period. Give the PipeWire ALSA
     // client at least 2048 stereo f32 frames per period (43 ms at 48 kHz)

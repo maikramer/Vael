@@ -379,8 +379,7 @@ pub const RAIN_MAX_ALPHA: f32 = 0.28;
 /// `VIBER_RAIN_NEAR_FADE` (m) — `0` devolve o comportamento pré-2026-09-12
 /// (gotas opacas coladas à câmara), que é o braço de CONTROLO do A/B.
 pub fn rain_near_fade_m() -> f32 {
-    std::env::var("VIBER_RAIN_NEAR_FADE")
-        .ok()
+    bevy_engine_core::envs::var_lossy("RAIN_NEAR_FADE")
         .and_then(|raw| raw.parse::<f32>().ok())
         .filter(|v| v.is_finite() && *v >= 0.0)
         .unwrap_or(RAIN_NEAR_FADE_M)
@@ -388,8 +387,7 @@ pub fn rain_near_fade_m() -> f32 {
 
 /// `VIBER_RAIN_ALPHA` — tecto de alpha das gotas (`1` = o antigo).
 pub fn rain_max_alpha() -> f32 {
-    std::env::var("VIBER_RAIN_ALPHA")
-        .ok()
+    bevy_engine_core::envs::var_lossy("RAIN_ALPHA")
         .and_then(|raw| raw.parse::<f32>().ok())
         .filter(|v| v.is_finite() && (0.0..=1.0).contains(v))
         .unwrap_or(RAIN_MAX_ALPHA)
@@ -1078,7 +1076,7 @@ fn simulation_camera<'a, 's>(
 }
 
 fn idle_gate_enabled() -> bool {
-    std::env::var("VIBER_PARTICLE_IDLE_GATE").as_deref() != Ok("0")
+    bevy_engine_core::envs::var_lossy("PARTICLE_IDLE_GATE").as_deref() != Some("0")
 }
 
 // NOTA (2026-10-10, medido): esconder emissores culled com `Visibility::Hidden`
@@ -1442,12 +1440,11 @@ pub const FX_SPAWN_BUDGET: usize = 8;
 /// desonesto. Liga-se quando houver A/B com relógio congelado e uptime
 /// igual; o braço antigo é o controlo do A/B.
 fn fx_lifecycle_enabled() -> bool {
-    std::env::var("VIBER_FX_LIFECYCLE").as_deref() == Ok("1")
+    bevy_engine_core::envs::var_lossy("FX_LIFECYCLE").as_deref() == Some("1")
 }
 
 fn fx_spawn_radius() -> f32 {
-    std::env::var("VIBER_FX_SPAWN_RADIUS")
-        .ok()
+    bevy_engine_core::envs::var_lossy("FX_SPAWN_RADIUS")
         .and_then(|raw| raw.parse::<f32>().ok())
         .filter(|radius| radius.is_finite() && *radius > 0.0)
         .unwrap_or(FX_SPAWN_RADIUS)
@@ -1909,7 +1906,7 @@ mod tests {
         // monta tudo (o comportamento antigo). Este teste liga-a.
         // (set_var é unsafe na edition 2024; seguro aqui porque nenhum outro
         // teste lê esta env.)
-        unsafe { std::env::set_var("VIBER_FX_LIFECYCLE", "1") };
+        unsafe { std::env::set_var("VAEL_FX_LIFECYCLE", "1") };
         let mut app = bevy::app::App::new();
         app.add_plugins(bevy::MinimalPlugins);
         // O manager lê GlobalTransform: sem o TransformPlugin nada propaga e

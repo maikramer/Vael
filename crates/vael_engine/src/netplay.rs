@@ -25,7 +25,7 @@ pub enum NetRole {
 }
 
 pub fn role_from_env() -> NetRole {
-    let Ok(raw) = std::env::var("VIBER_NET") else {
+    let Some(raw) = bevy_engine_core::envs::var_lossy("NET") else {
         return NetRole::Off;
     };
     let raw = raw.trim();
@@ -284,7 +284,7 @@ mod tests {
     #[test]
     fn missing_env_is_off() {
         // Não mexe no ambiente global se já estiver definido por outro teste.
-        if std::env::var_os("VIBER_NET").is_none() {
+        if bevy_engine_core::envs::var("NET").is_none() {
             assert!(matches!(role_from_env(), NetRole::Off));
         }
     }

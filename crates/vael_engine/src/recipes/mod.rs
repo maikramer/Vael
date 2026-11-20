@@ -7689,8 +7689,7 @@ mod composition_tests {
 /// longe e mais tempo de CPU no render app. O teto do Bevy 0.19 é 4
 /// (`MAX_CASCADES_PER_LIGHT`); acima disso o extract corta com warning.
 pub fn sun_shadow_cascades() -> usize {
-    std::env::var("VIBER_SHADOW_CASCADES")
-        .ok()
+    bevy_engine_core::envs::var_lossy("SHADOW_CASCADES")
         .and_then(|raw| raw.parse::<usize>().ok())
         .filter(|n| (1..=4).contains(n))
         .unwrap_or_else(crate::graphics::shadow_cascades)
@@ -7707,8 +7706,7 @@ pub fn sun_shadow_cascades() -> usize {
 /// shadow map fica com 4x a densidade de texels (14,6 cm/texel → 3,7): as
 /// sombras perto do herói ficam mais nítidas, não menos.
 pub fn sun_shadow_distance() -> f32 {
-    std::env::var("VIBER_SHADOW_DISTANCE")
-        .ok()
+    bevy_engine_core::envs::var_lossy("SHADOW_DISTANCE")
         .and_then(|raw| raw.parse::<f32>().ok())
         .filter(|d| *d > 0.0)
         .unwrap_or_else(crate::graphics::shadow_distance)

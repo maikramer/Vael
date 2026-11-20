@@ -74,7 +74,7 @@ pub struct SkyIblPlugin;
 impl Plugin for SkyIblPlugin {
     fn build(&self, app: &mut App) {
         // `VIBER_NO_IBL=1` desliga (A/B de QA / GPUs sem compute storage).
-        if std::env::var_os("VIBER_NO_IBL").is_some() {
+        if bevy_engine_core::envs::var("NO_IBL").is_some() {
             info!("ibl: desligado por VIBER_NO_IBL");
             return;
         }

@@ -279,7 +279,7 @@ fn apply_tier(tier: u8) {
 
 /// Resolve o `mode`: env `VIBER_QUALITY` > atributo do mundo > `auto`.
 fn resolve_mode(attr: Option<&str>) -> QualityMode {
-    if let Ok(raw) = std::env::var("VIBER_QUALITY") {
+    if let Some(raw) = bevy_engine_core::envs::var_lossy("QUALITY") {
         match QualityMode::parse(&raw) {
             Some(mode) => return mode,
             None => {
@@ -301,7 +301,7 @@ fn install_adaptive_quality(mut commands: Commands, configs: Option<Res<EngineCo
     let Some(tag) = configs.as_ref().and_then(|c| c.first("adaptivequality")) else {
         return;
     };
-    if std::env::var("VIBER_ADAPTIVE_QUALITY").as_deref() == Ok("0")
+    if bevy_engine_core::envs::var_lossy("ADAPTIVE_QUALITY").as_deref() == Some("0")
         || matches!(
             tag.attr("enabled").map(str::trim),
             Some("0" | "false" | "off")

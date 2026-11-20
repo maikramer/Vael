@@ -114,7 +114,7 @@ Cenário: 40 plantas no mesmo tile.
 
 Com a outra engine a ocupar ~3,2 GB de VRAM, o mundo principal a 400 m morre
 no teleporte para a vegetação **tanto com o batch ligado como com
-`VIBER_FOLIAGE_BATCH=0`** — os mesmos erros de validação de buffers
+`VAEL_FOLIAGE_BATCH=0`** — os mesmos erros de validação de buffers
 (skin/UI) e device perdido. Portanto o crash é contenção de VRAM, não uma
 regressão do batch; o A/B de frame time/draw calls fica para uma sessão
 exclusiva.
@@ -126,13 +126,13 @@ O mundo concorrente tem ~75k entidades e 455 scripts (a baseline acima tinha
 ainda não é comparável ao de 2026-10-21. As mudanças desta ronda são
 mensuráveis com os gates:
 
-- `VIBER_LOD_SCAN_HZ=0` — desliga o throttle de 10 Hz do scan da escada
+- `VAEL_LOD_SCAN_HZ=0` — desliga o throttle de 10 Hz do scan da escada
   (controlo); default 10 Hz.
-- `VIBER_GPU_CULLING=1` — piloto `NoCpuCulling` em malhas estáticas
+- `VAEL_GPU_CULLING=1` — piloto `NoCpuCulling` em malhas estáticas
   (Vulkan); default off.
-- `VIBER_ECS_MIRROR=1` — devolve o espelho por frame de `viber.ecs` no Vael
+- `VAEL_ECS_MIRROR=1` — devolve o espelho por frame de `viber.ecs` no Vael
   (default off).
-- `VIBER_NO_CONTACT_SHADOWS=1` / `VIBER_WATER_SSR=0` — desligam os dois
+- `VAEL_NO_CONTACT_SHADOWS=1` / `VAEL_WATER_SSR=0` — desligam os dois
   A/B visuais que o `config.yaml` passou a ligar.
 
 O HUD Rust continua a publicar (`100/100`, `30 de ouro`) com o estado só a
@@ -149,7 +149,7 @@ Primeira medição que **inclui** o trabalho síncrono antes do primeiro
 `PostUpdate`: `bevy_ext_core::boot` marca cada fase e o véu imprime a tabela
 (`boot: …`, ver `docs/DEBUG.md`). Duas execuções limpas, a mesma pose
 (`VAEL_SCENARIO=_base`, `--scene main --entry dev`, `1280x720`,
-`VIBER_QUALITY=high`, `VIBER_FPS_CAP=60`):
+`VAEL_QUALITY=high`, `VAEL_FPS_CAP=60`):
 
 | fase | ms | o que é |
 |---|---:|---|
@@ -254,7 +254,7 @@ Para a caminhada, abrir uma sessão com a câmara de jogo, começar em
 10 s e repetir três vezes a partir do mesmo ponto. O deslocamento
 registado nas duas versões foi de aproximadamente 40 m por passagem.
 
-Com a versão otimizada e `VIBER_PRESENT_MODE=immediate`, as mesmas vistas
+Com a versão otimizada e `VAEL_PRESENT_MODE=immediate`, as mesmas vistas
 fixas registaram 57,7 FPS na vila e 55,5 FPS na encosta. A apresentação
 imediata foi usada só nesta medição adicional.
 
@@ -305,7 +305,7 @@ Para reproduzir a matriz completa, compilar com `cargo build --release --bin vae
 da raiz do Vael. O roteiro usa saves temporários e grava PNGs, distâncias,
 clima, tempos de frame e dados do profiler. As opções `--weather Rain` e
 `--tour arena_combat` permitem repetir uma condição. Com
-`VIBER_PROF_GPU=1`, cada fase inclui também os tempos das passagens da GPU.
+`VAEL_PROF_GPU=1`, cada fase inclui também os tempos das passagens da GPU.
 
 As alterações reutilizam as alturas e as inclinações do terreno ao atualizar
 a neve, preparam a cobertura de neve dos objetos em segundo plano e leem as

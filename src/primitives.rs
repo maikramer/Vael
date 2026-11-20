@@ -50,18 +50,17 @@ impl Plugin for VaelPrimitivesPlugin {
     }
 }
 
-/// Valor de `VAEL_PRIMITIVES` aparado e em minúsculas (o gate e o detalhe
-/// comparam-no por igual — `VAEL_PRIMITIVES=OFF` desligava só no papel).
+/// Valor de `VAEL_PRIMITIVES` (fallback `VIBER_`) aparado e em minúsculas
+/// (o gate e o detalhe comparam-no por igual — `VAEL_PRIMITIVES=OFF`
+/// desligava só no papel).
 fn env_value(name: &str) -> Option<String> {
-    std::env::var(name)
-        .ok()
-        .map(|raw| raw.trim().to_ascii_lowercase())
+    bevy_ext_core::envs::var_lossy(name).map(|raw| raw.trim().to_ascii_lowercase())
 }
 
 /// `VAEL_PRIMITIVES=standard|std|off|0|false|no` keeps the engine fallback.
 fn primitives_enabled() -> bool {
     !matches!(
-        env_value("VAEL_PRIMITIVES").as_deref(),
+        env_value("PRIMITIVES").as_deref(),
         Some("standard" | "std" | "off" | "0" | "false" | "no")
     )
 }
@@ -71,10 +70,9 @@ struct PrimitiveDetail(ShapeDetail);
 
 impl Default for PrimitiveDetail {
     fn default() -> Self {
-        // O spawner da engine lê `VIBER_PRIMITIVES_DETAIL`; o caminho legado
-        // do marcador lê primeiro o mesmo nome para os dois concordarem.
-        let detail =
-            env_value("VIBER_PRIMITIVES_DETAIL").or_else(|| env_value("VAEL_PRIMITIVES_DETAIL"));
+        // O spawner da engine e o marcador leem o MESMO knob (`envs`,
+        // fallback ao nome legado incluído) e por isso concordam sempre.
+        let detail = env_value("PRIMITIVES_DETAIL");
         Self(match detail.as_deref() {
             Some("minimal") => ShapeDetail::Minimal,
             Some("low") => ShapeDetail::Low,

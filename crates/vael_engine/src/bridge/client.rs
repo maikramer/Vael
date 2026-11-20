@@ -726,7 +726,7 @@ pub fn resolve_target(flag: Option<u16>, world: Option<&Path>) -> Result<TargetR
     if let Some(world) = world {
         return resolve_world_port(world).map(TargetResolution::Port);
     }
-    if let Ok(raw) = std::env::var("VIBER_BRIDGE_PORT") {
+    if let Some(raw) = bevy_engine_core::envs::var_lossy("BRIDGE_PORT") {
         match raw.parse::<u16>() {
             Ok(0) => anyhow::bail!("VIBER_BRIDGE_PORT=0: porta inválida (1..=65535)"),
             Ok(port) => return Ok(TargetResolution::Port(port)),

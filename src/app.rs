@@ -54,8 +54,7 @@ pub struct VaelGameOptions {
 /// Tamanho do shadow map da DIRECIONAL (`VIBER_DIR_SHADOW_SIZE`, default
 /// 4096). É UMA textura de 4 camadas (~268 MB a 4096, metade a 2048).
 fn dir_shadow_size() -> usize {
-    std::env::var("VIBER_DIR_SHADOW_SIZE")
-        .ok()
+    bevy_ext_core::envs::var_lossy("DIR_SHADOW_SIZE")
         .and_then(|raw| raw.parse::<usize>().ok())
         // Teto defensivo: uma env absurda não pode pedir uma textura acima
         // do limite do wgpu (e ~1 GB de VRAM) e falhar a criação do renderer.
@@ -66,8 +65,7 @@ fn dir_shadow_size() -> usize {
 /// Tamanho do cube shadow map das PointLight (`VIBER_POINT_SHADOW_SIZE`).
 /// Default 1024 (~25 MB/lanterna); `1536` devolve o valor do passe r1.
 fn point_shadow_size() -> usize {
-    std::env::var("VIBER_POINT_SHADOW_SIZE")
-        .ok()
+    bevy_ext_core::envs::var_lossy("POINT_SHADOW_SIZE")
         .and_then(|raw| raw.parse::<usize>().ok())
         .filter(|size| (4..=2048).contains(size) && size % 2 == 0)
         .unwrap_or(1024)
@@ -78,8 +76,8 @@ fn point_shadow_size() -> usize {
 /// a criação do renderer.
 fn gpu_profiling_enabled() -> bool {
     matches!(
-        std::env::var("VIBER_PROF_GPU").as_deref(),
-        Ok("1" | "true" | "on")
+        bevy_ext_core::envs::var_lossy("PROF_GPU").as_deref(),
+        Some("1" | "true" | "on")
     )
 }
 
@@ -100,7 +98,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // mas os testes de playtest chamam `build_game_app` directamente.
     if crate::elements_enabled() {
         // SAFETY: single-threaded, antes da composição dos plugins.
-        unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
+        unsafe { std::env::set_var("VAEL_NO_IBL", "1") };
     }
     // Absoluto desde já: o asset root e o base_dir do terreno não podem
     // depender do CWD (o bevy resolve roots relativas contra o exe).
@@ -149,7 +147,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // caminho antigo (um tag que só exista dentro de um prefab não é visto).
     let main_scene = project.main_scene_path();
     let wants_shader_config = || {
-        std::env::var("VIBER_MAIN_SHADER_CONFIG").is_ok_and(|value| value == "parse")
+        bevy_ext_core::envs::var_lossy("MAIN_SHADER_CONFIG").is_some_and(|value| value == "parse")
             || bevy_ext_world::bsn::authors_tags(
                 &main_scene,
                 &world_dir_pre,
@@ -486,7 +484,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // colunas voxel é host-side (lê o `TerrainRuntime` do monólito) e entra
     // pelo `TerrainCollidersPlugin` ao lado, como na app da engine.
     app.add_plugins(vael_engine::physics::PhysicsPlugin {
-        debug: std::env::var_os("VIBER_PHYSICS_DEBUG").is_some(),
+        debug: bevy_ext_core::envs::var("PHYSICS_DEBUG").is_some(),
     });
     app.add_plugins(vael_engine::physics::TerrainCollidersPlugin);
     // Controller do herói (tnua) e step assist. O `PhysicsPlugin` acima só
@@ -589,7 +587,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // Navmesh Recast + A*/RVO (bevy_landmass), preferência por estradas.
     app.add_plugins(vael_engine::nav::NavPlugin);
     // LOD de render: `VIBER_RENDER_LOD=0` desliga (A/B honesto).
-    if std::env::var("VIBER_RENDER_LOD").as_deref() != Ok("0") {
+    if bevy_ext_core::envs::var_lossy("RENDER_LOD").as_deref() != Some("0") {
         app.add_plugins(vael_engine::render_lod::RenderLodPlugin);
     }
     app.add_plugins(vael_engine::profiler::ProfilerPlugin);

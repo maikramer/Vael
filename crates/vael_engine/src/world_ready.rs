@@ -61,7 +61,7 @@ pub const LOADING_UPLOAD_MB: usize = 256;
 
 /// `VIBER_UPLOAD_MB=off|0`: desliga o orçamento (diagnóstico).
 pub fn upload_budget_disabled() -> bool {
-    std::env::var("VIBER_UPLOAD_MB").is_ok_and(|v| matches!(v.trim(), "off" | "0"))
+    bevy_engine_core::envs::var_lossy("UPLOAD_MB").is_some_and(|v| matches!(v.trim(), "off" | "0"))
 }
 
 /// `VAEL_WAIT_BAKES=0`: o véu deixa de esperar pelos bakes de impostores.
@@ -80,8 +80,7 @@ pub fn wait_for_bakes() -> bool {
 
 /// Orçamento efetivo do carregamento (bytes).
 pub fn loading_upload_budget() -> usize {
-    std::env::var("VIBER_UPLOAD_MB")
-        .ok()
+    bevy_engine_core::envs::var_lossy("UPLOAD_MB")
         .and_then(|v| v.trim().parse::<usize>().ok())
         .filter(|v| *v > 0)
         .unwrap_or(LOADING_UPLOAD_MB)
@@ -104,8 +103,7 @@ pub struct PipelineProbe(pub Arc<AtomicUsize>);
 
 /// Teto efetivo da espera (s).
 pub fn max_wait_secs() -> f32 {
-    std::env::var("VIBER_LOADING_MAX_S")
-        .ok()
+    bevy_engine_core::envs::var_lossy("LOADING_MAX_S")
         .and_then(|v| v.trim().parse::<f32>().ok())
         .filter(|v| *v > 0.0)
         .unwrap_or(DEFAULT_MAX_SECS)

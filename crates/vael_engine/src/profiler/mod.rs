@@ -335,8 +335,7 @@ pub struct HitchLog {
 impl Default for HitchLog {
     fn default() -> Self {
         Self {
-            threshold_ms: std::env::var("VIBER_HITCH_MS")
-                .ok()
+            threshold_ms: bevy_engine_core::envs::var_lossy("HITCH_MS")
                 .and_then(|raw| raw.trim().parse::<f32>().ok())
                 .filter(|ms| ms.is_finite() && *ms > 0.0)
                 .unwrap_or(DEFAULT_HITCH_MS),
@@ -452,10 +451,10 @@ fn diagnostics_snapshot(store: &DiagnosticsStore) -> (Option<f64>, Option<f64>) 
 const DEFAULT_SYSTEMS_LIMIT: usize = 30;
 
 fn systems_limit() -> usize {
-    match std::env::var("VIBER_PROF_SYSTEMS").as_deref() {
-        Ok("all") | Ok("todos") | Ok("0") => usize::MAX,
-        Ok(raw) => raw.parse().unwrap_or(DEFAULT_SYSTEMS_LIMIT),
-        Err(_) => DEFAULT_SYSTEMS_LIMIT,
+    match bevy_engine_core::envs::var_lossy("PROF_SYSTEMS").as_deref() {
+        Some("all") | Some("todos") | Some("0") => usize::MAX,
+        Some(raw) => raw.parse().unwrap_or(DEFAULT_SYSTEMS_LIMIT),
+        None => DEFAULT_SYSTEMS_LIMIT,
     }
 }
 
@@ -919,7 +918,7 @@ impl Plugin for ProfilerPlugin {
                 max_history_length: 120,
             },
         ));
-        if std::env::var_os("VIBER_PROF_LOG").is_some() {
+        if bevy_engine_core::envs::var("PROF_LOG").is_some() {
             app.add_plugins(LogDiagnosticsPlugin::default());
         }
         // Âncoras antes/depois do `PhysicsSet::StepSimulation` — o schedule
@@ -1220,7 +1219,7 @@ mod tests {
     /// (o teste não toca no env: correm testes em paralelo no mesmo processo).
     #[test]
     fn systems_limit_defaults_to_thirty() {
-        if std::env::var_os("VIBER_PROF_SYSTEMS").is_none() {
+        if bevy_engine_core::envs::var("PROF_SYSTEMS").is_none() {
             assert_eq!(systems_limit(), DEFAULT_SYSTEMS_LIMIT);
         }
     }

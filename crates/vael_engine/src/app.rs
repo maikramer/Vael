@@ -152,8 +152,7 @@ fn pause_virtual_time(mut time: ResMut<Time<Virtual>>) {
 /// Tamanho do shadow map da DIRECIONAL (`VIBER_DIR_SHADOW_SIZE`, default
 /// 4096). É UMA textura de 4 camadas (~268 MB a 4096, metade a 2048).
 fn dir_shadow_size() -> usize {
-    std::env::var("VIBER_DIR_SHADOW_SIZE")
-        .ok()
+    bevy_engine_core::envs::var_lossy("DIR_SHADOW_SIZE")
         .and_then(|raw| raw.parse::<usize>().ok())
         .filter(|size| *size >= 256 && size % 2 == 0)
         .unwrap_or_else(crate::graphics::dir_shadow_size)
@@ -165,8 +164,7 @@ fn dir_shadow_size() -> usize {
 /// passe visual r1. Tem de ser u32 par e >= 4 — o wgpu recusa tamanhos
 /// ímpares em algumas plataformas.
 fn point_shadow_size() -> usize {
-    std::env::var("VIBER_POINT_SHADOW_SIZE")
-        .ok()
+    bevy_engine_core::envs::var_lossy("POINT_SHADOW_SIZE")
         .and_then(|raw| raw.parse::<usize>().ok())
         .filter(|size| *size >= 4 && size % 2 == 0)
         .unwrap_or(1024)
@@ -186,8 +184,8 @@ fn point_shadow_size() -> usize {
 /// próprias queries custam tempo por frame.
 pub fn gpu_profiling_enabled() -> bool {
     matches!(
-        std::env::var("VIBER_PROF_GPU").as_deref(),
-        Ok("1" | "true" | "on")
+        bevy_engine_core::envs::var_lossy("PROF_GPU").as_deref(),
+        Some("1" | "true" | "on")
     )
 }
 
@@ -696,7 +694,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     app.add_plugins(crate::frame_pacing::FramePacingPlugin);
     app.add_plugins(netplay::NetPlayPlugin);
     app.add_plugins(physics::PhysicsPlugin {
-        debug: std::env::var_os("VIBER_PHYSICS_DEBUG").is_some(),
+        debug: bevy_engine_core::envs::var("PHYSICS_DEBUG").is_some(),
     });
     // O streaming de colliders do terreno é host-side (lê o `TerrainRuntime`
     // do monólito); o `PhysicsPlugin` acima é o do `bevy_ext_physics`.
@@ -865,7 +863,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     // entram todas nas 4 cascatas de sombra a cada frame.
     // `VIBER_RENDER_LOD=0` desliga o plugin — logo, também o culling e a
     // ladder de LOD: é o A/B honesto para medir o ganho sem trocar de binário.
-    if std::env::var("VIBER_RENDER_LOD").as_deref() != Ok("0") {
+    if bevy_engine_core::envs::var_lossy("RENDER_LOD").as_deref() != Some("0") {
         app.add_plugins(render_lod::RenderLodPlugin);
     }
     // Profiler: overlay F3 (fps/frame/entidades/scripts ativos) + `viber.profiler`.
@@ -1123,8 +1121,7 @@ mod tests {
 /// Ficam dois cores livres (main + render); threads ociosas não custam nada
 /// depois do carregamento. `VIBER_IO_THREADS` força o número (medições).
 pub fn io_thread_count() -> usize {
-    if let Some(n) = std::env::var("VIBER_IO_THREADS")
-        .ok()
+    if let Some(n) = bevy_engine_core::envs::var_lossy("IO_THREADS")
         .and_then(|v| v.trim().parse::<usize>().ok())
         .filter(|n| *n > 0)
     {

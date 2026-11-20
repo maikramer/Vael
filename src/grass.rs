@@ -396,8 +396,7 @@ fn slices_for(quality: GrassQuality) -> u32 {
 
 /// `VIBER_GRASS_DENSITY` (0..4), ou `None` quando ausente/inválido.
 fn env_density() -> Option<f32> {
-    std::env::var("VIBER_GRASS_DENSITY")
-        .ok()
+    bevy_ext_core::envs::var_lossy("GRASS_DENSITY")
         .and_then(|value| value.parse::<f32>().ok())
         .filter(|value| value.is_finite())
         .map(|value| value.clamp(0.0, 4.0))

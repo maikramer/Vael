@@ -308,7 +308,7 @@ impl SkyConfig {
     /// os probes regionais lêem — resolvido num sítio só, os dois não podem
     /// discordar sobre que céu o mundo desenha.
     pub fn with_env_override(mut self) -> SkyConfig {
-        match std::env::var("VIBER_SKY_MODEL").ok().as_deref() {
+        match bevy_engine_core::envs::var_lossy("SKY_MODEL").as_deref() {
             Some(v) if v.eq_ignore_ascii_case("nishita") => self.model = SkyModel::Nishita,
             Some(v) if v.eq_ignore_ascii_case("analytic") => self.model = SkyModel::Analytic,
             _ => {}

@@ -12,6 +12,9 @@ vael-tools run --scene main --entry dev
 (Build e run sem argumentos são os do editor — `jd build .` e `jd run .`; o
 `jd run` arranca no menu/título e não aceita `--scene/--entry`, ver
 [`docs/JACKDAW.md`](JACKDAW.md). Para reaproveitar o binário do `jd` neste
+> Durante a transição de nomes, as variantes `VIBER_*` (legado) continuam
+> aceites em todas as variáveis abaixo — o nome `VAEL_*` ganha sempre.
+
 atalho: `VAEL_BIN=.jackdaw/target/game/debug/vael vael-tools run --scene main
 --entry dev`.)
 
@@ -74,7 +77,7 @@ vael-tools debug --port 15885 lua 'viber.debug.set_time_scale(1)'
 ## Esperar pelo carregamento (agentes/QA)
 
 O ecrã de carregamento sai com o **anel próximo**: os `<GltfScene>` a menos de
-`VIBER_GLTF_READY_RADIUS` (default 150 m) do herói com o GLB resolvido, as
+`VAEL_GLTF_READY_RADIUS` (default 150 m) do herói com o GLB resolvido, as
 texturas subidas para a GPU, os albedos do terreno, os spawn groups e o herói
 assente (`world_ready.rs` na engine). O resto do mundo entra **por distância**
 (`gltf_residency.rs`): cada instância pede o GLB quando o corte de render dela
@@ -117,16 +120,16 @@ vael-tools debug --port 15731 --json wait-ready --timeout 300
   `RUST_LOG=bevy_ext_viber_engine::world_ready=debug` dá o rasto por segundo e
   `RUST_LOG=bevy_ext_viber_engine::gltf_residency=info` o dos anéis
   (`N residentes, M adiados, +X/-Y` a cada 5 s com trabalho).
-- Residência: `VIBER_GLTF_STREAMING=0` volta a carregar **todos** os GLB no
-  arranque (o braço de A/B); `VIBER_GLTF_READY_RADIUS` (150),
-  `VIBER_GLTF_LOAD_RADIUS` (800, o *bootstrap* de um modelo cujo corte de
-  render ainda não se conhece), `VIBER_GLTF_LOAD_BUDGET` (8 activações/frame
-  em jogo) e `VIBER_GLTF_UNLOAD_BUDGET` (8 descargas/frame) são os botões.
-- Teto: 240 s (`VIBER_LOADING_MAX_S`); depois o jogo mostra-se incompleto e o
+- Residência: `VAEL_GLTF_STREAMING=0` volta a carregar **todos** os GLB no
+  arranque (o braço de A/B); `VAEL_GLTF_READY_RADIUS` (150),
+  `VAEL_GLTF_LOAD_RADIUS` (800, o *bootstrap* de um modelo cujo corte de
+  render ainda não se conhece), `VAEL_GLTF_LOAD_BUDGET` (8 activações/frame
+  em jogo) e `VAEL_GLTF_UNLOAD_BUDGET` (8 descargas/frame) são os botões.
+- Teto: 240 s (`VAEL_LOADING_MAX_S`); depois o jogo mostra-se incompleto e o
   `ready` vem com `timed_out: true`.
-- Afinação: `VIBER_IO_THREADS` (decode de GLB/KTX2; default cores−2 — é o
+- Afinação: `VAEL_IO_THREADS` (decode de GLB/KTX2; default cores−2 — é o
   número que a app do Vael passa ao pool) e
-  `VIBER_UPLOAD_MB` (subida para a GPU por frame, só atrás do véu; default
+  `VAEL_UPLOAD_MB` (subida para a GPU por frame, só atrás do véu; default
   256, `off` desliga). Em jogo não há limite: o Bevy tira da GPU um asset
   modificado quando o orçamento esgota e o mundo ficava negro.
 - Custo do decode de GLB: o log do `gltf_residency` passa a trazer também
@@ -199,7 +202,7 @@ Consequências medidas:
 
 - o `mundo pronto em X s` **subiu** (~29-35 s), porque antes abria cedo: o
   número antigo era falso. É o custo honesto de ter o mundo no ecrã.
-- `VIBER_UPLOAD_MB` maior é **pior** (512 MB: 29,7 s; 1024 MB: 31,8 s; 256 MB:
+- `VAEL_UPLOAD_MB` maior é **pior** (512 MB: 29,7 s; 1024 MB: 31,8 s; 256 MB:
   28,5 s numa corrida, com 5-6 s de variância entre corridas).
 - `VAEL_WAIT_BAKES=0` deixa de partir a vista (as duas condições acima
   corrigidas); o default continua a esperar porque as bakes correm por cima da

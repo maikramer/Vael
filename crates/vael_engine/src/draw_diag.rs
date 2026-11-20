@@ -22,7 +22,7 @@ pub struct DrawDiagPlugin;
 
 impl Plugin for DrawDiagPlugin {
     fn build(&self, app: &mut App) {
-        if std::env::var("VIBER_DRAW_DIAG").is_ok_and(|v| v != "0") {
+        if bevy_engine_core::envs::var_lossy("DRAW_DIAG").is_some_and(|v| v != "0") {
             app.add_systems(Last, (draw_diag, asset_churn));
         }
     }

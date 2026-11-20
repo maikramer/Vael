@@ -85,7 +85,7 @@ pub fn enabled() -> bool {
     static ON: OnceLock<bool> = OnceLock::new();
     *ON.get_or_init(|| {
         !matches!(
-            std::env::var("VIBER_GLTF_STREAMING").ok().as_deref(),
+            bevy_engine_core::envs::var_lossy("GLTF_STREAMING").as_deref(),
             Some("0" | "false" | "off")
         )
     })

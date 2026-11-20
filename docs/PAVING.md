@@ -283,7 +283,7 @@ vael-tools analyze world.bsn      # exit 1 em erro
 vael-tools lint
 
 # A/B visual: o pavimento desliga e os decals/ribbons antigos voltam
-VIBER_PAVING=0 vael-tools run --scene main --entry dev
+VAEL_PAVING=0 vael-tools run --scene main --entry dev
 ```
 
 Os testes do módulo cobrem: ocupação única com prioridades, recto sem arcos,

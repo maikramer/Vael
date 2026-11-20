@@ -7,7 +7,7 @@
 //! jogo que está a correr: o `SceneSettingsPlugin` relê os documentos.
 //!
 //! Precedência: cena > `config.yaml`/constantes; as variáveis `VAEL_START_*`
-//! e `VIBER_NO_*` continuam a ganhar (QA).
+//! e `VAEL_NO_*` continuam a ganhar (QA).
 
 use std::path::{Path, PathBuf};
 

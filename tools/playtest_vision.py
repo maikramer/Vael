@@ -901,7 +901,7 @@ def launch_game(args, qa_scenario: str | None, artifacts: Artifacts):
     # num divisor baixo (30 fps), atrasando a captura seguinte em cadeia.
     # Para o oráculo visual o jogo corre sem pacing.
     env = os.environ.copy()
-    env["VIBER_FPS_CAP"] = "0"
+    env["VAEL_FPS_CAP"] = "0"
     # Nunca tocar nos saves reais (o menu não tem cenário QA).
     saves = artifacts.root / "saves"
     saves.mkdir(parents=True, exist_ok=True)

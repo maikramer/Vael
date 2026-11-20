@@ -89,8 +89,9 @@ Estrutura do `world.bsn`:
   `IsA.source` relativos à pasta de assets (`jackdaw.toml assets_dir`); sem o
   link o `scene.save` recusa o `world.bsn` ("absolute path"). Gravar no editor
   acrescenta `SceneNodeId`/`PrefabEntityId` (equivalente para o loader);
-  Precedência: cena > `config.yaml`/constantes; `VAEL_START_*`, `VIBER_NO_*`
-  e `VAEL_FLORA_*` ganham (QA). `vael --export-settings [--force]` reescreve
+  Precedência: cena > `config.yaml`/constantes; `VAEL_START_*`, `VAEL_NO_*`
+  e `VAEL_FLORA_*` ganham (QA); os `VIBER_*` legados continuam aceites.
+  `vael --export-settings [--force]` reescreve
   os ficheiros com os valores de origem.
 - **terreno voxel como componentes** (`bevy_ext_terrain`): a âncora
   `VoxelTerrain` no `<Terrain>` do `world.bsn` e as features — `<Cave>`
@@ -150,7 +151,7 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `src/puppet.rs` | **corpos físicos dos personagens** (`bevy_ext_puppet`, estilo Euphoria: IPM + VMC implícito + momento angular centroidal + IK sem twist + `CatchFall` balístico): montados a pedido no herói e nas criaturas com rig bípede (arquétipos Light/Standard/Shielded/Brute/Boss escalados pelo transform; lobo/verme ficam `PuppetIncompatible`) e desmontados 3 s depois de a animação voltar. Golpe (`hit_flash`+`entity_knockback`) → seleção anatómica direcional (`UpperArmL/R` lateral com torção axial, `SpineUpper` frontal); empurrões fortes (`force >= 4.5`) entram como `puppet_push` (passos de captura / queda); **esbarrões** (`ActorBump` de `src/actor_contact.rs`, velocidade ≥ 2 m/s, cooldown 0,45 s, ponderado pela massa) → jogo de ombro localizado em corrida normal e `puppet_push` em sprint/dash/investida (herói sempre parcial); `viber.corpse` → morre mole; `push_player` → reação parcial direcional no herói; `PuppetEvent` gera poeira/micro-shake em quedas e gesto `getup_back`/`getup_front`; `calm_kinematic_motion` zera `AiLocomotion` enquanto `busy`. `combat.lua` quebra escudo em desequilíbrio real e dá bônus 1.25× em alvos caídos; `fsm.lua` interrompe windup/charge em queda; `voice.lua` (`tempestade`) aplica solavanco físico. API: `viber.vael.puppet_{push,hit,stagger,kill,revive,getup,release,activate,fall,start,state,info,busy}`. Camada 29 (`HERO_LAYER_BIT`) não colide com ragdolls (30). Gates `VAEL_PUPPET=0`, `VAEL_PUPPET_DEBUG=1` |
 | `src/lights.rs` | **luzes práticas** (`bevy_lights` 0.5, pin `=0.5.0`): as luzes de fogo viram `PoolCandidate` (pool orçamentado + flicker + chama billboard); as de preenchimento/cristais ficam autorais. Gate `VAEL_PRACTICAL_LIGHTS=0`. Ver `docs/LIGHTING.md` |
 | `docs/WATER.md` | camadas da água (solver iWave, domínio, espelho CPU do swell), flutuação `FloatingBody` (crate `bevy_ext_water`, adapter avian) e barcos a remos (`src/boat.rs`, `data/boats.json`; **E** entra/sai, W/S rema, A/D leme) |
-| `docs/PAVING.md` | **pavimento em grelha** (`bevy_ext_terrain_runtime::paving`): `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>` troca a elipse/ribbon por células com ocupação exclusiva, chanfro nos cantos convexos e filete nos côncavos, uma malha por material. Camadas fixas: `DECAL_LIFT 0.040 < PAVING_LIFT 0.064 < ON_PAVING 0.072`; um decal coberto pelo pavimento sobe sozinho. Gate `VIBER_PAVING=0` |
+| `docs/PAVING.md` | **pavimento em grelha** (`bevy_ext_terrain_runtime::paving`): `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>` troca a elipse/ribbon por células com ocupação exclusiva, chanfro nos cantos convexos e filete nos côncavos, uma malha por material. Camadas fixas: `DECAL_LIFT 0.040 < PAVING_LIFT 0.064 < ON_PAVING 0.072`; um decal coberto pelo pavimento sobe sozinho. Gate `VAEL_PAVING=0` |
 
 ## Cenas
 
@@ -255,11 +256,11 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   manda (um arbusto fica residente até ao piso do anel do véu + 60 m; uma
   muralha, com corte no teto de 800 m, até ~860 m), e o *bootstrap* de 800 m
   paga-se **uma vez por URL**. O véu espera só o anel de
-  `VIBER_GLTF_READY_RADIUS` (150 m) e o anel largo não corre durante o
+  `VAEL_GLTF_READY_RADIUS` (150 m) e o anel largo não corre durante o
   carregamento (competia com o bake dos colliders: ~1 s por frame medido).
   Nunca descarrega nós com `LuaScriptRef`, `CharacterAnimator` ou o herói — o
   rig e o `viber.state` apontam para entidades da subárvore. A/B:
-  `VIBER_GLTF_STREAMING=0` volta ao tudo-no-arranque. Detalhe:
+  `VAEL_GLTF_STREAMING=0` volta ao tudo-no-arranque. Detalhe:
   `docs/DEBUG.md`; a prontidão conta só os pendentes do anel (`world_ready.rs`).
 - **Chão e clima** ([`docs/GROUND.md`](docs/GROUND.md)): manto de neve na janela
   do herói (`VAEL_SNOW=0`), rastos (`VAEL_TRAILS=0`) e sombra de nuvem no
@@ -270,7 +271,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   tem o adaptador `src/grass.rs` (regras do `TerrainRuntime`, layout dos
   quadrantes + Vale, vento/tinta/trampling). Paletas e settings são
   `world/settings/grass.bsn` (`GrassSettingsSpec`/`GrassStyleSpec`, editáveis
-  no painel "Relva" do Jackdaw). `VIBER_GRASS=0`, `VIBER_GRASS_DENSITY`,
+  no painel "Relva" do Jackdaw). `VAEL_GRASS=0`, `VAEL_GRASS_DENSITY`,
   `GRASS_DEBUG=1` (PGMs em `/tmp`); `graphics:` escolhe o tier. GPU sem
   compute/indirect não desenha relva nenhuma (aviso único no log).
 - `Option<T>` em componentes do `.bsn`: o emissor do Jackdaw grava o valor
@@ -392,7 +393,7 @@ execução (não grava modo nenhum); o autosave seguinte fica com
 
 QA vivo: uma instância do jogo de cada vez (o `vael-tools debug` fala com a
 porta). **Esperar pelo carregamento**: o véu sai com o anel próximo do herói
-(`VIBER_GLTF_READY_RADIUS`, 150 m), GPU, herói assente — o resto do mundo entra
+(`VAEL_GLTF_READY_RADIUS`, 150 m), GPU, herói assente — o resto do mundo entra
 por distância depois (ver a *gotcha* dos GLB) e demora — dezenas de segundos,
 mais com builds ao lado.
 Playtest de bugs: `cargo test --features playtest --test playtest_scenarios --

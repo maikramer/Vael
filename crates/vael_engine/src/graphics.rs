@@ -71,8 +71,7 @@ static PRESET: OnceLock<GraphicsPreset> = OnceLock::new();
 /// default (`equilibrado`) se ninguém tiver resolvido — é o que acontece nos
 /// testes e no `analyze`, que não bootam a lente.
 pub fn resolve(config_value: Option<&str>) -> GraphicsPreset {
-    let from_env = std::env::var("VIBER_GRAPHICS")
-        .ok()
+    let from_env = bevy_engine_core::envs::var_lossy("GRAPHICS")
         .and_then(|raw| GraphicsPreset::parse(&raw));
     let from_config = config_value.and_then(GraphicsPreset::parse);
     let preset = from_env
@@ -93,7 +92,7 @@ pub fn preset() -> GraphicsPreset {
 /// `fifo|fifo_relaxed|mailbox|immediate|auto_vsync|auto_novsync`).
 pub fn present_mode() -> bevy::window::PresentMode {
     use bevy::window::PresentMode;
-    match std::env::var("VIBER_PRESENT_MODE")
+    match bevy_engine_core::envs::var_lossy("PRESENT_MODE")
         .unwrap_or_default()
         .trim()
         .to_ascii_lowercase()

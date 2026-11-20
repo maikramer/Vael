@@ -1934,8 +1934,8 @@ fn spawn_entity(
                     // no SOL, que é onde faz falta (herói→chão, poste→calçada).
                     // `VIBER_POINT_CONTACT_SHADOWS=1` devolve-o (A/B de QA).
                     light.contact_shadows_enabled = matches!(
-                        std::env::var("VIBER_POINT_CONTACT_SHADOWS").as_deref(),
-                        Ok("1") | Ok("true") | Ok("on") | Ok("yes")
+                        bevy_engine_core::envs::var_lossy("POINT_CONTACT_SHADOWS").as_deref(),
+                        Some("1") | Some("true") | Some("on") | Some("yes")
                     );
                     // Marca a AUTORIA da sombra: o orçamento de sombras
                     // (`ambient::light_budget_system`) liga/desliga o
@@ -2436,7 +2436,7 @@ fn build_transform(spec: &TransformSpec) -> Transform {
 /// gradmesh quando o plugin está montado.
 fn primitives_use_gradmesh() -> bool {
     !matches!(
-        std::env::var("VIBER_PRIMITIVES").ok().as_deref(),
+        bevy_engine_core::envs::var_lossy("PRIMITIVES").as_deref(),
         Some("standard" | "std" | "0" | "false" | "off")
     )
 }
@@ -2446,7 +2446,7 @@ fn primitives_use_gradmesh() -> bool {
 /// `VIBER_PRIMITIVES_DETAIL` permite o A/B sem recompilar.
 fn gradmesh_detail() -> bevy_gradmesh::ShapeDetail {
     use bevy_gradmesh::ShapeDetail;
-    match std::env::var("VIBER_PRIMITIVES_DETAIL").ok().as_deref() {
+    match bevy_engine_core::envs::var_lossy("PRIMITIVES_DETAIL").as_deref() {
         Some("minimal") => ShapeDetail::Minimal,
         Some("low") => ShapeDetail::Low,
         Some("medium") => ShapeDetail::Medium,

@@ -134,7 +134,7 @@ mod tests {
     /// O alcance efetivo é METADE do autorado (a menos que o env mande).
     #[test]
     fn ranges_are_halved_by_default() {
-        if std::env::var_os("VIBER_INTERACT_RANGE_SCALE").is_none() {
+        if bevy_engine_core::envs::var("INTERACT_RANGE_SCALE").is_none() {
             assert!((scaled_range(BASE_RANGE_M) - 1.75).abs() < 1e-5);
             assert!((default_range() - 1.75).abs() < 1e-5);
             assert!((scaled_range(6.0) - 3.0).abs() < 1e-5);

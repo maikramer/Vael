@@ -58,8 +58,7 @@ struct RegionalProbe;
 /// Gate: `VIBER_PROBES=0` desliga (default ON — caminho raster oficial).
 pub fn probes_requested() -> bool {
     !matches!(
-        std::env::var("VIBER_PROBES")
-            .ok()
+        bevy_engine_core::envs::var_lossy("PROBES")
             .map(|v| v.trim().to_ascii_lowercase())
             .as_deref(),
         Some("0" | "false" | "no" | "off")
@@ -98,7 +97,7 @@ pub struct ProbeFreezePlugin;
 
 impl Plugin for ProbeFreezePlugin {
     fn build(&self, app: &mut App) {
-        if std::env::var("VIBER_PROBE_FREEZE").ok().as_deref() == Some("0") {
+        if bevy_engine_core::envs::var_lossy("PROBE_FREEZE").as_deref() == Some("0") {
             return;
         }
         app.add_systems(PostUpdate, freeze_static_probes);

@@ -63,7 +63,7 @@ def measure(bridge, previous, seconds):
         "top": snapshot["top"],
         "hitches": snapshot["hitches"],
     }
-    if os.environ.get("VIBER_PROF_GPU") == "1":
+    if os.environ.get("VAEL_PROF_GPU", os.environ.get("VIBER_PROF_GPU")) == "1":
         report["gpu"] = bridge.rpc("viber.profiler.tab", {"tab": "systems"})["gpu"]
     return report
 
