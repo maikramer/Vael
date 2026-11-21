@@ -92,7 +92,7 @@ hotbar [1]/[2], despojos de ouro/poções nos abates), **travel** (A Nota —
 12 marcos para assinar com [F], viagem rápida [G] nas fogueiras, mapa
 visual [M] com hillshade do heightmap e seta para o objetivo da quest),
 **save em slots** (0 = autosave em fogueiras/entrega de quest/chefe,
-1–3 manuais em [Q]→Sistema; JSON em `~/.local/share/viber/`), **mundo vivo**
+1–3 manuais em [Q]→Sistema; JSON em `~/.local/share/vael/` (o dir legado `~/.local/share/viber` é movido na primeira corrida)), **mundo vivo**
 (céu procedural + ciclo dia/noite, clima, fog/tint por BiomeRegion, BGM com
 crossfade por zona e música de combate, SFX, emissores de partícula,
 reverb em interiores), **combate com feedback** (hit-stop, shake, números de
