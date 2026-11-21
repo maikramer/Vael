@@ -7,11 +7,11 @@
 //! Superfície:
 //! * janela declarativa (XML+CSS+Luau) com o modal **P** — o driver é o
 //!   `ui/profiler.lua` do mundo (ex.: `examples/simple-rpg`), alimentado por
-//!   `viber.profiler()` / `viber.profiler_cmd()` (`script.rs`);
+//!   `vael.profiler()` / `vael.profiler_cmd()` (`script.rs`);
 //! * overlay mínimo **F3** (fps/frame/entidades);
-//! * debug bridge: `viber.profiler` (compat), `viber.profiler.tab`
+//! * debug bridge: `vael.profiler` (compat), `vael.profiler.tab`
 //!   (`{"tab": "systems|world|physics|audio|extras|all"}`) e
-//!   `viber.profiler.export` (JSON para ficheiro) — cliente `viber debug
+//!   `vael.profiler.export` (JSON para ficheiro) — cliente `viber debug
 //!   prof --tab/--export`;
 //! * teclas com a janela aberta: **F5** muda de aba, **F12/Pause** congela
 //!   (aneis estáveis — o *Pause* original), **Backquote** exporta,
@@ -62,7 +62,7 @@ const FRAME_WINDOW: usize = 180;
 const OVERLAY_REFRESH: f32 = 0.25;
 
 /// Abas do profiler, por ordem — ids canónicos EN (o tab-group do XML, o
-/// `--tab` do CLI e `viber.ui.tab("prof")` falam nestes ids; os rótulos
+/// `--tab` do CLI e `vael.ui.tab("prof")` falam nestes ids; os rótulos
 /// visíveis são PT no XML). `frames` fecha a lista para não deslocar os
 /// índices históricos.
 pub const TABS: [&str; 6] = ["systems", "world", "physics", "audio", "extras", "frames"];
@@ -538,7 +538,7 @@ fn system_access_map(world: &mut World) -> std::collections::HashMap<String, (us
     map
 }
 
-/// Snapshot JSON do profiler — o corpo do método `viber.profiler` (compatível
+/// Snapshot JSON do profiler — o corpo do método `vael.profiler` (compatível
 /// com o formato anterior; campos novos só se acrescentam).
 pub fn snapshot(world: &mut World) -> serde_json::Value {
     let counters = collect_counters(world);
@@ -657,7 +657,7 @@ pub fn snapshot(world: &mut World) -> serde_json::Value {
     })
 }
 
-/// Snapshot rico de um tab (`viber.profiler.tab`).
+/// Snapshot rico de um tab (`vael.profiler.tab`).
 pub fn tab_snapshot(world: &mut World, tab: &str) -> serde_json::Value {
     let frame_avg_ms = world
         .get_resource::<FrameStats>()
@@ -691,7 +691,7 @@ pub fn export_snapshot(world: &mut World) -> serde_json::Value {
     }
     let extras: Vec<serde_json::Value> = extras_snapshot(world);
     json!({
-        "tool": "viber",
+        "tool": "vael",
         "kind": "profiler-export",
         "exported_at": SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -704,7 +704,7 @@ pub fn export_snapshot(world: &mut World) -> serde_json::Value {
 }
 
 /// O JSON COMPLETO do profiler — o mesmo payload do botão COPIAR, do
-/// ficheiro de export, do publish para o driver Luau e do `viber.profiler.tab
+/// ficheiro de export, do publish para o driver Luau e do `vael.profiler.tab
 /// {"tab":"all"}` da bridge. Um só construtor para os quatro caminhos nunca
 /// divergirem.
 pub fn full_snapshot(world: &mut World) -> serde_json::Value {
@@ -971,16 +971,16 @@ impl Plugin for ProfilerPlugin {
             .init_resource::<HudState>()
             .add_systems(Startup, spawn_overlay)
             .add_systems(First, (count_frames, sync_frozen_state).chain());
-            // Superfície Luau (padrão viber.ui). BMS: o instalador por
+            // Superfície Luau (padrão vael.ui). BMS: o instalador por
             // contexto vai para o registo do `bevy_ext_luau` — os contextos
             // BMS e a REPL do bridge nascem com os closures
-            // `viber.profiler`/`viber.profiler_cmd` já dentro (os Arcs são
+            // `vael.profiler`/`vael.profiler_cmd` já dentro (os Arcs são
             // partilhados com este recurso).
             bevy_ext_luau::add_context_installer(script::install_context_api);
             app.add_systems(
                 Update,
                 // A view publica-se antes dos scripts do frame (o snapshot
-                // que `viber.profiler()` lê é o DESTE frame).
+                // que `vael.profiler()` lê é o DESTE frame).
                 script::publish_profiler_view
                     .before(crate::luau::bms_bridge::VaelScripts),
             )
@@ -1374,7 +1374,7 @@ mod tests {
         assert_eq!(written, path);
         let text = std::fs::read_to_string(&path).expect("ler export");
         let value: serde_json::Value = serde_json::from_str(&text).expect("json válido");
-        assert_eq!(value["tool"], "viber");
+        assert_eq!(value["tool"], "vael");
         assert!(value["tabs"]["systems"].is_object(), "{value}");
         assert!(value["tabs"]["world"].is_object());
         assert!(value["tabs"]["physics"].is_object());

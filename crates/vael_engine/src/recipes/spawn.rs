@@ -133,7 +133,7 @@ fn is_ground_feature(kind: &EntityKind) -> bool {
 /// tree into `out` — the same pass `startup` runs, exposed so headless tools
 /// and tests can carve a world without booting the app.
 /// Prototypes do mundo (`<Prototype id="…">`) para spawn EM RUNTIME
-/// (`viber.spawn_prototype`). Imutável pós-arranque.
+/// (`vael.spawn_prototype`). Imutável pós-arranque.
 #[derive(Resource, Default, Reflect)]
 #[reflect(Resource)]
 pub struct PrototypeLibrary(#[reflect(ignore)] pub std::collections::BTreeMap<String, EntitySpec>);
@@ -501,7 +501,7 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
         });
         world.insert_resource(pending_terrain);
     }
-    // Prototypes para spawn em runtime (viber.spawn_prototype) — o WorldIR
+    // Prototypes para spawn em runtime (vael.spawn_prototype) — o WorldIR
     // morre aqui; a biblioteca sobrevive.
     if !persistent {
         world.insert_resource(PrototypeLibrary(parsed.prototypes.clone()));
@@ -1687,7 +1687,7 @@ fn spawn_entity(
         }
     }
     // Props autorais (inclui `destructible`/resource) valem para QUALQUER
-    // entidade, com ou sem script: são dados que o Lua lê por `viber.props`.
+    // entidade, com ou sem script: são dados que o Lua lê por `vael.props`.
     let authored: Vec<_> = spec
         .props
         .iter()
@@ -2975,7 +2975,7 @@ mod cache_key_tests {
     }
 }
 
-/// Spawn RUNTIME de prototypes (`viber.spawn_prototype`): drena
+/// Spawn RUNTIME de prototypes (`vael.spawn_prototype`): drena
 /// [`PendingScriptSpawns`], materializa cada `<Prototype>` com a MESMA
 /// maquinaria do arranque ([`spawn_entity`]) e chama a callback Lua com os
 /// bits da entidade criada. Sem cota explícita, assenta o Y na superfície
@@ -3004,7 +3004,7 @@ pub fn apply_script_spawns(world: &mut World) {
     if missing > 0 {
         warn!(
             target: "vael::luau",
-            "viber.spawn_prototype: {missing} pedido(s) com prototype inexistente (descartados)"
+            "vael.spawn_prototype: {missing} pedido(s) com prototype inexistente (descartados)"
         );
     }
     let seat_ys: Vec<Option<f32>> = requests
@@ -3095,13 +3095,13 @@ pub fn apply_script_spawns(world: &mut World) {
     world.insert_resource(pending);
     // Callbacks Lua: a `Function` é do CONTEXTO BMS do chamador (a ponte
     // `bms_bridge` guarda-a no `PendingPrototypeSpawn`) — chama-se
-    // directamente com os bits; as closures `viber.*` leem os globals
+    // directamente com os bits; as closures `vael.*` leem os globals
     // estáticos, não há ctx por chamada para semear (a VM antiga semeava o
     // `ScriptCtx` dela; morreu com o host).
     for (entity, cb) in spawned {
         let Some(cb) = cb else { continue };
         if let Err(e) = cb.call::<()>(entity.to_bits() as i64) {
-            warn!(target: "vael::luau", "viber.spawn_prototype callback: {e}");
+            warn!(target: "vael::luau", "vael.spawn_prototype callback: {e}");
         }
     }
 }

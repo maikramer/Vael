@@ -1,5 +1,5 @@
 //! Câmara livre de editor (`--camera free`): uma única câmara orbital em
-//! torno de um alvo, conduzida pelo bridge (`viber.camera.orbit/pan/zoom/
+//! torno de um alvo, conduzida pelo bridge (`vael.camera.orbit/pan/zoom/
 //! look_at/pose`) — a navegação de mundos do editor externo (preview ~400 px
 //! com minimapa). Sem a flag o plugin não regista NADA e a App fica igual à
 //! de sempre (ver [`EditorCameraPlugin`]).

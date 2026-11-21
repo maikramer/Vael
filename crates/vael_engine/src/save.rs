@@ -2,7 +2,7 @@
 //! `SaveLoadPlugin` original (localStorage + msgpackr):
 //!
 //! - **[`SaveGame`]**: envelope genérico (pose, volumes, cena, idioma,
-//!   recortes de terreno) + `world_kv` (o `viber.game()` do Luau) + uma
+//!   recortes de terreno) + `world_kv` (o `vael.game()` do Luau) + uma
 //!   secção opaca `game` para o jogo. Nada de XP/ouro/quests hardcoded.
 //! - **Disco**: `~/.local/share/viber/<world>.save.json` (fallback
 //!   `./<world>.save.json` sem HOME).
@@ -94,7 +94,7 @@ pub fn apply_save(game: &SaveGame, mixer: &mut AudioMixerSettings) {
 
 /// Opções e gravação: linhas ↑↓, volumes ←→, [J] grava, [L] carrega — e os
 /// mesmos dois efeitos disparados pelos botões do menu declarativo
-/// (`viber.ui.action("save"|"load", "")`).
+/// (`vael.ui.action("save"|"load", "")`).
 ///
 /// Sem throttle a montante do `just_pressed`: a tecla só é verdadeira 1
 /// frame e o throttle (0,15 s) descartava ~90 % das pressões de [J]/[L].
@@ -126,7 +126,7 @@ fn options_system(
     let mut save_requested = false;
     let mut load_requested = false;
     for action in ui_actions.read() {
-        // Ação reclamada por um script (`viber.own_action`): o handler nativo
+        // Ação reclamada por um script (`vael.own_action`): o handler nativo
         // cala-se e a lógica corre em Lua (a ação já foi encaminhada por
         // `forward_ui_actions`).
         if action_owners
@@ -141,7 +141,7 @@ fn options_system(
             _ => {}
         }
     }
-    // `viber.save()` / `viber.load()` (scripts) valem sempre. O slot vem
+    // `vael.save()` / `vael.load()` (scripts) valem sempre. O slot vem
     // junto: `None` = save legado, `0` = autosave, `1..` = manual.
     let (script_save, script_load, script_slot) = world_save_host_request
         .2
@@ -203,11 +203,11 @@ fn options_system(
         if let Some(position) = hero_state {
             let mut game = capture(position, (mixer.master, mixer.music, mixer.sfx));
             game.volumes_extra = Some((mixer.voice, mixer.ambience));
-            // `viber.game()` — o store BMS (único desde a reforma do host).
+            // `vael.game()` — o store BMS (único desde a reforma do host).
             game.world_kv =
                 bevy_ext_luau::game::game_to_json_store(&bevy_ext_luau::game::game_store());
             // Metadados que o menu lê sem abrir o JSON: hora da gravação,
-            // tempo de jogo e rótulo (o jogo escreve-os em `viber.game()`).
+            // tempo de jogo e rótulo (o jogo escreve-os em `vael.game()`).
             // `level`/`gold` NÃO se copiam para o envelope: `SaveGame::level()`
             // e `gold()` lêem-nos do `world_kv` na altura de listar os slots.
             game.saved_at = std::time::SystemTime::now()
@@ -645,7 +645,7 @@ mod tests {
     }
 
     /// Sem recursos de RPG no mundo, o `capture` grava o envelope por omissão
-    /// e o `world_kv` viaja — é a promessa do `viber.game()` persistir em
+    /// e o `world_kv` viaja — é a promessa do `vael.game()` persistir em
     /// qualquer preset.
     #[test]
     fn test_capture_and_apply_without_game_resources() {

@@ -12,7 +12,7 @@ use serde_json::{Value, json};
 
 use super::{FrameStats, HitchLog, hitch_json, mem, timed, trace};
 
-/// Snapshot da aba (`viber.profiler.tab {"tab":"frames"}`).
+/// Snapshot da aba (`vael.profiler.tab {"tab":"frames"}`).
 pub fn snapshot(world: &World) -> Value {
     let stats = world.get_resource::<FrameStats>();
     let (avg, min, max, p95) = stats

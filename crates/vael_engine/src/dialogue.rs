@@ -1,8 +1,8 @@
 //! Texto localizado e balão do HUD — SEM intérprete de grafos.
 //!
 //! Os grafos de diálogo (`dialogues/*.json`) são CONTEÚDO e correm no jogo
-//! (Lua, `scripts/townsfolk.lua`): o script lê o JSON com `viber.load_json`,
-//! guarda o cursor em `viber.game()` e escreve com `viber.say`. A engine só
+//! (Lua, `scripts/townsfolk.lua`): o script lê o JSON com `vael.load_json`,
+//! guarda o cursor em `vael.game()` e escreve com `vael.say`. A engine só
 //! resolve chaves `@nome` (locale) e desenha o balão.
 //!
 //! Os contratos ([`ExternalSayPresenter`], [`localized`],
@@ -15,7 +15,7 @@ use bevy::prelude::*;
 
 pub use bevy_engine_core::dialogue::{ExternalSayPresenter, localized, localized_lines};
 
-/// Balão do HUD (mesma escrita de `viber.say`).
+/// Balão do HUD (mesma escrita de `vael.say`).
 pub fn show_balloon(
     balloons: &mut Query<(&mut Visibility, &mut crate::hud::HudBalloon, &Children)>,
     texts: &mut Query<&mut Text>,

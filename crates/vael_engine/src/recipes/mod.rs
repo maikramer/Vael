@@ -590,7 +590,7 @@ pub enum EntityKind {
         tag: String,
         attrs: Vec<(String, String)>,
     },
-    /// `<SceneEntry name>` — ponto de chegada de uma cena (`viber.change_scene(cena,
+    /// `<SceneEntry name>` — ponto de chegada de uma cena (`vael.change_scene(cena,
     /// entrada)`); a pose é a do nó. Ver [`crate::scene_loader`].
     SceneEntry,
     /// `<ScenePortal target entry …>` — porta para outra cena (também é entrada com o

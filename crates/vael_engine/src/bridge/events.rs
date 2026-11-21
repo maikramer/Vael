@@ -7,7 +7,7 @@
 //! sobre os messages da engine + um detector de mudanças no `QuestLog` e de
 //! HP→0 (mortes não têm message própria — são componentes).
 //!
-//! Cliente: `viber.debug.events(since_seq)` (a REPL leva os últimos 256) ou
+//! Cliente: `vael.debug.events(since_seq)` (a REPL leva os últimos 256) ou
 //! `viber debug events --since N`.
 
 use std::collections::VecDeque;

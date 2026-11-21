@@ -4,7 +4,7 @@
 //! RPG para a espada na mão. A engine não conhece "arma" nem "ferramenta":
 //! só encontra o osso pelo nome, instancia o GLB como filho e troca/remove
 //! por SLOT. A regra (qual URL, qual osso, quando) é do script
-//! (`viber.attach`/`viber.detach`).
+//! (`vael.attach`/`vael.detach`).
 
 use std::collections::HashMap;
 
@@ -44,7 +44,7 @@ pub const ATTACH_BONE_WAIT_SECS: f32 = 15.0;
 
 /// Pedidos cujo osso ainda não existe: o glTF do dono (herói, criatura) chega
 /// alguns frames — ou segundos, num disco lento — depois do primeiro
-/// `viber.attach`. A engine guarda-os e tenta de novo em cada frame, em vez de
+/// `vael.attach`. A engine guarda-os e tenta de novo em cada frame, em vez de
 /// o script repetir o pedido (cada repetição despachava e recarregava o GLB).
 #[derive(Debug, Default, Resource)]
 pub struct PendingAttachments(pub Vec<(Entity, AttachmentRequest, f32)>);

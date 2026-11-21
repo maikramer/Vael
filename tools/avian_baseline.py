@@ -150,7 +150,7 @@ def cast_all(bridge: Bridge, rays: list[dict]) -> list[dict]:
             "max_toi": ray["max_toi"],
         }
         try:
-            res = bridge.call("viber.raycast", params)
+            res = bridge.call("vael.raycast", params)
         except Exception as err:  # noqa: BLE001 — guardar o erro é o resultado
             out.append({"kind": ray["kind"], "error": str(err)[:200]})
             continue

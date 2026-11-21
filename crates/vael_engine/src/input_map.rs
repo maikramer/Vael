@@ -41,7 +41,7 @@ pub fn gather_actions(
     map: Res<ActionMap>,
     pads: Query<&Gamepad>,
     // Com um `<UiInput>` focado (a barra de fala do NLU) as teclas são TEXTO:
-    // o movimento, o `viber.input.*` e o `viber.interacted` já o respeitam —
+    // o movimento, o `vael.input.*` e o `vael.interacted` já o respeitam —
     // sem este guarda, escrever "j" na barra disparava o ataque.
     typing: Option<Res<crate::ui::widgets::UiFocusedInput>>,
     mut state: ResMut<ActionState>,

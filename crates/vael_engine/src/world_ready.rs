@@ -26,7 +26,7 @@
 //! orçamento do frame já esgotou — com 48 MB o mundo ficava negro (medido
 //! 2026-11-13). Depois de pronto, o limite sai (comportamento do Bevy).
 //!
-//! Agentes/QA: `viber.ping` e `viber.scene.current` devolvem `ready`
+//! Agentes/QA: `vael.ping` e `vael.scene.current` devolvem `ready`
 //! (+ `loading` com o progresso). `viber debug wait-ready` espera por ele.
 
 use std::sync::Arc;
@@ -203,7 +203,7 @@ impl WorldReadiness {
     }
 }
 
-/// JSON da prontidão para a bridge (`viber.ping`/`viber.scene.current`).
+/// JSON da prontidão para a bridge (`vael.ping`/`vael.scene.current`).
 /// Sem o recurso (apps mínimas) conta como pronto; no modo Edit é sempre.
 pub fn readiness_json(world: &World) -> serde_json::Value {
     match world.get_resource::<WorldReadiness>() {

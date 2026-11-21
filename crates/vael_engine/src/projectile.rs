@@ -1,6 +1,6 @@
 //! `<ProjectileTemplate id="enemy-arrow" speed="16" damage="8" max-life="2.5"
 //! sensor-radius="0.3" faction="enemy" />` — projéteis declarativos disparados
-//! por script (`viber.fire_projectile(id [, x, y, z])`).
+//! por script (`vael.fire_projectile(id [, x, y, z])`).
 //!
 //! O mundo declara o COMO (velocidade, dano, vida, raio do sensor, facção,
 //! gravidade, cor/tamanho); o script decide o QUANDO e o PARA ONDE. Sem alvo
@@ -151,7 +151,7 @@ pub struct ProjectileRequest {
     pub shooter: Option<Entity>,
 }
 
-/// Fila de disparos (`viber.fire_projectile` → [`spawn_projectiles`]).
+/// Fila de disparos (`vael.fire_projectile` → [`spawn_projectiles`]).
 #[derive(Debug, Default, Resource, Reflect)]
 #[reflect(Resource)]
 pub struct ProjectileQueue {
@@ -297,7 +297,7 @@ fn spawn_projectiles(
         let Some(template) = templates.0.get(&request.template) else {
             if warned.insert(request.template.clone()) {
                 warn!(
-                    "viber.fire_projectile: template '{}' não declarado (<ProjectileTemplate id=…>)",
+                    "vael.fire_projectile: template '{}' não declarado (<ProjectileTemplate id=…>)",
                     request.template
                 );
             }
@@ -494,7 +494,7 @@ fn step_projectiles(
     }
 }
 
-/// Liga os `<ProjectileTemplate>` e o `viber.fire_projectile`.
+/// Liga os `<ProjectileTemplate>` e o `vael.fire_projectile`.
 pub struct ProjectilePlugin;
 
 impl Plugin for ProjectilePlugin {

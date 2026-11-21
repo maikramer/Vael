@@ -6,7 +6,7 @@
 //! * Vistas de consulta ([`list`], [`describe`], [`find`]) em JSON estável.
 //!
 //! Superfícies (todas sobre estas funções, nunca com lógica própria):
-//! `viber scene …` (CLI, offline, grava no disco), `viber.scene.*` (bridge, mundo vivo) e o
+//! `viber scene …` (CLI, offline, grava no disco), `vael.scene.*` (bridge, mundo vivo) e o
 //! editor externo (in-process). Uma operação feita por um agente e a mesma feita à mão no editor
 //! produzem o mesmo XML.
 

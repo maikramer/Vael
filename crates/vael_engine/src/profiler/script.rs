@@ -1,5 +1,5 @@
-//! Superfície Luau do profiler — `viber.profiler()` (leitura) e
-//! `viber.profiler_cmd(cmd)` (ações), no mesmo padrão do `viber.ui`:
+//! Superfície Luau do profiler — `vael.profiler()` (leitura) e
+//! `vael.profiler_cmd(cmd)` (ações), no mesmo padrão do `vael.ui`:
 //!
 //! * **leitura** — o sistema [`publish_profiler_view`] publica um snapshot
 //!   JSON num `Arc<Mutex<…>>` (leve com o modal fechado, completo a ~4 Hz
@@ -14,7 +14,7 @@
 //! (exportar) e **PageUp/PageDown** (raio) continuam engine-side
 //! ([`profiler_keys_system`]) — o modal declarativo trata do **P** sozinho
 //! (`key="p"` faz toggle nativo) — e o driver `ui/profiler.lua` sincroniza
-//! o estado para a UI por `viber.ui.select_tab`/classes.
+//! o estado para a UI por `vael.ui.select_tab`/classes.
 
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
@@ -41,9 +41,9 @@ pub struct ProfilerScriptState {
     /// Último snapshot publicado (`None` = modal fechado, nada a mostrar).
     #[reflect(ignore)]
     pub view: Arc<Mutex<Option<Value>>>,
-    /// Comandos enfileirados por `viber.profiler_cmd` (aplicados pós-frame).
+    /// Comandos enfileirados por `vael.profiler_cmd` (aplicados pós-frame).
     pub queue: Arc<Mutex<Vec<String>>>,
-    /// True depois de `viber.profiler` existir no host antigo (BMS instala
+    /// True depois de `vael.profiler` existir no host antigo (BMS instala
     /// por contexto, sem flag).
     pub installed: bool,
 }
@@ -73,9 +73,12 @@ fn shared_queue() -> Arc<Mutex<Vec<String>>> {
 }
 
 fn install_profiler_api(lua: &mlua::Lua, _state: &ProfilerScriptState) -> mlua::Result<()> {
-    let viber: mlua::Table = lua.globals().get("viber")?;
+    let viber: mlua::Table = lua
+        .globals()
+        .get("vael")
+        .or_else(|_| lua.globals().get("viber"))?;
 
-    // viber.profiler() -> table | nil — snapshot publicado pela engine
+    // vael.profiler() -> table | nil — snapshot publicado pela engine
     // (nil com o modal fechado: o driver nem acorda o GC).
     {
         let view = Arc::clone(&shared_view());
@@ -91,7 +94,7 @@ fn install_profiler_api(lua: &mlua::Lua, _state: &ProfilerScriptState) -> mlua::
         )?;
     }
 
-    // viber.profiler_cmd(cmd) — enfileira ação ("freeze", "export", "reset",
+    // vael.profiler_cmd(cmd) — enfileira ação ("freeze", "export", "reset",
     // "tab:<nome>", "radius:<±N>", "extra:<id>"); aplicada pós-frame.
     {
         let queue = Arc::clone(&shared_queue());
@@ -109,7 +112,7 @@ fn install_profiler_api(lua: &mlua::Lua, _state: &ProfilerScriptState) -> mlua::
     Ok(())
 }
 
-/// Instalador de contexto: `viber.profiler`/`viber.profiler_cmd` em CADA
+/// Instalador de contexto: `vael.profiler`/`vael.profiler_cmd` em CADA
 /// contexto novo (o registo `bevy_ext_luau::add_context_installer` corre-o
 /// sobre a `&Lua` nua — contexto BMS semeado ou a REPL do bridge).
 pub fn install_context_api(lua: &mlua::Lua) -> Result<(), String> {
@@ -129,7 +132,7 @@ pub fn publish_profiler_view(world: &mut World) {
             .map(|m| m.open.iter().any(|id| id == "profiler-win"))
             .unwrap_or(false);
         if !open {
-            // Modal fechado: larga o cache — `viber.profiler()` devolve nil.
+            // Modal fechado: larga o cache — `vael.profiler()` devolve nil.
             if let Ok(mut view) = world.resource::<ProfilerScriptState>().view.lock()
                 && view.is_some()
             {
@@ -154,7 +157,7 @@ pub fn publish_profiler_view(world: &mut World) {
 #[reflect(Resource)]
 pub struct PublishThrottle(pub f32);
 
-/// Aplica os comandos enfileirados por `viber.profiler_cmd` — pós-frame,
+/// Aplica os comandos enfileirados por `vael.profiler_cmd` — pós-frame,
 /// igual ao `apply_ui_commands`.
 pub fn apply_profiler_commands(world: &mut World) {
     let pending: Vec<String> = world

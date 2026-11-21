@@ -1,7 +1,7 @@
 //! Hit-stop: congela o tempo VIRTUAL por alguns milissegundos no impacto.
 //!
 //! É um efeito de tempo genérico — a engine não sabe de golpes. O jogo pede
-//! via `viber.hit_stop(segundos)`; o `A11y.hitstop` pode desligá-lo.
+//! via `vael.hit_stop(segundos)`; o `A11y.hitstop` pode desligá-lo.
 
 use bevy::prelude::*;
 
@@ -20,7 +20,7 @@ pub struct HitStop {
 }
 
 /// Velocidade base do tempo virtual, definida FORA do hit-stop (ex.: o
-/// slow-mo do debug bridge via `viber.debug.set_time_scale`). O
+/// slow-mo do debug bridge via `vael.debug.set_time_scale`). O
 /// [`hit_stop_system`] compõe `relative_speed = base × hit_stop_scale`
 /// enquanto há hit-stop e não escreve nada fora dele — assim a base escolhida
 /// por outra via persiste.

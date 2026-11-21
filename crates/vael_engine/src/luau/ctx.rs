@@ -1,12 +1,12 @@
 //! Registos de superfície partilhados com os scripts (estradas/água) — o
 //! que sobrou do ctx da VM antiga (2026-11-15, onda final do
 //! DELETE-MONOLITH: `ScriptCtx`, o snapshot por-chamada que as closures
-//! `viber.*` liam, morreu com o host; o BMS publica o estado do frame no
+//! `vael.*` liam, morreu com o host; o BMS publica o estado do frame no
 //! `bevy_ext_luau::ScriptHostState`).
 //!
 //! As estradas/água são partilhadas por ARCO com a ponte BMS
 //! ([`crate::luau::bms_bridge`], que as publica via o seam
-//! `bevy_ext_luau::SurfaceQueries`) e com a REPL do bridge (`viber.debug`
+//! `bevy_ext_luau::SurfaceQueries`) e com a REPL do bridge (`vael.debug`
 //! consulta ao vivo) — construídas UMA vez (o mundo carvado não muda depois
 //! do bootstrap) e depois custam um clone de ponteiro por frame.
 
@@ -26,7 +26,7 @@ impl SurfaceRegistries {
         self.roads.iter().any(|road| road.is_on_road(p))
     }
 
-    /// Estrada mais próxima do ponto, mesmo fora da fita (`viber.road`).
+    /// Estrada mais próxima do ponto, mesmo fora da fita (`vael.road`).
     /// `None` quando o mundo não tem estradas.
     pub fn nearest_road(&self, x: f32, z: f32) -> Option<crate::terrain::roads::RoadSample> {
         let p = Vec2::new(x, z);
@@ -36,7 +36,7 @@ impl SurfaceRegistries {
             .min_by(|a, b| a.center_dist.total_cmp(&b.center_dist))
     }
 
-    /// Ponto na estrada mais longa a `s` metros de arco (`viber.road_at`).
+    /// Ponto na estrada mais longa a `s` metros de arco (`vael.road_at`).
     /// O comprimento é INVARIÁVEL pós-bootstrap: computá-lo dentro do
     /// `max_by` percorria as estações de cada estrada em CADA comparação.
     pub fn road_at(&self, s: f32) -> Option<crate::terrain::roads::RoadSample> {

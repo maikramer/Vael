@@ -84,7 +84,7 @@ pub struct AppOptions {
     /// a principal, omisso = a primeira entrada.
     pub start_entry: Option<String>,
     /// Mundo COMO O CLI O RECEBEU (antes de o `start-scene` o trocar pela cena de
-    /// arranque): a identidade do `engine.json`/`viber.ping`. O `session up` regista o
+    /// arranque): a identidade do `engine.json`/`vael.ping`. O `session up` regista o
     /// caminho que lhe foi pedido; sem isto a engine registava a cena de menu e o
     /// `viber debug --world <mundo>` via a porta servida por outro mundo (registo
     /// "stale"). Omisso = `path` (editores e apps mínimas).
@@ -93,7 +93,7 @@ pub struct AppOptions {
     /// essas regras para quem monta a App. O player/câmara têm o seu próprio
     /// gate ([`Self::player_camera`]) e a IA o seu ([`Self::ai`]).
     pub gameplay: bool,
-    /// Pool 2D de números de dano (`viber.damage_number`), projectado para a
+    /// Pool 2D de números de dano (`vael.damage_number`), projectado para a
     /// UI. `false` para um jogo que desenha o texto no mundo (o Vael usa
     /// `bevy_rich_text3d`): a mensagem `DamageNumberEvent` continua a ser
     /// emitida, só o pool de UI da engine deixa de existir.
@@ -264,11 +264,11 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     let path = &std::path::absolute(path)?;
     // O `start-scene` troca a CENA carregada, não o mundo que a engine serve:
     // a identidade do bridge/sessão é o caminho que o CLI pediu. Registá-la
-    // como a cena de arranque fazia o `viber.ping` responder "menu.xml" a uma
+    // como a cena de arranque fazia o `vael.ping` responder "menu.xml" a uma
     // engine pedida como `world.xml`, e o `viber debug --world world.xml`
     // recusava-a como registo stale.
     //
-    // Absolutizado como `path`: o `engine.json`/`viber.ping` tem de valer de
+    // Absolutizado como `path`: o `engine.json`/`vael.ping` tem de valer de
     // qualquer cwd (`session down` e o `debug --world` comparam-no com paths
     // canónicos). Um "world.xml" relativo só casava no diretório de onde a
     // engine foi lançada — o `session down` corria noutro e recusava o pid.
@@ -484,7 +484,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
         plugins = configure(plugins);
     }
     app.add_plugins(plugins);
-    // Reflexão dos tipos de jogo no `AppTypeRegistry` (BRP/`viber.query`):
+    // Reflexão dos tipos de jogo no `AppTypeRegistry` (BRP/`vael.query`):
     // independente do resto — um app com `gameplay`/`ui`/`scripts` desligados
     // continua a poder inspecionar o ECS.
     app.add_plugins(crate::reflect::ReflectPlugin);
@@ -571,17 +571,17 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
         );
     }
     // Documento editável do mundo (`crate::scene`): a fonte das edições de agentes
-    // (`viber.scene.*`) e do modo de edição — carregado em todos os modos, é barato.
+    // (`vael.scene.*`) e do modo de edição — carregado em todos os modos, é barato.
     app.add_plugins((
         crate::scene::live::ScenePlugin,
         crate::scene::sync::SceneSyncPlugin,
     ));
-    // O documento vivo (`viber.scene.*`, undo/live sync) continua XML. Num
+    // O documento vivo (`vael.scene.*`, undo/live sync) continua XML. Num
     // mundo `.bsn` ele não é carregado: a autoria é no Jackdaw e o bridge
     // devolve "sem documento" nas operações de cena.
     if crate::scene::doc::SceneDoc::is_bsn(path) {
         info!(
-            "scene doc: {} é .bsn — edição de cena via Jackdaw; `viber.scene.*` desligado",
+            "scene doc: {} é .bsn — edição de cena via Jackdaw; `vael.scene.*` desligado",
             path.display()
         );
     } else {
@@ -652,7 +652,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
         size: point_shadow_size(),
     });
     // Widgets nativos (minimapa/bússola/seta) também obedecem ao esconder-HUD
-    // do jogo (`viber.ui.set_visible("hud", false)`).
+    // do jogo (`vael.ui.set_visible("hud", false)`).
     app.init_resource::<hud::HudHidden>();
     // `sky::spawn_sky` needs `Assets<SkyMaterial>`; without this plugin the
     // startup system panics and leaves `Assets<Mesh>` taken out of the world.
@@ -726,7 +726,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     // `<SpawnGate>`: segura a entidade-alvo no ar até haver collider de
     // terreno sob ela (inerte sem a tag).
     app.add_plugins(crate::spawn_gate::SpawnGatePlugin);
-    // `<ProjectileTemplate>` + `viber.fire_projectile`: projéteis simples
+    // `<ProjectileTemplate>` + `vael.fire_projectile`: projéteis simples
     // (linha reta ou arco balístico) com dano por facção. Comportamento de
     // JOGO: fora com `gameplay: false`.
     if gameplay {
@@ -777,14 +777,14 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     } else {
         app.add_plugins(save::SavePlugin);
     }
-    // Props em ossos (`viber.attach`): primitiva genérica (espada, volante…).
+    // Props em ossos (`vael.attach`): primitiva genérica (espada, volante…).
     app.add_plugins(attachment::AttachmentPlugin);
     // FX puros para mundos SEM o preset RPG: o CombatPlugin registra o kick
-    // de FOV e o hit-stop; sem ele, as primitivas `viber.fov_kick/hit_stop`
+    // de FOV e o hit-stop; sem ele, as primitivas `vael.fov_kick/hit_stop`
     // (e o shake/kick/punch que vivem em recursos incondicionais) ficariam
     // inertes. Registo CONDICIONAL — registar o mesmo sistema 2× duplica a
     // instância no schedule e panica ao inicializar.
-    // Hit-stop e FOV kick são FX da engine (`viber.hit_stop` / `fov_kick`).
+    // Hit-stop e FOV kick são FX da engine (`vael.hit_stop` / `fov_kick`).
     // Combate, vitals, economia, viagem, skills e quests são regras do
     // exemplo — vivem em Lua, não entram no App.
     app.init_resource::<camera::CameraFx>();
@@ -802,7 +802,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     app.add_plugins(prop_tint::PropTintPlugin);
     // Física Fase 3 (loop 10): knockback cinemático + destrutíveis com queda.
     app.add_plugins(physics_fx::PhysicsFxPlugin);
-    // Colheita é `scripts/game/harvest.lua` (`viber.player_nearby`).
+    // Colheita é `scripts/game/harvest.lua` (`vael.player_nearby`).
     // Sword trace (ribbon da lâmina) + bursts one-shot de partícula.
     app.add_plugins(particles::BurstPlugin);
     // FX de impacto de combate: recoil (squash-and-stretch) do inimigo
@@ -824,8 +824,8 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     app.init_resource::<camera::CameraShake>();
     // Solavanco direcional da câmara no impacto (mola; o combate soma impulsos).
     app.init_resource::<camera::CameraKick>();
-    // Câmara de jogo conduzida por script (`viber.camera_free`/`camera_pose`)
-    // + snapshot lido por `viber.camera_state()`. Sem modo livre o sistema só
+    // Câmara de jogo conduzida por script (`vael.camera_free`/`camera_pose`)
+    // + snapshot lido por `vael.camera_state()`. Sem modo livre o sistema só
     // publica o snapshot — nenhum mundo paga pose.
     app.init_resource::<camera::ScriptCameraFree>();
     app.init_resource::<camera::CameraSnapshot>();
@@ -833,7 +833,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     app.add_plugins(crate::cinematic::CinematicPlugin);
     // IA: quem decide é `ai`, não `gameplay`.
     // - `AiServicePlugin` regista o `apply_ai_locomotion`, consumidor ÚNICO do
-    //   movimento pedido pelos scripts (`viber.move_towards`) e pela navegação.
+    //   movimento pedido pelos scripts (`vael.move_towards`) e pela navegação.
     //   Sem ele a FSM entra em chase e o `desired` fica certo, mas ninguém
     //   aplica a velocidade — as criaturas atacam paradas. Também traz os
     //   sentidos (`SensesPlugin`) e os vitais das criaturas sem script.
@@ -866,14 +866,14 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     if bevy_engine_core::envs::var_lossy("RENDER_LOD").as_deref() != Some("0") {
         app.add_plugins(render_lod::RenderLodPlugin);
     }
-    // Profiler: overlay F3 (fps/frame/entidades/scripts ativos) + `viber.profiler`.
+    // Profiler: overlay F3 (fps/frame/entidades/scripts ativos) + `vael.profiler`.
     // `profiler: false` não regista o plugin; o `timed(...)` continua a medir
     // para os rings globais (ninguém os lê, mas nada panica nem depende de
     // recursos do profiler).
     if profiler {
         app.add_plugins(profiler::ProfilerPlugin);
     }
-    // UI declarativa (XML + folha de estilo + `viber.ui` no Luau): o HUD do
+    // UI declarativa (XML + folha de estilo + `vael.ui` no Luau): o HUD do
     // mundo é autoria, não código. Sem ela, os nós `<UiRoot>` ainda podem ser
     // construídos pelo spawn (é o registry que os endereça) e o
     // `menus::mirror_ui_modals_open` lê o `UiModalsOpen` em todos os frames —
@@ -931,14 +931,14 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     );
     app.add_plugins(crate::scene_loader::SceneLoaderPlugin);
     // Câmara livre de editor (`--camera free`, src/editor_camera.rs): a
-    // navegação orbit/pan/zoom de edição via bridge (`viber.camera.*`).
+    // navegação orbit/pan/zoom de edição via bridge (`vael.camera.*`).
     // ADITIVO — sem a flag o plugin não regista nada e o comportamento é
     // 100% o de sempre; com ela, a câmara de jogo fica inactiva e os
     // sistemas gated abaixo (input do player, terceira-pessoa) param.
     app.add_plugins(editor_camera::EditorCameraPlugin {
         enabled: camera_free,
     });
-    // Spawn RUNTIME de prototypes (viber.spawn_prototype): exclusivo, no
+    // Spawn RUNTIME de prototypes (vael.spawn_prototype): exclusivo, no
     // PostUpdate (depois dos scripts do Update — as callbacks da entidade nova
     // correm aqui) e ANTES da propagação: sem a aresta a entidade podia
     // renderizar um frame com o `GlobalTransform` identidade (na origem).
@@ -980,7 +980,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
                         .before(bevy_tnua::prelude::TnuaPipelineSystems::Logic),
                     timed(Group::Camera, camera::third_person_camera)
                         .run_if(editor_camera::editor_camera_inactive),
-                    // `viber.camera_free`: substitui a pose DEPOIS do rig de
+                    // `vael.camera_free`: substitui a pose DEPOIS do rig de
                     // terceira pessoa (e publica o snapshot do `camera_state`).
                     timed(Group::Camera, camera::script_camera)
                         .run_if(editor_camera::editor_camera_inactive),
@@ -995,7 +995,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
         );
     }
     // Regras de jogo: o herói nasce no autoload sem `Health` (o Vael guarda
-    // hp/max no `viber.game()`); sem esta rede, `viber.entity_damage(player)` e
+    // hp/max no `vael.game()`); sem esta rede, `vael.entity_damage(player)` e
     // o dano radial avisavam "sem Health" em vez de funcionar. Idempotente e só
     // insere quando falta.
     if gameplay {

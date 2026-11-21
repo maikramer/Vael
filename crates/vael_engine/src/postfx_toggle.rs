@@ -6,7 +6,7 @@
 //! <PostFxDebugToggle bindings="Digit1:bloom, shift+f4:ssao, ctrl+l:lens" />
 //! ```
 //!
-//! Cada tecla alterna o mesmo gate que o `viber.debug.postfx{…}` do bridge
+//! Cada tecla alterna o mesmo gate que o `vael.debug.postfx{…}` do bridge
 //! força ([`crate::postfx::fx_runtime_toggle`]), e o `sync_postfx_gates` do
 //! `postfx.rs` tira/repõe o componente na câmara no frame seguinte. Os
 //! defaults usam Ctrl porque os dígitos nus já são a hotbar do preset RPG.
@@ -38,7 +38,7 @@ pub struct FxBinding {
 /// Bindings ativas. O estado ON/OFF NÃO vive aqui: é o corte runtime
 /// partilhado com o bridge ([`crate::postfx::fx_forced_off`]) — uma cópia
 /// local ficava dessincronizada e a 1.ª tecla depois de um
-/// `viber.debug.postfx{…}` não fazia nada.
+/// `vael.debug.postfx{…}` não fazia nada.
 #[derive(Debug, Clone, Default, Resource, Reflect)]
 #[reflect(Resource)]
 pub struct PostFxToggleBindings {
@@ -77,7 +77,7 @@ pub fn fx_key_for_alias(alias: &str) -> Result<&'static str, String> {
 }
 
 /// `"ctrl+shift+Digit1"` → tecla + modificadores. Aceita os códigos de
-/// browser (`Digit1`, `KeyB`) e os nomes do `viber.key_pressed` (`1`, `b`,
+/// browser (`Digit1`, `KeyB`) e os nomes do `vael.key_pressed` (`1`, `b`,
 /// `f4`, `numpad3`…).
 pub fn parse_key_spec(spec: &str) -> Option<(KeyCode, bool, bool, bool)> {
     let mut parts: Vec<&str> = spec.split('+').map(str::trim).collect();

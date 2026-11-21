@@ -27,7 +27,7 @@ ROUTES = {
 
 
 def window(bridge):
-    return bridge.rpc("viber.profiler.tab", {"tab": "frames"})["history"]
+    return bridge.rpc("vael.profiler.tab", {"tab": "frames"})["history"]
 
 
 def measure(bridge, previous, seconds):
@@ -38,7 +38,7 @@ def measure(bridge, previous, seconds):
         # Ler antes de a janela de 240 frames dar uma volta, também em ecrãs rápidos.
         interval = min(1.0, max(0.05, sum(previous) / 2000.0))
         time.sleep(min(interval, max(0, deadline - time.monotonic())))
-        snapshot = bridge.rpc("viber.profiler.tab", {"tab": "frames"})
+        snapshot = bridge.rpc("vael.profiler.tab", {"tab": "frames"})
         current = snapshot["history"]
         overlap = min(len(previous), len(current))
         while overlap and previous[-overlap:] != current[:overlap]:
@@ -64,7 +64,7 @@ def measure(bridge, previous, seconds):
         "hitches": snapshot["hitches"],
     }
     if os.environ.get("VAEL_PROF_GPU", os.environ.get("VIBER_PROF_GPU")) == "1":
-        report["gpu"] = bridge.rpc("viber.profiler.tab", {"tab": "systems"})["gpu"]
+        report["gpu"] = bridge.rpc("vael.profiler.tab", {"tab": "systems"})["gpu"]
     return report
 
 
@@ -87,11 +87,11 @@ def run_route(bridge, output, name, x, z):
     time.sleep(2)
     start = bridge.lua("return vael.debug.player()")
     before = window(bridge)
-    bridge.call("viber.input.key", {"key": "w", "state": "press"})
+    bridge.call("vael.input.key", {"key": "w", "state": "press"})
     try:
         walking = measure(bridge, before, 12)
     finally:
-        bridge.call("viber.input.key", {"key": "w", "state": "release"})
+        bridge.call("vael.input.key", {"key": "w", "state": "release"})
     end = bridge.lua("return vael.debug.player()")
     distance = math.hypot(end["x"] - start["x"], end["z"] - start["z"])
     report = dict(

@@ -10,7 +10,7 @@ use bevy::log::tracing_subscriber::layer::Context;
 use bevy::log::{BoxedLayer, LogPlugin};
 use serde::Serialize;
 
-/// Entradas guardadas por `viber.logs` (ordem cronológica, cortadas por limite).
+/// Entradas guardadas por `vael.logs` (ordem cronológica, cortadas por limite).
 #[derive(Clone, Serialize)]
 pub struct LogEntry {
     /// Segundos UNIX (float) da captura.
@@ -23,10 +23,10 @@ pub struct LogEntry {
 /// Ring-buffer compartilhado alimentado pela layer de tracing.
 pub type LogBuffer = Arc<Mutex<VecDeque<LogEntry>>>;
 
-/// Máximo de entradas retidas (`viber.logs` devolve as últimas).
+/// Máximo de entradas retidas (`vael.logs` devolve as últimas).
 pub const LOG_BUFFER_CAPACITY: usize = 1000;
 
-/// Cap por entrada: um log gigante (ex.: `viber.log(string.rep("x", 10^7))`
+/// Cap por entrada: um log gigante (ex.: `vael.log(string.rep("x", 10^7))`
 /// de um script) não pode reter dezenas de MB por linha num ring de 1000 —
 /// trunca em char boundary antes de construir a [`LogEntry`].
 const MAX_LOG_MESSAGE: usize = 8192;

@@ -20,7 +20,7 @@
 //! viber scene --live apply ops.json --coalesce k   # N applies com a mesma chave = 1 undo
 //! ```
 //!
-//! Com `--live` o MESMO subcomando vai para a engine a correr (`viber.scene.*`): a edição
+//! Com `--live` o MESMO subcomando vai para a engine a correr (`vael.scene.*`): a edição
 //! entra no histórico dela (undo/redo), é gravada e refletida no mundo vivo.
 
 use std::collections::BTreeMap;
@@ -101,7 +101,7 @@ pub enum SceneCommand {
     /// Refaz a última edição desfeita (só `--live`)
     Redo,
     /// Grava os ficheiros alterados do documento (offline: flush do que está sujo; com
-    /// `--live`: o estado vivo da engine — o mesmo `viber.scene.save` da bridge)
+    /// `--live`: o estado vivo da engine — o mesmo `vael.scene.save` da bridge)
     Save,
     /// Píxeis do ecrã → nó do documento (raycast pela câmara de editor; só `--live`)
     Pick {
@@ -136,7 +136,7 @@ pub enum SceneCommand {
     /// efetivos da instância (`prop-<nome>`). Alvo: seletor de nó com `script=` ou `x.lua`
     Schema { target: String },
     /// Lint estático do mundo: sintaxe Luau de TODOS os scripts, alvos
-    /// `viber.load("…")`, referências das quests (`npc` ↔ DialogueNPC,
+    /// `vael.load("…")`, referências das quests (`npc` ↔ DialogueNPC,
     /// `visit` ↔ Landmark) e nomes de entidade duplicados. Sem engine.
     /// `--strict` devolve exit non-zero se houver erros (relatório sai na
     /// mesma em stdout).
@@ -507,7 +507,7 @@ pub fn run(world: &Path, command: SceneCommand) -> Result<Value> {
     }
 }
 
-/// O JSON de `viber scene scenes` / `viber.scene.scenes`.
+/// O JSON de `viber scene scenes` / `vael.scene.scenes`.
 pub fn scenes_json(project: &crate::project::Project) -> Value {
     json!({
         "root": project.root,
@@ -623,29 +623,29 @@ fn run_doc(world: &Path, command: SceneCommand) -> Result<Value> {
     Ok(transaction_json(&doc, &tx, &dirty, !dry_run))
 }
 
-/// O mesmo subcomando contra a engine a correr: o método `viber.scene.*` e os params.
+/// O mesmo subcomando contra a engine a correr: o método `vael.scene.*` e os params.
 pub fn live_request(command: SceneCommand) -> Result<(&'static str, Value)> {
     // O lint não passa pelo documento — contra a engine, o método lê os
     // MESMOS ficheiros do disco (a engine tem o root_dir do mundo).
     match command {
         SceneCommand::Lint { strict } => {
-            return Ok(("viber.scene.lint", json!({ "strict": strict })));
+            return Ok(("vael.scene.lint", json!({ "strict": strict })));
         }
-        SceneCommand::Scenes => return Ok(("viber.scene.scenes", json!({}))),
+        SceneCommand::Scenes => return Ok(("vael.scene.scenes", json!({}))),
         SceneCommand::NewScene { id, interior } => {
             scene_template(interior.as_deref())?;
             return Ok((
-                "viber.scene.new_scene",
+                "vael.scene.new_scene",
                 json!({ "id": id, "interior": interior }),
             ));
         }
         SceneCommand::Change { scene, entry } => {
             return Ok((
-                "viber.scene.change",
+                "vael.scene.change",
                 json!({ "scene": scene, "entry": entry }),
             ));
         }
-        SceneCommand::Current => return Ok(("viber.scene.current", json!({}))),
+        SceneCommand::Current => return Ok(("vael.scene.current", json!({}))),
         SceneCommand::ExtractScene { .. } => {
             bail!(
                 "extract-scene corre offline (reorganiza ficheiros): sem --live — depois recarrega a engine"
@@ -655,40 +655,40 @@ pub fn live_request(command: SceneCommand) -> Result<(&'static str, Value)> {
     }
     Ok(match request(command)? {
         Request::Ls { selector, depth } => (
-            "viber.scene.ls",
+            "vael.scene.ls",
             json!({ "selector": selector, "depth": depth }),
         ),
-        Request::Get { selector } => ("viber.scene.get", json!({ "selector": selector })),
+        Request::Get { selector } => ("vael.scene.get", json!({ "selector": selector })),
         Request::Find { tag, attr, limit } => (
-            "viber.scene.find",
+            "vael.scene.find",
             json!({ "tag": tag, "attr": attr, "limit": limit }),
         ),
         Request::Ops { dry_run: true, .. } => {
             bail!("--dry-run não existe com --live (a engine aplicaria a edição); corre sem --live")
         }
         Request::Ops { ops, coalesce, .. } => (
-            "viber.scene.apply",
+            "vael.scene.apply",
             json!({ "ops": ops, "label": "cli", "coalesce": coalesce }),
         ),
-        Request::Undo => ("viber.scene.undo", json!({})),
-        Request::Redo => ("viber.scene.redo", json!({})),
-        Request::Save => ("viber.scene.save", json!({})),
+        Request::Undo => ("vael.scene.undo", json!({})),
+        Request::Redo => ("vael.scene.redo", json!({})),
+        Request::Save => ("vael.scene.save", json!({})),
         Request::Pick { x, y, max_distance } => (
-            "viber.scene.pick",
+            "vael.scene.pick",
             json!({ "x": x, "y": y, "max_distance": max_distance }),
         ),
-        Request::Entities { selector } => ("viber.scene.entities", json!({ "selector": selector })),
-        Request::Files { depth } => ("viber.scene.files", json!({ "depth": depth })),
-        Request::Catalog => ("viber.scene.catalog", json!({})),
-        Request::Schema { target } => ("viber.scene.schema", json!({ "target": target })),
-        Request::Groups { name } => ("viber.scene.groups", json!({ "name": name })),
+        Request::Entities { selector } => ("vael.scene.entities", json!({ "selector": selector })),
+        Request::Files { depth } => ("vael.scene.files", json!({ "depth": depth })),
+        Request::Catalog => ("vael.scene.catalog", json!({})),
+        Request::Schema { target } => ("vael.scene.schema", json!({ "target": target })),
+        Request::Groups { name } => ("vael.scene.groups", json!({ "name": name })),
         Request::Instance { dry_run: true, .. } => {
             bail!("--dry-run não existe com --live (a engine aplicaria a edição); corre sem --live")
         }
         Request::Instance {
             scene, parent, at, ..
         } => (
-            "viber.scene.instance",
+            "vael.scene.instance",
             json!({ "scene": scene, "parent": parent, "at": at }),
         ),
         Request::Drop { dry_run: true, .. } => {
@@ -697,7 +697,7 @@ pub fn live_request(command: SceneCommand) -> Result<(&'static str, Value)> {
         Request::Drop {
             glb, at, parent, ..
         } => (
-            "viber.scene.drop",
+            "vael.scene.drop",
             json!({ "glb": glb, "at": at, "parent": parent }),
         ),
     })

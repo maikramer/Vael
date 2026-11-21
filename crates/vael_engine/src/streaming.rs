@@ -2,7 +2,7 @@
 //!
 //! Quente (&lt;160 m): ECS completo. Morno (até 400 m): o script já congela
 //! pelo raio de activação. Frio: a entidade com [`Streamable`] sai para um
-//! registo e volta quando o herói se aproxima, com a pose e o `viber.state`
+//! registo e volta quando o herói se aproxima, com a pose e o `vael.state`
 //! que deu para serializar. `stream="resident"` nunca arrefece.
 
 use std::collections::{HashMap, HashSet};
@@ -184,7 +184,7 @@ pub fn stream_rings(
                 name: name.map(|n| n.as_str().to_string()),
                 scene: scene.map(|s| s.0.clone()),
                 script: script.map(|s| s.path.clone()),
-                // Estado de VM por entidade (`viber.state` do host antigo):
+                // Estado de VM por entidade (`vael.state` do host antigo):
                 // morreu com ela — o estado que sobrevive ao hibernar vive no
                 // save do jogo.
                 state_json: None,

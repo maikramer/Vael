@@ -1,5 +1,5 @@
 //! `viber cinematic …` — cinemáticas para agentes (a mesma lógica do bridge
-//! `viber.cinematic.*` e do Inspector do editor).
+//! `vael.cinematic.*` e do Inspector do editor).
 //!
 //! ```bash
 //! viber cinematic list                          # ids, duração, planos, seletor
@@ -71,7 +71,7 @@ pub fn doc_spec(doc: &SceneDoc, id: &str) -> Result<(NodeRef, crate::cinematic::
     let (node, _) = doc_cinematics(doc)
         .into_iter()
         .find(|(_, found)| found == id)
-        .ok_or_else(|| anyhow!("cinemática `{id}` não existe no mundo (viber cinematic list)"))?;
+        .ok_or_else(|| anyhow!("cinemática `{id}` não existe no mundo (vael cinematic list)"))?;
     let xml = doc.node(&node).expect("encontrado acima");
     let spec = crate::cinematic::parse(xml).map_err(|e| anyhow!(e))?;
     Ok((node, spec))
@@ -133,13 +133,13 @@ pub type LiveCall<'a> = &'a dyn Fn(&str, Value) -> Result<Value>;
 pub fn run(world: &Path, command: CinematicCommand, live: Option<LiveCall<'_>>) -> Result<Value> {
     if let Some(call) = live {
         return match command {
-            CinematicCommand::List => call("viber.cinematic.list", json!({})),
-            CinematicCommand::Show { id } => call("viber.cinematic.show", json!({ "id": id })),
+            CinematicCommand::List => call("vael.cinematic.list", json!({})),
+            CinematicCommand::Show { id } => call("vael.cinematic.show", json!({ "id": id })),
             CinematicCommand::Play { id, anchor } => call(
-                "viber.cinematic.play",
+                "vael.cinematic.play",
                 json!({ "id": id, "anchor": anchor }),
             ),
-            CinematicCommand::Stop => call("viber.cinematic.stop", json!({})),
+            CinematicCommand::Stop => call("vael.cinematic.stop", json!({})),
             CinematicCommand::Shot {
                 id,
                 duration,
@@ -151,7 +151,7 @@ pub fn run(world: &Path, command: CinematicCommand, live: Option<LiveCall<'_>>) 
                     bail!("--dry-run não existe com --live");
                 }
                 call(
-                    "viber.cinematic.shot",
+                    "vael.cinematic.shot",
                     json!({ "id": id, "duration": duration, "from": from, "look": look }),
                 )
             }

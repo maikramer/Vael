@@ -135,7 +135,7 @@ impl BridgeClient {
         )
     }
 
-    /// Pede uma captura e faz polling de `viber.screenshot_status` até o PNG
+    /// Pede uma captura e faz polling de `vael.screenshot_status` até o PNG
     /// chegar (a captura completa ao fim de ~1-3 frames do render).
     pub fn screenshot(&self, timeout_ms: u64) -> Result<(Vec<u8>, String)> {
         let budget = Duration::from_millis(timeout_ms);
@@ -144,7 +144,7 @@ impl BridgeClient {
         // um poll contra uma engine pendurada (frame congelado) bloqueava os
         // 30 s do READ_TIMEOUT: `--timeout-ms 1000` levava 30 s a falhar.
         let request = match self.call_timeout(
-            "viber.screenshot",
+            "vael.screenshot",
             json!({}),
             budget.min(READ_TIMEOUT).max(Duration::from_millis(50)),
         ) {
@@ -173,7 +173,7 @@ impl BridgeClient {
             // Um Err transitório num poll não deve abortar enquanto houver
             // deadline — só propaga quando o tempo esgotou.
             let status =
-                match self.call_timeout("viber.screenshot_status", json!({ "id": id }), read) {
+                match self.call_timeout("vael.screenshot_status", json!({ "id": id }), read) {
                     Ok(status) => status,
                     Err(error) => {
                         if Instant::now() < deadline {
@@ -220,7 +220,7 @@ impl BridgeClient {
 
     /// Pede um burst — N frames seguidos compostos numa única folha na
     /// engine (4096 no lado comprido, células com o formato do frame) — e
-    /// faz polling de `viber.burst_status` até a folha chegar. `skip` são
+    /// faz polling de `vael.burst_status` até a folha chegar. `skip` são
     /// frames renderizados entre capturas (`0` = consecutivos). Devolve
     /// (png, caminho do PNG na engine, largura e altura da folha).
     pub fn burst(
@@ -232,7 +232,7 @@ impl BridgeClient {
         let budget = Duration::from_millis(timeout_ms);
         let deadline = Instant::now() + budget;
         let request = match self.call_timeout(
-            "viber.burst",
+            "vael.burst",
             json!({ "frames": frames, "skip": skip }),
             budget.min(READ_TIMEOUT).max(Duration::from_millis(50)),
         ) {
@@ -261,7 +261,7 @@ impl BridgeClient {
                 .saturating_duration_since(Instant::now())
                 .min(READ_TIMEOUT)
                 .max(Duration::from_millis(20));
-            let status = match self.call_timeout("viber.burst_status", json!({ "id": id }), read) {
+            let status = match self.call_timeout("vael.burst_status", json!({ "id": id }), read) {
                 Ok(status) => status,
                 Err(error) => {
                     if Instant::now() < deadline {
@@ -312,21 +312,21 @@ impl BridgeClient {
     }
 
     pub fn probe(&self) -> Result<Value> {
-        self.call("viber.ping", json!({}))
+        self.call("vael.ping", json!({}))
     }
 
     /// Probe da descoberta — ping com [`PROBE_TIMEOUT`] curto; devolve true
     /// se o bridge responde. Uma engine pendurada falha cedo em vez de
     /// bloquear a descoberta com o timeout de leitura normal.
     fn probe_quick(&self) -> bool {
-        self.call_timeout("viber.ping", json!({}), PROBE_TIMEOUT)
+        self.call_timeout("vael.ping", json!({}), PROBE_TIMEOUT)
             .is_ok()
     }
 
     /// Ping rápido que devolve o mundo servido (campo `world` do pong) —
     /// None se o bridge não responder ou for um binário antigo sem o campo.
     fn probe_world(&self) -> Option<String> {
-        self.call_timeout("viber.ping", json!({}), PROBE_TIMEOUT)
+        self.call_timeout("vael.ping", json!({}), PROBE_TIMEOUT)
             .ok()
             .and_then(|pong| {
                 pong.get("world")
@@ -336,30 +336,30 @@ impl BridgeClient {
     }
 
     pub fn tree(&self) -> Result<Value> {
-        self.call("viber.tree", json!({}))
+        self.call("vael.tree", json!({}))
     }
 
     pub fn logs(&self, limit: usize) -> Result<Value> {
-        self.call("viber.logs", json!({ "limit": limit }))
+        self.call("vael.logs", json!({ "limit": limit }))
     }
 
     pub fn prof(&self) -> Result<Value> {
-        self.call("viber.profiler", json!({}))
+        self.call("vael.profiler", json!({}))
     }
 
-    /// Snapshot rico de um tab do profiler (`viber.profiler.tab`):
+    /// Snapshot rico de um tab do profiler (`vael.profiler.tab`):
     /// `systems|world|physics|audio|extras|all`.
     pub fn prof_tab(&self, tab: &str) -> Result<Value> {
-        self.call("viber.profiler.tab", json!({ "tab": tab }))
+        self.call("vael.profiler.tab", json!({ "tab": tab }))
     }
 
     /// Alterna um extra do profiler; devolve `{"id", "on"}`.
     pub fn prof_extra_toggle(&self, id: &str) -> Result<Value> {
-        self.call("viber.profiler.extra_toggle", json!({ "id": id }))
+        self.call("vael.profiler.extra_toggle", json!({ "id": id }))
     }
 
     /// Exporta o snapshot completo do profiler para ficheiro
-    /// (`viber.profiler.export`); devolve `{path, bytes}`. Um caminho
+    /// (`vael.profiler.export`); devolve `{path, bytes}`. Um caminho
     /// relativo é resolvido no cwd do CLIENTE (é aí que o utilizador o
     /// procurar; o `fs::write` do engine usa o cwd DELE).
     pub fn prof_export(&self, path: Option<&std::path::Path>) -> Result<Value> {
@@ -367,56 +367,56 @@ impl BridgeClient {
         if let Some(path) = path {
             params["path"] = json!(client_side_path(path).display().to_string());
         }
-        self.call("viber.profiler.export", params)
+        self.call("vael.profiler.export", params)
     }
 
-    /// Configura o profiler ao vivo (`viber.profiler.config`); devolve
+    /// Configura o profiler ao vivo (`vael.profiler.config`); devolve
     /// `{hitch_ms}`.
     pub fn prof_config(&self, hitch_ms: Option<f32>) -> Result<Value> {
         let mut params = json!({});
         if let Some(ms) = hitch_ms {
             params["hitch_ms"] = json!(ms);
         }
-        self.call("viber.profiler.config", params)
+        self.call("vael.profiler.config", params)
     }
 
-    /// Começa a gravar um trace (`viber.profiler.trace_start`).
+    /// Começa a gravar um trace (`vael.profiler.trace_start`).
     pub fn trace_start(&self, seconds: f64, max_events: usize) -> Result<Value> {
         self.call(
-            "viber.profiler.trace_start",
+            "vael.profiler.trace_start",
             json!({ "seconds": seconds, "max_events": max_events }),
         )
     }
 
-    /// Fecha o trace actual (`viber.profiler.trace_stop`).
+    /// Fecha o trace actual (`vael.profiler.trace_stop`).
     pub fn trace_stop(&self) -> Result<Value> {
-        self.call("viber.profiler.trace_stop", json!({}))
+        self.call("vael.profiler.trace_stop", json!({}))
     }
 
-    /// Estado da gravação (`viber.profiler.trace_status`).
+    /// Estado da gravação (`vael.profiler.trace_status`).
     pub fn trace_status(&self) -> Result<Value> {
-        self.call("viber.profiler.trace_status", json!({}))
+        self.call("vael.profiler.trace_status", json!({}))
     }
 
-    /// Exporta o trace (`viber.profiler.trace_export`) e devolve
+    /// Exporta o trace (`vael.profiler.trace_export`) e devolve
     /// `{path, bytes, frames, events, truncated}`.
     pub fn trace_export(&self, path: Option<&std::path::Path>, format: &str) -> Result<Value> {
         let mut params = json!({ "format": format });
         if let Some(path) = path {
             params["path"] = json!(client_side_path(path).display().to_string());
         }
-        self.call("viber.profiler.trace_export", params)
+        self.call("vael.profiler.trace_export", params)
     }
 
-    /// Marca um instante no trace (`viber.profiler.mark`).
+    /// Marca um instante no trace (`vael.profiler.mark`).
     pub fn prof_mark(&self, label: &str) -> Result<Value> {
-        self.call("viber.profiler.mark", json!({ "label": label }))
+        self.call("vael.profiler.mark", json!({ "label": label }))
     }
 
-    /// Executa Luau na engine (`viber.lua`) — devolve
+    /// Executa Luau na engine (`vael.lua`) — devolve
     /// `{ ok, result|error, applied, warnings }`.
     pub fn lua(&self, code: &str) -> Result<Value> {
-        self.call("viber.lua", json!({ "code": code }))
+        self.call("vael.lua", json!({ "code": code }))
     }
 
     pub fn key(&self, key: &str, text: Option<String>, shift: bool) -> Result<Value> {
@@ -442,16 +442,16 @@ impl BridgeClient {
         if let Some(state) = state {
             params["state"] = json!(state);
         }
-        self.call("viber.input.key", params)
+        self.call("vael.input.key", params)
     }
 
     pub fn text(&self, text: &str) -> Result<Value> {
-        self.call("viber.input.text", json!({ "text": text }))
+        self.call("vael.input.text", json!({ "text": text }))
     }
 
     pub fn click(&self, x: f32, y: f32, button: &str) -> Result<Value> {
         self.call(
-            "viber.input.click",
+            "vael.input.click",
             json!({ "x": x, "y": y, "button": normalize_mouse(button) }),
         )
     }
@@ -459,13 +459,13 @@ impl BridgeClient {
     /// `state`: `press` (botão fica em baixo) ou `release` — o arrasto.
     pub fn mouse_state(&self, x: f32, y: f32, button: &str, state: &str) -> Result<Value> {
         self.call(
-            "viber.input.click",
+            "vael.input.click",
             json!({ "x": x, "y": y, "button": normalize_mouse(button), "state": state }),
         )
     }
 
     pub fn move_cursor(&self, x: f32, y: f32) -> Result<Value> {
-        self.call("viber.input.move", json!({ "x": x, "y": y }))
+        self.call("vael.input.move", json!({ "x": x, "y": y }))
     }
 }
 

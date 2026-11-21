@@ -9,7 +9,7 @@
 //!   bomba, dano de script com origem conhecida).
 //! - **Destrutíveis com queda** (`break-style: fall` do XML): [`Falling`]
 //!   tomba a entidade (rotação progressiva) e despawna no fim — os scripts
-//!   de colheita chamam `viber.topple()` no último golpe.
+//!   de colheita chamam `vael.topple()` no último golpe.
 //!
 //! Pure fns (`knockback_after`, `fall_angle`, `radial_strength`) testadas.
 

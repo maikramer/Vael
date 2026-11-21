@@ -238,7 +238,7 @@ fn apply_heal(current: f32, max: f32, amount: f32) -> f32 {
     (current + amount.max(0.0)).clamp(0.0, max.max(0.0))
 }
 
-/// Fallback de `viber.set_visible` quando a reflexão não tem `Visibility`
+/// Fallback de `vael.set_visible` quando a reflexão não tem `Visibility`
 /// (app mínima de teste sem `ReflectPlugin`): o comportamento antigo de
 /// inserir o componente. `Inherited` (e não `Visible`) para a entidade voltar
 /// a respeitar o pai escondido quando é uma subárvore.
@@ -252,7 +252,7 @@ fn insert_visibility(world: &mut World, entity: Entity, visible: bool) {
     }
 }
 
-/// Balão do HUD (`viber.say` sem presenter externo) sobre `&mut World` —
+/// Balão do HUD (`vael.say` sem presenter externo) sobre `&mut World` —
 /// corpo 1:1 do `crate::dialogue::show_balloon` (o helper espera `Query`s),
 /// com as escritas de texto faseadas para respeitar os borrows.
 fn show_balloon_world(world: &mut World, body: &str, secs: f32) -> bool {
@@ -358,7 +358,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 return_pose: None,
             };
             if let Err(error) = crate::scene_loader::request_change(world, request) {
-                warn!(target: "vael::luau", "viber.change_scene: {error:#}");
+                warn!(target: "vael::luau", "vael.change_scene: {error:#}");
             }
         }
         ScriptCommand::TeleportPlayer { pos, exclude } => {
@@ -410,7 +410,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 warn_once(
                     world,
                     "fire_projectile",
-                    "viber.fire_projectile sem ProjectilePlugin — pedido ignorado",
+                    "vael.fire_projectile sem ProjectilePlugin — pedido ignorado",
                 );
                 return;
             };
@@ -509,7 +509,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                         .insert(format!("gesture:{}", entity.to_bits()))
                 {
                     warn!(target: "vael::luau",
-                        "viber.gesture('{name}'): nenhum clip do rig corresponde (clips: {clip_names:?})");
+                        "vael.gesture('{name}'): nenhum clip do rig corresponde (clips: {clip_names:?})");
                 }
                 return;
             };
@@ -522,7 +522,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 .unwrap_or_default();
             // Blend de gesto ~250 ms como o npc_gesture_system; one-shot
             // devolve o rig ao driver no fim do clip. `speed` escala a
-            // reprodução (`viber.play_clip`; 1.0 = nominal).
+            // reprodução (`vael.play_clip`; 1.0 = nominal).
             let blend = blend
                 .map(std::time::Duration::from_secs_f32)
                 .unwrap_or(std::time::Duration::from_millis(250));
@@ -547,7 +547,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 warn_once(
                     world,
                     "terrain_edit",
-                    "viber.terrain.* sem TerrainEditQueue registada — pedido ignorado",
+                    "vael.terrain.* sem TerrainEditQueue registada — pedido ignorado",
                 );
                 return;
             };
@@ -556,7 +556,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                     world,
                     "terrain_edit_full",
                     &format!(
-                        "viber.terrain.*: fila de edições cheia ({} pendentes) — pedidos \
+                        "vael.terrain.*: fila de edições cheia ({} pendentes) — pedidos \
                          descartados até a fila escoar",
                         crate::terrain::delta::EDIT_QUEUE_CAP
                     ),
@@ -581,7 +581,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
         }
         ScriptCommand::SetScale { entity, scale } => {
             // TODO(migration): o nome Lua mantém-se; a escrita passa pela
-            // reflexão (`viber.ecs`), que já não depende de a entidade
+            // reflexão (`vael.ecs`), que já não depende de a entidade
             // estar na query `scripts`/`poses` — funciona em props, NPCs
             // sem script e no próprio herói.
             let patch = super::ecs::EcsValue::Map(vec![(
@@ -593,7 +593,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
             {
                 // Sem `ReflectPlugin`/`Transform` no registo (app
                 // mínima): mantém a escrita directa de sempre.
-                warn!(target: "vael::luau", "viber.set_scale: {error}");
+                warn!(target: "vael::luau", "vael.set_scale: {error}");
                 if let Some(mut transform) = world.get_mut::<Transform>(entity) {
                     transform.scale = Vec3::splat(scale);
                 }
@@ -667,7 +667,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                     let fresh = warn_state(world).once.insert(format!("vitals:{bits}"));
                     if fresh {
                         warn!(target: "vael::luau",
-                            "viber.entity_damage: entidade sem Health — chama viber.entity_set_max_hp primeiro");
+                            "vael.entity_damage: entidade sem Health — chama vael.entity_set_max_hp primeiro");
                     }
                 }
             }
@@ -779,7 +779,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 warn_once(
                     world,
                     "attach",
-                    "viber.attach sem AttachmentPlugin — pedido ignorado",
+                    "vael.attach sem AttachmentPlugin — pedido ignorado",
                 );
                 return;
             };
@@ -943,7 +943,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 // entidade voltar a respeitar o pai escondido.
                 Ok(false) => insert_visibility(world, entity, visible),
                 Err(error) => {
-                    warn!(target: "vael::luau", "viber.set_visible: {error}");
+                    warn!(target: "vael::luau", "vael.set_visible: {error}");
                     insert_visibility(world, entity, visible);
                 }
                 Ok(true) => {}
@@ -967,7 +967,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 text: text.clone(),
                 seconds: duration,
             });
-            // Fala no balão baixa a música (genérico: qualquer `viber.say`
+            // Fala no balão baixa a música (genérico: qualquer `vael.say`
             // é diálogo, não um toast de sistema). A voz, quando existir,
             // fica por cima; o SFX não é tocado.
             if let Some(mut duck) = world.get_resource_mut::<crate::music::AudioDuck>() {
@@ -987,7 +987,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                     warn_once(
                         world,
                         "balloon",
-                        "viber.say: o mundo não declara <DialogueBalloon> — o texto não aparece no HUD",
+                        "vael.say: o mundo não declara <DialogueBalloon> — o texto não aparece no HUD",
                     );
                 }
             }
@@ -1059,7 +1059,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
             {
                 // Sem reflexão (app mínima): escrita directa de
                 // sempre, preservando a escala.
-                warn!(target: "vael::luau", "viber.set_pose: {error}");
+                warn!(target: "vael::luau", "vael.set_pose: {error}");
                 if let Some(mut transform) = world.get_mut::<Transform>(entity) {
                     let scale = transform.scale;
                     transform.translation = pos;
@@ -1150,7 +1150,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                 });
             }
         }
-        // `viber.ecs.*` (a tabela Lua) morreu: a escrita genérica por
+        // `vael.ecs.*` (a tabela Lua) morreu: a escrita genérica por
         // reflexão sobrevive só nas primitivas (`set_scale`/`set_visible`
         // /`set_position` via `patch_component`).
     }
@@ -1293,7 +1293,7 @@ impl bevy::app::Plugin for BmsBridgePlugin {
                     // contexto nasce — os scripts do jogo não correm.
                     mirror_script_components,
                     // Esquema `--@export` dos scripts já carregados (o
-                    // `viber.prop`/`viber.props` lê-no do estado publicado).
+                    // `vael.prop`/`vael.props` lê-no do estado publicado).
                     parse_script_exports.before(publish_host_state),
                     publish_host_state
                         // ANTES do publisher do BMS: o `publish_globals` copia
@@ -1337,7 +1337,7 @@ impl bevy::app::Plugin for BmsBridgePlugin {
 pub struct OnScriptUpdate;
 
 /// Âncora de ordenação para o jogo: os sistemas que lêem o que os scripts
-/// escreveram NO frame (store `viber.game()`, mensagens de comando) correm
+/// escreveram NO frame (store `vael.game()`, mensagens de comando) correm
 /// DEPOIS deste set (`send_on_update` + handler `on_update`), e os que
 /// aplicam comandos, depois do dreno (`apply_bms_commands`).
 #[derive(bevy::ecs::schedule::SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
@@ -1387,7 +1387,7 @@ pub struct ScriptMirrorState {
 
 /// Esquema `--@export` por path, extraído dos assets de script já
 /// carregados ([`parse_script_exports`]). Em modo BMS substitui o
-/// `ScriptCtx::exports` do host antigo como fonte do `viber.prop`.
+/// `ScriptCtx::exports` do host antigo como fonte do `vael.prop`.
 #[derive(Resource, Default)]
 pub struct BmsScriptExports {
     map: std::sync::Arc<HashMap<String, std::sync::Arc<bevy_ext_luau::exports::ScriptExports>>>,
@@ -2010,7 +2010,7 @@ fn bms_fire_projectile(
     }
 }
 
-/// `viber.set_position` do BMS — o mesmo algoritmo do compat
+/// `vael.set_position` do BMS — o mesmo algoritmo do compat
 /// `host.take_pending` do `luau_update`: a posição é de MUNDO e o
 /// `Transform` é local; a pose do pai infere-se do par
 /// (`GlobalTransform`, `Transform`) da própria entidade.
@@ -2030,11 +2030,11 @@ fn apply_set_position(world: &mut World, entity: Entity, pos: Vec3) {
     }
 }
 
-// ═══ ENTREGA DE SINAIS (o `viber.emit`/`call_group` do BMS corre os
+// ═══ ENTREGA DE SINAIS (o `vael.emit`/`call_group` do BMS corre os
 // handlers nos contextos do host do monólito — o mesmo caminho do loop de
 // sinais do `luau_update`, aqui para UMA chamada por comando). ═══════════
 
-/// Entrega `viber.emit`: os alvos vêm dos `connect-<sinal>` do emissor
+/// Entrega `vael.emit`: os alvos vêm dos `connect-<sinal>` do emissor
 /// (`self`/nome/`@grupo`), resolvidos pelos snapshots de nomes/grupos do
 /// host. Handlers que emitem outra vez entram na fila do próprio host
 /// (entregues pelo `luau_update` no frame seguinte).
@@ -2090,7 +2090,7 @@ fn deliver_emit(
     }
 }
 
-/// Entrega `viber.call_group`: o método corre em todos os membros
+/// Entrega `vael.call_group`: o método corre em todos os membros
 /// publicados do grupo.
 fn deliver_group(
     world: &mut World,
@@ -2317,7 +2317,7 @@ struct PublishStateParams<'w, 's> {
     >,
     names_removed: bevy::ecs::lifecycle::RemovedComponents<'w, 's, Name>,
     // Entidades com script SEM `Name` (as criaturas dos spawners): o
-    // `viber.position()` delas lê o mesmo mapa. Sem isto viam-se todas na
+    // `vael.position()` delas lê o mesmo mapa. Sem isto viam-se todas na
     // ORIGEM — a praça da vila: todas perseguiam o herói de qualquer ponto
     // do mapa, empilhavam-se nele e nunca atacavam (a distância do golpe
     // era a do herói à origem). Visto 2026-11-15.
@@ -2404,7 +2404,7 @@ fn publish_host_state(
         state.player_forward = Vec2::new(f.x, f.z);
         state.player_hp = health.map(|h| (h.current, h.max));
         state.player_id = Some(entity.to_bits() as i64);
-        // Duração de cada clip do rig do herói (`viber.clip_duration`).
+        // Duração de cada clip do rig do herói (`vael.clip_duration`).
         state.clip_durations = queries
             .animators
             .get(entity)
@@ -2427,12 +2427,12 @@ fn publish_host_state(
         state.clip_durations.clear();
     }
 
-    // Cena/bioma (`viber.scene_name`/`scene_entry`/`biome`).
+    // Cena/bioma (`vael.scene_name`/`scene_entry`/`biome`).
     state.scene = res.scene.as_ref().and_then(|s| s.id.clone());
     state.scene_entry = res.scene.as_ref().and_then(|s| s.entry.clone());
     state.biome = res.biome.as_ref().and_then(|b| b.id.clone());
 
-    // Pasta de scripts (`viber.load`): semeada UMA vez no arranque (o
+    // Pasta de scripts (`vael.load`): semeada UMA vez no arranque (o
     // anfitrião chama `game::set_scripts_dir` no build); o publisher nunca
     // escreve `None` sobre ela. O static do `game` espelha-se por frame no
     // `publish_globals` do crate — só `Some` escreve.
@@ -2446,7 +2446,7 @@ fn publish_host_state(
         state.exports = Default::default();
     }
 
-    // Foco de interação por tecla (o `viber.interacted` do BMS só aceita o
+    // Foco de interação por tecla (o `vael.interacted` do BMS só aceita o
     // vencedor) e o gate de `UiInput` focado (teclas são texto).
     state.interaction_focus = res
         .focus
@@ -2569,7 +2569,7 @@ fn publish_host_state(
         })
         .collect::<Vec<_>>());
 
-    // Props autorais (`viber.nearby`/`viber.prop`) — dados, não regra.
+    // Props autorais (`vael.nearby`/`vael.prop`) — dados, não regra.
     {
         let props = std::sync::Arc::make_mut(&mut state.props);
         if reseed {
@@ -2609,7 +2609,7 @@ fn publish_host_state(
         state.prototype_names = std::sync::Arc::new(lib.0.keys().cloned().collect());
     }
 
-    // Presets de partícula válidos (`viber.burst`).
+    // Presets de partícula válidos (`vael.burst`).
     if state.particle_presets.is_empty() {
         state.particle_presets = std::sync::Arc::new(
             crate::particles::PRESET_NAMES
@@ -2644,19 +2644,19 @@ fn publish_host_state(
         },
     );
 
-    // Pose da câmara de jogo (`viber.camera_state`).
+    // Pose da câmara de jogo (`vael.camera_state`).
     state.camera = res
         .camera_snapshot
         .as_deref()
         .map(|snap| (snap.pos, snap.yaw_deg, snap.pitch_deg));
 
-    // Cinemática a tocar (`viber.cinematic_playing`).
+    // Cinemática a tocar (`vael.cinematic_playing`).
     state.cinematic = res
         .cinematic
         .as_deref()
         .and_then(|c| c.playing().map(str::to_owned));
 
-    // Acessibilidade (`viber.a11y`): o jogo desenha; a engine aplica.
+    // Acessibilidade (`vael.a11y`): o jogo desenha; a engine aplica.
     state.a11y = res
         .a11y
         .as_deref()
@@ -2670,7 +2670,7 @@ fn publish_host_state(
         })
         .unwrap_or((1.0, true, true, false));
 
-    // Papel de rede (`viber.net_role`).
+    // Papel de rede (`vael.net_role`).
     state.net_role = Some(
         match res.net.as_deref().map(|net| &net.role) {
             Some(crate::netplay::NetRole::Host { .. }) => "host",
@@ -2689,7 +2689,7 @@ fn publish_host_state(
         state.locale_table = Some(std::sync::Arc::new(locale.table.clone()));
     }
 
-    // Metadados dos slots (`viber.save_slots`): ler 5 JSONs por frame é
+    // Metadados dos slots (`vael.save_slots`): ler 5 JSONs por frame é
     // lixo — refresca no 1.º frame e a cada 2 s (um save novo aparece no
     // menu de continuar no refresh seguinte).
     let now = time.elapsed_secs_f64();

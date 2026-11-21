@@ -354,7 +354,7 @@ mod tests {
         let root = fixture_root("select");
         let debug = root.join("target/debug");
         write(&debug.join("viber"), b"x", true);
-        write(&debug.join("viber.d"), b"x", false);
+        write(&debug.join("vael.d"), b"x", false);
         write(&debug.join("libviber.rlib"), b"x", false);
         write(
             &debug.join("deps/hud_contract-6a30a0a1f7fb47f0"),

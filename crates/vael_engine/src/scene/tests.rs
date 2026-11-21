@@ -1000,7 +1000,7 @@ fn apply_with_coalesce_is_refused_offline() {
 #[test]
 fn live_routing_of_save_pick_and_entities() {
     let (method, params) = super::cli::live_request(super::cli::SceneCommand::Save).unwrap();
-    assert_eq!(method, "viber.scene.save");
+    assert_eq!(method, "vael.scene.save");
     assert_eq!(params, serde_json::json!({}));
 
     let (method, params) = super::cli::live_request(super::cli::SceneCommand::Pick {
@@ -1009,7 +1009,7 @@ fn live_routing_of_save_pick_and_entities() {
         max_distance: None,
     })
     .unwrap();
-    assert_eq!(method, "viber.scene.pick");
+    assert_eq!(method, "vael.scene.pick");
     assert_eq!(params["x"], 4.0);
     assert_eq!(params["y"], 5.0);
     assert_eq!(params["max_distance"], serde_json::json!(null));
@@ -1018,11 +1018,11 @@ fn live_routing_of_save_pick_and_entities() {
         selector: Some("name=props".into()),
     })
     .unwrap();
-    assert_eq!(method, "viber.scene.entities");
+    assert_eq!(method, "vael.scene.entities");
     assert_eq!(params["selector"], "name=props");
     let (method, params) =
         super::cli::live_request(super::cli::SceneCommand::Entities { selector: None }).unwrap();
-    assert_eq!(method, "viber.scene.entities");
+    assert_eq!(method, "vael.scene.entities");
     assert_eq!(params["selector"], serde_json::json!(null));
 }
 

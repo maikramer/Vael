@@ -1,4 +1,4 @@
-//! Método `viber.lua` — executa Luau arbitrário no contexto da engine, é o
+//! Método `vael.lua` — executa Luau arbitrário no contexto da engine, é o
 //! "evaluate script" do debug bridge (equivalente do `Runtime.evaluate` do
 //! Chrome DevTools). Cliente: `viber debug lua 'return 1+1'`.
 //!
@@ -12,7 +12,7 @@
 //!   `return` no fim do chunk.
 //! - O código corre na instância REPL dedicada do `bevy_ext_luau`
 //!   (`repl::repl()` — a tabela `viber` instalada sobre os globals/store
-//!   ESTÁTICOS do jogo): `viber.state()`, `viber.log`, `viber.toast`, …
+//!   ESTÁTICOS do jogo): `vael.state()`, `vael.log`, `vael.toast`, …
 //!   funcionam na REPL sem código extra e leem o estado REAL do jogo.
 //! - Sem guard de instruções (Luau/mlua não expõe hooks): um `while true do
 //!   end` na REPL congela o frame — igual ao que um script de página faz ao
@@ -45,7 +45,7 @@ const SNAPSHOT_CAP: usize = 4096;
 
 // ---------------------------------------------------------------- snapshot
 
-/// Uma entidade no snapshot de leitura (`viber.debug.entities`/`find`/`pos`).
+/// Uma entidade no snapshot de leitura (`vael.debug.entities`/`find`/`pos`).
 pub struct EntityInfo {
     pub id: Entity,
     pub name: Option<String>,
@@ -75,7 +75,7 @@ pub struct EntityInfo {
     pub ai: Option<AiInfo>,
 }
 
-/// Luz na entidade (`viber.debug.lights`/`stats`) — sombras são o maior
+/// Luz na entidade (`vael.debug.lights`/`stats`) — sombras são o maior
 /// custo de render por luz, por isso vêm destacadas.
 pub struct LightInfo {
     /// "point" | "spot" | "directional"
@@ -86,7 +86,7 @@ pub struct LightInfo {
     pub color: Option<[f32; 3]>,
 }
 
-/// Tempos do ÚLTIMO step de física (`viber.debug.physics`). O Avian não
+/// Tempos do ÚLTIMO step de física (`vael.debug.physics`). O Avian não
 /// expõe os contadores internos do pipeline: o tempo vem das âncoras do
 /// profiler (`physics.step`) e as fases ficam a zero.
 pub struct PhysicsInfo {
@@ -100,7 +100,7 @@ pub struct PhysicsInfo {
     pub nconstraints: usize,
 }
 
-/// Agregados do mundo inteiro (`viber.debug.stats`) — contados sobre TODAS
+/// Agregados do mundo inteiro (`vael.debug.stats`) — contados sobre TODAS
 /// as entidades (sem o cap de 4096 do snapshot).
 #[derive(Default)]
 pub struct WorldStats {
@@ -158,7 +158,7 @@ pub struct WorldStats {
     pub assets_images: usize,
 }
 
-/// Transform local + global (`viber.debug.transform`/`info`).
+/// Transform local + global (`vael.debug.transform`/`info`).
 pub struct TransformInfo {
     pub translation: [f32; 3],
     /// Euler YXZ em graus `[pitch, yaw, roll]` (só leitura; a engine usa quats).
@@ -168,7 +168,7 @@ pub struct TransformInfo {
     pub global: Option<[f32; 3]>,
 }
 
-/// Resumo do shape Rapier (`viber.debug.collider`).
+/// Resumo do shape Rapier (`vael.debug.collider`).
 pub struct ColliderSummary {
     /// "cuboid" | "ball" | "trimesh" | "compound" | "outro"
     pub shape: String,
@@ -178,7 +178,7 @@ pub struct ColliderSummary {
     pub shapes: Option<u32>,
 }
 
-/// Resumo do `Mesh3d` (`viber.debug.mesh`) — dados resolvidos de
+/// Resumo do `Mesh3d` (`vael.debug.mesh`) — dados resolvidos de
 /// `Assets<Mesh>` no snapshot (o chunk não tem acesso aos assets).
 pub struct MeshSummary {
     pub topology: String,
@@ -192,7 +192,7 @@ pub struct MeshSummary {
     pub uv_max: Option<[f32; 2]>,
 }
 
-/// Resumo do material PBR (`viber.debug.material`).
+/// Resumo do material PBR (`vael.debug.material`).
 pub struct MaterialSummary {
     pub base_color: [f32; 4],
     pub metallic: f32,
@@ -203,7 +203,7 @@ pub struct MaterialSummary {
     pub normal_map: Option<[i64; 2]>,
 }
 
-/// Estado do player no snapshot (`viber.debug.player`).
+/// Estado do player no snapshot (`vael.debug.player`).
 pub struct PlayerInfo {
     pub entity: Entity,
     pub position: Vec3,
@@ -211,7 +211,7 @@ pub struct PlayerInfo {
     pub speed: f32,
 }
 
-/// IA de uma criatura no snapshot (`viber.debug.ai`/`info`) — FSM da engine
+/// IA de uma criatura no snapshot (`vael.debug.ai`/`info`) — FSM da engine
 /// (`EnemyCreature`), pedidos de locomoção (`AiLocomotion`) e perfil de nav.
 pub struct AiInfo {
     /// "wander" | "chase" — só criaturas da FSM da engine.
@@ -230,7 +230,7 @@ pub struct AiInfo {
     pub nav_profile: Option<String>,
 }
 
-/// Estado da pilha de navegação no snapshot (`viber.debug.nav`).
+/// Estado da pilha de navegação no snapshot (`vael.debug.nav`).
 pub struct NavInfo {
     pub enabled: bool,
     pub agent_radius: f32,
@@ -248,7 +248,7 @@ pub struct NavInfo {
     pub census: Vec<(&'static str, usize)>,
 }
 
-/// Uma `<BiomeRegion>` no snapshot (`viber.debug.regions`/`biome_at`).
+/// Uma `<BiomeRegion>` no snapshot (`vael.debug.regions`/`biome_at`).
 pub struct RegionInfo {
     pub id: String,
     pub display_name: String,
@@ -259,7 +259,7 @@ pub struct RegionInfo {
     pub pp_bloom_strength: Option<f32>,
 }
 
-/// Névoa + atmosfera vivos no snapshot (`viber.debug.atmosphere`).
+/// Névoa + atmosfera vivos no snapshot (`vael.debug.atmosphere`).
 pub struct AtmosphereInfo {
     /// 1 dia pleno, 0 noite plena.
     pub day: f32,
@@ -274,14 +274,14 @@ pub struct AtmosphereInfo {
     pub bloom_boost: f32,
 }
 
-/// `<WorldBorder>` no snapshot (`viber.debug.border`).
+/// `<WorldBorder>` no snapshot (`vael.debug.border`).
 pub struct BorderInfo {
     pub radius: f32,
     pub warn_seconds: f32,
     pub margin: f32,
 }
 
-/// Bolsa de interior no snapshot (`viber.debug.interior`).
+/// Bolsa de interior no snapshot (`vael.debug.interior`).
 pub struct InteriorInfo {
     /// O herói está lá dentro agora (`InteriorLighting.active`).
     pub active: bool,
@@ -295,12 +295,12 @@ pub struct InteriorInfo {
     pub camera_yaw_deg: f32,
 }
 
-/// Um nó da UI endereçável no snapshot (`viber.debug.ui_tree`).
+/// Um nó da UI endereçável no snapshot (`vael.debug.ui_tree`).
 pub struct UiNodeInfo {
     /// id autoral da UI declarativa OU `Name` (`hud:health`, `chip:gold`…).
     pub id: String,
     /// Rect computado em píxeis LÓGICOS (top-left) — o mesmo espaço do
-    /// `viber.input.click`, que dá o clique exato.
+    /// `vael.input.click`, que dá o clique exato.
     pub x: f32,
     pub y: f32,
     pub w: f32,
@@ -313,7 +313,7 @@ pub struct UiNodeInfo {
     pub classes: Vec<String>,
 }
 
-/// Skills/cooldowns do herói no snapshot (`viber.debug.skills`).
+/// Skills/cooldowns do herói no snapshot (`vael.debug.skills`).
 pub struct SkillsInfo {
     pub learned: Vec<String>,
     pub points: u32,
@@ -326,7 +326,7 @@ pub struct SkillsInfo {
     pub crit_bonus: Option<f32>,
 }
 
-/// Seeds vivos do mundo no snapshot (`viber.debug.seeds`) — a metade da
+/// Seeds vivos do mundo no snapshot (`vael.debug.seeds`) — a metade da
 /// promessa "mesma seed, mesmo mundo" que se pode INSPECIONAR.
 #[derive(Default)]
 pub struct SeedInfo {
@@ -335,7 +335,7 @@ pub struct SeedInfo {
     pub weather_seed: Option<u64>,
 }
 
-/// Waypoints/marcos no snapshot (`viber.debug.waypoints`).
+/// Waypoints/marcos no snapshot (`vael.debug.waypoints`).
 #[derive(Default)]
 pub struct WaypointInfo {
     /// Marcos da Nota já assinados.
@@ -347,7 +347,7 @@ pub struct WaypointInfo {
     pub landmarks: Vec<(&'static str, &'static str)>,
 }
 
-/// Estado do save no snapshot (`viber.debug.save_info`).
+/// Estado do save no snapshot (`vael.debug.save_info`).
 pub struct SaveInfo {
     pub path: String,
     pub exists: bool,
@@ -356,7 +356,7 @@ pub struct SaveInfo {
     pub mtime: Option<f64>,
 }
 
-/// Estado da câmara orbital no snapshot (`viber.debug.camera`).
+/// Estado da câmara orbital no snapshot (`vael.debug.camera`).
 pub struct CameraInfo {
     pub position: Vec3,
     pub distance: f32,
@@ -365,7 +365,7 @@ pub struct CameraInfo {
     pub target: Option<String>,
 }
 
-/// Estado do relógio dia/noite no snapshot (`viber.debug.clock`).
+/// Estado do relógio dia/noite no snapshot (`vael.debug.clock`).
 pub struct ClockInfo {
     pub minute: f32,
     pub dawn: f32,
@@ -384,52 +384,52 @@ pub struct DebugView {
     pub time_scale: f32,
     pub camera: Option<CameraInfo>,
     pub clock: Option<ClockInfo>,
-    /// Snapshot do profiler no início da chamada (`viber.debug.prof`/`fps`).
+    /// Snapshot do profiler no início da chamada (`vael.debug.prof`/`fps`).
     pub prof: Json,
     /// Tempos do último step de física (Rapier) ou None sem física.
     pub physics: Option<PhysicsInfo>,
     /// Agregados do mundo inteiro (sem cap do snapshot).
     pub stats: WorldStats,
     /// Chão ao vivo: tuning de splat + pele das paredes do primeiro chunk
-    /// (snapshot de `viber.debug.ground()`).
+    /// (snapshot de `vael.debug.ground()`).
     pub ground: Option<GroundInfo>,
-    /// Pilha de navegação (`viber.debug.nav`).
+    /// Pilha de navegação (`vael.debug.nav`).
     pub nav: Option<NavInfo>,
-    /// `<BiomeRegion>` do mundo (`viber.debug.regions`/`biome_at`).
+    /// `<BiomeRegion>` do mundo (`vael.debug.regions`/`biome_at`).
     pub regions: Vec<RegionInfo>,
-    /// Atmosfera/névoa vivos (`viber.debug.atmosphere`).
+    /// Atmosfera/névoa vivos (`vael.debug.atmosphere`).
     pub atmosphere: Option<AtmosphereInfo>,
-    /// Tempo completo, com o scheduler (`viber.debug.weather_full`).
+    /// Tempo completo, com o scheduler (`vael.debug.weather_full`).
     pub weather: Option<WeatherInfo>,
-    /// `<WorldBorder>` (`viber.debug.border`).
+    /// `<WorldBorder>` (`vael.debug.border`).
     pub border: Option<BorderInfo>,
-    /// Bolsa de interior (`viber.debug.interior`).
+    /// Bolsa de interior (`vael.debug.interior`).
     pub interior: Option<InteriorInfo>,
-    /// UI endereçável com rects (`viber.debug.ui_tree`).
+    /// UI endereçável com rects (`vael.debug.ui_tree`).
     pub ui: Vec<UiNodeInfo>,
-    /// Snapshot de áudio do profiler (`viber.debug.audio`), já em JSON.
+    /// Snapshot de áudio do profiler (`vael.debug.audio`), já em JSON.
     pub audio: Option<Json>,
-    /// Seeds (`viber.debug.seeds`).
+    /// Seeds (`vael.debug.seeds`).
     pub seeds: SeedInfo,
-    /// Skills/cooldowns (`viber.debug.skills`).
+    /// Skills/cooldowns (`vael.debug.skills`).
     pub skills: Option<SkillsInfo>,
-    /// Waypoints/marcos (`viber.debug.waypoints`).
+    /// Waypoints/marcos (`vael.debug.waypoints`).
     pub waypoints: WaypointInfo,
-    /// Save em disco (`viber.debug.save_info`).
+    /// Save em disco (`vael.debug.save_info`).
     pub save: Option<SaveInfo>,
     /// Terreno partilhado para queries posicionais ao vivo
-    /// (`viber.debug.terrain(x, z)`) — Arc clones, barato.
+    /// (`vael.debug.terrain(x, z)`) — Arc clones, barato.
     pub terrain: Option<crate::terrain::runtime::TerrainReader>,
     /// Registos de estrada/água para as mesmas queries.
     pub surfaces: Option<crate::luau::SurfaceRegistries>,
     /// Hash FNV-1a do conteúdo do mundo (entidades ordenadas) — A/B de
-    /// determinismo "mesma seed, mesmo mundo" (`viber.debug.world_hash`).
+    /// determinismo "mesma seed, mesmo mundo" (`vael.debug.world_hash`).
     pub world_hash: u64,
-    /// Cauda do event log estruturado (`viber.debug.events`).
+    /// Cauda do event log estruturado (`vael.debug.events`).
     pub events: Json,
 }
 
-/// `viber.debug.weather_full` — `WeatherState` + o scheduler do ciclo.
+/// `vael.debug.weather_full` — `WeatherState` + o scheduler do ciclo.
 pub struct WeatherInfo {
     pub wind: [f32; 2],
     pub wind_strength: f32,
@@ -448,7 +448,7 @@ pub struct SchedulerInfo {
     pub target: f32,
 }
 
-/// Estado do chão ao vivo (`viber.debug.ground{...}`): o tuning de splat
+/// Estado do chão ao vivo (`vael.debug.ground{...}`): o tuning de splat
 /// acumula entre chamadas — cada uma só passa o que muda.
 #[derive(Resource, Debug, Clone, Copy, Default, Reflect)]
 #[reflect(Resource)]
@@ -456,7 +456,7 @@ struct GroundState {
     tuning: crate::terrain::splat::SplatTuning,
 }
 
-/// Snapshot do chão ao vivo (leitura de `viber.debug.ground()`).
+/// Snapshot do chão ao vivo (leitura de `vael.debug.ground()`).
 #[derive(Debug, Clone, Copy)]
 pub struct GroundInfo {
     pub tuning: crate::terrain::splat::SplatTuning,
@@ -467,7 +467,7 @@ pub struct GroundInfo {
     pub walls_b: [f32; 4],
 }
 
-/// Fila de escritas enfileiradas pelas closures `viber.debug.*`, drenada
+/// Fila de escritas enfileiradas pelas closures `vael.debug.*`, drenada
 /// pelo handler após o chunk (`apply_ops`).
 #[derive(Default)]
 pub struct DebugOps(pub Vec<DebugOp>);
@@ -483,7 +483,7 @@ pub struct DebugOps(pub Vec<DebugOp>);
 pub struct DebugMaterialOverrides(pub std::collections::HashMap<Entity, Handle<StandardMaterial>>);
 
 /// TODO(migration): os verbos genéricos de ECS têm alternativa na MESMA
-/// sessão `viber.lua` via `viber.ecs`: `set_pos`/`tp` → `ecs.set` em
+/// sessão `vael.lua` via `vael.ecs`: `set_pos`/`tp` → `ecs.set` em
 /// `Transform`; `hide`/`show`/`toggle_vis` → `ecs.set` em `Visibility`;
 /// `despawn` → `ecs.despawn`; `set_scale`/`rotate` → `ecs.set` em
 /// `Transform`; `set_entity_hp`/`set_max_hp`/`kill` → `ecs.set` em `Health`;
@@ -492,22 +492,22 @@ pub struct DebugMaterialOverrides(pub std::collections::HashMap<Entity, Handle<S
 /// dependem de primitivas (Spawn/Light/Material/…) não têm equivalente.
 pub enum DebugOp {
     /// Posição absoluta, sem snap (o que o script escreve é o que fica).
-    // TODO(migration): `viber.ecs.set` em `Transform`.
+    // TODO(migration): `vael.ecs.set` em `Transform`.
     SetPos(Entity, Vec3),
     /// Teleporte do player: Y explícito.
     Teleport(Entity, Vec3),
-    /// Teleporte com Y sentado no terreno (`viber.debug.tp(x, z)`).
+    /// Teleporte com Y sentado no terreno (`vael.debug.tp(x, z)`).
     TeleportSnap(Entity, Vec3),
-    /// Delta XZ em metros com Y no terreno (`viber.debug.move_player`).
+    /// Delta XZ em metros com Y no terreno (`vael.debug.move_player`).
     MoveBySnap(Entity, Vec2),
     Face(Entity, Vec3),
-    // TODO(migration): `viber.ecs.set` em `Visibility`.
+    // TODO(migration): `vael.ecs.set` em `Visibility`.
     Hide(Entity),
     Show(Entity),
     ToggleVis(Entity),
     Disable(Entity),
     Enable(Entity),
-    // TODO(migration): `viber.ecs.despawn`.
+    // TODO(migration): `vael.ecs.despawn`.
     Despawn(Entity),
     Toast(String),
     Heal(f32),
@@ -515,7 +515,7 @@ pub enum DebugOp {
     AddXp(u32),
     /// Deposita no vault — recurso (gold/wood/stone) ou item, pela mesma porta.
     Give(String, u32),
-    // TODO(migration): `viber.ecs.set` em `AiLocomotion.velocity`.
+    // TODO(migration): `vael.ecs.set` em `AiLocomotion.velocity`.
     SetSpeed(Entity, f32),
     SetTimeScale(f32),
     SpawnMarker {
@@ -532,10 +532,10 @@ pub enum DebugOp {
     /// HP absoluto do player (clamp a [0, max]).
     SetHp(f32),
     /// Soma yaw em graus em torno do Y.
-    // TODO(migration): `viber.ecs.set` em `Transform.rotation`.
+    // TODO(migration): `vael.ecs.set` em `Transform.rotation`.
     Rotate(Entity, f32),
     /// Escala uniforme.
-    // TODO(migration): `viber.ecs.set` em `Transform.scale`.
+    // TODO(migration): `vael.ecs.set` em `Transform.scale`.
     SetScale(Entity, f32),
     /// Câmara orbital: distância, pitch, yaw (graus) e/ou alvo (nome).
     SetCamera {
@@ -546,7 +546,7 @@ pub enum DebugOp {
     },
     /// Minuto do dia (0–1440, wrap).
     SetClock(f32),
-    /// Modo do DLSS AO VIVO (`viber.debug.dlss("performance")`): troca o
+    /// Modo do DLSS AO VIVO (`vael.debug.dlss("performance")`): troca o
     /// `perf_quality_mode` da câmara — o `prepare_dlss` do bevy recria o
     /// contexto na mudança e a nova escala aplica nos frames seguintes. É o
     /// A/B interleaved de modos SEM reboot, no MESMO processo (o protocolo
@@ -554,7 +554,7 @@ pub enum DebugOp {
     /// config.yaml): remover o componente ao vivo deixava o
     /// `MainPassResolutionOverride` órfão.
     SetDlssMode(String),
-    /// Look da chuva AO VIVO (`viber.debug.rain_look{...}`): fade junto da
+    /// Look da chuva AO VIVO (`vael.debug.rain_look{...}`): fade junto da
     /// câmara, tecto de alpha, largura do streak e rate. A afinação da chuva
     /// é visual — sem isto cada tentativa custava um rebuild + reboot.
     RainLook {
@@ -563,7 +563,7 @@ pub enum DebugOp {
         width: Option<f32>,
         rate: Option<f32>,
     },
-    /// Tempo AO VIVO (`viber.debug.set_weather{rain=…}`): fixa a intensidade
+    /// Tempo AO VIVO (`vael.debug.set_weather{rain=…}`): fixa a intensidade
     /// contínua do `<Weather>` e PÁRA o ciclo — sem isso o scheduler voltava
     /// a rolar o alvo a meio do A/B e os dois braços não eram comparáveis.
     SetWeather {
@@ -572,12 +572,12 @@ pub enum DebugOp {
         wind: Option<f32>,
     },
     /// Redimensiona a janela primária (píxeis físicos) — QA de layouts
-    /// responsivos: `viber.debug.set_window(900, 1300)` e o `@media` troca.
+    /// responsivos: `vael.debug.set_window(900, 1300)` e o `@media` troca.
     SetWindow {
         width: f32,
         height: f32,
     },
-    /// Sol AO VIVO (`viber.debug.sun{...}`): yaw/pitch rodam a
+    /// Sol AO VIVO (`vael.debug.sun{...}`): yaw/pitch rodam a
     /// DirectionalLight da cena E a direção publicada no shader do terreno
     /// (o chão tem sol próprio no uniform); illuminance/shadows tocam o
     /// componente.
@@ -587,7 +587,7 @@ pub enum DebugOp {
         illuminance: Option<f32>,
         shadows: Option<bool>,
     },
-    /// Chão AO VIVO (`viber.debug.ground{...}`): pele das paredes nos
+    /// Chão AO VIVO (`vael.debug.ground{...}`): pele das paredes nos
     /// materiais de chunk (moss/streaks/rock_darken/tri_slope/tri_soft/
     /// strata_strength) + rebake dos splats com tuning novo
     /// (patchiness/gravel/dirt/forest/shore_width).
@@ -607,10 +607,10 @@ pub enum DebugOp {
     },
     /// HP absoluto de QUALQUER entidade (clamp a [0, max]) — `set_hp(n)`
     /// continua a ser o atalho do player.
-    // TODO(migration): `viber.ecs.set` em `Health.current`.
+    // TODO(migration): `vael.ecs.set` em `Health.current`.
     SetEntityHp(Entity, f32),
     /// HP máximo de qualquer entidade (mín. 1; atual clampado).
-    // TODO(migration): `viber.ecs.set/insert` em `Health`.
+    // TODO(migration): `vael.ecs.set/insert` em `Health`.
     SetMaxHp(Entity, f32),
     /// Força o estado de uma quest: "active" | "ready" | "done" | "not_taken".
     QuestForce(String, String),
@@ -630,10 +630,10 @@ pub enum DebugOp {
     SkillReset,
     /// Estado da FSM da criatura: "wander" | "chase" (a FSM reavalia por
     /// distância a cada frame — o aggro_radius é o lever que persiste).
-    // TODO(migration): `viber.ecs.set` em `EnemyCreature.state`.
+    // TODO(migration): `vael.ecs.set` em `EnemyCreature.state`.
     AiState(Entity, String),
     /// Raio de aggro da criatura (m).
-    // TODO(migration): `viber.ecs.set` em `EnemyCreature.aggro_radius`.
+    // TODO(migration): `vael.ecs.set` em `EnemyCreature.aggro_radius`.
     AiAggro(Entity, f32),
     /// Todas as criaturas da FSM → Wander.
     AiCalmAll,
@@ -702,9 +702,9 @@ pub enum DebugOp {
         emissive: Option<[f32; 3]>,
     },
     /// QA determinístico: pausa, avança EXATAMENTE N frames (a speed 1) e
-    /// volta a pausar (`viber.debug.step(n)`).
+    /// volta a pausar (`vael.debug.step(n)`).
     StepFrames(u32),
-    /// Restaura a speed anterior ao `step` (`viber.debug.play()`).
+    /// Restaura a speed anterior ao `step` (`vael.debug.play()`).
     ResumePlay,
     /// Luz AO VIVO (PointLight/SpotLight; DirectionalLight só illuminance).
     SetLight {
@@ -716,7 +716,7 @@ pub enum DebugOp {
     },
 }
 
-/// Opções de `viber.debug.sun{...}` (tabela; campos ausentes = sem mudança).
+/// Opções de `vael.debug.sun{...}` (tabela; campos ausentes = sem mudança).
 #[derive(Default)]
 pub struct SunOpts {
     pub yaw: Option<f32>,
@@ -744,7 +744,7 @@ impl FromLua for SunOpts {
     }
 }
 
-/// Opções de `viber.debug.ground{...}` (tabela; campos ausentes = sem
+/// Opções de `vael.debug.ground{...}` (tabela; campos ausentes = sem
 /// mudança).
 #[derive(Default)]
 pub struct GroundOpts {
@@ -793,7 +793,7 @@ impl FromLua for GroundOpts {
     }
 }
 
-/// Opções opcionais de `viber.debug.set_camera{...}`.
+/// Opções opcionais de `vael.debug.set_camera{...}`.
 #[derive(Default)]
 pub struct CameraOpts {
     pub distance: Option<f32>,
@@ -821,7 +821,7 @@ impl FromLua for CameraOpts {
     }
 }
 
-/// Opções de `viber.debug.nav_set{...}` (campos ausentes = sem mudança).
+/// Opções de `vael.debug.nav_set{...}` (campos ausentes = sem mudança).
 #[derive(Default)]
 pub struct NavSetOpts {
     pub enabled: Option<bool>,
@@ -849,7 +849,7 @@ impl FromLua for NavSetOpts {
     }
 }
 
-/// Opções de `viber.debug.postfx{taa=?, bloom=?, ...}` — cada campo presente
+/// Opções de `vael.debug.postfx{taa=?, bloom=?, ...}` — cada campo presente
 /// força o gate desse efeito (true = ligado, false = cortado).
 #[derive(Default)]
 pub struct PostFxOpts {
@@ -898,7 +898,7 @@ impl FromLua for PostFxOpts {
     }
 }
 
-/// Opções de `viber.debug.audio_set{...}` (volumes 0..1).
+/// Opções de `vael.debug.audio_set{...}` (volumes 0..1).
 #[derive(Default)]
 pub struct AudioSetOpts {
     pub master: Option<f32>,
@@ -926,7 +926,7 @@ impl FromLua for AudioSetOpts {
     }
 }
 
-/// Opções de `viber.debug.physics_set{gravity=?, paused=?}`.
+/// Opções de `vael.debug.physics_set{gravity=?, paused=?}`.
 #[derive(Default)]
 pub struct PhysicsSetOpts {
     pub gravity: Option<Vec3Arg>,
@@ -952,7 +952,7 @@ impl FromLua for PhysicsSetOpts {
     }
 }
 
-/// Opções de `viber.debug.spawn(url, x, y, z, {...})`.
+/// Opções de `vael.debug.spawn(url, x, y, z, {...})`.
 #[derive(Default)]
 pub struct SpawnOpts {
     pub yaw: Option<f32>,
@@ -986,7 +986,7 @@ impl FromLua for SpawnOpts {
     }
 }
 
-/// Opções de `viber.debug.spawn_light(x, y, z, {...})`.
+/// Opções de `vael.debug.spawn_light(x, y, z, {...})`.
 #[derive(Default)]
 pub struct SpawnLightOpts {
     pub intensity: Option<f32>,
@@ -1014,7 +1014,7 @@ impl FromLua for SpawnLightOpts {
     }
 }
 
-/// Opções de `viber.debug.set_material(id, {...})` — campos ausentes ficam.
+/// Opções de `vael.debug.set_material(id, {...})` — campos ausentes ficam.
 #[derive(Default)]
 pub struct MaterialOpts {
     pub base_color: Option<String>,
@@ -1046,7 +1046,7 @@ impl FromLua for MaterialOpts {
     }
 }
 
-/// Opções de `viber.debug.set_light(id, {...})` — campos ausentes ficam.
+/// Opções de `vael.debug.set_light(id, {...})` — campos ausentes ficam.
 #[derive(Default)]
 pub struct LightOpts {
     pub intensity: Option<f32>,
@@ -1076,7 +1076,7 @@ impl FromLua for LightOpts {
     }
 }
 
-/// Opções de `viber.debug.set_weather{rain=…, clouds=…, wind=…}`.
+/// Opções de `vael.debug.set_weather{rain=…, clouds=…, wind=…}`.
 #[derive(Default)]
 pub struct WeatherOpts {
     pub rain: Option<f32>,
@@ -1102,7 +1102,7 @@ impl FromLua for WeatherOpts {
     }
 }
 
-/// Opções de `viber.debug.rain_look{near_fade=…, alpha=…, width=…, rate=…}`.
+/// Opções de `vael.debug.rain_look{near_fade=…, alpha=…, width=…, rate=…}`.
 #[derive(Default)]
 pub struct RainLookOpts {
     pub near_fade: Option<f32>,
@@ -1152,7 +1152,7 @@ impl FromLua for Vec3Arg {
     }
 }
 
-/// Argumento de entidade: bits numéricos (dos snapshots/`viber.tree` via
+/// Argumento de entidade: bits numéricos (dos snapshots/`vael.tree` via
 /// `find`) ou nome (exato primeiro, depois substring case-insensitive).
 pub enum EntityArg {
     Id(u64),
@@ -1537,7 +1537,7 @@ fn build_view(world: &mut World) -> DebugView {
     let audio = serde_json::to_value(&audio).ok();
 
     // Terreno partilhado (Arc clones) + registos de estrada/água para as
-    // queries posicionais ao vivo de `viber.debug.terrain(x, z)`.
+    // queries posicionais ao vivo de `vael.debug.terrain(x, z)`.
     let (terrain, surfaces) = world
         .get_resource::<crate::terrain::runtime::TerrainRuntime>()
         .map(|rt| {
@@ -1764,7 +1764,7 @@ fn build_interior(world: &World) -> Option<InteriorInfo> {
 /// No Bevy 0.20 os nós de UI têm `UiGlobalTransform` (físico, centrado no
 /// nó), NÃO `GlobalTransform`: ler o segundo devolvia `None` para TODOS os
 /// nós e a `ui_tree()` saía sempre vazia. A rect publicada é convertida para
-/// píxeis LÓGICOS — o espaço do `viber.input.click`/`Window::cursor_position`
+/// píxeis LÓGICOS — o espaço do `vael.input.click`/`Window::cursor_position`
 /// (em HiDPI o clique levava o offset do scale factor).
 fn ui_node_info(world: &World, entity: Entity, id: String) -> Option<UiNodeInfo> {
     let e = world.get_entity(entity).ok()?;
@@ -1877,7 +1877,7 @@ fn build_seeds(world: &World) -> SeedInfo {
 }
 
 fn build_waypoints(_world: &World) -> WaypointInfo {
-    // A Nota/waypoint é regra do JOGO (Lua, `viber.markers`).
+    // A Nota/waypoint é regra do JOGO (Lua, `vael.markers`).
     WaypointInfo {
         marked: Vec::new(),
         label: None,
@@ -2074,7 +2074,7 @@ fn find_player(world: &mut World) -> Option<PlayerInfo> {
 
 // ---------------------------------------------------------------- handler
 
-/// Método BRP `viber.lua` — params `{ "code": "..." }`, resposta
+/// Método BRP `vael.lua` — params `{ "code": "..." }`, resposta
 /// `{ ok, result|error, applied, warnings }`.
 pub fn eval(params: In<Option<Json>>, world: &mut World) -> BrpResult {
     #[derive(Deserialize)]
@@ -2089,15 +2089,15 @@ pub fn eval(params: In<Option<Json>>, world: &mut World) -> BrpResult {
         // A instância REPL dedicada do `bevy_ext_luau` (recurso desta app,
         // criado à pressa na 1.ª chamada): a tabela `viber` completa sobre os
         // globals/store ESTÁTICOS (o jogo publica o estado do frame —
-        // `viber.state()`/`player_position`/… leem o estado REAL), os
-        // instaladores registados (`viber.profiler`, `viber.vael`) e globals
+        // `vael.state()`/`player_position`/… leem o estado REAL), os
+        // instaladores registados (`vael.profiler`, `vael.vael`) e globals
         // persistentes entre chamadas. Nada de `World`: as escritas passam
         // pelas DebugOps, aplicadas logo abaixo (mesmo frame).
         let lua = bevy_ext_luau::repl::repl_or_init(world);
         lua.set_app_data(view);
         lua.set_app_data(DebugOps::default());
         if let Err(e) = ensure_debug_api(&lua) {
-            return Err(invalid(format!("falha a instalar viber.debug: {e}")));
+            return Err(invalid(format!("falha a instalar vael.debug: {e}")));
         }
 
         let env: Table = match lua.named_registry_value("viber_debug_env") {
@@ -2132,15 +2132,15 @@ pub fn eval(params: In<Option<Json>>, world: &mut World) -> BrpResult {
             .app_data_mut::<DebugOps>()
             .map(|mut ops| std::mem::take(&mut ops.0))
             .unwrap_or_default();
-        // Fora do `viber.lua` não há quem drene a fila: as escritas falham
+        // Fora do `vael.lua` não há quem drene a fila: as escritas falham
         // com "sem snapshot" em vez do no-op mudo.
         lua.remove_app_data::<DebugOps>();
-        // Limpa o snapshot: uma chamada futura sem `viber.lua` (nunca acontece
+        // Limpa o snapshot: uma chamada futura sem `vael.lua` (nunca acontece
         // hoje — o método é o único a correr código aqui) não veria dados
         // podres da última REPL. REMOVER (e não substituir por
         // `DebugView::default()`): com um snapshot VAZIO presente,
         // `app_data_ref` tinha Some e as leituras devolviam dados ocos em vez
-        // do erro "sem snapshot — só dentro de viber.lua".
+        // do erro "sem snapshot — só dentro de vael.lua".
         lua.remove_app_data::<DebugView>();
         (ok, result, error, ops)
     };
@@ -2158,7 +2158,7 @@ pub fn eval(params: In<Option<Json>>, world: &mut World) -> BrpResult {
 
 // ---------------------------------------------------------------- API Lua
 
-/// Documentação de `viber.debug.*`: `(nome, assinatura, descrição)`.
+/// Documentação de `vael.debug.*`: `(nome, assinatura, descrição)`.
 ///
 /// A fonte da VERDADE é a tabela construída em [`ensure_debug_api`]; esta
 /// lista é a documentação e o guard test
@@ -2288,7 +2288,7 @@ pub const DEBUG_API_DOCS: &[(&str, &str, &str)] = &[
     (
         "waypoints",
         "waypoints()",
-        "vazio {marked,landmarks} — a Nota é do JOGO (Lua, viber.markers)",
+        "vazio {marked,landmarks} — a Nota é do JOGO (Lua, vael.markers)",
     ),
     (
         "save_info",
@@ -2552,10 +2552,14 @@ pub const DEBUG_API_DOCS: &[(&str, &str, &str)] = &[
     ),
 ];
 
-/// Instala `viber.debug` uma vez (idempotente) — leituras do [`DebugView`],
+/// Instala `vael.debug` uma vez (idempotente) — leituras do [`DebugView`],
 /// escritas para a fila [`DebugOps`].
 fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
-    let viber: Table = lua.globals().get("viber")?;
+    // O nome novo ganha; o `viber` legado continua a resolver (alias).
+    let viber: Table = lua
+        .globals()
+        .get("vael")
+        .or_else(|_| lua.globals().get("viber"))?;
     if viber.get::<Table>("debug").is_ok() {
         return Ok(());
     }
@@ -2565,7 +2569,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             // Fora da REPL (chunk de script de jogo) não há fila: erro Lua
             // claro em vez de acumular ops que nunca são aplicadas.
             return Err(mlua::Error::runtime(
-                "viber.debug.*: escrita fora de viber.lua (só a REPL do bridge tem fila de ops)",
+                "vael.debug.*: escrita fora de vael.lua (só a REPL do bridge tem fila de ops)",
             ));
         };
         ops.0.push(op);
@@ -2576,7 +2580,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
     fn resolve(lua: &Lua, arg: EntityArg) -> mlua::Result<Entity> {
         let view = lua
             .app_data_ref::<DebugView>()
-            .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+            .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
         match arg {
             EntityArg::Id(bits) => Entity::try_from_bits(bits)
                 .ok_or_else(|| mlua::Error::runtime(format!("id de entidade inválido: {bits}"))),
@@ -2616,7 +2620,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, radius: Option<f32>| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let origin = view.player.as_ref().map(|p| p.position);
             // Um raio sem origem era IGNORADO em silêncio: num mundo sem
             // Player, `entities(10)` devolvia o snapshot inteiro como se
@@ -2663,7 +2667,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, name: String| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let needle = name.to_ascii_lowercase();
             let ids: Vec<i64> = view
                 .entities
@@ -2685,7 +2689,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             view.entities
                 .iter()
                 .find(|info| info.id == entity)
@@ -2702,7 +2706,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let info = view
                 .entities
                 .iter()
@@ -2717,7 +2721,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             view.entities
                 .iter()
                 .find(|info| info.id == entity)
@@ -2733,7 +2737,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             view.entities
                 .iter()
                 .find(|info| info.id == entity)
@@ -2751,7 +2755,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             view.entities
                 .iter()
                 .find(|info| info.id == entity)
@@ -2767,7 +2771,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             view.entities
                 .iter()
                 .find(|info| info.id == entity)
@@ -2783,7 +2787,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let info = view
                 .entities
                 .iter()
@@ -2800,7 +2804,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(physics) = view.physics.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -2821,7 +2825,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let s = &view.stats;
             let table = lua.create_table()?;
             table.raw_set("entities", s.entities)?;
@@ -2895,7 +2899,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, radius: Option<f32>| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let origin = view.player.as_ref().map(|p| p.position);
             // Raio sem origem era ignorado (ver `entities`): devolvia
             // colliders longe como se estivessem no raio.
@@ -2953,7 +2957,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, radius: Option<f32>| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let origin = view.player.as_ref().map(|p| p.position);
             // Raio sem origem era ignorado (ver `entities`): devolvia luzes
             // longe como se estivessem no raio.
@@ -3005,7 +3009,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, (radius, limit): (f32, Option<f64>)| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let limit = limit.unwrap_or(64.0).clamp(1.0, 128.0) as usize;
             let Some(origin) = view.player.as_ref().map(|p| p.position) else {
                 return Err(mlua::Error::runtime(
@@ -3060,7 +3064,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(p) = view.player.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3083,7 +3087,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             lua.app_data_ref::<DebugView>()
                 .map(|view| view.time_scale)
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))
         })?,
     )?;
 
@@ -3134,7 +3138,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, (x, z): (f32, f32)| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let entity = player_entity(lua)?;
             let y = view.player.as_ref().map(|p| p.position.y).unwrap_or(0.0);
             push(lua, DebugOp::Face(entity, Vec3::new(x, y, z)))
@@ -3329,7 +3333,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(g) = view.ground else {
                 return Ok(Value::Nil);
             };
@@ -3361,7 +3365,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some((current, max)) = view
                 .entities
                 .iter()
@@ -3383,7 +3387,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(ai) = view
                 .entities
                 .iter()
@@ -3414,7 +3418,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(nav) = view.nav.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3448,7 +3452,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let list: Vec<Json> = view
                 .regions
                 .iter()
@@ -3470,7 +3474,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, (x, z): (f32, f32)| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(region) = view
                 .regions
                 .iter()
@@ -3502,7 +3506,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             }
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(terrain) = view.terrain.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3549,7 +3553,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(w) = view.weather.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3575,7 +3579,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(a) = view.atmosphere.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3595,7 +3599,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(b) = view.border.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3611,7 +3615,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(i) = view.interior.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3629,13 +3633,13 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
     )?;
 
     // `ui_tree()` — ids declarativos + hud:* com RECTS: dá o clique exato
-    // (`viber.input.click`) sem adivinhar coordenadas no screenshot.
+    // (`vael.input.click`) sem adivinhar coordenadas no screenshot.
     api.set(
         "ui_tree",
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let list: Vec<Json> = view
                 .ui
                 .iter()
@@ -3656,7 +3660,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             match view.audio.as_ref() {
                 Some(audio) => json_to_lua(lua, audio),
                 None => Ok(Value::Nil),
@@ -3669,7 +3673,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             json_to_lua(
                 lua,
                 &json!({
@@ -3689,7 +3693,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             Ok(format!("{:016x}", view.world_hash))
         })?,
     )?;
@@ -3700,7 +3704,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, since: Option<f64>| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let since = since.unwrap_or(0.0);
             let Some(list) = view.events.as_array() else {
                 return Ok(Value::Nil);
@@ -3734,7 +3738,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let _ = view; // (docs são estáticas; a view não é precisa)
             let out = lua.create_table()?;
 
-            // 1) viber.debug.* — documentação estática.
+            // 1) vael.debug.* — documentação estática.
             let debug_docs = lua.create_table()?;
             for (name, signature, desc) in DEBUG_API_DOCS {
                 let entry = lua.create_table()?;
@@ -3745,7 +3749,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             }
             out.raw_set("debug", debug_docs)?;
 
-            // 2) viber.* dos scripts de jogo + ui/profiler — ENUMERADOS da
+            // 2) vael.* dos scripts de jogo + ui/profiler — ENUMERADOS da
             //    tabela viva (a verdade do binário, não de docs antigas).
             let enumerate = |_lua: &Lua, table: Value| -> mlua::Result<Vec<String>> {
                 let mut names = Vec::new();
@@ -3759,7 +3763,10 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
                 names.sort();
                 Ok(names)
             };
-            let viber_table: Value = lua.globals().get("viber")?;
+            let viber_table: Value = lua
+                .globals()
+                .get("vael")
+                .or_else(|_| lua.globals().get("viber"))?;
             let game_api = enumerate(lua, viber_table.clone())?;
             let game = lua.create_table()?;
             for name in game_api {
@@ -3795,7 +3802,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(s) = view.skills.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -3825,7 +3832,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let marked =
                 lua.create_sequence_from(view.waypoints.marked.iter().map(String::as_str))?;
             let landmarks = lua.create_sequence_from(
@@ -3860,7 +3867,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(s) = view.save.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -4055,7 +4062,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             |lua, (url, x, y, z, opts): (String, f32, f32, f32, SpawnOpts)| {
                 let color = match opts.color {
                     Some(hex) => Some(
-                        crate::xml::values::parse_color(&hex, "viber.debug.spawn")
+                        crate::xml::values::parse_color(&hex, "vael.debug.spawn")
                             .map_err(mlua::Error::runtime)?,
                     ),
                     None => None,
@@ -4088,7 +4095,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, (x, y, z, opts): (f32, f32, f32, SpawnLightOpts)| {
             let color = match opts.color {
                 Some(hex) => Some(
-                    crate::xml::values::parse_color(&hex, "viber.debug.spawn_light")
+                    crate::xml::values::parse_color(&hex, "vael.debug.spawn_light")
                         .map_err(mlua::Error::runtime)?,
                 ),
                 None => None,
@@ -4112,7 +4119,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let base_color = match opts.base_color {
                 Some(hex) => {
-                    let c = crate::xml::values::parse_color(&hex, "viber.debug.set_material")
+                    let c = crate::xml::values::parse_color(&hex, "vael.debug.set_material")
                         .map_err(mlua::Error::runtime)?;
                     Some([c[0], c[1], c[2], 1.0])
                 }
@@ -4120,7 +4127,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             };
             let emissive = match opts.emissive {
                 Some(hex) => Some(
-                    crate::xml::values::parse_color(&hex, "viber.debug.set_material")
+                    crate::xml::values::parse_color(&hex, "vael.debug.set_material")
                         .map_err(mlua::Error::runtime)?,
                 ),
                 None => None,
@@ -4145,7 +4152,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             let entity = resolve(lua, arg)?;
             let color = match opts.color {
                 Some(hex) => Some(
-                    crate::xml::values::parse_color(&hex, "viber.debug.set_light")
+                    crate::xml::values::parse_color(&hex, "vael.debug.set_light")
                         .map_err(mlua::Error::runtime)?,
                 ),
                 None => None,
@@ -4169,7 +4176,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, (a, b): (EntityArg, EntityArg)| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let entity_a = resolve(lua, a)?;
             let entity_b = resolve(lua, b)?;
             let pos_of = |entity: Entity| {
@@ -4190,7 +4197,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(cam) = view.camera.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -4212,7 +4219,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             let Some(clock) = view.clock.as_ref() else {
                 return Ok(Value::Nil);
             };
@@ -4229,7 +4236,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             json_to_lua(lua, &view.prof)
         })?,
     )?;
@@ -4238,7 +4245,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(|lua, ()| {
             let view = lua
                 .app_data_ref::<DebugView>()
-                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de viber.lua"))?;
+                .ok_or_else(|| mlua::Error::runtime("sem snapshot — só dentro de vael.lua"))?;
             Ok(view.prof.get("fps").and_then(Json::as_f64))
         })?,
     )?;
@@ -4247,7 +4254,7 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
         lua.create_function(
             move |lua, (x, y, z, size, color): (f32, f32, f32, f32, Option<String>)| {
                 let color = match color {
-                    Some(hex) => crate::xml::values::parse_color(&hex, "viber.debug.spawn")
+                    Some(hex) => crate::xml::values::parse_color(&hex, "vael.debug.spawn")
                         .map_err(mlua::Error::runtime)?,
                     None => [1.0, 0.55, 0.1],
                 };
@@ -4545,7 +4552,7 @@ fn apply_one(world: &mut World, op: DebugOp, warnings: &mut Vec<String>) -> bool
         }
         DebugOp::Give(kind, amount) => {
             warnings.push(format!(
-                "give: '{kind}'x{amount} — o cofre e do JOGO (viber.game()), a engine nao o conhece"
+                "give: '{kind}'x{amount} — o cofre e do JOGO (vael.game()), a engine nao o conhece"
             ));
             false
         }
@@ -5554,7 +5561,7 @@ fn set_entity_health(
     applied
 }
 
-/// Primitivas do `viber.debug.spawn`: `"box:w,h,d"`, `"sphere:r"`,
+/// Primitivas do `vael.debug.spawn`: `"box:w,h,d"`, `"sphere:r"`,
 /// `"cylinder:r,h"` — dimensões COMPLETAS (como no XML).
 #[derive(Debug, Clone, Copy)]
 enum PrimitiveShape {
@@ -5563,7 +5570,7 @@ enum PrimitiveShape {
     Cylinder(f32, f32),
 }
 
-/// Nome único do próximo `viber.debug.spawn` (`debug:spawn:N`) — alocado na
+/// Nome único do próximo `vael.debug.spawn` (`debug:spawn:N`) — alocado na
 /// CLOSURE (o chunk devolve-o) para o agente o poder usar em `find`/`info` na
 /// chamada seguinte; o contador é do processo, como o dos markers.
 fn next_spawn_name() -> String {
@@ -5902,7 +5909,7 @@ fn collider_table(lua: &Lua, collider: &ColliderSummary) -> mlua::Result<Value> 
     Ok(Value::Table(table))
 }
 
-/// Tabela completa `viber.debug.info(id)` — tudo o que o snapshot tem.
+/// Tabela completa `vael.debug.info(id)` — tudo o que o snapshot tem.
 fn info_table(lua: &Lua, info: &EntityInfo) -> mlua::Result<Value> {
     let table = lua.create_table()?;
     table.raw_set("id", info.id.to_bits() as i64)?;
@@ -5989,7 +5996,7 @@ fn info_table(lua: &Lua, info: &EntityInfo) -> mlua::Result<Value> {
 }
 
 /// JSON → Lua (para devolver o snapshot do profiler como tabela).
-/// Partilhado com a API `viber.profiler()` (`src/profiler/script.rs`).
+/// Partilhado com a API `vael.profiler()` (`src/profiler/script.rs`).
 pub(crate) fn json_to_lua(lua: &Lua, value: &Json) -> mlua::Result<Value> {
     Ok(match value {
         Json::Null => Value::Nil,

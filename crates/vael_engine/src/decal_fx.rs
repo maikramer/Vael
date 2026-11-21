@@ -1,4 +1,4 @@
-//! Decals de impacto genéricos (`<Decal>` futuro / `viber.decal`).
+//! Decals de impacto genéricos (`<Decal>` futuro / `vael.decal`).
 //!
 //! O terreno já tinha `<GroundDecal>` (manchas drapeadas no heightfield),
 //! mas um golpe precisa de deixar marca em QUALQUER superfície — parede,
@@ -15,7 +15,7 @@ use bevy::prelude::*;
 /// um combate intenso não pode criar centenas.
 pub const MAX_DECALS: usize = 48;
 
-/// Pedido de decal vindo de um script (`viber.decal`).
+/// Pedido de decal vindo de um script (`vael.decal`).
 #[derive(Debug, Clone, Reflect)]
 pub struct DecalRequest {
     pub url: String,

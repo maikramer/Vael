@@ -7,7 +7,7 @@
 //!    colheita, prompt, balão); a 3,5 m os alvos de uma praça sobrepõem-se e
 //!    o jogador nunca sabe com quem vai falar. O alcance passa a
 //!    [`BASE_RANGE_M`] × [`range_scale`] (default 0,5 → **1,75 m**), e os
-//!    alcances AUTORADOS (`viber.set_interaction`, `destructible range`)
+//!    alcances AUTORADOS (`vael.set_interaction`, `destructible range`)
 //!    levam a mesma escala.
 //!
 //! 2. **O mais próximo ganha** — um só vencedor POR TECLA, arbitrado aqui e
@@ -31,7 +31,7 @@ use crate::player::Player;
 pub use bevy_engine_core::BASE_RANGE_M;
 
 /// Escala global dos alcances de interação — o contrato vive no
-/// `bevy_ext_core` (o host Lua usa-a no `viber.interact_range`).
+/// `bevy_ext_core` (o host Lua usa-a no `vael.interact_range`).
 pub use bevy_engine_core::{INTERACT_RANGE_SCALE as RANGE_SCALE, interact_range_scale as range_scale};
 
 /// Alcance efetivo de um valor autorado (`set_interaction`, `destructible`).

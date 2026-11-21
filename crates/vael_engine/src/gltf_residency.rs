@@ -305,7 +305,7 @@ pub fn residency_radius(learned: Option<f32>) -> f32 {
     learned.map_or_else(load_radius, |cull| cull.max(floor) + CULL_MARGIN)
 }
 
-/// O nó (ou um ancestral) tem script? Um NPC com `viber.state` não pode ver a
+/// O nó (ou um ancestral) tem script? Um NPC com `vael.state` não pode ver a
 /// sua subárvore desmontada por distância — o `CharacterAnimator` guarda
 /// entidades do rig.
 fn scripted(

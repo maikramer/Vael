@@ -17,7 +17,7 @@
 //!    `shaders/sky.wesl` com os valores do `<Sky>`/`<DayCycle>`/`<Weather>`
 //!    do mundo antes de o renderer o carregar (nuvens, estrelas, aurora…).
 //! 2. **Storage per-frame** ([`SkyUniform`]). A hora do mundo NÃO
-//!    pode vir de `globals.time`: `viber.debug.set_clock` (e qualquer
+//!    pode vir de `globals.time`: `vael.debug.set_clock` (e qualquer
 //!    lógica de jogo que mexa no relógio) escreve `DayCycleState`, que o
 //!    tempo do motor ignora — era por isso que às 23:02 ainda se via o disco
 //!    solar e a hora dourada tinha céu de noite. O sol, a lua e a paleta da

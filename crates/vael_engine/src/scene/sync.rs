@@ -4,7 +4,7 @@
 //! * mudança só de pose (`translation`/`euler`/`rotation`/`scale`/aliases) → patch do
 //!   `Transform`, sem re-spawn;
 //! * mudança só de props de script (`prop-*`) → patch do `ScriptProps` no sítio — o
-//!   script continua a correr com o mesmo `viber.state()` (afinar o jogo vivo);
+//!   script continua a correr com o mesmo `vael.state()` (afinar o jogo vivo);
 //! * outros atributos → re-spawn da subárvore do nó;
 //! * inserção / remoção / move → spawn / despawn, e REALINHAMENTO das origens: um nó novo ou
 //!   removido desloca os caminhos dos irmãos seguintes, e os `SceneSource` das entidades
@@ -473,7 +473,7 @@ fn push_terrain(world: &mut World, rect: super::terrain::CellRect) {
 }
 
 /// Copia o campo de biomas do documento para o runtime e re-bakeia os splats
-/// do mundo inteiro (a mesma cadeia do `viber.debug.ground`, mas com biomas).
+/// do mundo inteiro (a mesma cadeia do `vael.debug.ground`, mas com biomas).
 fn push_biomes(world: &mut World) {
     let Some(biomes) = world
         .get_resource::<SceneDoc>()
@@ -585,7 +585,7 @@ fn patch_pose(world: &mut World, node: &NodeRef) -> usize {
 }
 
 /// Aplica os `prop-*` do XML ao [`crate::luau::ScriptProps`] das entidades com script do
-/// nó — sem re-spawn, o script mantém o estado; o próximo `viber.prop` lê o valor novo.
+/// nó — sem re-spawn, o script mantém o estado; o próximo `vael.prop` lê o valor novo.
 fn patch_props(world: &mut World, node: &NodeRef) -> usize {
     let Some(xml) = world.resource::<SceneDoc>().node(node).cloned() else {
         return 0;
@@ -611,7 +611,7 @@ fn patch_props(world: &mut World, node: &NodeRef) -> usize {
     let mut count = 0;
     for entity in entities_of(world, node) {
         // O spawn põe `ScriptProps` em QUALQUER entidade com props autorais
-        // (os dados de colheita são lidos por `viber.props` mesmo sem
+        // (os dados de colheita são lidos por `vael.props` mesmo sem
         // `script=`); o patch tem de espelhar o XML na mesma, sem exigir
         // script.
         let mut entity = world.entity_mut(entity);

@@ -73,7 +73,7 @@ vael-tools debug prof --record 30 --hz 2 -o perf.jsonl   # série para análise
 vael-tools debug key f3 --hold-ms 120           # input sintético
 ```
 
-`debug lua`/`burst` ainda usam os métodos legacy `viber.*` do monólito. No
+`debug lua`/`burst` falam `vael.*` (os `viber.*` legados continuam servidos). No
 jogo, **P → FRAMES** e **F3** continuam a mostrar o profiler da engine. Limiar
 de hitch: `VAEL_HITCH_MS` (default 50 ms).
 
@@ -99,7 +99,7 @@ reverb em interiores), **combate com feedback** (hit-stop, shake, números de
 dano, sparks e decals de impacto) e **física** (character controller
 cinemático, knockback, destrutíveis que tombam, ragdoll nos chefes). Os ~65
 scripts Luau em `scripts/` (inimigos, bosses, colheita, POIs, HUD) correm via
-a API `viber.*` com "LOD de IA" — além do raio de ativação (default 45 m) o
+a API `vael.*` com "LOD de IA" — além do raio de ativação (default 45 m) o
 `on_update` nem corre — e têm hot-reload ao gravar. A referência da API está
 no arquivo `../bevy_extensions/docs/viber/LUA_API.md`.
 
@@ -204,8 +204,8 @@ todas em Lua:
 | diálogo por grafo | `scripts/townsfolk.lua` + `dialogues/*.json` |
 | IA/FSM das criaturas | `scripts/lib/fsm.lua` + `enemies/`, `bosses/` |
 
-A engine expõe os DADOS autorais (`viber.player_nearby` com `props`,
-`viber.markers`) e as primitivas (`entity_damage`, `burst`, `play_clip`,
+A engine expõe os DADOS autorais (`vael.player_nearby` com `props`,
+`vael.markers`) e as primitivas (`entity_damage`, `burst`, `play_clip`,
 `prompt`, `topple`, `attach`, `spawn_prototype`…); nunca decide quando os
 usar. Os ~2.700 props `destructible=` viajam como props autorais; o parser
 do component-string e as regras estão em `game/harvest.lua`.
@@ -242,7 +242,7 @@ descomprime meshopt/KTX2 à leitura.
   extensões `.jdext`; os painéis de conteúdo vivem em `vael_content_jackdaw`
   (ver [`AGENTS.md`](AGENTS.md))
 - `scripts/**.lua` — comportamento Luau (inimigos/bosses, colheita, POIs,
-  quests, diálogo) via a API `viber.*` (arquivo: `../bevy_extensions/docs/viber/LUA_API.md`)
+  quests, diálogo) via a API `vael.*` (arquivo do nome antigo: `../bevy_extensions/docs/viber/LUA_API.md`)
 - `config.yaml` — **contrato de paths com a engine** (obrigatório; roots,
   dirs de áudio/texturas/scripts/UI, save) — contrato em `../bevy_extensions/AGENTS.md`
 - `ui/*.xaml` + `ui/*.css` — HUD, menu, título, morte e mapa em bevy_pf;

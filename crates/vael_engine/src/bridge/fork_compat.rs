@@ -218,7 +218,7 @@ fn run(
 ///
 /// Layout (empírico + `NonMaxU32::transmute`): bits baixos = `u32::MAX -
 /// index` (representação interna do `NonMaxU32`), bits altos = geração.
-/// `317v0` ↔ 4294966978u64, verificado contra o `viber.tree` (Display) e o
+/// `317v0` ↔ 4294966978u64, verificado contra o `vael.tree` (Display) e o
 /// `world.query` (serde) da mesma entidade.
 pub(crate) fn entity_bits_to_string(bits: u64) -> Option<String> {
     let raw_index = bits as u32;

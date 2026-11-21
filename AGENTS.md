@@ -38,7 +38,7 @@ cargo run --release -- \
 
 `gameplay:false` desliga IA/vitais/projéteis da engine; `player_camera:false`
 dá o corpo e a câmara ao Vael (`src/player.rs`/`src/camera.rs`; a engine ainda
-spawna o `PlayerGLTF` e o collider). O `viber.game()` ainda é a fonte de
+spawna o `PlayerGLTF` e o collider). O `vael.game()` ainda é a fonte de
 verdade; `VaelStateSync` espelha-o e o `hud.rs` publica os binds do HUD. O estado, gates
 e dívidas estão em [`docs/MIGRATION.md`](docs/MIGRATION.md). O checkout
 principal pode ter trabalho em curso (regen/assets); não o tocar por arrasto.
@@ -112,7 +112,7 @@ Estrutura do `world.bsn`:
 
 Hand-editar uma pose à espera que a engine a ajuste não funciona.
 O mundo `.bsn` é estático: o runtime não assenta props (`settle`/`scatter` de
-CLI eram XML-only e morreram com o `viber`). No editor, o painel **Vael:
+CLI eram XML-only e morreram com a CLI antiga). No editor, o painel **Vael:
 Assets** assenta o que colocas no `.ahgt` e o painel **Flora** mexe nas
 estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 
@@ -137,7 +137,7 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `data/*.json` | itens/loja, marcos, progressão, enigmas (`riddles.json`) e regras do juiz (`verdicts.json`); lidos por `rules.lua`/`shop.lua`/`landmarks.lua`/`riddle.lua`/`judge.lua` |
 | `editor/` + `content/` | **Legado**: App própria `vael-editor` (testes/painéis antigos) e esquemas `vael-content`. O fluxo é o Jackdaw oficial (`jd open .`; `jackdaw.toml` fixa `package = "vael"`/`plugin = "VaelPlugin"`) com as extensões `.jdext` em `../bevy_extensions/extensions/` e `extensions/`; os painéis de conteúdo vivem em `vael_content_jackdaw` |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
-| `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `viber.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`viber.decision`) |
+| `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `vael.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`vael.decision`) |
 | `ui/*.xaml` | HUD, menu, título, morte e mapa (`bevy_pf`); os `*.css` que restam são legado de HUD/profiler/showcase |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
 | `docs/README.md` | índice da documentação: o que é vivo, o que é histórico e as convenções de manutenção |
@@ -145,10 +145,10 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `docs/AUDIO.md` | direção sonora (Coro de Vael), layers por bioma, manifests e gate de costura; regen com `assets/regen_audio.py` |
 | `docs/FLORA.md` | árvores procedurais (`bevy_flora`): estações `prop-flora` no `.bsn`, pools por espécie, colheita provisória e `tools/flora_migrate.py` |
 | `config.yaml` | `assets.roots: assets/public` |
-| `src/environment.rs` | **dono do céu/tempo** (`bevy_elements`): relógio astronómico, sol/lua/estrelas, clima, nuvens, chuva/neve e relâmpagos. Ponte `Weather` → `WeatherState` (chão molhado, áudio de chuva, vento das árvores), trovão → SFX, visibilidade → névoa e queries em `viber.vael.env_info()`. Gate `VAEL_ELEMENTS=0`. QA: `VAEL_START_HOUR`/`VAEL_START_WEATHER` |
+| `src/environment.rs` | **dono do céu/tempo** (`bevy_elements`): relógio astronómico, sol/lua/estrelas, clima, nuvens, chuva/neve e relâmpagos. Ponte `Weather` → `WeatherState` (chão molhado, áudio de chuva, vento das árvores), trovão → SFX, visibilidade → névoa e queries em `vael.vael.env_info()`. Gate `VAEL_ELEMENTS=0`. QA: `VAEL_START_HOUR`/`VAEL_START_WEATHER` |
 | `docs/LIGHTING.md` | como o céu/exposição/névoa se ligam hoje e o que ficou na engine |
 | `docs/JACKDAW.md` | matriz sistema→onde se autora no Jackdaw, componentes tipados, painel de cinemáticas e gatilhos |
-| `src/puppet.rs` | **corpos físicos dos personagens** (`bevy_ext_puppet`, estilo Euphoria: IPM + VMC implícito + momento angular centroidal + IK sem twist + `CatchFall` balístico): montados a pedido no herói e nas criaturas com rig bípede (arquétipos Light/Standard/Shielded/Brute/Boss escalados pelo transform; lobo/verme ficam `PuppetIncompatible`) e desmontados 3 s depois de a animação voltar. Golpe (`hit_flash`+`entity_knockback`) → seleção anatómica direcional (`UpperArmL/R` lateral com torção axial, `SpineUpper` frontal); empurrões fortes (`force >= 4.5`) entram como `puppet_push` (passos de captura / queda); **esbarrões** (`ActorBump` de `src/actor_contact.rs`, velocidade ≥ 2 m/s, cooldown 0,45 s, ponderado pela massa) → jogo de ombro localizado em corrida normal e `puppet_push` em sprint/dash/investida (herói sempre parcial); `viber.corpse` → morre mole; `push_player` → reação parcial direcional no herói; `PuppetEvent` gera poeira/micro-shake em quedas e gesto `getup_back`/`getup_front`; `calm_kinematic_motion` zera `AiLocomotion` enquanto `busy`. `combat.lua` quebra escudo em desequilíbrio real e dá bônus 1.25× em alvos caídos; `fsm.lua` interrompe windup/charge em queda; `voice.lua` (`tempestade`) aplica solavanco físico. API: `viber.vael.puppet_{push,hit,stagger,kill,revive,getup,release,activate,fall,start,state,info,busy}`. Camada 29 (`HERO_LAYER_BIT`) não colide com ragdolls (30). Gates `VAEL_PUPPET=0`, `VAEL_PUPPET_DEBUG=1` |
+| `src/puppet.rs` | **corpos físicos dos personagens** (`bevy_ext_puppet`, estilo Euphoria: IPM + VMC implícito + momento angular centroidal + IK sem twist + `CatchFall` balístico): montados a pedido no herói e nas criaturas com rig bípede (arquétipos Light/Standard/Shielded/Brute/Boss escalados pelo transform; lobo/verme ficam `PuppetIncompatible`) e desmontados 3 s depois de a animação voltar. Golpe (`hit_flash`+`entity_knockback`) → seleção anatómica direcional (`UpperArmL/R` lateral com torção axial, `SpineUpper` frontal); empurrões fortes (`force >= 4.5`) entram como `puppet_push` (passos de captura / queda); **esbarrões** (`ActorBump` de `src/actor_contact.rs`, velocidade ≥ 2 m/s, cooldown 0,45 s, ponderado pela massa) → jogo de ombro localizado em corrida normal e `puppet_push` em sprint/dash/investida (herói sempre parcial); `vael.corpse` → morre mole; `push_player` → reação parcial direcional no herói; `PuppetEvent` gera poeira/micro-shake em quedas e gesto `getup_back`/`getup_front`; `calm_kinematic_motion` zera `AiLocomotion` enquanto `busy`. `combat.lua` quebra escudo em desequilíbrio real e dá bônus 1.25× em alvos caídos; `fsm.lua` interrompe windup/charge em queda; `voice.lua` (`tempestade`) aplica solavanco físico. API: `vael.vael.puppet_{push,hit,stagger,kill,revive,getup,release,activate,fall,start,state,info,busy}`. Camada 29 (`HERO_LAYER_BIT`) não colide com ragdolls (30). Gates `VAEL_PUPPET=0`, `VAEL_PUPPET_DEBUG=1` |
 | `src/lights.rs` | **luzes práticas** (`bevy_lights` 0.5, pin `=0.5.0`): as luzes de fogo viram `PoolCandidate` (pool orçamentado + flicker + chama billboard); as de preenchimento/cristais ficam autorais. Gate `VAEL_PRACTICAL_LIGHTS=0`. Ver `docs/LIGHTING.md` |
 | `docs/WATER.md` | camadas da água (solver iWave, domínio, espelho CPU do swell), flutuação `FloatingBody` (crate `bevy_ext_water`, adapter avian) e barcos a remos (`src/boat.rs`, `data/boats.json`; **E** entra/sai, W/S rema, A/D leme) |
 | `docs/PAVING.md` | **pavimento em grelha** (`bevy_ext_terrain_runtime::paving`): `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>` troca a elipse/ribbon por células com ocupação exclusiva, chanfro nos cantos convexos e filete nos côncavos, uma malha por material. Camadas fixas: `DECAL_LIFT 0.040 < PAVING_LIFT 0.064 < ON_PAVING 0.072`; um decal coberto pelo pavimento sobe sozinho. Gate `VAEL_PAVING=0` |
@@ -210,7 +210,7 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 - **Animação** (`src/animation.rs`): um `AnimationSet` no nó do modelo tira o
   rig à engine (`AnimatedScene`/`CharacterAnimator`, também num pai) e o
   `jackdaw_animation_runtime` toca-o. `sources: []` usa o `url` do modelo;
-  `idle/walk/run` seguem a velocidade; `viber.gesture('x')` toca o estado
+  `idle/walk/run` seguem a velocidade; `vael.gesture('x')` toca o estado
   `x` (evento `UnboundGesture` da engine).
 - **Input** (`src/input.rs`): `jackdaw_input` com contextos UI (prioridade
   10) e jogo (pára com `MenusOpen`); o `gather_actions` da engine não corre
@@ -259,7 +259,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   `VAEL_GLTF_READY_RADIUS` (150 m) e o anel largo não corre durante o
   carregamento (competia com o bake dos colliders: ~1 s por frame medido).
   Nunca descarrega nós com `LuaScriptRef`, `CharacterAnimator` ou o herói — o
-  rig e o `viber.state` apontam para entidades da subárvore. A/B:
+  rig e o `vael.state` apontam para entidades da subárvore. A/B:
   `VAEL_GLTF_STREAMING=0` volta ao tudo-no-arranque. Detalhe:
   `docs/DEBUG.md`; a prontidão conta só os pendentes do anel (`world_ready.rs`).
 - **Chão e clima** ([`docs/GROUND.md`](docs/GROUND.md)): manto de neve na janela
@@ -279,7 +279,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   partículas perdiam o preset). O leitor dos specs normaliza
   (`specs::normalize_options`); um componente novo com `Option` passa por
   aí — não confiar no `try_apply` directo do `jackdaw_bsn`.
-- `viber.gesture` antes de o rig ligar fica em `PendingGesture` (até 3 s) em
+- `vael.gesture` antes de o rig ligar fica em `PendingGesture` (até 3 s) em
   vez de se perder.
 
 - Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag (no
@@ -319,7 +319,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   `docs/LIGHTING.md`; `VAEL_PRACTICAL_LIGHTS=0` devolve o comportamento
   anterior.
 - Com um `<UiInput>` focado (barra de fala do NLU), a engine bloqueia
-  `viber.input.*`, `viber.interacted` e o movimento: as letras são texto, não
+  `vael.input.*`, `vael.interacted` e o movimento: as letras são texto, não
   acções. O `scripts/ui/say.lua` abre/fecha o foco.
 - Refine (`refine.views` no `assets/game.yaml`) está em **mono-vista**
   (`views: 1`). O multiview por Text2D não funciona com o FLUX.3 Klein: é um
@@ -381,7 +381,7 @@ compilarem tudo duas vezes (`mkdir -p .jackdaw/target && ln -sfn
 Para `--scene/--entry/--bridge` o atalho é o `vael-tools run`, que lança
 `target/release/vael` (outro artefacto: release no `target/` do workspace) ou o
 `VAEL_BIN` — `VAEL_BIN=.jackdaw/target/game/debug/vael` reaproveita o build do
-`jd`. O `viber` foi aposentado: o CLI vive em `cli/` (`vael-tools`) e o bridge
+`jd`. A CLI antiga foi aposentada: o CLI vive em `cli/` (`vael-tools`) e o bridge
 em `bevy_extensions` (`bevy_ext_bridge_*`). Os testes do runtime de gameplay:
 `cargo test -p vael_engine --lib`.
 
@@ -403,7 +403,7 @@ qa/vision/tours/...` (captura ~10 Hz + `liquid/d1-ultra`, chave em
 `secrets.env`).
 Depois de lançar (ou de `debug scene --wait`): `vael-tools debug --port <p>
 wait-ready` antes de screenshot/input; o `ready` vem do espelho
-`BridgeReadiness` (`src/bridge_ready.rs`) no ping novo (e do `viber.ping` em
+`BridgeReadiness` (`src/bridge_ready.rs`) no ping novo (e do `viber.ping` legado em
 jogos velhos). Uma bridge lenta a responder durante o carregamento é normal —
 não matar o jogo. Para agentes: `debug --json` dá JSON em tudo e exit
 semântico; as primitivas de teste são `pause/step/play` (determinismo por
@@ -435,8 +435,8 @@ Profiling sem screenshots (jogo com `--bridge`): o runtime
 (`bevy_ext_bridge_runtime`) responde a `vael-tools debug prof --tab frames`
 (p95/hitches/RSS), `--hitches`, `--record 30 --hz 2 -o perf.jsonl` e
 `vael-tools debug key/text/click/move` (todos com `input.*` no runtime novo).
-`debug lua`/`burst`/`scene` ainda usam os métodos legacy `viber.*` do
-monólito. No jogo, **P → FRAMES** e **F3** continuam a ser o profiler da
+`debug lua`/`burst`/`scene` falam `vael.*`; a engine continua a servir
+os `viber.*` legados em paralelo. No jogo, **P → FRAMES** e **F3** continuam a ser o profiler da
 engine. Detalhe: [`docs/TOOLS.md`](docs/TOOLS.md).
 
 ## Fluxo depois da separação
@@ -501,5 +501,5 @@ parâmetros do pipeline (`assets/game.yaml`: ratios 0.40/0.22, textura 2048,
 só precisa de correr o script uma vez depois de `gameassets resume`.
 
 Cofre, XP e quests vivem em `scripts/lib/rules.lua`. A engine não expõe
-`viber.vault_*` / `viber.add_xp`. O kit inicial (30 ouro, 1 poção) semeia-se
+`vael.vault_*` / `vael.add_xp`. O kit inicial (30 ouro, 1 poção) semeia-se
 aí quando o save ainda não tem inventário.

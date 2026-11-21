@@ -36,7 +36,7 @@ pub mod game;
 pub mod ownership;
 pub mod nlu;
 pub mod decision;
-// SHIM: registry `viber.sound`/gestos — vivos no bevy_ext_engine::luau.
+// SHIM: registry `vael.sound`/gestos — vivos no bevy_ext_engine::luau.
 pub mod sfx;
 // SHIM: a escrita genérica por reflexão (patch_component) vive no
 // bevy_ext_luau::ecs; os testes do maquinaria ficaram aqui.

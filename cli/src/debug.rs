@@ -1,7 +1,7 @@
 //! Cliente do bridge de debug do jogo.
 //!
 //! Os métodos `vael-tools/*` são servidos pelo `bevy_ext_bridge_runtime`
-//! dentro do jogo; o fallback `viber.*` é do monólito (Luau, burst e trace
+//! dentro do jogo; o fallback `vael.*` é do monólito (Luau, burst e trace
 //! continuam lá até à fase H do DELETE-MONOLITH). O transporte é JSON-RPC
 //! sobre HTTP na porta 15702 (ou `--bridge`/`VAEL_TOOLS_PORT`).
 //!
@@ -27,11 +27,12 @@ use bevy_ext_bridge_protocol::{
     METHOD_PLAY, METHOD_STEP, METHOD_TREE, SessionPaths, is_listening, normalize_key, resolve_port,
 };
 
-/// Troca de cena (só no monólito; a duração depende do mundo).
-const LEGACY_SCENE_CHANGE: &str = "viber.scene.change";
-/// Cena carregada + época + prontidão (só no monólito). É o que permite
+/// Troca de cena (a duração depende do mundo). O legado `vael.scene.*`
+/// continua servido pela engine durante a transição.
+const SCENE_CHANGE: &str = "vael.scene.change";
+/// Cena carregada + época + prontidão. É o que permite
 /// esperar pela cena NOVA sem aceitar o `ready` da anterior.
-const LEGACY_SCENE_CURRENT: &str = "viber.scene.current";
+const SCENE_CURRENT: &str = "vael.scene.current";
 /// Leituras `ready` seguidas que bastam quando o bridge não expõe cena nem
 /// época (runtime novo): 4 × 500 ms ≈ 2 s de estabilidade em vez de um frame.
 const SCENE_STABLE_POLLS: u32 = 4;
@@ -90,7 +91,7 @@ pub enum DebugCommand {
         #[arg(long)]
         stats: bool,
     },
-    /// Árvore de entidades (`vael-tools/tree` ou `viber.tree`).
+    /// Árvore de entidades (`vael-tools/tree` ou `vael.tree`).
     Tree {
         /// Só entidades cujo nome contém este texto (sem maiúsculas).
         #[arg(long)]
@@ -170,7 +171,7 @@ pub enum DebugCommand {
         x: f32,
         y: f32,
     },
-    /// REPL Luau (só no monólito por enquanto: `viber.lua`).
+    /// REPL Luau (só no monólito por enquanto: `vael.lua`).
     Lua {
         code: Option<String>,
         #[arg(long)]
@@ -210,7 +211,7 @@ pub enum DebugCommand {
         #[arg(long, default_value_t = 500)]
         interval_ms: u64,
     },
-    /// Troca de cena (`viber.scene.change`) e, com `--wait`, espera o
+    /// Troca de cena (`vael.scene.change`) e, com `--wait`, espera o
     /// carregamento novo. Exit 1 se a troca falhar ou o `--wait` esgotar.
     Scene {
         name: String,
@@ -374,7 +375,7 @@ pub fn run(
             )?;
         }
         DebugCommand::Tree { filter } => {
-            // O `viber.tree` do monólito só aceita `max_depth`: no fallback o
+            // O `vael.tree` do monólito só aceita `max_depth`: no fallback o
             // filtro é aplicado aqui à árvore devolvida (antes era ignorado em
             // silêncio e `--filter` parecia funcionar com tudo).
             let value = client
@@ -684,7 +685,7 @@ pub(crate) struct UntilOutcome {
     pub elapsed_ms: u128,
 }
 
-/// Resposta crua do `viber.lua` ({ok, result|error, ...}).
+/// Resposta crua do `vael.lua` ({ok, result|error, ...}).
 pub(crate) fn lua_response(client: &BridgeClient, code: &str) -> Result<Value> {
     let value = client.call(LEGACY_LUA, json!({ "code": code }))?;
     if value.get("ok").and_then(Value::as_bool) != Some(true) {
@@ -809,7 +810,7 @@ pub(crate) fn scene_change(
     let mut last = Value::Null;
     for attempt in 0..5 {
         match client.call(
-            LEGACY_SCENE_CHANGE,
+            SCENE_CHANGE,
             json!({ "scene": name, "entry": entry }),
         ) {
             Ok(value) => return Ok(value),
@@ -838,7 +839,7 @@ pub(crate) struct SceneMarker {
     ready: Option<bool>,
 }
 
-/// Estado da cena agora: `viber.scene.current` (monólito) ou o `ready` do
+/// Estado da cena agora: `vael.scene.current` (monólito) ou o `ready` do
 /// ping. O runtime novo só tem o segundo.
 struct SceneSnapshot {
     scene: Option<String>,
@@ -848,7 +849,7 @@ struct SceneSnapshot {
 }
 
 fn scene_snapshot(client: &BridgeClient) -> Result<SceneSnapshot> {
-    if let Ok(value) = client.call(LEGACY_SCENE_CURRENT, json!({}))
+    if let Ok(value) = client.call(SCENE_CURRENT, json!({}))
         && value.is_object()
     {
         let text = |value: Option<&Value>| value.and_then(Value::as_str).map(str::to_string);
@@ -1386,7 +1387,7 @@ fn decode_log_line(bytes: &[u8]) -> String {
     text.strip_suffix('\r').unwrap_or(&text).to_string()
 }
 
-/// Filtra as entradas do ring da bridge (`viber.logs`:
+/// Filtra as entradas do ring da bridge (`vael.logs`:
 /// `{time, level, target, message}[]`) por substring. Procura em `message`,
 /// `level` e `target` (o `--grep` promete "linhas que contêm o texto"; só na
 /// mensagem, `--grep ERROR` não via nenhum erro). Aceita a lista nua e o
@@ -1429,8 +1430,8 @@ fn filter_log_entries(value: &Value, grep: Option<&str>) -> Value {
     json!(keep(entries))
 }
 
-/// Aplica o `--filter` à árvore devolvida pelo `viber.tree` (o monólito só
-/// aceita `max_depth`). Aceita a lista nua de nós (`viber.tree`) e o objecto
+/// Aplica o `--filter` à árvore devolvida pelo `vael.tree` (o monólito só
+/// aceita `max_depth`). Aceita a lista nua de nós (`vael.tree`) e o objecto
 /// `{entities|nodes: […], truncated}`.
 fn filter_tree(tree: &Value, filter: Option<&str>) -> Value {
     let Some(filter) = filter else {
@@ -1466,7 +1467,7 @@ fn filter_tree(tree: &Value, filter: Option<&str>) -> Value {
     }
 }
 
-/// Snapshot de `method` com fallback para o `viber.profiler` do monólito
+/// Snapshot de `method` com fallback para o `vael.profiler` do monólito
 /// (que publica `memory` e `hitches`). Sem nenhum dos dois é ERRO: um sucesso
 /// vazio escondia que o bridge não serve o dado.
 fn profiler_field(client: &BridgeClient, method: &str, field: &str) -> Result<Value> {
@@ -1476,11 +1477,11 @@ fn profiler_field(client: &BridgeClient, method: &str, field: &str) -> Result<Va
     };
     let profiler = client
         .call(LEGACY_PROFILER, json!({}))
-        .map_err(|legacy| anyhow!("{method} e viber.profiler falharam ({native:#}; {legacy:#})"))?;
+        .map_err(|legacy| anyhow!("{method} e vael.profiler falharam ({native:#}; {legacy:#})"))?;
     match profiler.get(field) {
         Some(value) if !value.is_null() => Ok(value.clone()),
         _ => bail!(
-            "o bridge não publica `{field}` (nem `{method}` nem `viber.profiler` com `{field}`)"
+            "o bridge não publica `{field}` (nem `{method}` nem `vael.profiler` com `{field}`)"
         ),
     }
 }
@@ -1723,7 +1724,7 @@ mod tests {
 
     #[test]
     fn filter_tree_applies_the_filter_to_the_legacy_list_and_object() {
-        // Regressão: `debug tree --filter` contra o `viber.tree` (só aceita
+        // Regressão: `debug tree --filter` contra o `vael.tree` (só aceita
         // `max_depth`) devolvia a árvore inteira — o filtro era ignorado.
         let list = json!([
             { "id": "1", "name": "Hero" },
@@ -1866,7 +1867,7 @@ mod tests {
 
     #[test]
     fn scene_wait_without_scene_info_falls_back_to_stability() {
-        // Runtime sem `viber.scene.current`: o véu visto chega; sem véu (um
+        // Runtime sem `vael.scene.current`: o véu visto chega; sem véu (um
         // `ready` que nunca caiu) só ao fim da janela de estabilidade.
         let before = marker(None, Some(true));
         let mut wait = SceneWait::default();
@@ -1957,7 +1958,7 @@ mod tests {
         let port = crate::testutil::mock_bridge(vec![
             ("vael-tools/memory", Err("method not found")),
             (
-                "viber.profiler",
+                "vael.profiler",
                 Ok(json!({ "memory": { "rss_kb": 42 }, "hitches": {"count": 1} })),
             ),
         ]);
@@ -1970,7 +1971,7 @@ mod tests {
     fn profiler_field_is_an_error_when_nobody_publishes_it() {
         let port = crate::testutil::mock_bridge(vec![
             ("vael-tools/hitches", Err("method not found")),
-            ("viber.profiler", Ok(json!({ "memory": {} }))),
+            ("vael.profiler", Ok(json!({ "memory": {} }))),
         ]);
         let client = BridgeClient::localhost(port);
         let error = profiler_field(&client, METHOD_HITCHES, "hitches").unwrap_err();

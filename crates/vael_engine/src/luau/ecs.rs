@@ -1,6 +1,6 @@
 //! Escrita genérica por reflexão (`patch_component`) — SHIM (2026-11-15,
 //! onda final do DELETE-MONOLITH). O maquinaria vive agora no
-//! `bevy_ext_luau::ecs` (a tabela `viber.ecs` e o espelho por frame morreram
+//! `bevy_ext_luau::ecs` (a tabela `vael.ecs` e o espelho por frame morreram
 //! antes — sobrou o caminho de escrita que `set_scale`/`set_visible`/
 //! `set_pose` usam); os caminhos históricos `vael_engine::luau::ecs::*` continuam a
 //! resolver. Os testes ficaram AQUI com o consumidor (usam os tipos do

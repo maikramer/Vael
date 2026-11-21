@@ -8,7 +8,7 @@ lança, **sem argumentos** — só o Play do editor lê os presets `[[run]]` do
 arranque **com** argumentos (`--scene/--entry/--bridge/--resolution`), que é o
 que o `jd run` não aceita.
 
-O `vael-tools` substitui o CLI `viber` (aposentado com o produto Viber) e vive
+O `vael-tools` é o CLI do jogo (a CLI antiga foi aposentada) e vive
 no próprio repo, em `cli/`. É um membro do workspace: `cargo run -p vael-tools
 -- …`. Para o ter no PATH:
 
@@ -58,16 +58,16 @@ stderr com exit 1; as primitivas de teste têm exit semântico — `wait-ready`,
 | `tree [--filter TEXTO]`, `logs [--tail N --grep T --source file\|bridge\|auto]`, `memory`, `hitches` | Estado do jogo. `logs` lê o ficheiro da sessão (completo desde o boot) ou o ring do jogo (`bridge`) |
 | `prof --tab frames`, `--hitches`, `--record 30 --hz 2 -o perf.jsonl` | Profiler |
 | `mark`, `key --hold-ms`, `text`, `click`, `move` | Trace e input sintético |
-| `lua CODE --file` | REPL Luau (método legacy `viber.lua`) |
+| `lua CODE --file` | REPL Luau (método legacy `vael.lua`) |
 | `pause`, `play`, `step --frames N` | Determinismo por frames: pausa o `Time<Virtual>`, corre N frames e volta a parar |
-| `state` | Estado do jogo em JSON (quests/itens/ouro/hp/posição) via `viber.vael.qa_snapshot()` |
+| `state` | Estado do jogo em JSON (quests/itens/ouro/hp/posição) via `vael.vael.qa_snapshot()` |
 | `expect [JSON\|@ficheiro]` | Verifica um expect (mesma sintaxe dos cenários de QA) contra o estado real, com as regras do jogo. Exit 1 em falha |
 | `until EXPR [--timeout-ms --interval-ms]` | Sonda uma expressão Luau até ser verdadeira (mata os sleeps). Exit 1 no timeout |
 | `scene NOME [--entry E] [--wait]` | Troca de cena (com retry no loader busy) e espera o carregamento novo |
 | `playbook FICHEIRO [-o transcript.json] [--continue-on-error]` | Sequência de passos de teste num processo só, com transcript JSON (ver abaixo) |
 
 Os métodos novos são `vael-tools/*`, servidos pelo `bevy_ext_bridge_runtime`;
-o cliente cai para o namespace legacy `viber.*` (monólito) quando o método
+o cliente cai para o namespace legacy `vael.*` (monólito) quando o método
 novo não existe — é o caso de `lua`, `burst` e `trace` até à fase H do
 DELETE-MONOLITH. Quando `--world` não casa com sessão nenhuma, o CLI avisa no
 stderr antes de cair na porta por omissão.
@@ -82,7 +82,7 @@ passo falhou e porquê, e o exit code fecha o ciclo sem loops em Python:
   "name": "forja",
   "steps": [
     { "op": "scene", "name": "interiors/forge", "wait": true },
-    { "op": "until", "expr": "viber.game().hp >= 100", "timeout_ms": 3000 },
+    { "op": "until", "expr": "vael.game().hp >= 100", "timeout_ms": 3000 },
     { "op": "key", "key": "KeyE" },
     { "op": "state" },
     { "op": "expect", "expect": { "items": { "gold": ">=10" } } },
@@ -108,9 +108,9 @@ Passos: `lua`, `key`, `text`, `click`, `move`, `wait_ms`, `until`, `state`,
 - `input.key`, `input.text`, `input.click`, `input.move`;
 - `step`, `play`, `pause`.
 
-O `viber.*` legacy continua no mesmo servidor para compatibilidade. Sem o
+O `vael.*` legacy continua no mesmo servidor para compatibilidade. Sem o
 espelho de readiness (jogo velho ou app mínima), o `ping` novo não traz
-`ready`; o `wait-ready` do CLI pergunta então ao `viber.ping` legacy e, na
+`ready`; o `wait-ready` do CLI pergunta então ao `vael.ping` legacy e, na
 ausência de ambos, trata como pronto com um aviso no stderr.
 
 **Ressalva conhecida (monólito, pré-existente)**: um reload do mundo completo
@@ -148,7 +148,7 @@ agentes ZCode, em duas camadas sobre o mesmo servidor BRP da 15702:
   mutate/watch de componentes e recursos, spawn/despawn, `rpc_discover` e
   `brp_type_guide`. A porta vai **por chamada** de cada tool (default 15702).
   É o que a engine já serve: os builtin `world.*` do `bevy_remote` vivem ao
-  lado de `vael-tools/*`, `viber.*` e `jackdaw/*`.
+  lado de `vael-tools/*`, `vael.*` e `jackdaw/*`.
 - **`brp_extras/*`** (crate `bevy_brp_extras` 0.23, vendorizado em
   `vendor/bevy_brp_extras`; `src/main.rs`, off-switch `VAEL_BRP_EXTRAS=0`):
   screenshot (imagem inline na conversa), teclas/rato/gamepad sintéticos,
@@ -176,12 +176,12 @@ O editor continua a expor operadores por `jd mcp`; o CLI não tem servidor MCP.
   protótipos/NPCs/marcos continuam em `tools/lint_content.py`. Os campos
   `skipped_tags`/`unknown_prototypes` do contrato antigo do `analyze` saíram:
   eram inicializados vazios, nunca preenchidos e ninguém os consumia.
-- `lua`, `burst`, `trace` e `scene` ainda dependem do monólito (`viber.*`).
-- `state`/`expect` usam a API de QA do jogo (`viber.vael.qa_snapshot`/
+- `lua`, `burst`, `trace` e `scene` ainda dependem do monólito (`vael.*`).
+- `state`/`expect` usam a API de QA do jogo (`vael.vael.qa_snapshot`/
   `qa_check`), também ela do monólito — o playbook já aceita um adapter
   próprio quando isso sair.
 - O ring de logs próprio do runtime (`vael-tools/logs`) entra depois do
   monólito, via `LogPlugin::custom_layer`; enquanto ele viver, `debug logs
-  --source bridge` usa o ring do `viber.logs`.
-- O engine `viber` não sai do `Cargo.toml` do Vael até o Luau/AI e o
+  --source bridge` usa o ring do `vael.logs`.
+- O runtime `vael_engine` não sai do `Cargo.toml` do Vael até o Luau/AI e o
   `build_app` serem portados (ver `DELETE-MONOLITH.md`).

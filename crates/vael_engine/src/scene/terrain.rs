@@ -377,7 +377,7 @@ impl TerrainDoc {
 }
 
 /// Primeiro ponto do raio sobre o terreno (marcha de 0.5 m + bisseção), por uma função de
-/// altura — o cursor do pincel no editor e o `viber.scene.pick` no chão.
+/// altura — o cursor do pincel no editor e o `vael.scene.pick` no chão.
 pub fn ray_ground(
     origin: Vec3,
     dir: Vec3,
@@ -563,7 +563,7 @@ pub fn live_request(command: &TerrainCommand) -> Result<(&'static str, serde_jso
         } => {
             let op = paint_op(at, *radius, layer, *amount)?;
             Ok((
-                "viber.scene.apply",
+                "vael.scene.apply",
                 serde_json::json!({ "ops": [op], "label": "terrain paint" }),
             ))
         }
@@ -578,7 +578,7 @@ pub fn live_request(command: &TerrainCommand) -> Result<(&'static str, serde_jso
         } => {
             let op = brush_op(*mode, at, *radius, *amount, *height)?;
             Ok((
-                "viber.scene.apply",
+                "vael.scene.apply",
                 serde_json::json!({ "ops": [op], "label": "terrain brush" }),
             ))
         }

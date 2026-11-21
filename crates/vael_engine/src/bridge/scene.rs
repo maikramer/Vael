@@ -1,28 +1,28 @@
-//! `viber.scene.*` — a API de edição de mundos (`crate::scene`) sobre o bridge, para agentes
+//! `vael.scene.*` — a API de edição de mundos (`crate::scene`) sobre o bridge, para agentes
 //! que trabalham com a engine a correr. É a MESMA API da CLI `viber scene` e do editor externo;
 //! aqui as edições passam por [`crate::scene::live`] (histórico + sync ao vivo).
 //!
 //! | método | params | resultado |
 //! |---|---|---|
-//! | `viber.scene.ls` | `{selector?, depth?}` | filhos com seletores |
-//! | `viber.scene.get` | `{selector}` | o nó |
-//! | `viber.scene.find` | `{tag?, attr?: "k=v", limit?}` | nós |
-//! | `viber.scene.apply` | `{ops, label?, save?: true, coalesce?}` | transação (changes, inverse); `coalesce` (u64) funde lotes seguidos com a mesma chave num só undo |
-//! | `viber.scene.undo` / `redo` | `{save?: true}` | transação ou `{"applied": 0}` |
-//! | `viber.scene.save` | — | `{files}` |
-//! | `viber.scene.catalog` | — | catálogo Add Node (tags + snippets) |
-//! | `viber.scene.schema` | `{target}` (seletor com `script=` ou `x.lua`) | props `--@export` do script + valores efetivos da instância |
-//! | `viber.scene.groups` | `{name?}` | grupos (`groups="…"`) → membros (seletor, tag, script) |
-//! | `viber.scene.instance` | `{scene, parent?: "#", at?: [x,y,z] mundo, save?}` | transação (`<Include src>` da cena) |
-//! | `viber.scene.lint` | `{strict?}` | lint estático do mundo (sintaxe Luau, `viber.load`, quest-parse, nomes duplicados); `strict` com erros → BrpError |
-//! | `viber.scene.drop` | `{glb, at: [x,y,z] mundo, parent?: "#", save?}` | transação (Entity + GltfScene) |
-//! | `viber.scene.files` | `{depth?: 6}` | árvore da pasta do mundo |
-//! | `viber.tool.list` | — | geradores `<Scatter>` |
-//! | `viber.tool.canonicalize` | `{selector?, save?: true}` | poses na forma canónica |
-//! | `viber.tool.settle` | `{selector, offset?: 0, save?: true}` | assenta no terreno atual |
-//! | `viber.tool.scatter` | `{selector, save?: true}` | transação + resumo da ferramenta |
-//! | `viber.scene.entities` | `{selector?}` (omisso: todas) | entidades vivas do nó (pose local + mundo) |
-//! | `viber.scene.pick` | `{x, y}` (px da janela, câmara de editor) | `{hit, selector?, node?, point?}` |
+//! | `vael.scene.ls` | `{selector?, depth?}` | filhos com seletores |
+//! | `vael.scene.get` | `{selector}` | o nó |
+//! | `vael.scene.find` | `{tag?, attr?: "k=v", limit?}` | nós |
+//! | `vael.scene.apply` | `{ops, label?, save?: true, coalesce?}` | transação (changes, inverse); `coalesce` (u64) funde lotes seguidos com a mesma chave num só undo |
+//! | `vael.scene.undo` / `redo` | `{save?: true}` | transação ou `{"applied": 0}` |
+//! | `vael.scene.save` | — | `{files}` |
+//! | `vael.scene.catalog` | — | catálogo Add Node (tags + snippets) |
+//! | `vael.scene.schema` | `{target}` (seletor com `script=` ou `x.lua`) | props `--@export` do script + valores efetivos da instância |
+//! | `vael.scene.groups` | `{name?}` | grupos (`groups="…"`) → membros (seletor, tag, script) |
+//! | `vael.scene.instance` | `{scene, parent?: "#", at?: [x,y,z] mundo, save?}` | transação (`<Include src>` da cena) |
+//! | `vael.scene.lint` | `{strict?}` | lint estático do mundo (sintaxe Luau, `vael.load`, quest-parse, nomes duplicados); `strict` com erros → BrpError |
+//! | `vael.scene.drop` | `{glb, at: [x,y,z] mundo, parent?: "#", save?}` | transação (Entity + GltfScene) |
+//! | `vael.scene.files` | `{depth?: 6}` | árvore da pasta do mundo |
+//! | `vael.tool.list` | — | geradores `<Scatter>` |
+//! | `vael.tool.canonicalize` | `{selector?, save?: true}` | poses na forma canónica |
+//! | `vael.tool.settle` | `{selector, offset?: 0, save?: true}` | assenta no terreno atual |
+//! | `vael.tool.scatter` | `{selector, save?: true}` | transação + resumo da ferramenta |
+//! | `vael.scene.entities` | `{selector?}` (omisso: todas) | entidades vivas do nó (pose local + mundo) |
+//! | `vael.scene.pick` | `{x, y}` (px da janela, câmara de editor) | `{hit, selector?, node?, point?}` |
 
 use bevy::ecs::system::In;
 use bevy::prelude::*;
@@ -35,30 +35,78 @@ use crate::scene::doc::{NodeRef, SceneDoc};
 use crate::scene::ops::{EditOp, History, Transaction};
 use crate::scene::{cli::transaction_json, live};
 
-pub const METHOD_LS: &str = "viber.scene.ls";
-pub const METHOD_GET: &str = "viber.scene.get";
-pub const METHOD_FIND: &str = "viber.scene.find";
-pub const METHOD_APPLY: &str = "viber.scene.apply";
-pub const METHOD_UNDO: &str = "viber.scene.undo";
-pub const METHOD_REDO: &str = "viber.scene.redo";
-pub const METHOD_SAVE: &str = "viber.scene.save";
-pub const METHOD_PICK: &str = "viber.scene.pick";
-pub const METHOD_ENTITIES: &str = "viber.scene.entities";
-pub const METHOD_CATALOG: &str = "viber.scene.catalog";
-pub const METHOD_LINT: &str = "viber.scene.lint";
-pub const METHOD_SCHEMA: &str = "viber.scene.schema";
-pub const METHOD_GROUPS: &str = "viber.scene.groups";
-pub const METHOD_INSTANCE: &str = "viber.scene.instance";
-pub const METHOD_DROP: &str = "viber.scene.drop";
-pub const METHOD_FILES: &str = "viber.scene.files";
-pub const METHOD_SCENES: &str = "viber.scene.scenes";
-pub const METHOD_NEW_SCENE: &str = "viber.scene.new_scene";
-pub const METHOD_CHANGE: &str = "viber.scene.change";
-pub const METHOD_CURRENT: &str = "viber.scene.current";
-pub const METHOD_TOOL_LIST: &str = "viber.tool.list";
-pub const METHOD_TOOL_SCATTER: &str = "viber.tool.scatter";
-pub const METHOD_TOOL_SETTLE: &str = "viber.tool.settle";
-pub const METHOD_TOOL_CANONICALIZE: &str = "viber.tool.canonicalize";
+pub const METHOD_LS: &str = "vael.scene.ls";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_LS: &str = "vael.scene.ls";
+pub const METHOD_GET: &str = "vael.scene.get";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_GET: &str = "vael.scene.get";
+pub const METHOD_FIND: &str = "vael.scene.find";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_FIND: &str = "vael.scene.find";
+pub const METHOD_APPLY: &str = "vael.scene.apply";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_APPLY: &str = "vael.scene.apply";
+pub const METHOD_UNDO: &str = "vael.scene.undo";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_UNDO: &str = "vael.scene.undo";
+pub const METHOD_REDO: &str = "vael.scene.redo";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_REDO: &str = "vael.scene.redo";
+pub const METHOD_SAVE: &str = "vael.scene.save";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SAVE: &str = "vael.scene.save";
+pub const METHOD_PICK: &str = "vael.scene.pick";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PICK: &str = "vael.scene.pick";
+pub const METHOD_ENTITIES: &str = "vael.scene.entities";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_ENTITIES: &str = "vael.scene.entities";
+pub const METHOD_CATALOG: &str = "vael.scene.catalog";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CATALOG: &str = "vael.scene.catalog";
+pub const METHOD_LINT: &str = "vael.scene.lint";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_LINT: &str = "vael.scene.lint";
+pub const METHOD_SCHEMA: &str = "vael.scene.schema";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SCHEMA: &str = "vael.scene.schema";
+pub const METHOD_GROUPS: &str = "vael.scene.groups";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_GROUPS: &str = "vael.scene.groups";
+pub const METHOD_INSTANCE: &str = "vael.scene.instance";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_INSTANCE: &str = "vael.scene.instance";
+pub const METHOD_DROP: &str = "vael.scene.drop";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_DROP: &str = "vael.scene.drop";
+pub const METHOD_FILES: &str = "vael.scene.files";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_FILES: &str = "vael.scene.files";
+pub const METHOD_SCENES: &str = "vael.scene.scenes";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SCENES: &str = "vael.scene.scenes";
+pub const METHOD_NEW_SCENE: &str = "vael.scene.new_scene";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_NEW_SCENE: &str = "vael.scene.new_scene";
+pub const METHOD_CHANGE: &str = "vael.scene.change";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CHANGE: &str = "vael.scene.change";
+pub const METHOD_CURRENT: &str = "vael.scene.current";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CURRENT: &str = "vael.scene.current";
+pub const METHOD_TOOL_LIST: &str = "vael.tool.list";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_TOOL_LIST: &str = "vael.tool.list";
+pub const METHOD_TOOL_SCATTER: &str = "vael.tool.scatter";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_TOOL_SCATTER: &str = "vael.tool.scatter";
+pub const METHOD_TOOL_SETTLE: &str = "vael.tool.settle";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_TOOL_SETTLE: &str = "vael.tool.settle";
+pub const METHOD_TOOL_CANONICALIZE: &str = "vael.tool.canonicalize";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_TOOL_CANONICALIZE: &str = "vael.tool.canonicalize";
 
 fn params<T: for<'de> Deserialize<'de>>(
     method: &str,
@@ -71,7 +119,7 @@ fn params<T: for<'de> Deserialize<'de>>(
 fn doc(world: &World) -> Result<&SceneDoc, bevy::remote::BrpError> {
     world
         .get_resource::<SceneDoc>()
-        .ok_or_else(|| invalid("viber.scene: a engine não tem documento de mundo carregado".into()))
+        .ok_or_else(|| invalid("vael.scene: a engine não tem documento de mundo carregado".into()))
 }
 
 pub fn ls_method(input: In<Option<Value>>, world: &mut World) -> BrpResult {
@@ -294,7 +342,7 @@ fn current_scene(
     world
         .get_resource::<crate::scene_loader::CurrentScene>()
         .cloned()
-        .ok_or_else(|| invalid("viber.scene: a engine não tem cena carregada".into()))
+        .ok_or_else(|| invalid("vael.scene: a engine não tem cena carregada".into()))
 }
 
 /// As cenas do projeto (o mesmo JSON de `viber scene scenes`).
@@ -423,7 +471,7 @@ pub fn tool_settle_method(input: In<Option<Value>>, world: &mut World) -> BrpRes
     let output = {
         let mut doc = world
             .get_resource_mut::<SceneDoc>()
-            .ok_or_else(|| invalid("viber.tool.settle: sem documento".into()))?;
+            .ok_or_else(|| invalid("vael.tool.settle: sem documento".into()))?;
         crate::scene::tools::settle(&mut doc, &p.selector, p.offset)
             .map_err(|e| invalid(format!("{e:#}")))?
     };
@@ -683,13 +731,23 @@ mod tests {
     }
 }
 
-// ── cinemáticas (`viber.cinematic.*`) ──────────────────────────────────
+// ── cinemáticas (`vael.cinematic.*`) ──────────────────────────────────
 
-pub const METHOD_CINEMATIC_LIST: &str = "viber.cinematic.list";
-pub const METHOD_CINEMATIC_SHOW: &str = "viber.cinematic.show";
-pub const METHOD_CINEMATIC_PLAY: &str = "viber.cinematic.play";
-pub const METHOD_CINEMATIC_STOP: &str = "viber.cinematic.stop";
-pub const METHOD_CINEMATIC_SHOT: &str = "viber.cinematic.shot";
+pub const METHOD_CINEMATIC_LIST: &str = "vael.cinematic.list";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CINEMATIC_LIST: &str = "vael.cinematic.list";
+pub const METHOD_CINEMATIC_SHOW: &str = "vael.cinematic.show";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CINEMATIC_SHOW: &str = "vael.cinematic.show";
+pub const METHOD_CINEMATIC_PLAY: &str = "vael.cinematic.play";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CINEMATIC_PLAY: &str = "vael.cinematic.play";
+pub const METHOD_CINEMATIC_STOP: &str = "vael.cinematic.stop";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CINEMATIC_STOP: &str = "vael.cinematic.stop";
+pub const METHOD_CINEMATIC_SHOT: &str = "vael.cinematic.shot";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CINEMATIC_SHOT: &str = "vael.cinematic.shot";
 
 #[derive(Deserialize)]
 struct CinematicId {

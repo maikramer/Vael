@@ -1,4 +1,4 @@
-//! Posse de SISTEMAS nativos por scripts (`viber.own_system`) — SHIM
+//! Posse de SISTEMAS nativos por scripts (`vael.own_system`) — SHIM
 //! (exit4/F4). O módulo vive agora no `bevy_ext_luau::ownership` (o
 //! `ScriptSystemOwners` leva o TypePath histórico `viber::luau::ownership`
 //! congelado lá); os caminhos `vael_engine::luau::ownership::*` continuam a

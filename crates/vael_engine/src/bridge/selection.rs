@@ -1,5 +1,5 @@
-//! Seleção e picking de entidades para o editor externo: `viber.pick`
-//! (clique na janela → ray → instância) e `viber.select` (highlight AABB
+//! Seleção e picking de entidades para o editor externo: `vael.pick`
+//! (clique na janela → ray → instância) e `vael.select` (highlight AABB
 //! via gizmos). As entidades trocam-se em formato `"NvG"` — o mesmo do
 //! cliente fork (ver [`super::fork_compat`]).
 //!
@@ -20,12 +20,12 @@ use serde_json::{Value, json};
 use super::fork_compat::{entity_bits_to_string, entity_string_to_bits};
 use super::invalid;
 
-/// Entidade selecionada pelo editor (`viber.select`).
+/// Entidade selecionada pelo editor (`vael.select`).
 #[derive(Debug, Default, Resource, Reflect)]
 #[reflect(Resource)]
 pub struct SelectedEntity(pub Option<Entity>);
 
-/// `viber.pick {x, y}` — clique em coordenadas da janela do jogo →
+/// `vael.pick {x, y}` — clique em coordenadas da janela do jogo →
 /// `{hit, entity?, root?, name?, point?}`. `entity` é o collider atingido,
 /// `root`/`name` a instância nomeada que o contém (o que o editor seleciona).
 pub fn pick_method(params: In<Option<Value>>, world: &mut World) -> BrpResult {
@@ -106,7 +106,7 @@ pub fn pick_method(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     Ok(out)
 }
 
-/// `viber.select {entity?}` — seleciona (entidade em "NvG") ou limpa (sem
+/// `vael.select {entity?}` — seleciona (entidade em "NvG") ou limpa (sem
 /// `entity`). A seleção desenha o AABB da instância via gizmos.
 pub fn select_method(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     #[derive(Deserialize)]

@@ -63,7 +63,7 @@ pub struct AudioSnapshot {
     pub buses: BusSnapshot,
     pub layers: Vec<LayerSnapshot>,
     pub sinks: Vec<SinkSnapshot>,
-    /// Loops pedidos por scripts (`viber.sound_loop`) — não são entidades com
+    /// Loops pedidos por scripts (`vael.sound_loop`) — não são entidades com
     /// `LoopInstance`, por isso não entram em `sinks`.
     pub script_loops: Vec<ScriptLoopSnapshot>,
     pub total: usize,

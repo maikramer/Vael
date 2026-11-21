@@ -163,7 +163,7 @@ const RAIN_MAX_GAIN: f32 = 0.4;
 /// se a tempestade se LÊ ou se vira um véu.
 ///
 /// Vive num recurso (e não só no preset) porque a afinação é visual e
-/// iterativa: `viber.debug.rain_look{...}` muda-os na engine viva, sem
+/// iterativa: `vael.debug.rain_look{...}` muda-os na engine viva, sem
 /// recompilar nem reiniciar. Os defaults vêm do preset/env.
 #[derive(Debug, Clone, Resource, Reflect)]
 #[reflect(Resource)]
@@ -281,7 +281,7 @@ fn rain_emitter_driver(
     transform.translation = anchor;
     // Rate ∝ intensidade; sem chuva o emissor desliga E esconde-se.
     emitter.sim.resolved.emission_rate = RAIN_MAX_RATE * intensity * look.rate_scale;
-    // Look ao vivo (`viber.debug.rain_look`): o preset dá o default, o
+    // Look ao vivo (`vael.debug.rain_look`): o preset dá o default, o
     // recurso manda. Reaplicado todos os frames — é uma escrita de 4 f32.
     //
     // À NOITE a cortina é o véu nº 1: as gotas são cinza-claro não iluminado

@@ -87,7 +87,7 @@ pub fn landing_position(
     Vec3::new(requested.x, surface, requested.z)
 }
 
-/// Altura da sonda de aterragem acima do ponto pedido (`viber.teleport_player`).
+/// Altura da sonda de aterragem acima do ponto pedido (`vael.teleport_player`).
 ///
 /// O destino autoral (marco, cama, fogueira) fica um pouco acima do chão.
 /// Dois metros cobrem esse desvio e ainda deixam a câmara de um telhado
@@ -406,8 +406,8 @@ pub fn player_movement(
     // do simple-rpg. Sair aqui deixava o herói preso na entrada: o
     // character controller nunca recebia `translation`.
     let runtime = runtime.as_deref();
-    // Um script reclamou o corpo (`viber.own_system("locomotion")` +
-    // `viber.set_pose`). O controller a pé não escreve por cima.
+    // Um script reclamou o corpo (`vael.own_system("locomotion")` +
+    // `vael.set_pose`). O controller a pé não escreve por cima.
     if locomotion
         .as_ref()
         .is_some_and(|owners| owners.owns(crate::luau::ownership::SYSTEM_LOCOMOTION))

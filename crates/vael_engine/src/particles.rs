@@ -50,7 +50,7 @@ pub struct ResolvedEmitter {
 /// Preset library — mirrors the original `presets.ts` for
 /// the presets this world uses (values from the TS factories where present).
 /// Presets autorais do emissor — fonte única da cobertura de testes e da
-/// validação de `viber.burst` (preset desconhecido vira erro de script).
+/// validação de `vael.burst` (preset desconhecido vira erro de script).
 pub const PRESET_NAMES: &[&str] = &[
     "fire",
     "smoke",

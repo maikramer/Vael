@@ -1,14 +1,14 @@
 //! `viber scene lint` — o contrato do mundo como linters ESTÁTICOS. Apanha em
 //! CI (exit non-zero com `--strict`) a classe de defeitos que hoje só rebenta
 //! em runtime: um `.lua` com erro de sintaxe (a entidade nasce sem
-//! comportamento), um `viber.load("lib/x.lua")` para ficheiro inexistente,
+//! comportamento), um `vael.load("lib/x.lua")` para ficheiro inexistente,
 //! uma quest apontando a um NPC/marco renomeado no editor (a quest fica
 //! ininiciável/incompletável em silêncio — o mesmo gatilho do warn de marcas
 //! órfãs no `load`), e nomes de entidade duplicados (os seletores `name=…`
 //! — a API de edição de agentes e editor — ficam ambíguos).
 //!
 //! Tudo offline (lê XML + ficheiros; não precisa de engine). A bridge expõe o
-//! mesmo relatório (`viber.scene.lint`) para lint de um mundo a correr.
+//! mesmo relatório (`vael.scene.lint`) para lint de um mundo a correr.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::path::Path;
@@ -213,7 +213,7 @@ fn project_cinematics(world_xml: &Path) -> Vec<crate::xml::XmlNode> {
 }
 
 /// Projeto com cenas (`project:` no config): portais com alvo e entrada que existem, cenas
-/// com entrada, autoloads sem recursos de mundo, e os `viber.change_scene("…")` literais dos
+/// com entrada, autoloads sem recursos de mundo, e os `vael.change_scene("…")` literais dos
 /// scripts a apontar para cenas que existem. Corre sobre o PROJETO inteiro, seja qual for a
 /// cena que se pediu.
 fn check_project(world_xml: &Path, scripts_dir: &Path) -> Vec<Finding> {
@@ -316,7 +316,7 @@ fn check_project(world_xml: &Path, scripts_dir: &Path) -> Vec<Finding> {
             )),
         }
     }
-    // `viber.change_scene("id"…)` literais.
+    // `vael.change_scene("id"…)` literais.
     let mut stack = vec![scripts_dir.to_path_buf()];
     while let Some(dir) = stack.pop() {
         let Ok(read) = std::fs::read_dir(&dir) else {
@@ -352,7 +352,7 @@ fn check_project(world_xml: &Path, scripts_dir: &Path) -> Vec<Finding> {
                         findings.push(Finding::error(
                             "scene-change-target",
                             format!(
-                                "{}:{}: viber.change_scene(\"{id}\") — cena desconhecida",
+                                "{}:{}: vael.change_scene(\"{id}\") — cena desconhecida",
                                 path.display(),
                                 line_no + 1
                             ),
@@ -404,7 +404,7 @@ fn check_duplicate_names(duplicates: Vec<(String, usize)>) -> Vec<Finding> {
 
 /// Scripts: (1) cada `script=`/template referenciado EXISTE; (2) cada `.lua`
 /// do `scripts_dir` compila (sintaxe Luau — o que rebenta em runtime só por
-/// estar carregado); (3) cada `viber.load("x.lua")` em qualquer script tem
+/// estar carregado); (3) cada `vael.load("x.lua")` em qualquer script tem
 /// ficheiro. Determinístico: ficheiros em ordem sorted.
 fn check_scripts(
     world_dir: &Path,
@@ -432,8 +432,8 @@ fn check_scripts(
         ));
     }
 
-    // (2) sintaxe + (3) alvos de viber.load — varre o diretório TODO: cobre
-    // módulos (`viber.load`) que nenhum nó referência diretamente.
+    // (2) sintaxe + (3) alvos de vael.load — varre o diretório TODO: cobre
+    // módulos (`vael.load`) que nenhum nó referência diretamente.
     let lua = lua_sandbox();
     let mut stack = vec![scripts_dir.clone()];
     let mut seen: HashSet<String> = referenced.iter().cloned().collect();
@@ -464,7 +464,7 @@ fn check_scripts(
             // só definição de funções/state).
             if let Err(error) = compile(&lua, &source, &rel) {
                 findings.push(Finding::error("script-syntax", format!("{rel}: {error}")));
-                continue; // sem sintaxe não faz sentido procurar viber.load
+                continue; // sem sintaxe não faz sentido procurar vael.load
             }
             for error in crate::luau::exports::parse_exports(&source).errors {
                 findings.push(Finding::error(
@@ -479,7 +479,7 @@ fn check_scripts(
                     if !module.exists() {
                         findings.push(Finding::error(
                             "script-load",
-                            format!("{rel}: viber.load(\"{target}\") — ficheiro não existe"),
+                            format!("{rel}: vael.load(\"{target}\") — ficheiro não existe"),
                         ));
                     }
                 }
@@ -501,7 +501,7 @@ fn check_scripts(
 ///
 /// Os dados de COLHEITA (`destructible`, `resource-kind`, `resource-yield`)
 /// viajam no mesmo `EntitySpec.props` (é assim que o Lua os lê por
-/// `viber.props` em qualquer entidade, com ou sem script), mas não são
+/// `vael.props` em qualquer entidade, com ou sem script), mas não são
 /// `prop-*` exportados: sem esta exclusão cada árvore estática do Vael virava
 /// um `script-prop-orphan` (2166 avisos num mundo só).
 ///
@@ -609,13 +609,13 @@ fn spec_label(spec: &EntitySpec) -> String {
     })
 }
 
-/// Sinais e grupos (`--@signal` ↔ `viber.emit` ↔ `connect-<sinal>` ↔ `groups=`):
+/// Sinais e grupos (`--@signal` ↔ `vael.emit` ↔ `connect-<sinal>` ↔ `groups=`):
 /// * `connect-syntax` — valor que não é `alvo:método; @grupo:método`;
 /// * `connect-orphan` — `connect-*` num nó sem script (nada emite);
 /// * `connect-signal` — o script do emissor não declara o sinal;
 /// * `connect-target` — nome que não existe (erro) / grupo sem membros (aviso);
 /// * `connect-method` — o alvo não tem script, ou o script não define o método;
-/// * `script-emit` — `viber.emit("x")` literal de um sinal não declarado.
+/// * `script-emit` — `vael.emit("x")` literal de um sinal não declarado.
 fn check_signals(scripts_dir: &Path, entities: &[EntitySpec]) -> Vec<Finding> {
     use crate::luau::exports::{ConnTarget, ScriptExports, parse_connections, parse_exports};
     // nome → scripts das entidades com esse nome; grupo → scripts dos membros
@@ -653,7 +653,7 @@ fn check_signals(scripts_dir: &Path, entities: &[EntitySpec]) -> Vec<Finding> {
         if let EntityKind::StaticSpawner { spec: spawner }
         | EntityKind::DynamicSpawner { spec: spawner } = &spec.kind
         {
-            // O script do TEMPLATE também emite sinais (`viber.emit` nos
+            // O script do TEMPLATE também emite sinais (`vael.emit` nos
             // callbacks das instâncias); sem esta entrada os literais dele
             // nunca eram comparados com os `--@signal` declarados.
             if let Some(script) = &spawner.template_script {
@@ -686,7 +686,7 @@ fn check_signals(scripts_dir: &Path, entities: &[EntitySpec]) -> Vec<Finding> {
             .clone()
     };
     let mut findings = Vec::new();
-    // `viber.emit("x")` literal sem `--@signal x`.
+    // `vael.emit("x")` literal sem `--@signal x`.
     let mut sorted: Vec<&String> = scripts.iter().collect();
     sorted.sort();
     for script in sorted {
@@ -697,7 +697,7 @@ fn check_signals(scripts_dir: &Path, entities: &[EntitySpec]) -> Vec<Finding> {
             if exports.signal(&signal).is_none() {
                 findings.push(Finding::error(
                     "script-emit",
-                    format!("{script}: viber.emit(\"{signal}\") sem `--@signal {signal}`"),
+                    format!("{script}: vael.emit(\"{signal}\") sem `--@signal {signal}`"),
                 ));
             }
         }
@@ -789,7 +789,7 @@ fn check_signals(scripts_dir: &Path, entities: &[EntitySpec]) -> Vec<Finding> {
 /// * `cinematic-duplicate` — dois `<Cinematic>` com o mesmo id;
 /// * `cinematic-sound` — `<Sound clip>` que a engine não conhece;
 /// * `cinematic-anchor` — `anchor="nome"` sem entidade com esse `name`;
-/// * `cinematic-ref` — `viber.cinematic("x")`, `intro = "x"` (lib/fsm) ou
+/// * `cinematic-ref` — `vael.cinematic("x")`, `intro = "x"` (lib/fsm) ou
 ///   `prop-cinematic="x"` para um id que não existe.
 fn check_cinematics(
     nodes: &[crate::xml::XmlNode],
@@ -865,7 +865,7 @@ fn check_cinematics(
                 .unwrap_or(&path)
                 .display()
                 .to_string();
-            for needle in ["viber.cinematic(\"", "intro = \""] {
+            for needle in ["vael.cinematic(\"", "intro = \""] {
                 let mut rest = source.as_str();
                 while let Some(start) = rest.find(needle) {
                     let after = &rest[start + needle.len()..];
@@ -909,11 +909,11 @@ fn walk_lua(dir: &Path) -> std::io::Result<Vec<std::path::PathBuf>> {
     Ok(out)
 }
 
-/// `viber.emit("x"` / `viber.emit('x'` — sinais emitidos por literal.
+/// `vael.emit("x"` / `vael.emit('x'` — sinais emitidos por literal.
 fn emit_literals(source: &str) -> Vec<String> {
     let mut out = Vec::new();
     for quote in ['"', '\''] {
-        let needle = format!("viber.emit({quote}");
+        let needle = format!("vael.emit({quote}");
         let mut rest = source;
         while let Some(start) = rest.find(&needle) {
             let after = &rest[start + needle.len()..];
@@ -943,12 +943,12 @@ pub fn resolve_script(scripts_dir: &Path, script: &str) -> std::path::PathBuf {
     }
 }
 
-/// `viber.load("x.lua")` / `viber.load('x.lua')` — alvos literais no fonte
+/// `vael.load("x.lua")` / `vael.load('x.lua')` — alvos literais no fonte
 /// (scan barato; caminhos computados ficam por cobrir, por design).
 fn viber_load_targets(source: &str) -> Vec<String> {
     let mut targets = Vec::new();
     for quote in ['"', '\''] {
-        let needle = format!("viber.load({quote}");
+        let needle = format!("vael.load({quote}");
         let mut rest = source;
         while let Some(start) = rest.find(&needle) {
             let after = &rest[start + needle.len()..];
@@ -1063,7 +1063,7 @@ mod tests {
             &[
                 ("hero.lua", "function on_update(dt\ndt = dt +\n"),
                 ("lib/broken.lua", "local x = {"),
-                ("lib/ok.lua", "return viber.load('lib/falta.lua')\n"),
+                ("lib/ok.lua", "return vael.load('lib/falta.lua')\n"),
             ],
             &[],
         );
@@ -1078,7 +1078,7 @@ mod tests {
             2
         );
         assert!(kinds.contains(&"script-load"), "{kinds:?}");
-        assert_eq!(report.errors().count(), 3, "sintaxe×2 + viber.load");
+        assert_eq!(report.errors().count(), 3, "sintaxe×2 + vael.load");
     }
 
     #[test]
@@ -1184,7 +1184,7 @@ mod tests {
             &[
                 (
                     "chest.lua",
-                    "--@signal opened(gold)\nfunction on_update(dt) viber.emit(\"opened\", 1) viber.emit('typo') end\n",
+                    "--@signal opened(gold)\nfunction on_update(dt) vael.emit(\"opened\", 1) vael.emit('typo') end\n",
                 ),
                 ("door.lua", "function open() end\nfunction alarm() end\n"),
             ],
@@ -1217,7 +1217,7 @@ mod tests {
         );
     }
 
-    /// `viber.emit("x")` num script de TEMPLATE de spawner (as instâncias
+    /// `vael.emit("x")` num script de TEMPLATE de spawner (as instâncias
     /// correm esse script) tem de ser comparado com os `--@signal` — antes só
     /// os `script=` de entidades entravam no scan.
     #[test]
@@ -1230,7 +1230,7 @@ mod tests {
 </world>"#,
             &[(
                 "mob.lua",
-                "function on_update(dt) viber.emit('porrada') end\n",
+                "function on_update(dt) vael.emit('porrada') end\n",
             )],
             &[],
         );
@@ -1265,7 +1265,7 @@ mod tests {
                 ),
                 (
                     "boss.lua",
-                    "local f = { intro = \"fantasma\" }\nfunction on_update(dt) viber.cinematic(\"ok\") end\n",
+                    "local f = { intro = \"fantasma\" }\nfunction on_update(dt) vael.cinematic(\"ok\") end\n",
                 ),
             ],
             &[],
@@ -1294,7 +1294,7 @@ mod tests {
         let (method, params) =
             crate::scene::cli::live_request(crate::scene::cli::SceneCommand::Lint { strict: true })
                 .unwrap();
-        assert_eq!(method, "viber.scene.lint");
+        assert_eq!(method, "vael.scene.lint");
         assert_eq!(params, serde_json::json!({ "strict": true }));
     }
 
@@ -1373,7 +1373,7 @@ mod project_tests {
         std::fs::write(root.join("scenes/empty.xml"), r#"<world static="true"/>"#).unwrap();
         std::fs::write(
             root.join("scripts/door.lua"),
-            "viber.change_scene(\"house\")\nviber.change_scene('cellar', 'x')\n",
+            "vael.change_scene(\"house\")\nviber.change_scene('cellar', 'x')\n",
         )
         .unwrap();
         let findings = check_project(&root.join("world.xml"), &root.join("scripts"));

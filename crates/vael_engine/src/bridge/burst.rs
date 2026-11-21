@@ -35,7 +35,7 @@ pub const SHEET_SIZE: u32 = 4096;
 /// Contagens de frames aceites: `4` → 2×2, `9` → 3×3, `16` → 4×4.
 pub const ALLOWED_FRAMES: [u32; 3] = [4, 9, 16];
 
-/// Frames por omissão do `viber.burst` / `viber debug burst`.
+/// Frames por omissão do `vael.burst` / `viber debug burst`.
 pub const DEFAULT_FRAMES: u32 = 9;
 
 /// Cap do `skip` — 600 frames entre capturas é ~10 s a 60 fps; mais do que

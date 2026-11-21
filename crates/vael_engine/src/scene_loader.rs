@@ -7,7 +7,7 @@
 //!
 //! **O que sobrevive** (marcado [`Persistent`]): os autoloads do projeto (jogador, câmara,
 //! HUD/UI — `project.autoload`), as entidades globais da engine nascidas no arranque, a VM
-//! Lua e o `viber.game()`, quests, cofre, relógio do dia. **O que morre** no varrimento
+//! Lua e o `vael.game()`, quests, cofre, relógio do dia. **O que morre** no varrimento
 //! ([`unload_scene`]): toda a raiz (com `Transform`, sem pai) que a cena spawnou —
 //! marcada [`SceneEntity`] no carregamento, ou nascida depois de a cena acabar de carregar
 //! (projéteis, loot, partículas, protótipos) — e os recursos por cena ([`reset_scene_resources`]).
@@ -211,7 +211,7 @@ impl CurrentScene {
     }
 }
 
-/// Ids das cenas do projeto (barato: só nomes de ficheiro) — `viber.change_scene` valida
+/// Ids das cenas do projeto (barato: só nomes de ficheiro) — `vael.change_scene` valida
 /// contra ele sem tocar no disco.
 #[derive(Resource, Debug, Default, Clone, Reflect)]
 #[reflect(Resource)]
@@ -246,7 +246,7 @@ pub enum LoaderPhase {
     FadeIn,
 }
 
-/// O que o último varrimento apagou (debug: `viber.scene.current`).
+/// O que o último varrimento apagou (debug: `vael.scene.current`).
 #[derive(Debug, Clone, Default, Serialize, Reflect)]
 pub struct SweepReport {
     pub roots: usize,
@@ -960,7 +960,7 @@ pub fn reset_scene_resources(world: &mut World) {
     reset_default::<crate::interact::InteractionFocus>(world);
     reset_default::<crate::worldsys::InteriorLighting>(world);
     reset_default::<crate::terrain::delta::TerrainEditQueue>(world);
-    // Posse de sistemas/ações (`viber.own_system`/`own_action`) é do MUNDO:
+    // Posse de sistemas/ações (`vael.own_system`/`own_action`) é do MUNDO:
     // um kart que reclamava `locomotion` deixava o herói sem movimento para
     // sempre depois de trocar de cena.
     reset_default::<crate::luau::ownership::ScriptSystemOwners>(world);
@@ -968,7 +968,7 @@ pub fn reset_scene_resources(world: &mut World) {
     // Loops de SFX pedidos por scripts morrem com a cena (o driver de áudio
     // para tudo o que sai de `wanted`).
     reset_default::<crate::music::ScriptSoundLoops>(world);
-    // `viber.music.layer` forçada é da cena que a pediu: sem este reset, um
+    // `vael.music.layer` forçada é da cena que a pediu: sem este reset, um
     // override deixado por um script antigo escolhia a layer da cena nova.
     reset_default::<crate::music::MusicLayerOverride>(world);
     reset_default::<PortalGrace>(world);

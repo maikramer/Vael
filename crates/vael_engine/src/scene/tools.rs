@@ -1,5 +1,5 @@
 //! Ferramentas geradoras: o que antes corria em runtime (spawners) passa a ser executado À
-//! MÃO — por um agente (`viber tool scatter`, `viber.tool.scatter`) ou no editor externo — e o
+//! MÃO — por um agente (`viber tool scatter`, `vael.tool.scatter`) ou no editor externo — e o
 //! resultado entra no documento como UMA transação de operações (desfazível, gravada no
 //! ficheiro do nó, igual venha de onde vier).
 //!
@@ -1093,7 +1093,7 @@ pub fn list_scatters(doc: &SceneDoc) -> Value {
     json!(out)
 }
 
-/// `viber tool …` — ferramentas geradoras (a mesma lógica do bridge `viber.tool.*` e do editor).
+/// `viber tool …` — ferramentas geradoras (a mesma lógica do bridge `vael.tool.*` e do editor).
 #[derive(Debug, clap::Subcommand)]
 pub enum ToolCommand {
     /// Lista os geradores `<Scatter>` do mundo (seletor, id, grupo gerado, nº de instâncias)
@@ -1127,27 +1127,27 @@ pub enum ToolCommand {
     },
 }
 
-/// O subcomando contra a engine a correr: método `viber.tool.*` + params.
+/// O subcomando contra a engine a correr: método `vael.tool.*` + params.
 pub fn live_request(command: &ToolCommand) -> Result<(&'static str, Value)> {
     Ok(match command {
-        ToolCommand::List => ("viber.tool.list", json!({})),
+        ToolCommand::List => ("vael.tool.list", json!({})),
         ToolCommand::Scatter { dry_run: true, .. } => {
             bail!("--dry-run não existe com --live (a engine aplicaria a edição); corre sem --live")
         }
         ToolCommand::Scatter { selector, .. } => {
-            ("viber.tool.scatter", json!({ "selector": selector }))
+            ("vael.tool.scatter", json!({ "selector": selector }))
         }
         ToolCommand::Settle { dry_run: true, .. }
         | ToolCommand::Canonicalize { dry_run: true, .. } => {
             bail!("--dry-run não existe com --live (a engine aplicaria a edição); corre sem --live")
         }
         ToolCommand::Canonicalize { selector, .. } => {
-            ("viber.tool.canonicalize", json!({ "selector": selector }))
+            ("vael.tool.canonicalize", json!({ "selector": selector }))
         }
         ToolCommand::Settle {
             selector, offset, ..
         } => (
-            "viber.tool.settle",
+            "vael.tool.settle",
             json!({ "selector": selector, "offset": offset }),
         ),
     })

@@ -2,7 +2,7 @@
 //!
 //! Each function turns engine state into rows of plain strings, which is all a
 //! `<UiList>` template consumes. O CONTEÚDO do jogo (missões, mochila,
-//! talentos, loja, controlos) é publicado em Lua com `viber.ui.list`; aqui só
+//! talentos, loja, controlos) é publicado em Lua com `vael.ui.list`; aqui só
 //! fica o que a engine sabe sozinha — o build e o relógio do mundo.
 //!
 //! Rows carry a `status`-style field wherever the stylesheet wants to colour a
@@ -21,7 +21,7 @@ use super::list::{ListRow, UiLists};
 /// está aberto ou no frame seguinte a qualquer toggle (`is_changed`), que
 /// cobre a abertura por tecla — o handler exclusivo alterna o recurso depois
 /// de `Last`, por isso o frame em que o modal fica visível já apanha as
-/// listas frescas. Abertura por script (`viber.ui.open`, `UiSet::Script`)
+/// listas frescas. Abertura por script (`vael.ui.open`, `UiSet::Script`)
 /// mostra dados 1 frame velhos; aceitável — o frame seguinte refresca.
 pub fn collect_menu_lists(
     mut lists: ResMut<UiLists>,
@@ -32,7 +32,7 @@ pub fn collect_menu_lists(
         return;
     }
     // Missões, mochila, talentos, loja, controlos e sistema são
-    // `viber.ui.list` (o jogo). A engine só publica um fallback do "system"
+    // `vael.ui.list` (o jogo). A engine só publica um fallback do "system"
     // para um mundo mínimo continuar a ter uma tab legível.
     lists.set_engine("system", system_rows(&data));
 }

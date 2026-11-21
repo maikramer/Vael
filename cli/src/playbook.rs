@@ -473,8 +473,8 @@ mod tests {
         )
         .unwrap();
         let port = crate::testutil::mock_bridge(vec![
-            ("viber.lua", Ok(json!({ "ok": true, "result": 1 }))),
-            ("viber.lua", Err("lua: falhou")),
+            ("vael.lua", Ok(json!({ "ok": true, "result": 1 }))),
+            ("vael.lua", Err("lua: falhou")),
         ]);
         let client = BridgeClient::localhost(port);
         let transcript_path = dir.path().join("transcript.json");

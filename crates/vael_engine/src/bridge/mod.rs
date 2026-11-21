@@ -1,4 +1,4 @@
-//! Debug bridge — BRP sobre HTTP (`bevy_remote`) com métodos `viber.*`:
+//! Debug bridge — BRP sobre HTTP (`bevy_remote`) com métodos `vael.*`:
 //! screenshots, input sintético, árvore de entidades e ring-buffer de logs.
 //! É o equivalente nativo do tooling Chrome DevTools MCP do motor TS.
 //!
@@ -38,37 +38,99 @@ use serde_json::{Value, json};
 /// Porta BRP por omissão (a mesma do `bevy_remote`).
 pub const DEFAULT_BRIDGE_PORT: u16 = 15702;
 
-pub const METHOD_PING: &str = "viber.ping";
-pub const METHOD_SCREENSHOT: &str = "viber.screenshot";
-pub const METHOD_SCREENSHOT_STATUS: &str = "viber.screenshot_status";
-pub const METHOD_BURST: &str = "viber.burst";
-pub const METHOD_BURST_STATUS: &str = "viber.burst_status";
-pub const METHOD_TREE: &str = "viber.tree";
-pub const METHOD_SCRIPTS_RELOAD: &str = "viber.scripts.reload";
-pub const METHOD_LOGS: &str = "viber.logs";
-pub const METHOD_PROFILER: &str = "viber.profiler";
-pub const METHOD_PROFILER_TAB: &str = "viber.profiler.tab";
-pub const METHOD_PROFILER_EXPORT: &str = "viber.profiler.export";
-pub const METHOD_PROFILER_EXTRA_TOGGLE: &str = "viber.profiler.extra_toggle";
-pub const METHOD_PROFILER_CONFIG: &str = "viber.profiler.config";
-pub const METHOD_PROFILER_TRACE_START: &str = "viber.profiler.trace_start";
-pub const METHOD_PROFILER_TRACE_STOP: &str = "viber.profiler.trace_stop";
-pub const METHOD_PROFILER_TRACE_STATUS: &str = "viber.profiler.trace_status";
-pub const METHOD_PROFILER_TRACE_EXPORT: &str = "viber.profiler.trace_export";
-pub const METHOD_PROFILER_MARK: &str = "viber.profiler.mark";
-pub const METHOD_LUA: &str = "viber.lua";
-pub const METHOD_KEY: &str = "viber.input.key";
-pub const METHOD_TEXT: &str = "viber.input.text";
-pub const METHOD_CLICK: &str = "viber.input.click";
-pub const METHOD_MOVE: &str = "viber.input.move";
-pub const METHOD_RAYCAST: &str = "viber.raycast";
-pub const METHOD_CAMERA_ORBIT: &str = "viber.camera.orbit";
-pub const METHOD_CAMERA_PAN: &str = "viber.camera.pan";
-pub const METHOD_CAMERA_ZOOM: &str = "viber.camera.zoom";
-pub const METHOD_CAMERA_LOOK_AT: &str = "viber.camera.look_at";
-pub const METHOD_CAMERA_POSE: &str = "viber.camera.pose";
-pub const METHOD_PICK: &str = "viber.pick";
-pub const METHOD_SELECT: &str = "viber.select";
+pub const METHOD_PING: &str = "vael.ping";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PING: &str = "viber.ping";
+pub const METHOD_SCREENSHOT: &str = "vael.screenshot";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SCREENSHOT: &str = "viber.screenshot";
+pub const METHOD_SCREENSHOT_STATUS: &str = "vael.screenshot_status";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SCREENSHOT_STATUS: &str = "viber.screenshot_status";
+pub const METHOD_BURST: &str = "vael.burst";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_BURST: &str = "viber.burst";
+pub const METHOD_BURST_STATUS: &str = "vael.burst_status";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_BURST_STATUS: &str = "viber.burst_status";
+pub const METHOD_TREE: &str = "vael.tree";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_TREE: &str = "viber.tree";
+pub const METHOD_SCRIPTS_RELOAD: &str = "vael.scripts.reload";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SCRIPTS_RELOAD: &str = "viber.scripts.reload";
+pub const METHOD_LOGS: &str = "vael.logs";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_LOGS: &str = "viber.logs";
+pub const METHOD_PROFILER: &str = "vael.profiler";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER: &str = "viber.profiler";
+pub const METHOD_PROFILER_TAB: &str = "vael.profiler.tab";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_TAB: &str = "viber.profiler.tab";
+pub const METHOD_PROFILER_EXPORT: &str = "vael.profiler.export";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_EXPORT: &str = "viber.profiler.export";
+pub const METHOD_PROFILER_EXTRA_TOGGLE: &str = "vael.profiler.extra_toggle";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_EXTRA_TOGGLE: &str = "viber.profiler.extra_toggle";
+pub const METHOD_PROFILER_CONFIG: &str = "vael.profiler.config";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_CONFIG: &str = "viber.profiler.config";
+pub const METHOD_PROFILER_TRACE_START: &str = "vael.profiler.trace_start";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_TRACE_START: &str = "viber.profiler.trace_start";
+pub const METHOD_PROFILER_TRACE_STOP: &str = "vael.profiler.trace_stop";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_TRACE_STOP: &str = "viber.profiler.trace_stop";
+pub const METHOD_PROFILER_TRACE_STATUS: &str = "vael.profiler.trace_status";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_TRACE_STATUS: &str = "viber.profiler.trace_status";
+pub const METHOD_PROFILER_TRACE_EXPORT: &str = "vael.profiler.trace_export";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_TRACE_EXPORT: &str = "viber.profiler.trace_export";
+pub const METHOD_PROFILER_MARK: &str = "vael.profiler.mark";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PROFILER_MARK: &str = "viber.profiler.mark";
+pub const METHOD_LUA: &str = "vael.lua";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_LUA: &str = "viber.lua";
+pub const METHOD_KEY: &str = "vael.input.key";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_KEY: &str = "viber.input.key";
+pub const METHOD_TEXT: &str = "vael.input.text";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_TEXT: &str = "viber.input.text";
+pub const METHOD_CLICK: &str = "vael.input.click";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CLICK: &str = "viber.input.click";
+pub const METHOD_MOVE: &str = "vael.input.move";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_MOVE: &str = "viber.input.move";
+pub const METHOD_RAYCAST: &str = "vael.raycast";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_RAYCAST: &str = "viber.raycast";
+pub const METHOD_CAMERA_ORBIT: &str = "vael.camera.orbit";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CAMERA_ORBIT: &str = "viber.camera.orbit";
+pub const METHOD_CAMERA_PAN: &str = "vael.camera.pan";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CAMERA_PAN: &str = "viber.camera.pan";
+pub const METHOD_CAMERA_ZOOM: &str = "vael.camera.zoom";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CAMERA_ZOOM: &str = "viber.camera.zoom";
+pub const METHOD_CAMERA_LOOK_AT: &str = "vael.camera.look_at";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CAMERA_LOOK_AT: &str = "viber.camera.look_at";
+pub const METHOD_CAMERA_POSE: &str = "vael.camera.pose";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_CAMERA_POSE: &str = "viber.camera.pose";
+pub const METHOD_PICK: &str = "vael.pick";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_PICK: &str = "viber.pick";
+pub const METHOD_SELECT: &str = "vael.select";
+/// Alias legacy (`viber.*`) servido durante a transição.
+pub const LEGACY_SELECT: &str = "viber.select";
 
 /// Estado partilhado entre os handlers BRP (PreUpdate) e os sistemas (Update).
 #[derive(Resource, Default, Reflect)]
@@ -93,7 +155,7 @@ impl BridgeShared {
 }
 
 /// Identidade do mundo servido por esta engine — inserida no boot pelo `run`
-/// e devolvida no `viber.ping`. O cliente `viber debug --world` valida-a
+/// e devolvida no `vael.ping`. O cliente `viber debug --world` valida-a
 /// contra o `engine.json` para apanhar um registo stale (a porta passou a
 /// pertencer a outra engine — sem isto, comandos iam para o mundo errado).
 #[derive(Resource, Clone, Reflect)]
@@ -103,7 +165,7 @@ pub struct BridgeIdentity {
 }
 
 /// Um pedido de screenshot em curso: o handler BRP enfileira, o sistema
-/// `Update` spawna a captura e o cliente faz polling de `viber.screenshot_status`.
+/// `Update` spawna a captura e o cliente faz polling de `vael.screenshot_status`.
 #[derive(Default)]
 pub struct CaptureStore {
     next_id: u64,
@@ -191,7 +253,7 @@ impl CaptureStore {
 }
 
 /// Motor de debugging remoto: BRP builtin (`world.query`, `world.spawn_entity`,
-/// `world.insert_components`, …) + métodos `viber.*`.
+/// `world.insert_components`, …) + métodos `vael.*`.
 pub struct BridgePlugin {
     pub port: u16,
 }
@@ -212,67 +274,130 @@ impl Plugin for BridgePlugin {
             .add_plugins(
                 RemotePlugin::default()
                     .with_method_main(METHOD_PING, ping)
+                    .with_method_main(LEGACY_PING, ping)
                     .with_method_main("app.info", app_info)
                     .with_method_main(METHOD_SCREENSHOT, screenshot_request)
+                    .with_method_main(LEGACY_SCREENSHOT, screenshot_request)
                     .with_method_main(METHOD_SCRIPTS_RELOAD, scripts_reload)
+                    .with_method_main(LEGACY_SCRIPTS_RELOAD, scripts_reload)
                     .with_method_main(METHOD_SCREENSHOT_STATUS, screenshot_status)
+                    .with_method_main(LEGACY_SCREENSHOT_STATUS, screenshot_status)
                     .with_method_main(METHOD_BURST, burst_request)
+                    .with_method_main(LEGACY_BURST, burst_request)
                     .with_method_main(METHOD_BURST_STATUS, burst_status)
+                    .with_method_main(LEGACY_BURST_STATUS, burst_status)
                     .with_method_main(METHOD_TREE, tree)
+                    .with_method_main(LEGACY_TREE, tree)
                     .with_method_main(METHOD_LOGS, logs_method)
+                    .with_method_main(LEGACY_LOGS, logs_method)
                     .with_method_main(METHOD_PROFILER, profiler_snapshot)
+                    .with_method_main(LEGACY_PROFILER, profiler_snapshot)
                     .with_method_main(METHOD_PROFILER_TAB, profiler_tab)
+                    .with_method_main(LEGACY_PROFILER_TAB, profiler_tab)
                     .with_method_main(METHOD_PROFILER_EXPORT, profiler_export)
+                    .with_method_main(LEGACY_PROFILER_EXPORT, profiler_export)
                     .with_method_main(METHOD_PROFILER_EXTRA_TOGGLE, profiler_extra_toggle)
+                    .with_method_main(LEGACY_PROFILER_EXTRA_TOGGLE, profiler_extra_toggle)
                     .with_method_main(METHOD_PROFILER_CONFIG, profiler_config)
+                    .with_method_main(LEGACY_PROFILER_CONFIG, profiler_config)
                     .with_method_main(METHOD_PROFILER_TRACE_START, profiler_trace_start)
+                    .with_method_main(LEGACY_PROFILER_TRACE_START, profiler_trace_start)
                     .with_method_main(METHOD_PROFILER_TRACE_STOP, profiler_trace_stop)
+                    .with_method_main(LEGACY_PROFILER_TRACE_STOP, profiler_trace_stop)
                     .with_method_main(METHOD_PROFILER_TRACE_STATUS, profiler_trace_status)
+                    .with_method_main(LEGACY_PROFILER_TRACE_STATUS, profiler_trace_status)
                     .with_method_main(METHOD_PROFILER_TRACE_EXPORT, profiler_trace_export)
+                    .with_method_main(LEGACY_PROFILER_TRACE_EXPORT, profiler_trace_export)
                     .with_method_main(METHOD_PROFILER_MARK, profiler_mark)
+                    .with_method_main(LEGACY_PROFILER_MARK, profiler_mark)
                     .with_method_main(METHOD_LUA, lua::eval)
+                    .with_method_main(LEGACY_LUA, lua::eval)
                     .with_method_main(METHOD_KEY, input_key)
+                    .with_method_main(LEGACY_KEY, input_key)
                     .with_method_main(METHOD_TEXT, input_text)
+                    .with_method_main(LEGACY_TEXT, input_text)
                     .with_method_main(METHOD_CLICK, input_click)
+                    .with_method_main(LEGACY_CLICK, input_click)
                     .with_method_main(METHOD_MOVE, input_move)
+                    .with_method_main(LEGACY_MOVE, input_move)
                     .with_method_main(METHOD_RAYCAST, raycast_method)
+                    .with_method_main(LEGACY_RAYCAST, raycast_method)
                     .with_method_main(METHOD_CAMERA_ORBIT, camera_orbit)
+                    .with_method_main(LEGACY_CAMERA_ORBIT, camera_orbit)
                     .with_method_main(METHOD_CAMERA_PAN, camera_pan)
+                    .with_method_main(LEGACY_CAMERA_PAN, camera_pan)
                     .with_method_main(METHOD_CAMERA_ZOOM, camera_zoom)
+                    .with_method_main(LEGACY_CAMERA_ZOOM, camera_zoom)
                     .with_method_main(METHOD_CAMERA_LOOK_AT, camera_look_at)
+                    .with_method_main(LEGACY_CAMERA_LOOK_AT, camera_look_at)
                     .with_method_main(METHOD_CAMERA_POSE, camera_pose)
+                    .with_method_main(LEGACY_CAMERA_POSE, camera_pose)
                     .with_method_main(METHOD_PICK, selection::pick_method)
+                    .with_method_main(LEGACY_PICK, selection::pick_method)
                     .with_method_main(METHOD_SELECT, selection::select_method)
+                    .with_method_main(LEGACY_SELECT, selection::select_method)
                     .with_method_main(scene::METHOD_LS, scene::ls_method)
+                    .with_method_main(scene::LEGACY_LS, scene::ls_method)
                     .with_method_main(scene::METHOD_GET, scene::get_method)
+                    .with_method_main(scene::LEGACY_GET, scene::get_method)
                     .with_method_main(scene::METHOD_FIND, scene::find_method)
+                    .with_method_main(scene::LEGACY_FIND, scene::find_method)
                     .with_method_main(scene::METHOD_APPLY, scene::apply_method)
+                    .with_method_main(scene::LEGACY_APPLY, scene::apply_method)
                     .with_method_main(scene::METHOD_UNDO, scene::undo_method)
+                    .with_method_main(scene::LEGACY_UNDO, scene::undo_method)
                     .with_method_main(scene::METHOD_REDO, scene::redo_method)
+                    .with_method_main(scene::LEGACY_REDO, scene::redo_method)
                     .with_method_main(scene::METHOD_SAVE, scene::save_method)
+                    .with_method_main(scene::LEGACY_SAVE, scene::save_method)
                     .with_method_main(scene::METHOD_PICK, scene::pick_method)
+                    .with_method_main(scene::LEGACY_PICK, scene::pick_method)
                     .with_method_main(scene::METHOD_ENTITIES, scene::entities_method)
+                    .with_method_main(scene::LEGACY_ENTITIES, scene::entities_method)
                     .with_method_main(scene::METHOD_CATALOG, scene::catalog_method)
+                    .with_method_main(scene::LEGACY_CATALOG, scene::catalog_method)
                     .with_method_main(scene::METHOD_LINT, scene::lint_method)
+                    .with_method_main(scene::LEGACY_LINT, scene::lint_method)
                     .with_method_main(scene::METHOD_SCHEMA, scene::schema_method)
+                    .with_method_main(scene::LEGACY_SCHEMA, scene::schema_method)
                     .with_method_main(scene::METHOD_GROUPS, scene::groups_method)
+                    .with_method_main(scene::LEGACY_GROUPS, scene::groups_method)
                     .with_method_main(scene::METHOD_CINEMATIC_LIST, scene::cinematic_list_method)
+                    .with_method_main(scene::LEGACY_CINEMATIC_LIST, scene::cinematic_list_method)
                     .with_method_main(scene::METHOD_CINEMATIC_SHOW, scene::cinematic_show_method)
+                    .with_method_main(scene::LEGACY_CINEMATIC_SHOW, scene::cinematic_show_method)
                     .with_method_main(scene::METHOD_CINEMATIC_PLAY, scene::cinematic_play_method)
+                    .with_method_main(scene::LEGACY_CINEMATIC_PLAY, scene::cinematic_play_method)
                     .with_method_main(scene::METHOD_CINEMATIC_STOP, scene::cinematic_stop_method)
+                    .with_method_main(scene::LEGACY_CINEMATIC_STOP, scene::cinematic_stop_method)
                     .with_method_main(scene::METHOD_CINEMATIC_SHOT, scene::cinematic_shot_method)
+                    .with_method_main(scene::LEGACY_CINEMATIC_SHOT, scene::cinematic_shot_method)
                     .with_method_main(scene::METHOD_INSTANCE, scene::instance_method)
+                    .with_method_main(scene::LEGACY_INSTANCE, scene::instance_method)
                     .with_method_main(scene::METHOD_DROP, scene::drop_method)
+                    .with_method_main(scene::LEGACY_DROP, scene::drop_method)
                     .with_method_main(scene::METHOD_FILES, scene::files_method)
+                    .with_method_main(scene::LEGACY_FILES, scene::files_method)
                     .with_method_main(scene::METHOD_SCENES, scene::scenes_method)
+                    .with_method_main(scene::LEGACY_SCENES, scene::scenes_method)
                     .with_method_main(scene::METHOD_NEW_SCENE, scene::new_scene_method)
+                    .with_method_main(scene::LEGACY_NEW_SCENE, scene::new_scene_method)
                     .with_method_main(scene::METHOD_CHANGE, scene::change_method)
+                    .with_method_main(scene::LEGACY_CHANGE, scene::change_method)
                     .with_method_main(scene::METHOD_CURRENT, scene::current_method)
+                    .with_method_main(scene::LEGACY_CURRENT, scene::current_method)
                     .with_method_main(scene::METHOD_TOOL_LIST, scene::tool_list_method)
+                    .with_method_main(scene::LEGACY_TOOL_LIST, scene::tool_list_method)
                     .with_method_main(scene::METHOD_TOOL_SCATTER, scene::tool_scatter_method)
+                    .with_method_main(scene::LEGACY_TOOL_SCATTER, scene::tool_scatter_method)
                     .with_method_main(scene::METHOD_TOOL_SETTLE, scene::tool_settle_method)
+                    .with_method_main(scene::LEGACY_TOOL_SETTLE, scene::tool_settle_method)
                     .with_method_main(
                         scene::METHOD_TOOL_CANONICALIZE,
+                        scene::tool_canonicalize_method,
+                    )
+                    .with_method_main(
+                        scene::LEGACY_TOOL_CANONICALIZE,
                         scene::tool_canonicalize_method,
                     ),
             )
@@ -301,7 +426,7 @@ impl Plugin for BridgePlugin {
                     .after(bevy::input::InputSystems)
                     .before(bevy::ui::UiSystems::Focus),
             );
-        // Highlight da seleção (`viber.select`) — SÓ com o plugin de gizmos
+        // Highlight da seleção (`vael.select`) — SÓ com o plugin de gizmos
         // no app (DefaultPlugins com a feature `bevy_gizmos`). Apps mínimas
         // de teste não o têm e o parâmetro `Gizmos` panica na validação.
         if app.is_plugin_added::<bevy::gizmos::GizmoPlugin>() {
@@ -314,7 +439,7 @@ impl Plugin for BridgePlugin {
     }
 }
 
-/// QA determinístico frame a frame (`viber.debug.step(n)`): avança
+/// QA determinístico frame a frame (`vael.debug.step(n)`): avança
 /// EXATAMENTE N frames à speed 1 e fica pausado. A op aplica-se em
 /// `RemoteLast`, depois do `PostUpdate` desse frame, por isso o orçamento
 /// começa no Update seguinte — `skip` fica desligado.
@@ -346,7 +471,7 @@ fn frame_stepper_system(world: &mut World) {
     }
     stepper.remaining = stepper.remaining.saturating_sub(1);
     if stepper.remaining == 0 {
-        // Fica PAUSADO (speed 0); `viber.debug.play()` restaura
+        // Fica PAUSADO (speed 0); `vael.debug.play()` restaura
         // `stepper.restore` — o valor guardado na primeira chamada da cadeia.
         stepper.active = false;
         if let Some(mut base) = world.get_resource_mut::<crate::time_fx::BaseTimeScale>() {
@@ -410,7 +535,7 @@ struct PendingMouseClick {
 /// `interaction_from_picking` (PreUpdate) marca `Pressed` e, vendo `just_released`,
 /// agenda o reset — quando `collect_ui_clicks` (Update) corre, o clique já
 /// desapareceu. Com o release um frame depois, `Pressed` sobrevive um Update
-/// e o script vê `viber.ui.clicked(id)`.
+/// e o script vê `vael.ui.clicked(id)`.
 fn deferred_mouse_release(
     mut pending: ResMut<PendingMouseClick>,
     input: Option<ResMut<ButtonInput<MouseButton>>>,
@@ -524,7 +649,7 @@ fn deferred_mouse_release(
 
 /// Sistema `Update`: transforma pedidos de captura pendentes em entidades
 /// `Screenshot` com observer `save_to_disk` (o render escreve o PNG; o status
-/// passa a `captured` no próximo `viber.screenshot_status`).
+/// passa a `captured` no próximo `vael.screenshot_status`).
 fn process_capture_requests(world: &mut World) {
     let requests = {
         let shared = world.resource::<BridgeShared>();
@@ -688,7 +813,7 @@ fn app_info(_params: In<Option<Value>>, _world: &mut World) -> BrpResult {
 /// em vez de falhar em silêncio.
 fn scripts_reload(_params: In<Option<Value>>, _world: &mut World) -> BrpResult {
     Err(invalid(
-        "scripts.reload: aposentado com o host Luau do monólito — os scripts          do jogo correm no BMS e o reload é o watch de assets (gravar o .lua).          A REPL `viber.lua` continua disponível para avaliar código ao vivo."
+        "scripts.reload: aposentado com o host Luau do monólito — os scripts          do jogo correm no BMS e o reload é o watch de assets (gravar o .lua).          A REPL `vael.lua` continua disponível para avaliar código ao vivo."
             .into(),
     ))
 }
@@ -705,7 +830,7 @@ fn screenshot_request(_params: In<Option<Value>>, world: &mut World) -> BrpResul
     Ok(json!({ "id": id, "path": path.display().to_string() }))
 }
 
-/// `viber.burst` — enfileira um burst de N frames seguidos numa folha
+/// `vael.burst` — enfileira um burst de N frames seguidos numa folha
 /// 4096×4096 (`{"frames": 4|9|16, "skip": u32, "output": path?}`). O
 /// `skip` são frames renderizados entre capturas (`0` = consecutivos).
 fn burst_request(params: In<Option<Value>>, world: &mut World) -> BrpResult {
@@ -735,7 +860,7 @@ fn burst_request(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     }))
 }
 
-/// `viber.burst_status` — `{"id"}` → estado do burst; com `status`
+/// `vael.burst_status` — `{"id"}` → estado do burst; com `status`
 /// `captured` vem `png_base64` + `bytes` + geometria em `sheet`.
 fn burst_status(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     #[derive(Deserialize)]
@@ -847,7 +972,7 @@ fn screenshot_status(params: In<Option<Value>>, world: &mut World) -> BrpResult 
     Ok(serde_json::to_value(info).expect("serialize"))
 }
 
-/// Cast de raio CONTRA A FÍSICA (`viber.raycast`) — a query que as closures
+/// Cast de raio CONTRA A FÍSICA (`vael.raycast`) — a query que as closures
 /// Lua não conseguem fazer (o contexto Rapier vive no World). Params:
 /// `{x,y,z, dx,dy,dz, max_toi?, solid?}` (dir normalizado dentro; `max_toi`
 /// default 100 m). Resposta: `{hit: false}` ou `{hit: true, entity, name?,
@@ -878,8 +1003,8 @@ fn raycast_method(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     )
 }
 
-/// Núcleo do raycast contra a física — partilhado por `viber.raycast` e
-/// `viber.pick` (unproject da câmara de editor). `dir` DEVE estar
+/// Núcleo do raycast contra a física — partilhado por `vael.raycast` e
+/// `vael.pick` (unproject da câmara de editor). `dir` DEVE estar
 /// normalizado. A resposta inclui a raiz nomeada da instância (`root`/`root
 /// _name`) — o hit cai no collider-filho anónimo.
 pub(crate) fn raycast_json(
@@ -890,7 +1015,7 @@ pub(crate) fn raycast_json(
     solid: bool,
 ) -> BrpResult {
     let max_toi = max_toi.unwrap_or(100.0).max(0.0);
-    // `viber.raycast` inclui sensores (é a query genérica dos agentes); o
+    // `vael.raycast` inclui sensores (é a query genérica dos agentes); o
     // `SpatialQuery` do Avian é um SystemParam, daí o helper em `physics`.
     let Some(hit) = crate::physics::ray_from_world(
         world,
@@ -997,7 +1122,7 @@ fn tree(params: In<Option<Value>>, world: &mut World) -> BrpResult {
             parent: entity
                 .get::<ChildOf>()
                 .map(|child_of| child_of.0.to_string()),
-            // Posição de MUNDO, como o snapshot do `viber.debug`: num nó
+            // Posição de MUNDO, como o snapshot do `vael.debug`: num nó
             // dentro de um grupo o `Transform` é LOCAL e o `tree` publicava
             // a cota local (tipicamente y=0) como se fosse a pose no mundo.
             translation: if entity.get::<ChildOf>().is_some() {
@@ -1050,7 +1175,7 @@ fn profiler_snapshot(_params: In<Option<Value>>, world: &mut World) -> BrpResult
     Ok(crate::profiler::snapshot(world))
 }
 
-/// Snapshot rico de um tab do profiler (`viber.profiler.tab`):
+/// Snapshot rico de um tab do profiler (`vael.profiler.tab`):
 /// `{"tab": "systems|world|physics|audio|frames|extras|all"}`. `all` devolve
 /// todos (o mesmo payload do export, sem escrever ficheiro); um tab
 /// desconhecido é erro BRP (não cai no snapshot base em silêncio).
@@ -1095,7 +1220,7 @@ fn profiler_tab(params: In<Option<Value>>, world: &mut World) -> BrpResult {
 }
 
 /// Exporta o snapshot completo do profiler para ficheiro
-/// (`viber.profiler.export`): `{"path": "…"}` opcional; devolve
+/// (`vael.profiler.export`): `{"path": "…"}` opcional; devolve
 /// `{"path", "bytes"}`.
 fn profiler_export(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     let path: Option<PathBuf> = match params.0.as_ref().and_then(|p| p.get("path")) {
@@ -1122,7 +1247,7 @@ fn profiler_export(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     }
 }
 
-/// Alterna um extra do profiler (`viber.profiler.extra_toggle`):
+/// Alterna um extra do profiler (`vael.profiler.extra_toggle`):
 /// `{"id": "colliders"}` → `{"id", "on"}`.
 fn profiler_extra_toggle(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     #[derive(serde::Deserialize)]
@@ -1136,7 +1261,7 @@ fn profiler_extra_toggle(params: In<Option<Value>>, world: &mut World) -> BrpRes
     }
 }
 
-/// Configura o profiler ao vivo (`viber.profiler.config`):
+/// Configura o profiler ao vivo (`vael.profiler.config`):
 /// `{"hitch_ms": 33}` muda o limiar do detector de hitches.
 fn profiler_config(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     #[derive(serde::Deserialize, Default)]
@@ -1162,7 +1287,7 @@ fn profiler_config(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     Ok(json!({ "hitch_ms": hitch_ms }))
 }
 
-/// Começa a gravação de um trace (`viber.profiler.trace_start`):
+/// Começa a gravação de um trace (`vael.profiler.trace_start`):
 /// `{"seconds": 10, "max_events": 1000000}` (ambos opcionais).
 fn profiler_trace_start(params: In<Option<Value>>, _world: &mut World) -> BrpResult {
     #[derive(serde::Deserialize, Default)]
@@ -1180,17 +1305,17 @@ fn profiler_trace_start(params: In<Option<Value>>, _world: &mut World) -> BrpRes
     ))
 }
 
-/// Fecha o trace actual (`viber.profiler.trace_stop`).
+/// Fecha o trace actual (`vael.profiler.trace_stop`).
 fn profiler_trace_stop(_params: In<Option<Value>>, _world: &mut World) -> BrpResult {
     Ok(crate::profiler::trace::stop())
 }
 
-/// Estado da gravação + resumo do último trace (`viber.profiler.trace_status`).
+/// Estado da gravação + resumo do último trace (`vael.profiler.trace_status`).
 fn profiler_trace_status(_params: In<Option<Value>>, _world: &mut World) -> BrpResult {
     Ok(crate::profiler::trace::status())
 }
 
-/// Exporta o trace (`viber.profiler.trace_export`):
+/// Exporta o trace (`vael.profiler.trace_export`):
 /// `{"path": "…", "format": "chrome|json"}`.
 fn profiler_trace_export(params: In<Option<Value>>, _world: &mut World) -> BrpResult {
     #[derive(serde::Deserialize, Default)]
@@ -1209,7 +1334,7 @@ fn profiler_trace_export(params: In<Option<Value>>, _world: &mut World) -> BrpRe
     }
 }
 
-/// Marca um instante no trace (`viber.profiler.mark {"label": "…"}`).
+/// Marca um instante no trace (`vael.profiler.mark {"label": "…"}`).
 fn profiler_mark(params: In<Option<Value>>, _world: &mut World) -> BrpResult {
     #[derive(serde::Deserialize)]
     struct Params {
@@ -1226,7 +1351,7 @@ fn profiler_mark(params: In<Option<Value>>, _world: &mut World) -> BrpResult {
 
 // ------------------------------------------------------- câmara de editor
 
-/// Erro padrão dos métodos `viber.camera.*` fora do modo `--camera free` —
+/// Erro padrão dos métodos `vael.camera.*` fora do modo `--camera free` —
 /// o cliente do editor distingue "modo errado" de "params inválidos".
 fn editor_cam_locked() -> BrpError {
     invalid("camera mode is not free — arranca a engine com `viber run --camera free`".into())
@@ -1245,7 +1370,7 @@ fn require_editor_cam(
 }
 
 /// Pose como JSON (`target`/`yaw`/`pitch`/`distance`) — corpo comum das
-/// respostas `viber.camera.*`, para o editor sincronizar UI/minimapa.
+/// respostas `vael.camera.*`, para o editor sincronizar UI/minimapa.
 fn editor_cam_pose(state: &crate::editor_camera::EditorCamState) -> Value {
     json!({
         "target": [state.target.x, state.target.y, state.target.z],
@@ -1255,7 +1380,7 @@ fn editor_cam_pose(state: &crate::editor_camera::EditorCamState) -> Value {
     })
 }
 
-/// `viber.camera.orbit {dx_deg?, dy_deg?}` — roda a órbita da câmara de
+/// `vael.camera.orbit {dx_deg?, dy_deg?}` — roda a órbita da câmara de
 /// editor em torno do alvo (`yaw += dx`, pitch clamp -10°..85°). Devolve a
 /// pose resultante.
 fn camera_orbit(params: In<Option<Value>>, world: &mut World) -> BrpResult {
@@ -1275,7 +1400,7 @@ fn camera_orbit(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     Ok(editor_cam_pose(&state))
 }
 
-/// `viber.camera.pan {dx?, dy?}` — pan no plano da câmara a partir de
+/// `vael.camera.pan {dx?, dy?}` — pan no plano da câmara a partir de
 /// deltas de rato em PÍXEIS do preview do editor (escala com a distância ao
 /// alvo; o conteúdo segue o cursor). Devolve a pose resultante.
 fn camera_pan(params: In<Option<Value>>, world: &mut World) -> BrpResult {
@@ -1295,7 +1420,7 @@ fn camera_pan(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     Ok(editor_cam_pose(&state))
 }
 
-/// `viber.camera.zoom {factor}` — `distance /= factor` com clamp 5..3000
+/// `vael.camera.zoom {factor}` — `distance /= factor` com clamp 5..3000
 /// (`factor` 2 aproxima à metade). Devolve a pose resultante.
 fn camera_zoom(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     #[derive(Deserialize)]
@@ -1308,7 +1433,7 @@ fn camera_zoom(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     Ok(editor_cam_pose(&state))
 }
 
-/// `viber.camera.look_at {x, y, z}` — aponta a órbita a um novo alvo (ex.:
+/// `vael.camera.look_at {x, y, z}` — aponta a órbita a um novo alvo (ex.:
 /// clique no minimapa do editor). Devolve a pose resultante.
 fn camera_look_at(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     #[derive(Deserialize)]
@@ -1324,7 +1449,7 @@ fn camera_look_at(params: In<Option<Value>>, world: &mut World) -> BrpResult {
     Ok(editor_cam_pose(&state))
 }
 
-/// `viber.camera.pose {}` — leitura da pose actual (target/yaw/pitch/
+/// `vael.camera.pose {}` — leitura da pose actual (target/yaw/pitch/
 /// distance), para o editor sincronizar UI/minimapa após interações
 /// concorrentes.
 fn camera_pose(_params: In<Option<Value>>, world: &mut World) -> BrpResult {
