@@ -264,7 +264,12 @@ impl Plugin for WorldReadyPlugin {
             .insert_resource(probe.clone())
             .add_systems(
                 PostUpdate,
-                (update_world_readiness, set_upload_budget).chain(),
+                (
+                    update_world_readiness,
+                    set_upload_budget,
+                    respecialize_standard_materials_on_ready,
+                )
+                    .chain(),
             )
             .add_systems(bevy::app::Update, freeze_time_while_loading)
             .add_systems(
@@ -639,6 +644,30 @@ fn update_world_readiness(
         if bevy_engine_core::boot::enabled() {
             info!("{}", bevy_engine_core::boot::report());
         }
+    }
+}
+
+/// Contorna um bug do `bevy_pbr 0.20.1` (`specialize_material_meshes` /
+/// `queue_material_meshes`): quando uma malha `StandardMaterial` fica visível
+/// num frame em que o `RenderMesh` / `mesh_slabs` ainda está atrás do orçamento
+/// `RenderAssetBytesPerFrame`, o Bevy faz `continue` sem a recolocar em
+/// `pending_mesh_material_queues` e a malha desaparece para sempre na câmara
+/// principal (enquanto a sombra continua a aparecer — ex.: espada do herói).
+///
+/// Ao abrir o véu (todos os assets do anel próximo já na GPU e orçamento
+/// levantado), marcar `MeshMaterial3d<StandardMaterial>` como alterado uma vez
+/// re-especializa e enfileira qualquer malha perdida sem clonar materiais.
+fn respecialize_standard_materials_on_ready(
+    readiness: Res<WorldReadiness>,
+    mut last_epoch: Local<Option<u32>>,
+    mut materials: Query<&mut MeshMaterial3d<StandardMaterial>>,
+) {
+    if !readiness.ready || *last_epoch == Some(readiness.epoch) {
+        return;
+    }
+    *last_epoch = Some(readiness.epoch);
+    for mut mat in &mut materials {
+        mat.set_changed();
     }
 }
 

@@ -54,6 +54,15 @@ pub struct PendingAttachments(pub Vec<(Entity, AttachmentRequest, f32)>);
 #[derive(Debug, Default, Resource)]
 pub struct MountedAttachments(HashMap<(Entity, String), (Entity, AttachmentRequest)>);
 
+/// Marca um anexo recém-nascido para re-tocar `MeshMaterial3d<StandardMaterial>`
+/// assim que a subárvore do glTF instanciar e os seus meshes subirem para a GPU.
+/// Contorna o drop silencioso de especialização no `bevy_pbr 0.20.1` em trocas
+/// de arma a meio do jogo (quando `WorldReadiness` já está pronto).
+#[derive(Debug, Component)]
+struct AttachmentRespecialize {
+    frames_left: u8,
+}
+
 pub struct AttachmentPlugin;
 
 impl Plugin for AttachmentPlugin {
@@ -62,7 +71,10 @@ impl Plugin for AttachmentPlugin {
             .init_resource::<AttachmentSlots>()
             .init_resource::<PendingAttachments>()
             .init_resource::<MountedAttachments>()
-            .add_systems(Update, apply_attachments);
+            .add_systems(
+                Update,
+                (apply_attachments, respecialize_attachment_materials).chain(),
+            );
     }
 }
 
@@ -189,11 +201,58 @@ pub fn apply_attachments(
                 transform,
                 Visibility::Inherited,
                 GltfScenePending::single(handle),
+                AttachmentRespecialize { frames_left: 4 },
             ))
             .id();
         commands.entity(bone).add_child(spawned);
         slots.0.insert(key.clone(), spawned);
         mounted.0.insert(key, (spawned, request));
+    }
+}
+
+fn respecialize_attachment_materials(
+    mut commands: Commands,
+    mut pending: Query<(Entity, &mut AttachmentRespecialize)>,
+    children: Query<&Children>,
+    mut materials: Query<&mut MeshMaterial3d<StandardMaterial>>,
+) {
+    fn collect(
+        entity: Entity,
+        children: &Query<&Children>,
+        materials: &Query<&mut MeshMaterial3d<StandardMaterial>>,
+        out: &mut Vec<Entity>,
+        depth: u8,
+    ) {
+        if depth > 16 {
+            return;
+        }
+        if materials.contains(entity) {
+            out.push(entity);
+        }
+        if let Ok(kids) = children.get(entity) {
+            for child in kids.iter() {
+                collect(child, children, materials, out, depth + 1);
+            }
+        }
+    }
+
+    let mut targets = Vec::new();
+    for (root, mut state) in &mut pending {
+        targets.clear();
+        collect(root, &children, &materials, &mut targets, 0);
+        if targets.is_empty() {
+            continue;
+        }
+        if state.frames_left > 0 {
+            state.frames_left -= 1;
+            continue;
+        }
+        for entity in &targets {
+            if let Ok(mut mat) = materials.get_mut(*entity) {
+                mat.set_changed();
+            }
+        }
+        commands.entity(root).remove::<AttachmentRespecialize>();
     }
 }
 
