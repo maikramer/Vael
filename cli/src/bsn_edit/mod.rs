@@ -1,6 +1,7 @@
 //! Offline source editing. Work on a single physical document, including
 //! native-only components; resolving prefabs first would lose ownership.
 mod document;
+mod settle;
 #[cfg(test)]
 mod tests;
 
@@ -17,6 +18,8 @@ use std::{
 
 #[derive(Subcommand)]
 pub enum Command {
+    /// Pré-visualiza ou grava o assentamento de props no heightmap do mundo.
+    Settle(settle::Options),
     /// Lista as entidades físicas, caminhos, IDs e componentes.
     Inspect {
         file: PathBuf,
@@ -191,6 +194,7 @@ fn apply(text: &mut String, edit: &Edit) -> Result<()> {
 impl Command {
     pub fn run(self) -> Result<()> {
         match self {
+            Self::Settle(options) => settle::run(options)?,
             Self::Inspect {
                 file,
                 tag,
