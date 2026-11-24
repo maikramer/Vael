@@ -9,9 +9,12 @@ A continuação do Capítulo I, o segredo da coluna, a sequência M01–M14 e os
 ## O mundo
 
 **O Vale** é uma bacia verde rodeada por quatro terras que já foram mansas. No meio
-fica **Discórdia** — vila de muralha baixa, praça de pedra, forja, capela e um
-**salão comunal** onde o conselho se senta desde antes de haver mapas. O nome é
-velho e irónico: foi aqui que as quatro terras assinaram a paz.
+fica o chão onde foi **Discórdia** — vila de cerca de madeira, praça de pedra, forja,
+capela e um **salão comunal** onde o conselho se sentou desde antes de haver mapas.
+O nome é velho e irónico: foi aqui que as quatro terras assinaram a paz. Na primeira
+manhã do jogo esse chão chama-se **Concórdia**: as mesmas paredes, em estacas. Os
+velhos ainda dizem Discórdia quando falam da noite em que caiu. O mapa diz Concórdia
+enquanto a obra não fecha.
 
 No extremo nordeste, acima do Ermo, ergue-se o **Alto de Vael**. Lá em cima
 crescem veios de cristal azul que *cantam* quando o vento passa — o **Coro**.
@@ -21,10 +24,13 @@ e as suas cantoras.
 
 ## O que aconteceu (há trinta invernos)
 
-A Cidadela caiu numa só noite. Uma coluna subiu do Vale para a defender e **nunca
-chegou** — o que resta dela é o **Campo de Batalha**, onde hoje andam **sombras com
-os rostos dos soldados**. Quando a última cantora morreu, o canto do Coro
-**partiu-se em quatro Notas**. Cada Nota foi engolida por uma criatura, e cada
+A Cidadela caiu numa só noite. Na mesma noite **Discórdia foi abaixo**: o telhado
+do salão abriu, a forja apagou-se, o poço ficou cego. Uma coluna subiu do Vale para
+defender a Cidadela e **nunca chegou** — o que resta dela é o **Campo de Batalha**,
+onde hoje andam **sombras com os rostos dos soldados**. Quando a última cantora
+morreu, o canto do Coro **partiu-se em quatro Notas**. Os sobreviventes voltaram ao
+chão partido e riscaram outro nome na primeira tábua: Concórdia, a obra de a levantar
+outra vez. Cada Nota foi engolida por uma criatura, e cada
 criatura cresceu à medida do pedaço de canto que guardava:
 
 | Nota | Guardião | Terra | Sinal da ferida |
@@ -38,18 +44,24 @@ Desde então o Coro está calado. É o **Silêncio de Vael**.
 
 ## Quem és
 
-**O Cartógrafo.** Chegas a Discórdia com uma caixa de mapas e um contrato do
-conselho: medir a terra outra vez. A ferramenta é **a Nota** — o caderno onde se
-*assinam* os marcos (o sistema de viagem: [F] assina, [G] viaja). O **Ancião
-Edmar**, guardião do salão comunal e o último que ouviu o Coro cantar, percebe
-logo o que o conselho não disse: quem mede a terra pode encontrar as quatro Notas.
+**O Cartógrafo.** Chegas a Concórdia com uma caixa de mapas e um contrato do
+conselho: medir a terra outra vez, e o que ainda se pode levantar. A ferramenta é
+**a Nota** — o caderno onde se *assinam* os marcos (o sistema de viagem: [F] assina,
+[G] viaja). O **Ancião Edmar**, debaixo da lona onde o salão há-de voltar a ter
+tecto, é o último que ouviu o Coro cantar. Percebe logo o que o conselho não disse:
+quem mede a terra pode encontrar as quatro Notas. A casa, o poço, o portão e o
+celeiro levantam-se com madeira e pedra. A forja, o mercado, a atalaia, o salão,
+a capela, o estaleiro do lago e o acesso das carroças esperam também por uma peça que um
+chefe ainda tem. A ficha de cada canteiro está no [GDD](GDD.md#concórdia--os-canteiros).
 
 ## Elenco
 
-- **Ancião Edmar** — salão comunal (Discórdia). Narrador do prólogo e do epílogo;
-  dá a missão-mãe **As Quatro Notas**. Fala devagar, em imagens. PT-PT, "tu".
-- **Bram, o ferreiro** — forja. Prático, sardónico ("ferro bom não se negocia
-  barato").
+- **Ancião Edmar** — lona junto ao poço, em Concórdia, até o salão ter tecto.
+  Narrador do prólogo e do epílogo; dá a missão-mãe **As Quatro Notas**. Fala
+  devagar, em imagens. PT-PT, "tu".
+- **Bram, o ferreiro** — tabuleiro de compra e venda desde a primeira manhã; a
+  forja só trabalha quando a bigorna volta do covil do lobo. Prático, sardónico
+  ("ferro bom não se negocia barato").
 - **Irmã Vessa, a vigia** — orla da floresta; conhece a Bruxa.
 - **Kadi, guia de caravanas** — perdeu três caravanas para o Verme.
 - **Onno, pescador do lago** — o lago levou-lhe o irmão.
@@ -61,8 +73,11 @@ logo o que o conselho não disse: quem mede a terra pode encontrar as quatro Not
 
 ## Arco do Capítulo I
 
-1. **Prólogo** (cinemática `prologo`, na primeira entrada no mundo): o Vale, o
-   Coro calado, a Cidadela caída; o Ancião chama o Cartógrafo ao salão comunal.
+1. **Prólogo** (cinemática `prologo`, pranchas, na primeira entrada no mundo):
+   Discórdia de pé; a noite em que o salão abre, a forja apaga e o poço cega; a
+   alva sobre as estacas e a palavra Concórdia. O Ancião, na última legenda:
+   «Mede o que ainda se pode levantar.» O controlo começa na lona, não num salão
+   inteiro.
 2. **As Quatro Notas** (missão `story_notas`, Ancião Edmar): recuperar as quatro
    Notas (item `nota`, 0/4 no diário). Cada terra tem o seu guardião, o seu
    dador de missão e os seus marcos da Nota.

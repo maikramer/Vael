@@ -33,6 +33,7 @@ VAEL_BIN=.jackdaw/target/game/debug/vael vael-tools run --scene main --entry dev
 | `vael-tools lint [world.bsn] [--json] [--strict]` | Lint estrutural (assets e scripts em falta) |
 | `vael-tools bsn inspect/show/schema` | Localizar entidades físicas, ler componentes e consultar campos do editor |
 | `vael-tools bsn set/patch/insert` | Editar campos, atributos e filhos com prévia ou gravação atômica. [Receitas de autoria](../.cursor/skills/vael-bsn/SKILL.md) |
+| `vael-tools bsn settle world.bsn` | Medir e assentar props e lotes de vegetação no heightmap |
 | `vael-tools bsn transcode` | Criar uma cópia entre `.bsn` textual e `.bsb` binário |
 | `vael-tools bsn check/convert` | Validar mundos ou comparar XML legado com BSN. `convert` importa XML de geradores |
 | `vael-tools run [world] --scene S --entry E --bridge [PORT] --resolution WxH` | Lança `target/release/vael` (ou `VAEL_BIN`); sem binário, delega em `cargo run --release` |
@@ -40,6 +41,37 @@ VAEL_BIN=.jackdaw/target/game/debug/vael vael-tools run --scene main --entry dev
 
 A lib `vael_tools` (`cli/src/lib.rs`) expõe análise, lint, importação de XML e verificação do mundo para a extensão `vael_analyze_jackdaw`. A edição offline fica em `cli/src/bsn_edit/`. O JSON de `analyze` é contrato com o
 CI e o `tools/lint_content.py`.
+
+### Assentar objetos depois de editar o terreno
+
+```bash
+vael-tools bsn settle world.bsn --scope world/scenery --report /tmp/assentamento.json
+vael-tools bsn settle world.bsn --scope world/scenery --apply
+```
+
+A prévia resolve o mundo e os prefabs, amostra a base do GLB ou a raiz da
+estação de flora no AHGT e lista as mudanças no relatório. Com `--apply`, grava as translações
+locais nos documentos das instâncias e as alturas nos lotes `.vinst`.
+Usa `--reference antes.ahgt` depois de uma alteração grande no relevo
+para identificar objetos anteriormente apoiados. O atributo
+`settle="keep"` protege estruturas apoiadas noutros objetos. Os casos
+sem geometria disponível, a mais de 7 m do apoio ou com fundações em
+declive aparecem como exclusões. O assentamento usa a superfície do
+heightmap. Para estruturas sobre água, em cavernas ou sobre outras
+construções, confere o apoio no Jackdaw.
+
+Os cenários exteriores ativos ficam em `world/scenery/`. Cada grupo reúne
+uma composição com posições escolhidas no terreno. Coloca os objetos em
+Jackdaw, amostra com `vael.debug.terrain(x, z)` no centro e em volta da
+pegada, e guarda a pose. Para árvores e adereços sólidos, deixa a pegada
+livre da faixa de rodagem e da água. Usa `settle` para acertar a altura e
+confere a silhueta e a passagem com a câmara do jogador.
+
+As árvores usam `FloraStation` com as espécies definidas em
+`world/settings/flora.bsn`. Os adereços de `assets/public/assets/meshes/cenario/`
+são modelos originais feitos com `tools/model_scenery.py` no Blender 5.3,
+com materiais mate sem texturas e origem junto ao chão. As estações e os
+adereços fazem parte das cenas autoradas em `world/scenery/`.
 
 ## Bridge de debug
 

@@ -88,12 +88,18 @@ os invariantes do Vael continuam a falhar. O pin está em
 `tests/playtest_scenarios.rs`; um futuro extent configurável no crate permite
 voltar a apertar.
 
-Também está fixado o par `log_error`/`landmass_rerecast`: bug **conhecido** do
-navmesh do mundo (`The polygon at index 2139 is concave or has edges in
-clockwise order`). O `rerecast` vendor já tem o patch `wound_right`
-(`VIBER_PATCH.md` #4), mas esta ocorrência ainda escapa; o teste imprime o
-finding e deixa os outros `log_error` a falhar. Corrigir o navmesh e remover o
-pin quando fechar.
+O par `log_error`/`landmass_rerecast` esteve fixado até 2026-11-23 (bug
+conhecido do navmesh: `The polygon at index 2139 is concave…` e, mais tarde,
+`The edge made from vertices X and Y is used by more than two polygons`). Este
+último fechou com o patch #8 do `rerecast` vendor (`VIBER_PATCH.md`: uma aresta
+ficava com três donos quando duas regiões simplificavam de forma diferente a
+parede que partilham), reproduzido com o tile real e agora coberto por testes.
+Entretanto o `bevy_ext_nav` converte e valida o tile antes de o entregar ao
+landmass — o plugin `landmass_rerecast` já não corre no jogo, por isso esse alvo
+não volta a logar. Hoje, um tile que o landmass recuse é
+aviso (`bevy_ext_nav`, o tile é re-assado com a grelha deslocada) e só loga
+`ERROR` quando a recusa se repete (`NAV_REJECTIONS_BEFORE_ERROR`); nenhum
+`log_error` está fixado.
 
 ## Oráculo visual
 

@@ -6,7 +6,7 @@
 
 ## 1. A experiência prometida
 
-À saída de Discórdia, um marco permite ao Cartógrafo regressar a uma fogueira. Horas depois, diante de outra pedra, tem de decidir quem poderá seguir aquele caminho quando ele se for embora. O mesmo gesto passa de conveniência pessoal a responsabilidade pública. É essa mudança que dá unidade ao RPG.
+À saída de Concórdia, um marco permite ao Cartógrafo regressar a uma fogueira. Horas depois, diante de outra pedra, tem de decidir quem poderá seguir aquele caminho quando ele se for embora. O mesmo gesto passa de conveniência pessoal a responsabilidade pública. É essa mudança que dá unidade ao RPG. Concórdia é o chão da antiga Discórdia, agora em obra: o prólogo mostra a vila a cair, e cada regresso levanta um canteiro.
 
 | Decisão de produto | Orientação |
 |---|---|
@@ -32,17 +32,17 @@
 | Uma expedição | Na vila recebes uma pergunta e um destino. Reconheces um marco, fazes um desvio se quiseres, resolves o problema e decides entre continuar no terreno ou regressar pela fogueira. |
 | Uma campanha | No primeiro capítulo recuperas capacidade para circular. No segundo reconstituis uma viagem que nunca entrou no mapa. No terceiro abres essa viagem a outras pessoas sob condições que escolheste. |
 
-**Primeiros quinze minutos, alvo de ensaio.** Ao primeiro controlo, a criança e a mãe situam-te na praça. O prólogo já deu um nome e um destino. A porta do salão e a mesa de Edmar levam ao contrato. Ao escolheres uma região, o diário guarda o nome do dador. Antes de partir ensinas à criança da praça como encontrar o portão no regresso (M01a). Entre o portão e o primeiro marco há linha de vista interrompida por uma curva curta. Ao reencontrar a torre por cima da vegetação, o jogador confirma a direção por si. A primeira fogueira permite experimentar o regresso. Um marco já assinado vale para o exercício de M01a. A legenda desenhada com a criança reaparece no mapa final.
+**Primeiros quinze minutos, alvo de ensaio.** O prólogo, em pranchas, mostra Discórdia de pé e a noite em que o salão abre, a forja apaga e o poço fica cego. Ao primeiro controlo estás nas estacas, de manhã. A madre e a criança estão na borda do poço, que ainda dá para o gesto. Edmar assina o contrato debaixo da lona, ao lado. O diário aponta primeiro à casa do Cartógrafo: madeira e pedra, sem peça de chefe. Entregar a obra levanta a casa e acende a tua fogueira. Ao escolheres uma região, o diário guarda o nome do dador. Antes de partir ensinas à criança como encontrar o portão no regresso (M01a); o portão é o canteiro seguinte, também só de madeira e pedra. Entre o portão e o primeiro marco há linha de vista interrompida por uma curva curta. Ao reencontrar a torre por cima da vegetação, o jogador confirma a direção por si. A fogueira da casa permite experimentar o regresso. Um marco já assinado vale para o exercício de M01a. A legenda desenhada com a criança reaparece no mapa final.
 
 **Exemplo de sessão.** O jogador chega ao Ermo com pouco ouro, aceita a ajuda de Kadi e lê o manifesto. Na ruína da carroça vê o primeiro sinal da areia. Tenta atacar cedo e usa uma carga do cantil para recuperar. Na segunda emersão espera fora do círculo e ganha tempo para uma sequência de golpes. Com a Nota guardada, pode investigar o obelisco próximo. Se sair do jogo na fogueira, deve regressar com a contagem, a prova observada e o nome da pessoa a quem pode voltar.
 
 ## 3. Mundo, orientação e desenho de espaço
 
-Discórdia é o ponto de repouso. Do Vale partem a Floresta Sombria a norte, o Ermo Rubro a leste, o Pântano da Bruma a oeste e os Picos Gelados a sul. A Cidadela caída, a sudoeste, guardava o caminho das cantoras. O Alto de Vael, a nordeste, é a origem física do Coro. Separar estes dois destinos na composição do mapa ajuda a distinguir **onde alguém esperava auxílio** de **onde ainda se pode responder**.
+Concórdia é o ponto de repouso: o mesmo chão onde Discórdia caiu, marcado com estacas. Do Vale partem a Floresta Sombria a norte, o Ermo Rubro a leste, o Pântano da Bruma a oeste e os Picos Gelados a sul. A Cidadela caída, a sudoeste, guardava o caminho das cantoras. O Alto de Vael, a nordeste, é a origem física do Coro. Separar estes dois destinos na composição do mapa ajuda a distinguir **onde alguém esperava auxílio** de **onde ainda se pode responder**.
 
 | Lugar | Referência para navegar | Desafio jogável | Mudança que convida a regressar |
 |---|---|---|---|
-| Discórdia | Poço → salão → portão, com linhas de vista curtas | Falar, preparar equipamento, escolher um destino | Festa após as Notas, audiência, memorial e mapa final à altura das crianças |
+| Concórdia | Poço → lona de Edmar → portão da cerca, com linhas de vista curtas; o Lago do Estaleiro no canto noroeste. Cada módulo de `world/cities/discordia/` é um canteiro | Falar, trazer obra, escolher um destino | A casa acende, a forja bate, a festa cabe no salão quando o tecto fecha |
 | Bosque | Torre do Posto, Poço da Encruzilhada, menires | Visibilidade curta, maldição apontada ao lugar onde o jogador estava | Vessa canta o verso novo; a vigília oferece combate nocturno |
 | Ermo | Arco, carroça encalhada, obelisco | Distâncias expostas, arqueiros e leitura da areia antes de o Verme emergir | Parte uma caravana. Kadi oferece a perspectiva de quem chega ao vau de noite |
 | Pântano | Barco naufragado, covas, altar e cabana | Identificar a saída em terra firme antes de pisar a lama | A régua transforma uma soleira que já viste em instrumento de travessia |
@@ -50,7 +50,7 @@ Discórdia é o ponto de repouso. Do Vale partem a Floresta Sombria a norte, o E
 | Campo e Cidadela | Pares de sombras, bandeira, portão e mesa de cópias | Seguir movimento, equilibrar a maca, sobrepor duas plantas | A leitura do campo de batalha muda quando o atravessas como socorrista |
 | Vau e Alto | Duas margens que se avistam, pedras de romaria e Mojão da Beira | Regular marcas, comparar impressões, conduzir e devolver o chamamento | A ligação de travessia e o silêncio entre as pulsações persistem no pós-jogo |
 
-**Regras de disposição.** Mostrar o destino antes da primeira bifurcação. Colocar a pista de regresso voltada para a outra direcção. Uma emboscada pode cortar o trilho mais curto, desde que o jogador veja onde recuar. Manter o local de leitura de documentos, a entrega das quatro Notas na mesa e a escolha no Alto fora do alcance de encontros aleatórios. A água admite barcos a remos no jogo base. O percurso obrigatório do Lodo também oferece margem caminhável. [Marcos de viagem](data/landmarks.json) · [Água e barcos](docs/WATER.md)
+**Regras de disposição.** Mostrar o destino antes da primeira bifurcação. Colocar a pista de regresso voltada para a outra direcção. Uma emboscada pode cortar o trilho mais curto, desde que o jogador veja onde recuar. Manter o local de leitura de documentos, a entrega das quatro Notas na mesa e a escolha no Alto fora do alcance de encontros aleatórios. A água admite barcos a remos no jogo base. Braços de rio ligam os lagos em duas redes navegáveis: Estaleiro e Pântano, a oeste; o rio, o Areal e o Anel, a sul. O Anel, os Picos, o Ermo Verde e as Vigílias descem para elas por rápidos e cascatas, que se descem de barco mas não se sobem. O percurso obrigatório do Lodo também oferece margem caminhável. [Marcos de viagem](data/landmarks.json) · [Água e barcos](docs/WATER.md)
 
 ## 4. Campanha, exploração livre e ritmo
 
@@ -67,7 +67,7 @@ Discórdia é o ponto de repouso. Do Vale partem a Floresta Sombria a norte, o E
 
 | Momento | Diário, mapa e conversas | Transição |
 |---|---|---|
-| Novo Jogo | O contrato de Edmar é a única oferta. A vila mantém conversas ambientais, comércio, cura e forja. | Aceitar fixa M01a. A primeira dobra devolve o foco à terra escolhida. |
+| Novo Jogo | O contrato de Edmar, debaixo da lona, é a única oferta de história. O diário pede a casa. Bram compra e vende no tabuleiro; a forja, a cura da capela e o salão esperam pelo canteiro. | Aceitar fixa M01a. A casa e o portão são a obra da abertura. A primeira dobra devolve o foco à terra escolhida. |
 | Campanha em curso | Mostrar o objectivo principal actual. Na viagem pelas quatro terras, o caderno permite seguir outra região. Um morador pode dar uma pista da campanha na conversa normal. | A conclusão fixa a próxima principal. M06 leva à colher na praça. M10 leva ao bilhete de Rui. |
 | M14 e créditos | O jogador vê a consequência das suas duas decisões, reconhece a legenda que desenhou em M01a e segura o mapa para a correcção. | Gravar o fecho uma vez, incluindo se os créditos forem saltados. |
 | Regresso ao Vale | O quadro de Bram anuncia os pedidos locais. Cada região apresenta as ofertas dos habitantes quando o jogador lá volta. No diário, «Campanha» precede «Pedidos do Vale». | Aceitar um pedido ou fixá-lo é opcional. As cadeias locais conservam os seus pré-requisitos. |
@@ -142,12 +142,51 @@ Na arena, colocar um perseguidor um passo atrás e outro à frente. Rolar em dir
 |---|---|---|
 | Uma poção custa 25 de ouro; madeira vende por 3 e pedra por 5 | Parto com reserva de cura ou guardo o ouro para a forja? | Uma única compra inicial é possível. A fogueira sustenta novas tentativas quando o ouro acaba. |
 | Manto do caçador requer 3 peles de lobo e 4 madeiras | Quero fabricar o manto com o que trouxe do Bosque? | A receita pode ser usada durante a campanha. O pedido de Bram surge no pós-jogo. Mostrar o ingrediente em falta directamente na receita. |
-| Espada de aço requer 20 pedras, 4 madeiras escuras e 150 de ouro | Transformo o que trouxe de duas terras numa arma? | A forja dá valor ao regresso a Discórdia sem exigir esta peça no arco principal. |
+| Espada de aço requer 20 pedras, 4 madeiras escuras e 150 de ouro | Transformo o que trouxe de duas terras numa arma? | A forja, já com bigorna, dá valor ao regresso a Concórdia sem exigir esta espada no arco principal. |
 | Baluarte e Sede de sangue são escolhas exclusivas | Prefiro suportar o golpe ou recuperar vida ao atacar? | Descrever o efeito e a exclusão antes de gastar o ponto. Validar uma primeira vitória com estilos defensivo e ofensivo. |
 
 **Recompensa e poder.** A Nota entra uma vez por guardião. O pagamento do dador é independente: Vessa inclui um amuleto, Kadi dá seda e Onno entrega a vara abençoada. A entrega das quatro paga actualmente 500 de ouro, 600 XP, cinco poções e três bombas. Esta reserva admite desvios ou equipamento na segunda metade. As duas decisões da campanha dão acesso equivalente à conclusão e diferem na experiência de travessia. Não atribuir uma arma exclusiva à opção mais popular do memorial. [Missão de Edmar](quests/story_quests.json)
 
 **Ensaio de equilíbrio.** Comparar três percursos: jogador que segue a indicação de Edmar, jogador que vai primeiro aos Picos e jogador que gasta o ouro inicial e perde a bolsa. Anotar tentativas até reconhecer o especial, cargas gastas, minutos até poder tentar outra vez e se alguém fica sem recursos para prosseguir só com o percurso principal. Se a dificuldade vier de procurar o último alvo ou de andar de volta à arena, corrigir orientação ou retoma antes de reduzir a vida do guardião.
+
+### Concórdia — os canteiros
+
+**Desenho.** No jogo de hoje a vila em `world/cities/discordia/` está de pé. No desenho, esse módulo nasce em obra. Discórdia é o nome da noite em que caiu, contada no prólogo. Concórdia é o mesmo chão enquanto se levanta. Os velhos ainda dizem Discórdia; o mapa e o diário dizem Concórdia.
+
+Um canteiro é um edifício por levantar, no sítio do módulo que já existe. Não há menu de construção. A placa no cordel diz o que falta. Entregar a obra no sítio muda o volume no mundo.
+
+| Estado | O que se vê | O que o jogador fez |
+|---|---|---|
+| Estacas | Cordel, buracos, placa com o nome | Nada. A placa lista só a obra. |
+| Esqueleto | Paredes sem tecto | Entregou a obra. Se houver peça, a placa passa a nomear o chefe e a caverna. |
+| Peça | A peça encaixada, tecto a fechar | Trouxe a peça de ofício. Os abrigos saltam este estado. |
+| Habitado | NPC dentro, serviço aberto | Uma prancha curta mostra a primeira utilização. O diário risca o canteiro. |
+
+**Duas chaves.** A obra é material que já se apanha: madeira, pedra e, no ofício, o material da terra (`dark-wood`, `bog-moss`, `cactus_fiber`). Empilha, vende-se, e pode ir na bolsa da morte como o resto dos recursos. A peça de ofício é uma, não se fabrica, não se vende e não cai da bolsa — o mesmo estatuto de uma Nota. A Nota não substitui a peça, e a peça não substitui a Nota.
+
+A placa não nomeia chefe nenhum enquanto a obra não estiver no sítio. Primeiro aprendes a trazer madeira e pedra. Depois o jogo aponta a caverna. A peça pode ser ganha antes da obra: fica na bolsa, e Bram (ou o dador do canteiro) diz onde encaixa quando voltas.
+
+A casa, o poço, o portão e o celeiro não têm peça. São o abrigo. A casa do Cartógrafo é o tutorial: só madeira e pedra, e é a primeira fogueira tua. O poço já tem borda no primeiro minuto, para o gesto da mãe; a obra limpa e relineia. O portão da cerca de madeira chega a tempo de M01a. O celeiro passa a guardar a obra já entregue aos outros canteiros se saíres a meio — o progresso de um sítio não se perde.
+
+Sair do Vale antes da casa é permitido. Até a casa estar habitada, a única fogueira é a da lona. A cura do cantil na fogueira mantém-se. Bram, no tabuleiro, compra e vende desde a primeira manhã, para a poção de 25 de ouro continuar a ser uma escolha da primeira hora. Receitas, têmpera e a bigorna esperam pela forja. A cura da capela espera pela campainha. A audiência de M10 espera pelo salão.
+
+**Um chefe, um tecto.** Cada peça tem um dono já nomeado no Vale. As três cavernas que existem em `world/caves/caves.bsn` pagam os ofícios. Os quatro guardiões, além da Nota, trazem a peça cívica da sua terra. Quantidades são alvo de ensaio.
+
+| Canteiro | Módulo | O que abre | Obra (alvo) | Peça | Onde cai |
+|---|---|---|---|---|---|
+| Casa do Cartógrafo | `houses` (a primeira, junto ao poço) | Cama, baú, fogueira tua | 8 madeira, 6 pedra | — | — |
+| Poço | `utilities` | Balde, marco de regresso | 8 pedra | — | — |
+| Portão da cerca | `walls` | Saída que a criança consegue ler (M01a) | 12 madeira, 8 pedra | — | — |
+| Celeiro | `barn` | A obra entregue noutros sítios fica guardada | 16 madeira, 10 pedra | — | — |
+| Forja | `forge` | Receitas e têmpera de Bram | 8 madeira escura, 12 pedra | Bigorna de Bram | Chefe do `covil-do-lobo` |
+| Mercado | `market` | Carga de Kadi e bancas | 8 fibra de cacto, 10 pedra | Eixo da carroça | Chefe do `tumulo-do-ermo` |
+| Atalaia | `watch` | O posto vê quem chega | 12 pedra | Vidraça | Chefe da `gruta-de-gelo` |
+| Salão | `longhouse` | Tecto para a festa e para a audiência de M10 | 12 madeira, 8 madeira escura | Trave de pinho | A Bruxa, com a Nota do Bosque |
+| Capela | `chapel` | Cura maior | 8 madeira, 8 musgo do pântano | Campainha | O Guardião do Lodo, com a Nota do Lodo |
+| Estaleiro | `shipyard` (a criar, na margem do Lago do Estaleiro) | Barco próprio e cais; o braço do Estaleiro leva ao Pântano | 16 madeira, 6 pedra | Quilha de pinho | O Ogro, com a Nota dos Picos (o riacho dos Picos desagua no lago) |
+| Acesso das carroças | `approach` | Uma carroça entra sem escolta | 10 pedra, 6 fibra de cacto | Lastro | O Verme, com a Nota do Ermo |
+
+Depois destes onze, um canteiro novo segue a mesma ficha: nome, módulo, serviço, obra, e peça só se for ofício. A peça aponta para uma caverna ou uma arena que já exista. Não se abre uma caverna só para ter uma chave.
 
 ## 7. A Nota, as provas e as escolhas
 
@@ -198,9 +237,19 @@ Localização PT/EN desde a autoria. Rever a distinção entre caderno, fragment
 
 **Objectos que contam a história pelas mãos de quem os usa.** A pega da maca gasta só de um lado resolve o mistério da travessia em M08. Uma raspadeira de gume limpo e cabo polido mostra que Edmar conviveu todos os dias com a possibilidade de corrigir o mapa. Na praça final, o jogador reconhece o enquadramento da primeira manhã antes de reparar que o mapa desceu na parede para ficar à altura das crianças. Reutilizar o cenário e alterar a acção e a marca de uso em primeiro plano.
 
+### Pranchas — todas as cinemáticas
+
+**Desenho.** O prólogo, os despertares `guardiao-*`, a `nota`, o `campo-de-batalha`, o `epilogo` e a prancha curta de cada canteiro habitado deixam de ser planos de câmara no mundo 3D. Passam a imagens paradas, uma vinheta de cada vez. O som, o título e as falas mantêm-se. Quem salta a cena encontra o mesmo facto no diário.
+
+O mundo jogável continua Ofício Talhado. A prancha é o outro registo: o caderno, em mangá de tinta. Gera-se com `text2d` e corrige-se à mão o que o modelo erra — a silhueta do edifício tem de ser a do módulo 3D, as mãos têm de ler, o pigmento é um só. A receita visual está na [direcção de arte](docs/ART.md#pranchas-de-mangá).
+
+**Prólogo, pela ordem das vinhetas.** Discórdia de pé: cerca de madeira, salão, forja acesa, poço. O céu sem canto e a bruma a descer. O telhado do salão a abrir, gente na praça. A forja a apagar-se. O poço cego e a mão que se afasta da pedra. Alva sobre estacas; numa tábua, a palavra Concórdia. Edmar, na última legenda: «Mede o que ainda se pode levantar.» A bigorna não se vê a ser levada. O jogador descobre para onde foi cada peça quando a placa do canteiro a pede.
+
+Cada vinheta leva legenda de até duas linhas, por baixo do desenho. O avanço é por tempo ou por uma tecla, a mesma de saltar a cena inteira. Uma prancha de canteiro tem três ou quatro vinhetas e mostra o serviço a ser usado uma vez: Bram pousa o ferro na bigorna, a criança lê o portão, a mãe baixa o balde.
+
 | Espaço | Matéria e paleta dominante | Contraste e leitura de jogo |
 |---|---|---|
-| Discórdia e Vale | Pedra com cal gasta na base, carvalho fumado, ardósia e pano cerzido | O âmbar das forjas e lanternas marca abrigo; o entalhe turquesa identifica os marcos assinados |
+| Concórdia e Vale | Pedra com cal gasta na base, carvalho fumado, ardósia e pano cerzido. As estacas e o cordel são a leitura de obra | O âmbar das forjas e lanternas marca abrigo; o entalhe turquesa identifica os marcos assinados |
 | Bosque | Pinho negro, musgo profundo e terra húmida sob névoa curta | Raízes e fitas carmim/ocre marcam profundidade e rota; a maldição da Bruxa recorta-se no solo escuro |
 | Ermo | Arenito ferruginoso, ocre seco e madeira branqueada pelo sol | Areia clara contra a madeira escura das carroças dá escala ao Verme; sombras frias de ardósia nas fendas |
 | Pântano (Lodo) | Lodo escuro, tábuas alcatroadas, junco seco e bruma verde-oliva | A linha da água corta sempre algo humano reconhecível, como a ombreira de uma porta ou a régua de cal |
@@ -222,6 +271,7 @@ A base tem gravação automática e slots manuais. Posição, cena, progresso e 
 | Pouso da maca e duas impressões | Abandonar para ir à vila conserva o progresso. Cada margem aceita ser a primeira. |
 | Memória, acesso, encerramento da chamada | O memorial lê a primeira decisão e a rota lê a segunda. Uma escolha confirmada sobrevive a morte, viagem e troca de cena. |
 | Epílogo e regresso ao mundo | Guardar depois do último gesto. Continuar abre o mundo no estado escolhido e habilita as ofertas locais. |
+| Estado de cada canteiro | Estacas, esqueleto, peça ou habitado. Obra já entregue não volta à bolsa. Uma peça na bolsa sobrevive à morte e à troca de cena. |
 
 **Reconhecimento de escolhas em QA.** Carregar entre a confirmação e a mudança de cena. Confirmar que o habitante já reagiu, que a fala pode ser revista e que a recompensa foi atribuída uma única vez. Criar também ensaios a partir de um save anterior à expansão, de outro com um guardião vencido antes do contrato e de outro com a romaria e o Campo já visitados.
 
@@ -231,7 +281,8 @@ M01, M01a e M02 já podem ser jogadas em sequência. O [roteiro de validação](
 
 | Entrega proposta | Material a produzir | Como decidir que está pronta |
 |---|---|---|
-| Fatia jogável de M06 a M08 | Festa curta, experiência da colher e do sino, par de sombras, maca, dois apoios e uma chegada. Usar save junto à entrega de Edmar. | Um jogador identifica as mãos, refaz a travessia e explica com as suas palavras o que a coluna transportava. Guardar e voltar a meio conserva o último pouso. |
+| Prólogo em pranchas e a casa | Seis vinhetas da queda de Discórdia, a lona, a placa da casa, entrega de madeira e pedra, a casa habitada. | Quem joga pela primeira vez conta que a vila caiu e aponta a casa que levantou. Sem a bigorna, a forja não fabrica. A placa da forja, depois da obra, nomeia o `covil-do-lobo`. |
+| Fatia jogável de M06 a M08 | Festa curta, experiência da colher e do sino, par de sombras, maca, dois apoios e uma chegada. Usar save junto à entrega de Edmar. A festa usa o salão se a trave já chegou; senão, a praça. | Um jogador identifica as mãos, refaz a travessia e explica com as suas palavras o que a coluna transportava. Guardar e voltar a meio conserva o último pouso. |
 | Arco da Cidadela, M09–M10a | Mesa de cópias, raspadeira, pano de Ada, duas composições do memorial, audiência e resposta falhada no portão de Rui. | A pessoa distingue a ordem inicial do desvio e sabe o que ficará público antes de confirmar. Ambas as respostas prosseguem. |
 | Percurso do Alto, M11–M14 | Fechos das duas margens, sinal orientável, estação de resposta, dois acessos ao vau, variantes de rotina e créditos. | Cada ordem de testemunhos chega ao mesmo fio completo. As quatro combinações finais são visíveis depois de guardar e carregar. |
 | Passe integral de experiência | Introduções regionais, encontros e regressos, revisão de texto PT/EN, áudio e indicadores acessíveis. | Concluir com qualquer primeiro guardião, com comando e com o som desligado. Verificar ausência de ofertas secundárias em M01, M06 e M13 e a descoberta do primeiro pedido no regresso após M14. |
@@ -253,4 +304,4 @@ Na primeira sessão de teste, retirar a explicação verbal sobre a pega e obser
 
 **Plano de teste de experiência.** Numa primeira ronda de cinco pessoas novas, observar em silêncio a saída da vila, a primeira arena e a fatia do Campo. Registar em que ponto cada pessoa perde o destino, que especial consegue antecipar à segunda tentativa e que prova cita para explicar a coluna. Alvo inicial: pelo menos quatro encontram o primeiro destino sem ajuda e conseguem contar, após a M08, o que os soldados fizeram. No fim, pedir que mostrem no mundo uma consequência de cada decisão. Uma pessoa que sabe repetir a fala mas não encontra a mudança indica um problema de encenação. Medir tempos e ajustar os alvos com os resultados.
 
-**Conclusão de produção.** O percurso pode ser considerado completo quando se consegue começar na praça, restaurar o Coro, reconstruir a travessia, responder no Alto, deixar a criança corrigir o mapa e voltar ao mesmo Vale transformado a partir de um save. A verificação combina cenários de estado, uma passagem humana integral e observação das quatro variantes. [Cenários de QA](docs/QA.md) · [Playtests](docs/PLAYTEST.md)
+**Conclusão de produção.** O percurso pode ser considerado completo quando se consegue começar nas estacas, levantar a casa, restaurar o Coro, reconstruir a travessia, responder no Alto, deixar a criança corrigir o mapa e voltar ao mesmo Vale transformado a partir de um save. A verificação combina cenários de estado, uma passagem humana integral e observação das quatro variantes. [Cenários de QA](docs/QA.md) · [Playtests](docs/PLAYTEST.md)
