@@ -1,0 +1,62 @@
+{
+  "prompt": "seamless tileable texture, very dark charcoal-brown stained pine wood surface, fine straight vertical wood grain running top to bottom, subtle warm umber undertones, smooth matte stained finish, continuous wood surface, broad clean color zones, earthy mineral pigments, matte tempera finish, soft even lighting, flat top-down view, texture fills the whole frame",
+  "negative_prompt": "blurry, low quality, watermark, text, signature, frame, border, visible seam, tiling artifacts, planks, board seams, gaps between boards, nails, screws, knot, knots, isolated spot, blurry patch, out of focus, plastic glossy sheen, photorealistic, neon oversaturated colors, busy micro-patterns, melted organic edges",
+  "width": 1024,
+  "height": 1024,
+  "steps": 28,
+  "guidance": 7.0,
+  "refine_steps": 16,
+  "seed": 51125,
+  "seed_requested": 51121,
+  "prompt_tokens": 73,
+  "negative_prompt_tokens": 75,
+  "tileability": 1.0,
+  "isolated_detail": 0.0522,
+  "isolated_detail_gate": {
+    "max": 0.12,
+    "passed": true
+  },
+  "banding": 0.4613,
+  "tail_ratio": 2.0278,
+  "quality_gates": {
+    "passed": true,
+    "isolated_detail": {
+      "value": 0.05224045552313328,
+      "max": 0.12,
+      "passed": true
+    },
+    "banding": {
+      "value": 0.4612644462339601,
+      "max": 0.5,
+      "passed": true
+    },
+    "tail_ratio": {
+      "value": 2.0278447587014394,
+      "max": 5.0,
+      "passed": true
+    }
+  },
+  "axis": {
+    "wanted": "v",
+    "rotated": false
+  },
+  "match_color": {
+    "target": "#2F2D25",
+    "before": "#7B6859",
+    "after": "#2F2D25",
+    "scale": 1.0
+  },
+  "vae_tiled_decode": false,
+  "normal_strength": 0.7,
+  "roughness_range": [
+    0.78,
+    0.95
+  ],
+  "materialize_preset": "wood",
+  "biome": "Floresta Sombria",
+  "palette": [
+    "#232B24",
+    "#3B2F26"
+  ],
+  "regenerated_at": "2026-11-23 16:28:06"
+}

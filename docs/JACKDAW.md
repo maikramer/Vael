@@ -66,6 +66,7 @@ ao parar e **Keep** permite mantê-las e gravar depois.
 | LOD, flora, partículas, portais, exclusões, scripts | `ModelLod`/`FloraStation`/`ParticleSpec`/`PortalSpec`/`SpawnExclusionSpec`/`ScriptRef` | inspector + gizmos |
 | Terreno, caves, arcos, falésias, paint | `VoxelTerrain`/`Cave`/`Arch`/`Cliff` + `world.data/` | painel *Voxel Terrain* |
 | **Pavimento (ruas, praças, largos)** | `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>`, com `paving-cell`/`-corner`/`-priority` (ver [`PAVING.md`](PAVING.md)) | inspector, nos atributos do nó — ainda sem gizmos da grelha |
+| **Cercas** | `FenceSpec` num `<Entity>` (`fence-points`, `fence-style`, sobreposições `fence-*`); predefinições `FenceStyle` em `world/settings/fences.bsn` (ver [`FENCES.md`](FENCES.md)) | painel **Cercas** (uma linha nova por predefinição), preview da cerca no viewport, inspector *Cercas* + gizmo da linha — extensão `bevy_ext_fence_jackdaw` |
 | Ambiente, PostFX, flora (definições) | `world/settings/*.bsn` | painéis *Ambiente*, *PostFX*, *Flora* |
 | **Câmara do jogo** | `CameraSpec` no `<OrbitCamera>` (`world/autoload/player.bsn`) | inspector *Câmara* + frustum no viewport |
 | **Câmara de interior** | `InteriorSceneSpec` nas salas (`scenes/interiors/*.bsn`) | inspector *Câmara* + rectângulo da sala e pose da câmara |

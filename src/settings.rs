@@ -1,7 +1,8 @@
 //! Definições do Vael autoradas na cena (`world/settings/*.bsn`).
 //!
-//! O ambiente (`ElementsSettings`), o pós-processamento (`PostFxSettings`)
-//! e a flora (`FloraSpecies`/`FloraSettings`) são componentes `Reflect` em
+//! O ambiente (`ElementsSettings`), o pós-processamento (`PostFxSettings`),
+//! a flora (`FloraSpecies`/`FloraSettings`) e as cercas (`FenceStyle`/
+//! `FenceSettings`) são componentes `Reflect` em
 //! entidades do `.bsn`: o Jackdaw edita-os no inspector (e nos painéis da
 //! extensão `vael_jackdaw`) e o jogo lê-os daqui. Gravar no editor chega ao
 //! jogo que está a correr: o `SceneSettingsPlugin` relê os documentos.
@@ -20,6 +21,7 @@ use bevy::reflect::GetTypeRegistration;
 use bevy::reflect::PartialReflect;
 use bevy::reflect::TypeRegistry;
 use bevy_ext_elements::{ElementsSettings, ElementsSettingsPlugin};
+use bevy_ext_fence::{FenceSettings, FenceSettingsPlugin, FenceStyle, presets as fence_presets};
 use bevy_ext_flora::{FloraSettings, FloraSettingsPlugin, FloraSpecies};
 use bevy_ext_grass::{GrassSettingsSpec, GrassSettingsSpecPlugin, GrassStyleSpec};
 use bevy_ext_postfx::{PostFxSettings, PostFxSettingsPlugin, SsaoQuality};
@@ -56,6 +58,7 @@ impl Plugin for VaelSettingsPlugin {
             ElementsSettingsPlugin,
             PostFxSettingsPlugin,
             FloraSettingsPlugin,
+            FenceSettingsPlugin,
             GrassSettingsSpecPlugin,
             // Colisor/corpo/destrutível/colheita tipados nos `.bsn`: o
             // schema do Jackdaw tem de os conhecer para os editar.
@@ -65,7 +68,9 @@ impl Plugin for VaelSettingsPlugin {
         .add_scene_setting::<FloraSettings>()
         .add_scene_setting_list::<FloraSpecies>()
         .add_scene_setting::<GrassSettingsSpec>()
-        .add_scene_setting_list::<GrassStyleSpec>();
+        .add_scene_setting_list::<GrassStyleSpec>()
+        .add_scene_setting::<FenceSettings>()
+        .add_scene_setting_list::<FenceStyle>();
         // EnvironmentPlugin reads the initial value while building its systems.
         let elements =
             native_value::<ElementsSettings>(&app.world().resource::<SceneNatives>().natives)
@@ -182,7 +187,7 @@ pub fn vael_postfx() -> PostFxSettings {
     }
 }
 
-/// Escreve `world/settings/{environment,postfx,flora}.bsn` com os valores
+/// Escreve `world/settings/{environment,postfx,flora,grass,fences}.bsn` com os valores
 /// atuais (as constantes de antes). Não sobrescreve sem `force`.
 pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     let mut registry = TypeRegistry::default();
@@ -192,6 +197,8 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     registry.register::<FloraSettings>();
     registry.register::<GrassSettingsSpec>();
     registry.register::<GrassStyleSpec>();
+    registry.register::<FenceStyle>();
+    registry.register::<FenceSettings>();
     // Sem `Transform` o Jackdaw não pendura a entidade na hierarquia.
     registry.register::<SceneNodeId>();
     registry.register::<Transform>();
@@ -266,10 +273,11 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
                 &registry,
             ),
         ),
+        ("fences.bsn", fences_bsn(&registry)),
     ];
 
     let dir = root.join(SETTINGS_DIR);
-    // Confere os quatro ANTES de escrever: um `--force` a menos não pode
+    // Confere todos ANTES de escrever: um `--force` a menos não pode
     // deixar a pasta com metade dos ficheiros reescritos e a outra metade
     // intacta (o bail a meio de um export anterior fazia isso).
     if !force {
@@ -280,7 +288,7 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
             }
         }
     }
-    // Emite e VALIDA os quatro antes do primeiro `write`: uma falha de
+    // Emite e VALIDA todos antes do primeiro `write`: uma falha de
     // validação a meio também não pode deixar a exportação a metade.
     let mut contents = Vec::with_capacity(files.len());
     for (name, body) in files {
@@ -299,6 +307,55 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
         written.push(path);
     }
     Ok(written)
+}
+
+/// O documento `world/settings/fences.bsn`: as definições globais e as
+/// predefinições do crate, cada uma com o nome legível.
+fn fences_bsn(registry: &TypeRegistry) -> String {
+    let transform = Transform::default();
+    emit_native_group(
+        "Cercas",
+        &[
+            transform.as_partial_reflect(),
+            FenceSettings::default().as_partial_reflect(),
+        ],
+        &fence_presets()
+            .iter()
+            .map(|style| {
+                (
+                    style.label.clone(),
+                    vec![transform.as_partial_reflect(), style.as_partial_reflect()],
+                )
+            })
+            .collect::<Vec<_>>(),
+        registry,
+    )
+}
+
+/// Escreve só o `world/settings/fences.bsn` com as predefinições do crate —
+/// para regenerar as cercas sem tocar nas outras definições (que podem ter
+/// edições do editor). Não sobrescreve sem `force`.
+pub fn export_fence_settings(root: &Path, force: bool) -> Result<PathBuf> {
+    let path = root.join(SETTINGS_DIR).join("fences.bsn");
+    if path.exists() && !force {
+        anyhow::bail!("{} já existe (usa --force)", path.display());
+    }
+    let mut registry = TypeRegistry::default();
+    registry.register::<FenceStyle>();
+    registry.register::<FenceSettings>();
+    registry.register::<SceneNodeId>();
+    registry.register::<Transform>();
+    let text = format!(
+        "// Definições do Vael (fences.bsn). Editar no Jackdaw (`jd open .`):\n\
+         // o inspector e os painéis da extensão vael_jackdaw gravam aqui.\n\n{}",
+        fences_bsn(&registry)
+    );
+    jackdaw_bsn_check(&path, &text)?;
+    if let Some(dir) = path.parent() {
+        std::fs::create_dir_all(dir).with_context(|| format!("criar {}", dir.display()))?;
+    }
+    std::fs::write(&path, &text).with_context(|| format!("gravar {}", path.display()))?;
+    Ok(path)
 }
 
 fn jackdaw_bsn_check(path: &Path, text: &str) -> Result<()> {
@@ -368,7 +425,7 @@ mod tests {
     fn export_le_se_de_volta() {
         let dir = tempfile_dir();
         let written = export_settings(&dir, true).expect("export");
-        assert_eq!(written.len(), 4);
+        assert_eq!(written.len(), 5);
         for name in ["environment.bsn", "postfx.bsn"] {
             let authored_path = Path::new(env!("CARGO_MANIFEST_DIR"))
                 .join(SETTINGS_DIR)
@@ -384,7 +441,7 @@ mod tests {
         let world = dir.join("world.bsn");
         std::fs::write(
             &world,
-            "#\"world\"\nbevy_ecs::hierarchy::Children [\n    #\"Ambiente\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/environment.bsn\", deleted: [] }\n    --\n    #\"Pós\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/postfx.bsn\", deleted: [] }\n    --\n    #\"Flora\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/flora.bsn\", deleted: [] }\n    --\n    #\"Relva\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/grass.bsn\", deleted: [] }\n]\n",
+            "#\"world\"\nbevy_ecs::hierarchy::Children [\n    #\"Ambiente\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/environment.bsn\", deleted: [] }\n    --\n    #\"Pós\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/postfx.bsn\", deleted: [] }\n    --\n    #\"Flora\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/flora.bsn\", deleted: [] }\n    --\n    #\"Relva\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/grass.bsn\", deleted: [] }\n    --\n    #\"Cercas\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/fences.bsn\", deleted: [] }\n]\n",
         )
         .expect("world");
         let (natives, _) = bevy_ext_world::bsn::settings::read_natives(&world).expect("ler");
@@ -408,7 +465,41 @@ mod tests {
         );
         let styles = bevy_ext_world::bsn::settings::native_values::<GrassStyleSpec>(&natives);
         assert_eq!(styles, crate::grass::legacy_grass_styles());
+        assert_eq!(
+            native_value::<FenceSettings>(&natives),
+            Some(FenceSettings::default())
+        );
+        // As dez predefinições voltam iguais: o jogo e o editor leem as mesmas.
+        let fences = bevy_ext_world::bsn::settings::native_values::<FenceStyle>(&natives);
+        assert_eq!(fences.len(), 10);
+        assert_eq!(fences, fence_presets());
         let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// O export só das cercas escreve o mesmo documento que o export completo.
+    #[test]
+    fn export_so_das_cercas_e_o_mesmo_documento() {
+        let dir = tempfile_dir();
+        let path = export_fence_settings(&dir, false).expect("export");
+        let all = tempfile_dir();
+        export_settings(&all, true).expect("export completo");
+        let mine = std::fs::read_to_string(&path).unwrap();
+        let theirs = std::fs::read_to_string(all.join(SETTINGS_DIR).join("fences.bsn")).unwrap();
+        assert_eq!(mine, theirs);
+        assert!(mine.contains("bevy_ext_fence::FenceStyle"));
+        // E lê-se de volta igual ao que o crate pré-define (o round-trip do editor).
+        let (natives, _) = bevy_ext_world::bsn::settings::read_natives(&path).expect("ler fences.bsn");
+        assert_eq!(
+            native_value::<FenceSettings>(&natives),
+            Some(FenceSettings::default())
+        );
+        let fences = bevy_ext_world::bsn::settings::native_values::<FenceStyle>(&natives);
+        assert_eq!(fences.len(), 10, "as dez predefinições");
+        assert_eq!(fences, fence_presets());
+        assert!(export_fence_settings(&dir, false).is_err(), "já existe");
+        assert!(export_fence_settings(&dir, true).is_ok());
+        let _ = std::fs::remove_dir_all(dir);
+        let _ = std::fs::remove_dir_all(all);
     }
 
     /// Um ficheiro já existente aborta o export ANTES de escrever os outros:

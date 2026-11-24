@@ -32,7 +32,7 @@ use std::sync::Arc;
 use bevy::platform::collections::HashMap;
 use bevy::prelude::*;
 use bevy_ext_scene::{
-    BodySpec, ColliderSpec, Destructible, FloraStation, Harvestable, ModelLod, NodeSpecs,
+    BodySpec, ColliderSpec, Destructible, FenceSpec, FloraStation, Harvestable, ModelLod, NodeSpecs,
     ParticleSpec, PortalSpec, ScriptRef, SpawnExclusionSpec,
 };
 use bevy_ext_world::bsn::WorldNode;
@@ -79,6 +79,7 @@ pub fn mirror_specs(
     put!(mixer);
     put!(music_layer);
     put!(biome);
+    put!(fence);
     if let Some(props) = &specs.props {
         let mut custom = CustomProperties::default();
         for prop in &props.props {
@@ -125,6 +126,9 @@ impl Plugin for VaelLiveEditPlugin {
         watch_edits::<bevy_ext_scene::AudioMixerSpec, false>(app);
         watch_edits::<bevy_ext_scene::MusicLayerSpec, false>(app);
         watch_edits::<bevy_ext_scene::BiomeRegionSpec, false>(app);
+        // A cerca nasce da linha (`fence-points`): mover um ponto no editor
+        // refaz postes, travessas e tábuas.
+        watch_edits::<FenceSpec, false>(app);
         watch_edits::<CustomProperties, true>(app);
         // Depois do `node_sync` (PreUpdate) e antes da física do frame.
         app.add_systems(Update, (adopt_new_nodes, apply_live_edits).chain());
@@ -211,6 +215,7 @@ fn current_specs(
     take!(harvest, Harvestable);
     take!(lod, ModelLod);
     take!(flora, FloraStation);
+    take!(fence, FenceSpec);
     take!(script, ScriptRef);
     take!(particle, ParticleSpec);
     take!(exclusion, SpawnExclusionSpec);

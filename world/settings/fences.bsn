@@ -1,0 +1,122 @@
+// Definições do Vael (fences.bsn). Editar no Jackdaw (`jd open .`):
+// o inspector e os painéis da extensão vael_jackdaw gravam aqui.
+
+#Cercas
+bevy_transform::components::transform::Transform
+bevy_ext_fence::FenceSettings
+bevy_ecs::hierarchy::Children [
+    #"Travessas de pastagem"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle
+    --
+    #"Curral de três travessas"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "paddock_3rail",
+        label: "Curral de três travessas",
+        height: 1.25,
+        spacing: 2.6,
+        rails: 3,
+        rail_heights: [0.3, 0.58, 0.86],
+    }
+    --
+    #"Tapume de tábuas"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "plank_board",
+        label: "Tapume de tábuas",
+        kind: bevy_ext_fence::FenceKind::Plank,
+        height: 1.3,
+        boards: 18,
+        board_length: glam::Vec2 { x: 0.95, y: 1.12 },
+    }
+    --
+    #Estacas
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "picket",
+        label: "Estacas",
+        kind: bevy_ext_fence::FenceKind::Picket,
+        height: 1.0,
+        board: bevy_ext_fence::Timber { shape: bevy_ext_fence::TimberShape::Hewn, width: 0.075, depth: 0.022, chamfer: 0.1, sides: 0 },
+        board_length: glam::Vec2 { x: 0.82, y: 0.9 },
+        board_top: bevy_ext_fence::BoardTop::Point,
+        board_gap: 0.055,
+    }
+    --
+    #"Paliçada"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "palisade",
+        label: "Paliçada",
+        kind: bevy_ext_fence::FenceKind::Palisade,
+        height: 1.9,
+        spacing: 2.4,
+        post: bevy_ext_fence::Timber { shape: bevy_ext_fence::TimberShape::Round, width: 0.17, depth: 0.17, chamfer: 0.0, sides: 8 },
+        rail_heights: [0.3, 0.8],
+        board: bevy_ext_fence::Timber { shape: bevy_ext_fence::TimberShape::Round, width: 0.14, depth: 0.14, chamfer: 0.0, sides: 8 },
+        board_top: bevy_ext_fence::BoardTop::Point,
+        material: "wood_pine_dark",
+    }
+    --
+    #"Varas entretecidas"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "wattle",
+        label: "Varas entretecidas",
+        kind: bevy_ext_fence::FenceKind::Wattle,
+        height: 1.0,
+        spacing: 2.2,
+        post: bevy_ext_fence::Timber { shape: bevy_ext_fence::TimberShape::Round, width: 0.09, depth: 0.09, chamfer: 0.0, sides: 7 },
+        rails: 0,
+        material: "wood_hazel_rod",
+        secondary_material: "wood_hazel_rod",
+    }
+    --
+    #"Treliça"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "lattice",
+        label: "Treliça",
+        kind: bevy_ext_fence::FenceKind::Lattice,
+        height: 1.5,
+        spacing: 2.0,
+        rail_heights: [0.08, 0.97],
+        material: "wood_lime_washed",
+    }
+    --
+    #Cruzetas
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "crossbuck",
+        label: "Cruzetas",
+        kind: bevy_ext_fence::FenceKind::Crossbuck,
+        height: 1.3,
+        brace: bevy_ext_fence::Brace::Cross,
+        material: "wood_shelter_pine",
+    }
+    --
+    #Cordas
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "rope",
+        label: "Cordas",
+        kind: bevy_ext_fence::FenceKind::Rope,
+        height: 0.95,
+        spacing: 2.4,
+        rail_heights: [0.7, 0.94],
+        material: "wood_shelter_pine",
+        secondary_material: "rope_hemp",
+    }
+    --
+    #"Portão"
+    bevy_transform::components::transform::Transform
+    bevy_ext_fence::FenceStyle {
+        key: "gate",
+        label: "Portão",
+        kind: bevy_ext_fence::FenceKind::Gate,
+        height: 1.6,
+        boards: 9,
+        board: bevy_ext_fence::Timber { shape: bevy_ext_fence::TimberShape::Hewn, width: 0.13, depth: 0.03, chamfer: 0.1, sides: 0 },
+    }
+]

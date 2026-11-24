@@ -30,6 +30,25 @@ em `gen.json`)
 
 ¹ só albedo, sem PBR nem `gen.json`.
 
+### Madeira e corda das cercas — texture2d + Materialize (2026-11-23)
+
+`wood_oak_hewn`, `wood_pine_dark`, `wood_sun_bleached`, `wood_swamp_tar`,
+`wood_shelter_pine`, `wood_weathered_grey`, `wood_lime_washed`,
+`wood_hazel_rod`, `rope_hemp`
+
+Regeneráveis com `tools/gen_fence_textures.py` a partir de
+`assets/manifests/wood-textures.yaml`. São superfícies **contínuas** — sem
+juntas de tábuas nem nós, porque a tábua é geometria do `bevy_ext_fence` e um
+nó desenhado repetir-se-ia em cada peça — com o veio ao longo do eixo V.
+Além de `albedo`, `normal`, `ao`, `roughness` e `height`, cada pasta traz
+`orm` (R = oclusão, G = roughness, B = metálico a zero), o mapa que o
+`StandardMaterial` do Bevy 0.20 lê; tudo em `.webp` e `.ktx2` (UASTC, cadeia
+de mipmaps). A cor média é a da paleta do `docs/ART.md` §4 (`--match-color`,
+graduada pela ferramenta) e a roughness está remapeada para 0,78–0,95. O
+`gen.json` traz o prompt, a seed, a seed pedida, os portões de qualidade e a
+graduação. Consumidos pelo `bevy_ext_fence` (`world/settings/fences.bsn`,
+`docs/FENCES.md`).
+
 ### Fotográficas — [ambientCG](https://ambientcg.com), **CC0 1.0** (domínio
 público; usar, modificar e redistribuir livremente, sem atribuição)
 

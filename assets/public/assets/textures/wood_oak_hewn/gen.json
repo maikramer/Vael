@@ -1,0 +1,61 @@
+{
+  "prompt": "seamless tileable texture, rough hand-hewn oak wood surface, warm umber brown, open wood grain running top to bottom, shallow adze facets, subtle worn edges, wood grain texture, broad clean color zones, earthy mineral pigments, matte tempera finish, soft even lighting, flat top-down view, texture fills the whole frame",
+  "negative_prompt": "blurry, low quality, watermark, text, signature, frame, border, visible seam, tiling artifacts, planks, board seams, gaps between boards, nails, screws, knot, knots, isolated spot, blurry patch, out of focus, plastic glossy sheen, photorealistic, neon oversaturated colors, busy micro-patterns, melted organic edges",
+  "width": 1024,
+  "height": 1024,
+  "steps": 28,
+  "guidance": 7.0,
+  "refine_steps": 16,
+  "seed": 51119,
+  "seed_requested": 51119,
+  "prompt_tokens": 73,
+  "negative_prompt_tokens": 75,
+  "tileability": 1.0,
+  "isolated_detail": 0.0609,
+  "isolated_detail_gate": {
+    "max": 0.12,
+    "passed": true
+  },
+  "banding": 0.4361,
+  "tail_ratio": 2.8296,
+  "quality_gates": {
+    "passed": true,
+    "isolated_detail": {
+      "value": 0.0609287042170763,
+      "max": 0.12,
+      "passed": true
+    },
+    "banding": {
+      "value": 0.4361346345300574,
+      "max": 0.5,
+      "passed": true
+    },
+    "tail_ratio": {
+      "value": 2.829619342449381,
+      "max": 5.0,
+      "passed": true
+    }
+  },
+  "axis": {
+    "wanted": "v",
+    "rotated": false
+  },
+  "match_color": {
+    "target": "#7A5C3A",
+    "before": "#795C45",
+    "after": "#7A5C3A",
+    "scale": 1.0
+  },
+  "vae_tiled_decode": false,
+  "normal_strength": 0.6,
+  "roughness_range": [
+    0.78,
+    0.95
+  ],
+  "materialize_preset": "wood",
+  "biome": "Vale / Discórdia",
+  "palette": [
+    "#7A5C3A"
+  ],
+  "regenerated_at": "2026-11-24 08:05:00"
+}

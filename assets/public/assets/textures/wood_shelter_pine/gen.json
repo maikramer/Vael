@@ -1,0 +1,61 @@
+{
+  "prompt": "seamless tileable texture, dark desaturated russet-brown pine wood surface, straight vertical wood grain running top to bottom, faint pale resin streaks, muted earthy tone, smooth matte finish, continuous wood surface, broad clean color zones, earthy mineral pigments, matte tempera finish, soft even lighting, flat top-down view, texture fills the whole frame",
+  "negative_prompt": "blurry, low quality, watermark, text, signature, frame, border, visible seam, tiling artifacts, planks, board seams, gaps between boards, nails, screws, knot, knots, isolated spot, blurry patch, out of focus, plastic glossy sheen, photorealistic, neon oversaturated colors, busy micro-patterns, melted organic edges",
+  "width": 1024,
+  "height": 1024,
+  "steps": 28,
+  "guidance": 7.0,
+  "refine_steps": 16,
+  "seed": 51130,
+  "seed_requested": 51129,
+  "prompt_tokens": 74,
+  "negative_prompt_tokens": 75,
+  "tileability": 1.0,
+  "isolated_detail": 0.0569,
+  "isolated_detail_gate": {
+    "max": 0.12,
+    "passed": true
+  },
+  "banding": 0.2831,
+  "tail_ratio": 3.637,
+  "quality_gates": {
+    "passed": true,
+    "isolated_detail": {
+      "value": 0.05687631666660309,
+      "max": 0.12,
+      "passed": true
+    },
+    "banding": {
+      "value": 0.28306376872810685,
+      "max": 0.5,
+      "passed": true
+    },
+    "tail_ratio": {
+      "value": 3.6370101427514188,
+      "max": 5.0,
+      "passed": true
+    }
+  },
+  "axis": {
+    "wanted": "v",
+    "rotated": false
+  },
+  "match_color": {
+    "target": "#47362B",
+    "before": "#7E6654",
+    "after": "#47362B",
+    "scale": 1.0
+  },
+  "vae_tiled_decode": false,
+  "normal_strength": 0.7,
+  "roughness_range": [
+    0.78,
+    0.95
+  ],
+  "materialize_preset": "wood",
+  "biome": "Picos Gelados",
+  "palette": [
+    "#47362B"
+  ],
+  "regenerated_at": "2026-11-24 08:03:57"
+}

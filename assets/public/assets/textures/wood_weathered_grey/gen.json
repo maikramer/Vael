@@ -1,0 +1,62 @@
+{
+  "prompt": "seamless tileable texture, old weathered grey wood surface, silvered timber with rust-brown iron stains, raised coarse grain, wood grain texture, broad clean color zones, earthy mineral pigments, matte tempera finish, soft even lighting, flat top-down view, texture fills the whole frame, stylized game texture",
+  "negative_prompt": "blurry, low quality, watermark, text, signature, frame, border, visible seam, tiling artifacts, planks, board seams, gaps between boards, nails, screws, knot, knots, isolated spot, blurry patch, out of focus, plastic glossy sheen, photorealistic, neon oversaturated colors, busy micro-patterns, melted organic edges",
+  "width": 1024,
+  "height": 1024,
+  "steps": 28,
+  "guidance": 7.0,
+  "refine_steps": 16,
+  "seed": 51131,
+  "seed_requested": 51131,
+  "prompt_tokens": 68,
+  "negative_prompt_tokens": 75,
+  "tileability": 0.9991,
+  "isolated_detail": 0.0265,
+  "isolated_detail_gate": {
+    "max": 0.12,
+    "passed": true
+  },
+  "banding": 0.4112,
+  "tail_ratio": 1.9743,
+  "quality_gates": {
+    "passed": true,
+    "isolated_detail": {
+      "value": 0.026519116014242172,
+      "max": 0.12,
+      "passed": true
+    },
+    "banding": {
+      "value": 0.41121238187063364,
+      "max": 0.5,
+      "passed": true
+    },
+    "tail_ratio": {
+      "value": 1.9742586590669222,
+      "max": 5.0,
+      "passed": true
+    }
+  },
+  "axis": {
+    "wanted": "v",
+    "rotated": false
+  },
+  "match_color": {
+    "target": "#564E44",
+    "before": "#6E5F53",
+    "after": "#564E44",
+    "scale": 1.0
+  },
+  "vae_tiled_decode": false,
+  "normal_strength": 0.8,
+  "roughness_range": [
+    0.78,
+    0.95
+  ],
+  "materialize_preset": "wood",
+  "biome": "Campo e Cidadela Caída",
+  "palette": [
+    "#4D4237",
+    "#6B3E2E"
+  ],
+  "regenerated_at": "2026-11-24 08:07:03"
+}

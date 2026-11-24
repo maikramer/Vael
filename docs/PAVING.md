@@ -241,7 +241,7 @@ não chão.
   dão a curva a cada rua. A mesma rede continua pelo centro dos portões.
 - A terra batida do mercado, do adro e da forja está pintada em
   `world.data/terrain.ahgt.paint` com a camada `dirt_road`. O peso diminui
-  sob as árvores e junto às muralhas. Os objetos do mercado assentam à cota
+  sob as árvores e junto à cerca. Os objetos do mercado assentam à cota
   do terreno e o tapete fica 5 mm acima.
 
 Os acessos da Passadeira da Bruxa e da ponte do Ermo usam `paving="trail"`.

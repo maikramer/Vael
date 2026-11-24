@@ -915,7 +915,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -959,7 +959,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1004,7 +1004,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1084,96 +1084,6 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216081104)
-    ]
-    --
-    #"interior.barn.fence.segment"
-    bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -11.0, y: 0.0, z: 0.0 },
-        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-        scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
-    }
-    bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/fence_segment_collision.glb", base: true },
-    }
-    bevy_ext_scene::BodySpec {
-        kind: bevy_ext_scene::BodyKind::Fixed,
-    }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "Entity",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.barn.fence.segment" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11 0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1.2 1.2 1.2" },
-        ],
-        text: "",
-        origin_file: "scenes/interiors/barn.xml",
-        origin_path: [15],
-        pose: true,
-    }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081105)
-    bevy_ecs::hierarchy::Children [
-        #"GltfScene fence_segment"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_segment_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [15, 0],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081106)
-    ]
-    --
-    #"interior.barn.fence.segment-2"
-    bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -11.0, y: 0.0, z: -3.2 },
-        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-        scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
-    }
-    bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/fence_segment_collision.glb", base: true },
-    }
-    bevy_ext_scene::BodySpec {
-        kind: bevy_ext_scene::BodyKind::Fixed,
-    }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "Entity",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.barn.fence.segment-2" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11 0 -3.2" },
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1.2 1.2 1.2" },
-        ],
-        text: "",
-        origin_file: "scenes/interiors/barn.xml",
-        origin_path: [16],
-        pose: true,
-    }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081107)
-    bevy_ecs::hierarchy::Children [
-        #"GltfScene fence_segment"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_segment_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [16, 0],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081108)
     ]
     --
     #"interior.barn.chopping.block"
@@ -1770,7 +1680,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1820,7 +1730,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2560,4 +2470,25 @@ bevy_ecs::hierarchy::Children [
         }
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216081172)
     ]
+--
+    #"interior.barn.fence.segment"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -11.0, y: 0.0, z: 1.6 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::FenceSpec {
+        points: "0.0 0.0 0.0; 0.0 0.0 -6.4",
+        style: core::option::Option::Some("pasture_rail"),
+        follow: core::option::Option::Some("points"),
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.barn.fence.segment" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.0 0.0 1.6" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(706542993120228857)
 ]

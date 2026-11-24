@@ -1260,6 +1260,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_ext_fence"
+version = "0.1.0"
+dependencies = [
+ "avian3d",
+ "bevy",
+ "bevy_ext_gltf",
+ "bevy_ext_scene",
+]
+
+[[package]]
 name = "bevy_ext_flora"
 version = "0.1.0"
 dependencies = [
@@ -10997,6 +11007,7 @@ dependencies = [
  "bevy_ext_core",
  "bevy_ext_elements",
  "bevy_ext_engine",
+ "bevy_ext_fence",
  "bevy_ext_flora",
  "bevy_ext_gradmesh",
  "bevy_ext_grass",

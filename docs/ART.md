@@ -27,7 +27,7 @@ Modelos generativos 2D/3D tendem para um ponto médio estatístico («fantasia c
 |---|---|---|
 | **Superfície plástica ou envernizada** | Reflexos especulares falsos pintados na imagem 2D ou `roughness` baixo em materiais orgânicos | Acabamento mate de guache/têmpera. Especularidade alta (`roughness < 0.35`) é exclusiva da **água**, do **cristal do Coro** e do **gume de ferramentas afiadas**. |
 | **Arestas «derretidas» em arquitetura e madeira** | Reconstrução 3D suaviza cantos de vigas, degraus e cantaria | Pedir sempre `chamfered planes`, `hand-hewn timber with crisp flat facets`, `squared dressed stone`. Para arquitetura modular, escadas, pilares, barris, muros e réguas, preferir primitivas `<Composition>` (`bevy_ext_gradmesh`). |
-| **Mosaico e costuras nas texturas (UV seams)** | Padrões de alta frequência (listras, escamas miúdas, filigrana) cortados pelas ilhas do `xatlas` ou `Materialize` sobre atlas | Desenhar em **zonas largas de cor sólida por material** (madeira lisa com veio largo, pano liso com barra grossa). Manter `lod.patch_pbr: false` e `paint3d.pbr_enrich: false` no `game.yaml`. |
+| **Mosaico e costuras nas texturas (UV seams)** | Padrões de alta frequência (listras, escamas miúdas, filigrana) cortados pelas ilhas do `xatlas` ou `Materialize` sem máscara UV | Desenhar em **zonas largas de cor sólida por material** (madeira lisa com veio largo, pano liso com barra grossa). Usar `lod.patch_pbr: true` e `paint3d.pbr_enrich: true` com derivação UV-masked (`aigamekit_shared.pbr_uv`: gutter Voronoi + atenuação a `(128,128,255)` nas bordas UV + calibração mate `0.76–0.92`). |
 | **Ornamentação sem função («barroco de ruído»)** | Prompts com `ornate`, `magical runes`, `intricate details` geram relevos indecifráveis | **Zero ornamento gratuito.** Cada detalhe visível tem função mecânica ou narrativa: cravos de ferro numa porta, corda de amarração, remendo no joelho, entalhe de medida numa régua. |
 | **Simetria morta de manequim** | Geração frontal sem história de uso | **Assimetria de ofício**: desgaste num só lado da pega (M08), bolsa de mapas a tiracolo, manto preso num ombro para libertar o braço de trabalho, lama acumulada apenas na base. |
 | **Paleta «doces / parque temático»** | Legado de prompts `bright cheerful cartoon, vibrant colors` | Paleta de **pigmentos de terra, cal, ardósia e pinho**. A saturação máxima é reservada para o **Azul do Coro** (sinal acústico/mágico) e o **Âmbar da Chama** (abrigo/fogueira). |
@@ -136,6 +136,13 @@ O sistema de primitivas procedurais ([`PRIMITIVES.md`](PRIMITIVES.md), `src/prim
   - `chromatic_aberration: false` **sempre**: aberração cromática é um artefacto de lente fotográfica que destrói a estética de pintura mate e gravura.
   - `motion_blur: false` por omissão para preservar a leitura limpa das poses e silhuetas em combate.
 
+### 6.4. Cercas procedurais ([`FENCES.md`](FENCES.md))
+
+- **A peça talhada, não o modelo repetido:** uma cerca é uma linha (`FenceSpec`) e a geometria nasce de regras — postes desbastados a enxó com chanfro, travessas com espigão a sair da face, tábuas de comprimento sorteado que dão topos desiguais. Duas peças iguais a fio denunciavam a moldura: inclinação até 2°, ±1,5 cm e ±1,5° por peça, e o tom de cada uma na cor de vértice.
+- **Desgaste só onde há uso:** terra e líquen nos primeiros 28 cm (cor de vértice) e oclusão nos encontros; o resto é superfície limpa.
+- **Veio das texturas do pool:** os nove conjuntos de `assets/manifests/wood-textures.yaml` (`wood_oak_hewn`, `wood_pine_dark`, `wood_sun_bleached`, …, `rope_hemp`) são superfícies **contínuas** — sem juntas de tábuas nem nós, porque a tábua é geometria e um nó desenhado repetir-se-ia em cada peça. A cor média de cada conjunto é a da paleta da §4 e a roughness está remapeada para 0,78–0,95.
+- **Pormenor de ofício:** pregos a par em cada travessa que a tábua apanha, cordas de cânamo com flecha e nó nos postes, ferragens de ferro batido liso no portão.
+
 ---
 
 ## 7. Interface, cartografia e tipografia (`ui/*.xaml`)
@@ -209,7 +216,26 @@ idea: >
 
 ---
 
-## 9. Checklist de revisão artística (Gate de Arte)
+## 9. Pranchas de mangá
+
+As cinemáticas não são planos de câmara. São pranchas de mangá compostas em runtime (`src/manga_cinematic.rs`, shaders `manga_panel.wesl` e `manga_bubble.wesl`) a partir de `data/cutscenes/<id>.json`: cortes diagonais entre quadros, contornos de tinta de pena, bolhas de diálogo (`speech` com cauda, `shout` dentada, `whisper`, `narration` de caderno) e onomatopeias inclinadas (`sfx`). A arte de cada quadro gera-se com `text2d` via `tools/gen_cutscene.py <id>` — sem texto nem bolhas pintados dentro da imagem (as falas são renderizadas e localizadas em runtime). Quem produz uma cena nova parte deste bloco e troca só a frase de acção.
+
+```text
+hand-inked black and white manga comic illustration, thick crisp pen contour lines,
+bold solid black ink shadow blocks, expressive fine ink crosshatching,
+rural fantasy adults at 6.5 heads proportions with sturdy expressive hands,
+chamfered timber and limewashed stone architecture, matte paper ink look,
+no screentone dots, no anime sparkle, no chibi, no speech bubbles, no text, no watermark,
+full bleed composition with no border frame,
+one accent pigment only (forge amber OR choir turquoise).
+Scene: [frase de acção, um edifício ou água do Vale, um gesto]
+```
+
+Correcção obrigatória antes de a vinheta entrar no jogo: o edifício é reconhecível como o módulo 3D (salão de frontão branco, forja, poço, cerca de madeira, Lago do Estaleiro), as mãos têm leitura, há um único acento de cor e zero texto desenhado dentro da arte. O prólogo usa o âmbar na forja/alva e o turquesa só nas vinhetas do Coro e do poço — nunca as duas cores no mesmo quadro.
+
+Os factos que cada cena conta estão no [GDD](../GDD.md#pranchas--todas-as-cinemáticas) e na [bíblia](../STORY.md).
+
+## 10. Checklist de revisão artística (Gate de Arte)
 
 Antes de dar um asset, cenário ou ecrã de UI por fechado:
 

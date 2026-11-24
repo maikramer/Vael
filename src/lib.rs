@@ -6,7 +6,7 @@
 //! as regras passam para Rust onda a onda, sem deixar o jogo sem
 //! comportamento enquanto a transição decorre.
 //!
-//! O [`VaelStateSyncPlugin`] espelha o `viber.game()` e o [`VaelHudPlugin`]
+//! O [`VaelStateSyncPlugin`] espelha o `vael.game()` e o [`VaelHudPlugin`]
 //! publica os binds do HUD. A autoridade de vitais/status/morte é o
 //! **default** desde a Onda 4a ([`VaelRulesAuthorityPlugin`];
 //! `VAEL_RULES_RUST=0` devolve o tick ao Lua). O [`VaelRulesShadowPlugin`]
@@ -32,6 +32,7 @@ mod actor_contact;
 pub mod animation;
 pub mod app;
 pub mod boat;
+mod breakables;
 pub mod bridge_ready;
 pub mod camera;
 pub mod cinematic_trigger;
@@ -44,16 +45,14 @@ pub mod content;
 pub mod economy;
 pub mod editor_link;
 pub mod environment;
-pub mod flora;
-pub mod rocks;
 mod fauna;
+pub mod fence;
+pub mod flora;
 pub mod gear;
 pub mod grass;
 pub mod ground;
-pub mod snow_caps;
 #[cfg(feature = "hanabi")]
 pub mod hanabi_fx;
-mod breakables;
 pub mod harvest;
 pub mod head_look;
 pub mod hud;
@@ -66,7 +65,6 @@ pub mod live_edit;
 pub mod outline;
 pub mod perf_diag;
 pub mod player;
-pub mod stamina;
 #[cfg(feature = "playtest")]
 pub mod playtest_support;
 pub mod primitives;
@@ -75,14 +73,17 @@ pub mod qa;
 pub mod quest;
 pub mod quest_events;
 pub mod respawn;
+pub mod rocks;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
 pub mod save_native;
 pub mod script_host;
 pub mod settings;
+pub mod snow_caps;
 pub mod speech;
 pub mod spring;
+pub mod stamina;
 pub mod state_sync;
 pub mod stats;
 pub mod travel;
@@ -99,6 +100,7 @@ pub use economy::{
     CraftRules, CraftStatus, ShopRules, ShopStatus, TradeAction, TradeReason, VaelEconomyPlugin,
 };
 pub use environment::{VaelEnvironmentPlugin, elements_enabled};
+pub use fence::VaelFencePlugin;
 pub use flora::VaelFloraPlugin;
 pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use harvest::VaelHarvestPlugin;
@@ -150,27 +152,27 @@ impl Plugin for VaelPlugin {
             .add_plugins((
                 VaelContentPlugin,
                 VaelSavePlugin,
-                // Cofre em Rust: `viber.vael` instalado no `Startup` (o
+                // Cofre em Rust: `vael.vael` instalado no `Startup` (o
                 // `rules.lua` fica só com os embrulhos finos).
                 VaelVaultPlugin,
                 // XP/nível/pontos de talento: acrescenta funções à mesma
-                // tabela `viber.vael`, depois do cofre.
+                // tabela `vael.vael`, depois do cofre.
                 VaelXpPlugin,
-                // Equipamento/passivas: `viber.vael.gear_*` e `player_stats`,
+                // Equipamento/passivas: `vael.vael.gear_*` e `player_stats`,
                 // depois do cofre e do XP.
                 VaelGearPlugin,
                 // Ciclo da quest (estado/progresso/aceitar/entregar/
-                // recompensas): `viber.vael.quest_*`, depois do equipamento.
+                // recompensas): `vael.vael.quest_*`, depois do equipamento.
                 VaelQuestPlugin,
                 // Combate (guarda/parry, dano, cura, i-frames):
-                // `viber.vael.guard`/`damage_player`/`heal_player`/
+                // `vael.vael.guard`/`damage_player`/`heal_player`/
                 // `grant_iframes`, depois das quests.
                 VaelCombatPlugin,
                 // Relógio/chuva: `WorldClock`/`Weather` do `bevy_elements`
                 // (ou `DayCycleState`/`WeatherState` da engine, sem ele):
-                // `viber.vael.clock_*`, depois do combate.
+                // `vael.vael.clock_*`, depois do combate.
                 VaelClockPlugin,
-                // Espelho do `viber.game()`; o HUD tem o seu próprio plugin.
+                // Espelho do `vael.game()`; o HUD tem o seu próprio plugin.
                 VaelStateSyncPlugin,
                 // Simulação paralela das regras vitais do `rules.lua`
                 // (ferramenta de paridade, `VAEL_RULES_SHADOW=1`).
@@ -203,7 +205,7 @@ impl Plugin for VaelPlugin {
             // coleta e combo. Substitui o pool 2D da engine — o `main.rs`
             // arranca com `damage_numbers_2d: false`.
             VaelWorldTextPlugin,
-            // Falas no mundo (`bevy_speech_bubbles`): o `viber.say` deixa de
+            // Falas no mundo (`bevy_speech_bubbles`): o `vael.say` deixa de
             // escrever no balão do HUD e passa a ser um balão sobre o NPC.
             VaelSpeechPlugin::<vael_engine::recipes::spawn::OrbitCamera>::default(),
             // Árvores procedurais (`bevy_flora`) na entrada da cidade: teste
@@ -235,6 +237,10 @@ impl Plugin for VaelPlugin {
         // partir do `TerrainRuntime`, vento do `WeatherState` e trampling.
         // Vive aqui, não na engine. Fora da tupla (15 é o teto do Bevy).
         app.add_plugins(grass::VaelGrassPlugin);
+        // Cercas procedurais (`bevy_ext_fence`): uma linha autorada no `.bsn`
+        // vira postes, travessas e tábuas com as texturas do pool. `VAEL_FENCE=0`
+        // desliga.
+        app.add_plugins(fence::VaelFencePlugin);
         app.add_plugins(rocks::QuarryPlugin);
         app.add_plugins(breakables::BreakablesPlugin);
         app.add_plugins(collect_fx::VaelCollectFxPlugin);
@@ -258,7 +264,7 @@ impl Plugin for VaelPlugin {
         // Play do Jackdaw: `SceneNodeId` nas entidades para as edições ao vivo.
         app.add_plugins(editor_link::VaelEditorLinkPlugin);
         // QA: cenários (`qa/scenarios/*.json`) aplicados no arranque e a
-        // cada gravação do ficheiro; `viber.vael.qa_*` para a bridge.
+        // cada gravação do ficheiro; `vael.vael.qa_*` para a bridge.
         app.add_plugins(qa::VaelQaPlugin);
         // Edições de atributos/specs/props do Jackdaw → re-spawn/patch.
         app.add_plugins(live_edit::VaelLiveEditPlugin);

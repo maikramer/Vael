@@ -1,0 +1,188 @@
+# Materiais de madeira e corda das cercas procedurais (`docs/FENCES.md`).
+#
+# Um conjunto = uma pasta em ../public/assets/textures/<id>/ com
+# albedo/normal/ao/roughness/height (.webp + .ktx2 UASTC) e `gen.json`, na
+# convenção do pool (`textures/SOURCES.md`). O `bevy_ext_fence` lê o conjunto
+# pelo nome (`material="oak_hewn"` → `/assets/textures/wood_oak_hewn/`).
+#
+# Paletas: ../docs/ART.md §4. Vocabulário dos prompts: ART.md §8 e ../game.yaml.
+#
+# A superfície é CONTÍNUA de propósito — sem juntas de tábuas, pregos nem
+# moldura: as tábuas são geometria (`bevy_ext_fence`) e uma junta desenhada
+# atravessava cada peça.
+#
+# Gerar: python3 tools/gen_fence_textures.py [--only id,…] [--dry-run]
+size: 1024
+# Tier do `texture2d` (passos 28, guidance 7.0): escolhido a sério, ganha a
+# qualquer preset. A resolução vem de `size`.
+quality: high
+# Refine do hires a 1024² (o tier dá 12): mais 4 passos deixam o veio nítido.
+refine_steps: 16
+# Sem preset de material: os prompts abaixo já são completos e o preset só
+# emprestaria cláusulas genéricas à cabeça da janela de 77 tokens do CLIP.
+preset: none
+materialize_preset: wood
+# Roughness de 0,78 a 0,95 (ART.md: guache/têmpera mate; abaixo de 0,35 só
+# água, cristal e gume de ferramenta).
+roughness_min: 0.78
+roughness_max: 0.95
+# Portões de qualidade do `texture2d`; cada reprovação volta a gerar com a
+# seed seguinte, até `attempts` seeds (medido em 2026-11-23, 1024²):
+# - tileabilidade (auto-heal da costura abaixo de 0,85);
+# - pormenor isolado: um nó ou mancha que o tiling repete em cada célula;
+# - bandas por eixo: tábuas com frestas (0,87) e veio deitado (0,68) contra
+#   0,20-0,44 no veio direito;
+# - cauda pesada: flocos sobre um fundo liso (28 na cal) contra 1,5-3,2.
+min_tileability: 0.85
+max_isolated_detail: 0.12
+max_banding: 0.5
+max_tail_ratio: 5
+attempts: 6
+# O veio corre de cima a baixo (eixo V): o `bevy_ext_fence` alinha-o com o
+# comprimento de cada peça. O SD1.5 troca o eixo sem aviso — o `texture2d`
+# mede e roda 90° quando as linhas saem deitadas.
+axis: v
+negative:
+  - planks
+  - board seams
+  - gaps between boards
+  - nails
+  - screws
+  - knot
+  - knots
+  - isolated spot
+  - blurry patch
+  - out of focus
+  - frame
+  - border
+  - text
+  - watermark
+  - low quality
+  - plastic glossy sheen
+  - photorealistic
+  - neon oversaturated colors
+  - busy micro-patterns
+  - ornate filigree noise
+  - melted organic edges
+  - strong directional light
+  - cast shadows
+  - perspective view
+  - 3d object
+sets:
+  # `match` é a cor média pedida (ART.md §4): o SD1.5 tem um prior de tom médio
+  # — sem a graduação, os nove conjuntos saíam todos castanhos a 96-128 de
+  # luminância, qualquer que fosse o prompt.
+  - id: wood_oak_hewn
+    seed: 51119
+    biome: "Vale / Discórdia"
+    palette: ["#7A5C3A"]
+    match: "#7A5C3A"
+    # O carvalho desbastado tem facetas largas: o relevo é discreto.
+    normal_strength: 0.6
+    subject: >-
+      rough hand-hewn oak wood surface, warm umber brown, open wood grain
+      running top to bottom, shallow adze facets, subtle worn edges
+  - id: wood_pine_dark
+    seed: 51125
+    biome: "Floresta Sombria"
+    palette: ["#232B24", "#3B2F26"]
+    match: "#2F2D25"
+    normal_strength: 0.7
+    # «tarred … moss green in the grain» dava tábuas verdes com juntas
+    # horizontais: é uma superfície contínua, escura, com veio fino vertical.
+    subject: >-
+      very dark charcoal-brown stained pine wood surface, fine straight
+      vertical wood grain running top to bottom, subtle warm umber undertones,
+      smooth matte stained finish
+    suffix: >-
+      continuous wood surface, broad clean color zones, earthy mineral
+      pigments, matte tempera finish, soft even lighting, flat top-down view,
+      texture fills the whole frame, stylized game texture
+  - id: wood_sun_bleached
+    seed: 51123
+    biome: "Ermo Rubro"
+    palette: ["#C2B39B", "#C98A4B"]
+    match: "#C2B39B"
+    normal_strength: 0.8
+    subject: >-
+      sun-bleached cracked wood surface, pale bone and sand tones, dry split
+      grain, dusty ochre in the cracks
+  - id: wood_swamp_tar
+    seed: 51127
+    biome: "Pântano da Bruma"
+    palette: ["#3D352E", "#2C3028"]
+    match: "#35322B"
+    normal_strength: 0.7
+    subject: >-
+      waterlogged tarred wood surface, dark tar brown, swollen wood grain,
+      olive-green slime stains in the hollows
+  - id: wood_shelter_pine
+    seed: 51130
+    biome: "Picos Gelados"
+    palette: ["#47362B"]
+    match: "#47362B"
+    normal_strength: 0.7
+    # «resinous … amber patina» dava um laranja saturado com juntas: aqui é
+    # um castanho-avermelhado desaturado (Pinho de Abrigo #47362B).
+    subject: >-
+      dark desaturated russet-brown pine wood surface, straight vertical wood
+      grain running top to bottom, faint pale resin streaks, muted earthy
+      tone, smooth matte finish
+    suffix: >-
+      continuous wood surface, broad clean color zones, earthy mineral
+      pigments, matte tempera finish, soft even lighting, flat top-down view,
+      texture fills the whole frame, stylized game texture
+  - id: wood_weathered_grey
+    seed: 51131
+    biome: "Campo e Cidadela Caída"
+    palette: ["#4D4237", "#6B3E2E"]
+    # Madeira cinzenta entre a pedra calcinada (#5A5854) e o barro, com o
+    # ferro velho só nas manchas.
+    match: "#564E44"
+    normal_strength: 0.8
+    subject: >-
+      old weathered grey wood surface, silvered timber with rust-brown iron
+      stains, raised coarse grain
+  - id: wood_lime_washed
+    seed: 51143
+    biome: "Vale / Discórdia"
+    palette: ["#E6DEC8"]
+    match: "#E6DEC8"
+    normal_strength: 0.5
+    # Sem «oak» nem «wood surface»: o modelo pintava flocos de cal sobre a
+    # madeira em vez de uma superfície lavada; «chalky» dava pontos claros. A
+    # cor vem do `match`.
+    subject: >-
+      plain lime-washed surface, smooth matte ivory finish, very faint
+      straight vertical wood grain showing through the lime wash, uniform
+      clean finish
+    negative:
+      - specks
+      - flakes
+      - chips
+      - spots
+      - peeling paint
+    suffix: >-
+      continuous painted surface, broad clean color zones, matte tempera
+      finish, soft even lighting, flat top-down view, texture fills the whole
+      frame, stylized game texture
+  - id: wood_hazel_rod
+    seed: 51138
+    biome: "Vale (varas)"
+    palette: ["#8C7A4B"]
+    match: "#8C7A4B"
+    normal_strength: 0.8
+    subject: >-
+      smooth young hazel rod bark surface, warm tan and olive brown, fine
+      lengthwise grain, faint darker stripes along the rod
+  - id: rope_hemp
+    seed: 51139
+    biome: "Vale (cordas)"
+    palette: ["#C9B18B"]
+    match: "#C9B18B"
+    normal_strength: 0.9
+    # A corda é torcida na diagonal: não tem eixo para endireitar.
+    axis: none
+    subject: >-
+      close-up surface of a thick twisted hemp rope, coarse natural fibre
+      strands twisting diagonally, golden tan and raw flax tones

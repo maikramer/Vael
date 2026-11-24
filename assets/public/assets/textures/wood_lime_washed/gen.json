@@ -1,0 +1,61 @@
+{
+  "prompt": "seamless tileable texture, plain lime-washed surface, smooth matte ivory finish, very faint straight vertical wood grain showing through the lime wash, uniform clean finish, continuous painted surface, broad clean color zones, matte tempera finish, soft even lighting, flat top-down view, texture fills the whole frame, stylized game texture",
+  "negative_prompt": "blurry, low quality, watermark, text, signature, frame, border, visible seam, tiling artifacts, planks, board seams, gaps between boards, nails, screws, knot, knots, isolated spot, blurry patch, out of focus, plastic glossy sheen, photorealistic, neon oversaturated colors, busy micro-patterns, melted organic edges",
+  "width": 1024,
+  "height": 1024,
+  "steps": 28,
+  "guidance": 7.0,
+  "refine_steps": 16,
+  "seed": 51143,
+  "seed_requested": 51141,
+  "prompt_tokens": 68,
+  "negative_prompt_tokens": 75,
+  "tileability": 1.0,
+  "isolated_detail": 0.0159,
+  "isolated_detail_gate": {
+    "max": 0.12,
+    "passed": true
+  },
+  "banding": 0.2313,
+  "tail_ratio": 2.3371,
+  "quality_gates": {
+    "passed": true,
+    "isolated_detail": {
+      "value": 0.01590885128825903,
+      "max": 0.12,
+      "passed": true
+    },
+    "banding": {
+      "value": 0.23126490943845007,
+      "max": 0.5,
+      "passed": true
+    },
+    "tail_ratio": {
+      "value": 2.3370760714006904,
+      "max": 5.0,
+      "passed": true
+    }
+  },
+  "axis": {
+    "wanted": "v",
+    "rotated": false
+  },
+  "match_color": {
+    "target": "#E6DEC8",
+    "before": "#887A5C",
+    "after": "#E6DEC8",
+    "scale": 1.0
+  },
+  "vae_tiled_decode": false,
+  "normal_strength": 0.5,
+  "roughness_range": [
+    0.78,
+    0.95
+  ],
+  "materialize_preset": "wood",
+  "biome": "Vale / Discórdia",
+  "palette": [
+    "#E6DEC8"
+  ],
+  "regenerated_at": "2026-11-24 08:14:26"
+}

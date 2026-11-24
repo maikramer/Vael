@@ -80,7 +80,9 @@ Estrutura do `world.bsn`:
   `ParticleSpec`, `SpawnExclusionSpec` e `PortalSpec` (+4.5k nós); a
   2026-11-14 `CameraSpec` (`<OrbitCamera>`), `InteriorSceneSpec` (as 9 salas),
   `AudioMixerSpec`/`MusicLayerSpec`/`BiomeRegionSpec` (`environment.bsn` e
-  `menu.bsn`). O jogo lê colheita/destrutível tipados
+  `menu.bsn`); a 2026-11-23 `FenceSpec` (`fence-*` num `<Entity>`: a linha e a
+  predefinição — a geometria nasce no `bevy_ext_fence`,
+  [`docs/FENCES.md`](docs/FENCES.md)). O jogo lê colheita/destrutível tipados
   (`harvest.rs::from_specs`, paridade testada).
   As `prop-*` vivem no `CustomProperties` **do Jackdaw** (painel nativo do
   inspector; 2026-11-14, `bsn_migrate --props`, 141 nós); o loader ainda lê
@@ -124,10 +126,12 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 |---------|---------|
 | `world.bsn` | raiz estática e os módulos `<Include>` (`world/**/*.bsn`) |
 | `world/**/*.bsn` | cidades, criaturas, landmarks, `spawn/…`, HUD (módulos; prefabs `IsA` no `world.bsn`) |
-| `world/settings/*.bsn` | definições editáveis no Jackdaw: ambiente, pós-processamento, espécies de flora (`src/settings.rs`) |
+| `world/settings/*.bsn` | definições editáveis no Jackdaw: ambiente, pós-processamento, espécies de flora, cercas (`src/settings.rs`) |
 | `tools/bsn_tidy.py` | organiza os filhos de topo de um mundo `.bsn` em pastas do Outliner (idempotente) |
 | `tools/make_map.py` | gera `ui/vael_map.png` (hillshade reproduzível do `world.data/terrain.ahgt`, sem GPU) |
 | `tools/make_menu_terrain.py` | gera o terreno da cena de menu (`scenes/menu.data/terrain.ahgt`) |
+| `tools/fence_migrate.py` | trocou (2026-11-23) as cercas de GLB por `<Entity>` com `FenceSpec`; `--check` dá exit 1 se ainda houver cercas de GLB. Não é idempotente |
+| `tools/gen_fence_textures.py` | os conjuntos de madeira e corda das cercas (`assets/manifests/wood-textures.yaml` → `assets/public/assets/textures/`): albedo, normal, `orm`, ao, roughness, height em WebP + KTX2 |
 | `playtests/*.json` | cenários do harness `bevy_playtest` (bot/oráculos/invariantes; `docs/PLAYTEST.md`) |
 | `qa/vision/tours/*.json` | tours do oráculo visual; `tools/playtest_vision.py` (captura + `liquid/d1-ultra`) |
 | `scenes/menu.bsn` | cena de arranque: acampamento pequeno atrás do título |
@@ -152,6 +156,7 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `src/lights.rs` | **luzes práticas** (`bevy_lights` 0.5, pin `=0.5.0`): as luzes de fogo viram `PoolCandidate` (pool orçamentado + flicker + chama billboard); as de preenchimento/cristais ficam autorais. Gate `VAEL_PRACTICAL_LIGHTS=0`. Ver `docs/LIGHTING.md` |
 | `docs/WATER.md` | camadas da água (solver iWave, domínio, espelho CPU do swell), flutuação `FloatingBody` (crate `bevy_ext_water`, adapter avian) e barcos a remos (`src/boat.rs`, `data/boats.json`; **E** entra/sai, W/S rema, A/D leme) |
 | `docs/PAVING.md` | **pavimento em grelha** (`bevy_ext_terrain_runtime::paving`): `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>` troca a elipse/ribbon por células com ocupação exclusiva, chanfro nos cantos convexos e filete nos côncavos, uma malha por material. Camadas fixas: `DECAL_LIFT 0.040 < PAVING_LIFT 0.064 < ON_PAVING 0.072`; um decal coberto pelo pavimento sobe sozinho. Gate `VAEL_PAVING=0` |
+| `docs/FENCES.md` | **cercas procedurais** (`bevy_ext_fence`, adaptador `src/fence.rs`): um `<Entity>` com `FenceSpec` (`fence-points`, `fence-style`, sobreposições `fence-*`) vira postes, travessas, tábuas de comprimento variável, estacas, paliçada, varas entretecidas, treliça, cruzetas, cordas ou portão, a partir de uma predefinição `FenceStyle` de `world/settings/fences.bsn`. Colisor de caixa por vão; gate `VAEL_FENCE=0`; extensão `bevy_ext_fence_jackdaw` (preview no viewport, painel **Cercas**) |
 
 ## Cenas
 
@@ -285,6 +290,10 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
 - Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag (no
   Jackdaw acrescenta pelo Outliner). `analyze`/lint não apanham este erro.
 - `shaders/*.wesl` são reescritos em cada `run`. Não editar à mão.
+- `<Lake>`/`<River>` novo no `.bsn` mostra a lâmina mas não abre o leito: o
+  mundo estático carva numa cópia. Gravar no `.ahgt` com
+  `tools/water_carve_input.py` + `--example carve_water` (uma vez por corpo;
+  `docs/WATER.md`, *Hidrovias*).
 - Uma boca de `<Cave>` em terreno plano é sempre um poço: o tubo começa
   `radius` abaixo da cota. A engine aceita `mound-height`/`mound-radius` para
   levantar um maciço de rocha com face vertical na boca; o túnel subtractivo
@@ -474,7 +483,10 @@ espécies com preview real do `bevy_flora` e árvores nas estações) e
 `vael.analyze.run` sobre a lib `vael_tools`), `vael_profiler_jackdaw`
 (p95/hitches/RSS do runtime em polling), `vael_debugger_jackdaw`
 (play/pause/step/F3) e `vael_mcp_jackdaw` (operadores de
-grupo/input/screenshot visíveis no `jd mcp`). Só UMA
+grupo/input/screenshot visíveis no `jd mcp`). Para as cercas,
+`bevy_ext_fence_jackdaw` (genérica, em `../bevy_extensions/extensions/`:
+preview no viewport com o mesmo crate do jogo, painel **Cercas** e um operador
+`bevy_ext_fence.new.<estilo>` por predefinição). Só UMA
 extensão pode registar um tipo partilhado (`WorldNode`): cada dylib tem a sua
 cópia e a última a registar rouba o type path às outras — as restantes leem-no
 por reflexão. Uma entidade autorada sem `Transform` não entra na hierarquia

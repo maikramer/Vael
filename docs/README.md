@@ -25,6 +25,7 @@ deve ser corrigido no mesmo commit.
 | [`PHYSICS-AVIAN.md`](PHYSICS-AVIAN.md) | física Avian 0.8 + tnua, conversão do DSL, autostep do herói e gates | **vivo** |
 | [`WATER.md`](WATER.md) | camadas da água, espelho CPU do swell, flutuação (`FloatingBody`) e barcos a remos | **vivo** |
 | [`PAVING.md`](PAVING.md) | pavimento em grelha das estradas/praças: ocupação exclusiva, autotile de cantos, camadas de lift e migração | **vivo** |
+| [`FENCES.md`](FENCES.md) | cercas procedurais (`bevy_ext_fence`): uma linha `FenceSpec` no `.bsn` vira postes, travessas, tábuas, paliçada, cordas ou portão; predefinições em `world/settings/fences.bsn`, texturas de madeira e a troca das cercas de GLB | **vivo** |
 | [`TOOLS.md`](TOOLS.md) | CLI `vael-tools`, bridge de debug e extensões Jackdaw | **vivo** |
 | [`JACKDAW.md`](JACKDAW.md) | o que se autora no Jackdaw (matriz por sistema), componentes tipados, painel de cinemáticas e gatilhos | **vivo** |
 | [`SAVE.md`](SAVE.md) | save nativo (`moonshine-save`), slots, merge do estado e o que persiste | **vivo** |

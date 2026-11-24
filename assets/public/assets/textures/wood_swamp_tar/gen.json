@@ -1,0 +1,62 @@
+{
+  "prompt": "seamless tileable texture, waterlogged tarred wood surface, dark tar brown, swollen wood grain, olive-green slime stains in the hollows, wood grain texture, broad clean color zones, earthy mineral pigments, matte tempera finish, soft even lighting, flat top-down view, texture fills the whole frame, stylized game texture",
+  "negative_prompt": "blurry, low quality, watermark, text, signature, frame, border, visible seam, tiling artifacts, planks, board seams, gaps between boards, nails, screws, knot, knots, isolated spot, blurry patch, out of focus, plastic glossy sheen, photorealistic, neon oversaturated colors, busy micro-patterns, melted organic edges",
+  "width": 1024,
+  "height": 1024,
+  "steps": 28,
+  "guidance": 7.0,
+  "refine_steps": 16,
+  "seed": 51127,
+  "seed_requested": 51127,
+  "prompt_tokens": 71,
+  "negative_prompt_tokens": 75,
+  "tileability": 1.0,
+  "isolated_detail": 0.0888,
+  "isolated_detail_gate": {
+    "max": 0.12,
+    "passed": true
+  },
+  "banding": 0.2741,
+  "tail_ratio": 2.198,
+  "quality_gates": {
+    "passed": true,
+    "isolated_detail": {
+      "value": 0.08882384933531284,
+      "max": 0.12,
+      "passed": true
+    },
+    "banding": {
+      "value": 0.2740865007744737,
+      "max": 0.5,
+      "passed": true
+    },
+    "tail_ratio": {
+      "value": 2.1979672424873624,
+      "max": 5.0,
+      "passed": true
+    }
+  },
+  "axis": {
+    "wanted": "v",
+    "rotated": false
+  },
+  "match_color": {
+    "target": "#35322B",
+    "before": "#7A5D3F",
+    "after": "#35322B",
+    "scale": 1.0
+  },
+  "vae_tiled_decode": false,
+  "normal_strength": 0.7,
+  "roughness_range": [
+    0.78,
+    0.95
+  ],
+  "materialize_preset": "wood",
+  "biome": "Pântano da Bruma",
+  "palette": [
+    "#3D352E",
+    "#2C3028"
+  ],
+  "regenerated_at": "2026-11-24 08:06:22"
+}
