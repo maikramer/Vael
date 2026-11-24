@@ -1,0 +1,43 @@
+#"Ribeira de Concórdia"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+    rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+    scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: false,
+}
+jackdaw_scene_types::node_id::SceneNodeId(2365238529918822842)
+bevy_ecs::hierarchy::Children [
+    #"ribeira-de-concordia"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "River",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "ribeira-de-concordia" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-81 101 -75 91 -70 80 -67 65 -65 51 -68 34 -69 17 -68 0 -70 -17 -74 -32 -76 -46 -76 -58 -76 -65" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "17.5" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "2.65" },
+            bevy_world_xml::bsn::WorldProp { key: "water-offset", value: ".55" },
+            bevy_world_xml::bsn::WorldProp { key: "bank-width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "bank-height", value: "0.65" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#315e63" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: ".93" },
+            bevy_world_xml::bsn::WorldProp { key: "water-levels", value: "42.57354 42.51701 42.46049 42.40341 42.34539 42.28649 42.22679 41.93748 41.45917 40.97336 40.48215 39.98670 39.49010 38.99587 38.71842 38.44046 38.16188 37.88100 37.59993 37.37975 37.19364 37.00899 36.82371 36.63799 36.45177 36.26507 36.07811 35.90551 35.74317 35.58078 35.41838 35.25604 35.09386 34.93163 34.76924 34.60689 34.44474 34.28438 34.12477 33.96565 33.80703 33.64907 33.49223 33.33637 33.18074 33.02430 32.85205 32.65662 32.46039 32.26343 32.06584 31.86772 31.73835 31.73835 31.73835 31.73835 31.73835 31.73835" },
+            bevy_world_xml::bsn::WorldProp { key: "pool-spacing", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2076838254092069367)
+]

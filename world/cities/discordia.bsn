@@ -428,5 +428,39 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216083172)
+    --
+        #"shipyard"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+jackdaw::prefab::components::IsA { source: "world/cities/discordia/shipyard.bsn", deleted: [] }
+bevy_world_xml::bsn::WorldNode {
+    tag: "Include",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "shipyard" },
+        bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/shipyard.bsn" },
+    ],
+    text: "",
+    pose: false,
+}
+jackdaw_scene_types::node_id::SceneNodeId(1568373596493888338)
+    --
+        #"Cinemáticas dos canteiros"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+jackdaw::prefab::components::IsA { source: "world/cities/discordia/reconstruction-cinematics.bsn", deleted: [] }
+bevy_world_xml::bsn::WorldNode {
+    tag: "Include",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Cinemáticas dos canteiros" },
+        bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/reconstruction-cinematics.bsn" },
+    ],
+    text: "",
+    pose: false,
+}
+jackdaw_scene_types::node_id::SceneNodeId(258144543317186614)
     ]
 ]

@@ -1,0 +1,403 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(2113877428160465332)
+bevy_ecs::hierarchy::Children [
+    #"Margem do Estaleiro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Margem do Estaleiro" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4151626828198540160)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Estaleiro"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.0, y: -5.1304, z: -67.0 },
+            scale: glam::Vec3 { x: 2.1, y: 1.0, z: 2.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Estaleiro" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "shipyard:0" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2605951302888357111)
+        bevy_ecs::hierarchy::Children [
+            #"Estacas · Estaleiro · malha"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Estaleiro · malha" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(2227043958073686911)
+        ]
+        --
+        #"Placa · Estaleiro"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -49.2, y: -2.8169, z: -62.5 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Estaleiro" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "shipyard" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(715714813722153675)
+        bevy_ecs::hierarchy::Children [
+            #"Placa de madeira · Estaleiro"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Estaleiro" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(196338872911068517)
+        ]
+        --
+        #"Estaleiro · estrutura"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -53.0, y: -5.680400000000006, z: -67.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/estaleiro-estrutura_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · estrutura" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "shipyard:1" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(473765194717473131)
+        bevy_ecs::hierarchy::Children [
+            #"Estaleiro · estrutura · malha"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · estrutura · malha" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/estaleiro-estrutura.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(1778785700079705756)
+        ]
+        --
+        #"Estaleiro · quilha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -53.0, y: -5.680400000000006, z: -67.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/estaleiro-estrutura_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · quilha" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "shipyard:2" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1970163393649121419)
+        bevy_ecs::hierarchy::Children [
+            #"Estaleiro · quilha · malha"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · quilha · malha" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/estaleiro-quilha.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(2176630237853303395)
+        ]
+        --
+        #"Estaleiro · habitado"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -53.0, y: -5.680400000000006, z: -67.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/estaleiro_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "prop-boat-landing", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · habitado" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "shipyard:3" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(763738149088324009)
+        bevy_ecs::hierarchy::Children [
+            #"Estaleiro · habitado · malha"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · habitado · malha" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/estaleiro.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(97458639501003013)
+        ]
+        --
+        #"Ponte alta do Estaleiro"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -109.0, y: -8.730400000000003, z: -54.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/ponte-do-estaleiro_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Ponte alta do Estaleiro" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1470891590471881621)
+        bevy_ecs::hierarchy::Children [
+            #"Ponte alta do Estaleiro · malha"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "Ponte alta do Estaleiro · malha" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/ponte-do-estaleiro.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(2963227983222248483)
+        ]
+        --
+        #"Entorno seguro do estaleiro"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Entorno seguro do estaleiro" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-52 -66" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "23" },
+            ],
+            text: "",
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1268018851731596887)
+    --
+        #"Caminhos da margem"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Caminhos da margem" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(3725107180226256242)
+bevy_ecs::hierarchy::Children [
+    #"Caminho do cais"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Caminho do cais" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-39 -0.6 -43 -9 -44 -20 -44 -36 -44 -51 -46 -58 -48.5 -62.0" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.5" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.36" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(864191825972483858)
+    --
+    #"Caminho da ponte"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Caminho da ponte" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-104 -34 -109 -29" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.5" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.36" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2234204408838777488)
+    --
+    #"Saída norte da ponte"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Saída norte da ponte" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-109 -79 -109 -83 -102 -86 -91 -93 -77 -98 -59 -100" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.5" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.36" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3183317066727675405)
+]
+    --
+        #"Mestre do estaleiro"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: -52.3, y: -5.680400000000006, z: -65.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_ext_scene::ScriptRef { path: "townsfolk.lua" }
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Mestre do estaleiro" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "shipyard:3" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Falar com o mestre do estaleiro" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "Rema pelo braço largo até ao Pântano. A ponte deixa-te passar por baixo.|Amarra o casco antes de subires à margem." },
+        bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-banter_night", value: "O cais está aberto. Leva luz se fores até aos juncos." },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(3690949171884497403)
+bevy_ecs::hierarchy::Children [
+    #"Mestre do estaleiro · modelo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Mestre do estaleiro · modelo" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_blacksmith_lod0.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2959766559599897654)
+    --
+    #"Mestre do estaleiro · corpo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "NpcBody",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Mestre do estaleiro · corpo" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3214118067393146521)
+]
+    ]
+]
