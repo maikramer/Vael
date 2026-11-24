@@ -50,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "longhouse" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 135 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "29 0 -31" },
@@ -81,7 +82,7 @@ bevy_ecs::hierarchy::Children [
         --
         #chest
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 35.5, y: 0.0, z: -33.0 },
+            translation: glam::Vec3 { x: 30.5, y: 0.0, z: -26.5 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -97,8 +98,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "chest" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.5 0 -33" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "30.5 0 -26.5" },
                 bevy_world_xml::bsn::WorldProp { key: "connect-opened", value: "@discordia:notice" },
             ],
             text: "",
@@ -133,6 +135,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "gate:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "fold-signpost" },
                 bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/fold_signpost_lod0.glb" },
             ],
@@ -142,7 +145,7 @@ bevy_ecs::hierarchy::Children [
         --
         #npc_fold_child
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 1.5, y: 0.0, z: 32.0 },
+            translation: glam::Vec3 { x: 3.75, y: 0.0, z: 35.9 },
             rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -152,8 +155,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "gate:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_fold_child" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.5 0 32" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.75 0 35.9" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
             ],
             text: "",
@@ -199,7 +203,7 @@ bevy_ecs::hierarchy::Children [
         --
         #npc_elder
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 22.0, y: 0.0, z: -24.0 },
+            translation: glam::Vec3 { x: 22.75, y: 0.0, z: -22.7 },
             rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -214,8 +218,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_elder" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "22 0 -24" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.75 0 -22.7" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
             ],
             text: "",
@@ -261,7 +266,7 @@ bevy_ecs::hierarchy::Children [
         --
         #npc_envoy_glass
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 25.0, y: 0.0, z: -24.0 },
+            translation: glam::Vec3 { x: 23.5, y: 0.0, z: -21.4 },
             rotation: glam::Quat { x: 0.0, y: 0.92388, z: 0.0, w: -0.382683 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -276,8 +281,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_envoy_glass" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "25 0 -24" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "23.5 0 -21.4" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 225 0" },
             ],
             text: "",
@@ -324,7 +330,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.longhouse-brazier-w"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 23.5, y: 0.0, z: -26.5 },
+            translation: glam::Vec3 { x: 25.0, y: 0.0, z: -29.1 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -343,8 +349,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-brazier-w" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "23.50 0.00 -26.50" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "25 0 -29.1" },
             ],
             text: "",
             origin_file: "world/cities/discordia/longhouse.xml",
@@ -426,6 +433,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-brazier-e" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "28.50 0.00 -25.50" },
             ],
@@ -490,7 +498,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.longhouse-bench-w"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 20.5, y: 0.0, z: -25.5 },
+            translation: glam::Vec3 { x: 20.5, y: 0.0, z: -24.0 },
             rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -509,8 +517,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-bench-w" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "20.50 0.00 -25.50" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "20.5 0 -24" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
             ],
             text: "",
@@ -540,7 +549,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.longhouse-bench-e"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 26.5, y: 0.0, z: -23.5 },
+            translation: glam::Vec3 { x: 31.0, y: 0.0, z: -23.5 },
             rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -559,8 +568,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-bench-e" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.50 0.00 -23.50" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "31 0 -23.5" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
             ],
             text: "",
@@ -590,12 +600,12 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.longhouse-barrel-1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 21.2, y: 0.0, z: -29.8 },
+            translation: glam::Vec3 { x: 19.7, y: 0.0, z: -32.4 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -609,8 +619,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-barrel-1" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "21.20 0.00 -29.80" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "19.7 0 -32.4" },
             ],
             text: "",
             origin_file: "world/cities/discordia/longhouse.xml",
@@ -639,12 +650,12 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.longhouse-barrel-2"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 22.2, y: 0.0, z: -30.6 },
+            translation: glam::Vec3 { x: 23.7, y: 0.0, z: -30.6 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -658,8 +669,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-barrel-2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.20 0.00 -30.60" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "23.7 0 -30.6" },
             ],
             text: "",
             origin_file: "world/cities/discordia/longhouse.xml",
@@ -701,6 +713,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-banner-w" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "21.2 0.0 -22.2" },
             ],
@@ -745,6 +758,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-banner-e" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "28.8 0.0 -23.2" },
             ],
@@ -774,4 +788,157 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1713183266528958363)
         ]
     ]
+--
+    #"Canteiro · Salão"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Canteiro · Salão" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(3635522161914316154)
+bevy_ecs::hierarchy::Children [
+    #"Estacas · Salão"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 29.0, y: 0.0, z: -31.0 },
+        scale: glam::Vec3 { x: 3.4, y: 1.7, z: 2.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Salão" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1968862786512412024)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Salão · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Salão · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4003537375740224656)
+    ]
+    --
+    #"Placa · Salão"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 21.0, y: 0.0, z: -27.4 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Salão" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "hall" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1770677966841294142)
+    bevy_ecs::hierarchy::Children [
+        #"Placa de madeira · Salão"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Salão" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3013552382214142708)
+    ]
+    --
+    #"Esqueleto · Salão"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 29.0, y: 0.0, z: -31.0 },
+        scale: glam::Vec3 { x: 3.4, y: 1.7, z: 2.9 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/canteiro-esqueleto_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Salão" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:1-2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3326944910866669783)
+    bevy_ecs::hierarchy::Children [
+        #"Esqueleto · Salão · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Salão · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-esqueleto.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(997900234497691081)
+    ]
+    --
+    #"Peça · Salão"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 29.0, y: 0.0, z: -31.0 },
+        scale: glam::Vec3 { x: 3.4, y: 1.7, z: 2.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Peça · Salão" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(471183519702300593)
+    bevy_ecs::hierarchy::Children [
+        #"Peça · Salão · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Peça · Salão · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-fecho.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1073597074073273030)
+    ]
+]
 ]

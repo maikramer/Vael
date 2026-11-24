@@ -217,7 +217,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 5.15, y: 0.064, z: -4.85 },
+            translation: glam::Vec3 { x: 5.150000, y: -0.000625, z: -4.850000 },
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -260,7 +260,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 8.85, y: 0.064, z: -6.05 },
+            translation: glam::Vec3 { x: 8.850000, y: -0.000625, z: -6.050000 },
             rotation: glam::Quat { x: 0.0, y: -0.587785, z: 0.0, w: 0.809017 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1009,7 +1009,7 @@ bevy_ecs::hierarchy::Children [
         --
         #townsfolk_north
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -5.0, y: 0.064, z: -10.5 },
+            translation: glam::Vec3 { x: -5.000000, y: 0.000329, z: -10.500000 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1133,4 +1133,330 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083771)
         ]
     ]
+--
+    #"Canteiro · Poço"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Canteiro · Poço" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(3878148897372585265)
+bevy_ecs::hierarchy::Children [
+    #"Estacas · Poço"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -6.0, y: 0.0, z: 4.0 },
+        scale: glam::Vec3 { x: 1.55, y: 1.0, z: 1.6 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Poço" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "well:0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3016768318158876259)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Poço · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Poço · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3919002675737088681)
+    ]
+    --
+    #"Placa · Poço"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -9.1, y: 0.0, z: 4.9 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Poço" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "well" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2562632891206091588)
+    bevy_ecs::hierarchy::Children [
+        #"Placa de madeira · Poço"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Poço" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(972109398348868780)
+    ]
+--
+        #"poco-de-concordia"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: -6.0, y: 0.0, z: 2.1 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "poco-de-concordia" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(3684528450164404093)
+    --
+        #"Balde recolocado"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: -5.5, y: 0.85, z: 3.7 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Balde recolocado" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "well:3" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(1738718981610306265)
+bevy_ecs::hierarchy::Children [
+    #"Balde recolocado · malha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Balde recolocado · malha" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/balde-do-poco.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1432648077591744585)
+]
+    ]
+--
+    #"A primeira manhã"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "A primeira manhã" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4195920277398725267)
+bevy_ecs::hierarchy::Children [
+    #"Lona de Edmar"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 3.85, y: 0.0001, z: -7.2 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Lona de Edmar" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:0-2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2937288994873500188)
+    bevy_ecs::hierarchy::Children [
+        #"Lona de Edmar · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Lona de Edmar · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/lona-de-edmar.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4160125361025309993)
+    ]
+    --
+    #"Edmar sob a lona"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 4.25, y: 0.0, z: -3.8 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "npc/dialogue.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Edmar sob a lona" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "story_notas" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:0-2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1333206609987334198)
+    bevy_ecs::hierarchy::Children [
+        #"Edmar sob a lona · modelo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Edmar sob a lona · modelo" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_elder_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(165820438259734073)
+        --
+        #"Edmar sob a lona · corpo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Edmar sob a lona · corpo" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3703432776254542582)
+    ]
+    --
+    #"Madre junto ao poço"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.7, y: 0.0, z: 3.9 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Madre junto ao poço" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2344200525875840499)
+    bevy_ecs::hierarchy::Children [
+        #"Madre junto ao poço · modelo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Madre junto ao poço · modelo" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_healer_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4580025383222374990)
+        --
+        #"Madre junto ao poço · corpo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Madre junto ao poço · corpo" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2239121977645894573)
+    ]
+    --
+    #"Criança junto ao poço"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -3.95, y: 0.0, z: 4.2 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "npc/fold-child.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Criança junto ao poço" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "gate:0-2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1633995755501828031)
+    bevy_ecs::hierarchy::Children [
+        #"Criança junto ao poço · modelo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 0.73, y: 0.73, z: 0.73 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Criança junto ao poço · modelo" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3987295154341442898)
+        --
+        #"Criança junto ao poço · corpo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Criança junto ao poço · corpo" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(814465690348799728)
+    ]
+]
 ]

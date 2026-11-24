@@ -50,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "9 0 -20.5" },
             ],
             text: "",
@@ -92,6 +93,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.5 0 -13.2" },
             ],
@@ -135,6 +137,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "19 0 -19" },
             ],
@@ -178,6 +181,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.2 0 -21.2" },
             ],
             text: "",
@@ -220,6 +224,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.4 0 -22.1" },
             ],
             text: "",
@@ -254,7 +259,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -262,6 +267,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "34.5 0 -18.5" },
             ],
             text: "",
@@ -296,7 +302,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -304,6 +310,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.3 0 -21" },
             ],
@@ -334,7 +341,7 @@ bevy_ecs::hierarchy::Children [
         --
         #merchant
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 17.25, y: 0.0, z: -15.2 },
+            translation: glam::Vec3 { x: 5.0, y: 0.0, z: -10.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -345,7 +352,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "merchant" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.25 0 -15.2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5 0 -10" },
                 bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
             ],
             text: "",
@@ -404,6 +411,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-mercado-1" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0 -10" },
             ],
@@ -451,6 +459,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-gate-lantern" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 2.38 -10" },
             ],
@@ -523,6 +532,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-mercado-2" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0 -24" },
             ],
@@ -570,6 +580,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-south-lantern" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 2.18 -24" },
             ],
@@ -645,6 +656,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-center-rug" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.6 0.005 -13.1" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -18 0; scale: 1.35 1 1.35" },
@@ -696,6 +708,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-ledger-table" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.60 0.00 -13.10" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -18 0" },
@@ -746,6 +759,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-ledger-stool" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.90 0.00 -12.10" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 162 0" },
@@ -782,7 +796,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -796,6 +810,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-ledger-barrel" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "20.00 0.00 -13.00" },
             ],
@@ -831,7 +846,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -845,6 +860,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-ledger-crate" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "19.70 0.00 -14.00" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -24 0" },
@@ -889,6 +905,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "placa-mercado" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.3 4.9e-05 -12.7" },
             ],
@@ -936,6 +953,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-signpost-lantern" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.08 1.88 -12.70" },
             ],
@@ -1000,7 +1018,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1014,6 +1032,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-west-crate-1" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.15 0 -15.9" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0" },
@@ -1050,7 +1069,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1064,6 +1083,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-west-crate-top" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.15 0.8 -15.9" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0; scale: 0.82 0.82 0.82" },
@@ -1100,7 +1120,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1114,6 +1134,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-west-barrel" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "7 0 -17.05" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 28 0" },
@@ -1150,7 +1171,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1164,6 +1185,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-eastwall-barrel-1" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.60 0.00 -18.20" },
             ],
@@ -1199,7 +1221,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1213,6 +1235,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-eastwall-barrel-2" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.80 0.00 -19.20" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0" },
@@ -1249,7 +1272,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 0.84, y: 0.84, z: 0.84 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1263,6 +1286,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-eastwall-crate-top" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "34.5 0.8 -18.5" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 16 0; scale: 0.84 0.84 0.84" },
@@ -1313,6 +1337,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-eastwall-torch" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.70 0.00 -22.20" },
             ],
@@ -1385,5 +1410,191 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083665)
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
+    ]
+--
+    #"Canteiro · Mercado"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Canteiro · Mercado" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(2113530047327635801)
+bevy_ecs::hierarchy::Children [
+    #"Estacas · Mercado"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 16.0, y: 0.0, z: -18.0 },
+        scale: glam::Vec3 { x: 2.6, y: 1.1, z: 2.1 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Mercado" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(151873910960198929)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Mercado · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Mercado · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3987779293969300827)
+    ]
+    --
+    #"Placa · Mercado"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 16.6, y: 0.0, z: -10.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Mercado" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "market" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(708579809946262793)
+    bevy_ecs::hierarchy::Children [
+        #"Placa de madeira · Mercado"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Mercado" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1686901759278727546)
+    ]
+    --
+    #"Esqueleto · Mercado"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 16.0, y: 0.0, z: -18.0 },
+        scale: glam::Vec3 { x: 2.6, y: 1.1, z: 2.1 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/canteiro-esqueleto_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Mercado" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:1-2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1083312087863031182)
+    bevy_ecs::hierarchy::Children [
+        #"Esqueleto · Mercado · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Mercado · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-esqueleto.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2440691372537816126)
+    ]
+    --
+    #"Peça · Mercado"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 16.0, y: 0.0, z: -18.0 },
+        scale: glam::Vec3 { x: 2.6, y: 1.1, z: 2.1 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Peça · Mercado" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1585848039237946410)
+    bevy_ecs::hierarchy::Children [
+        #"Peça · Mercado · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Peça · Mercado · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-fecho.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3884829084766110812)
+    ]
+--
+        #"Eixo da carroça"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 16.0, y: 0.0, z: -18.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Eixo da carroça" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:2" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4598894434173154575)
+bevy_ecs::hierarchy::Children [
+    #"Eixo da carroça · malha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Eixo da carroça · malha" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/eixo-da-carroca.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3951510094901226515)
+]
     ]
 ]

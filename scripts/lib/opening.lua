@@ -13,7 +13,7 @@ end
 
 function M.legend(dx, dz)
   if dz < -math.abs(dx) then return "yard", "Experimentar a seta do curral" end
-  if dx < 0 then return "wall", "Desenhar a curva do muro" end
+  if dx < 0 then return "wall", "Desenhar a esquina da cerca" end
   return "roof", "Desenhar o telhado branco"
 end
 

@@ -8,7 +8,7 @@
 //! os recortes de terreno e os recortes de ação mantêm a paridade com o
 //! envelope antigo.
 //!
-//! O `viber.save_slot(0)`/`viber.save()` do Lua continua a escrever
+//! O `vael.save_slot(0)`/`vael.save()` do Lua continua a escrever
 //! `SaveRequest`; este módulo consome-o no Update seguinte ao `luau_update`.
 
 use std::collections::BTreeMap;
@@ -20,7 +20,7 @@ use bevy_elements::{CivilDate, WorldClock};
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use moonshine_save::prelude::*;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{Value, json};
 use vael_engine::input_map::{Action, ActionMap};
 use vael_engine::locale::Locale;
 use vael_engine::luau::game::{game_to_json_process, restore_game_json};
@@ -136,7 +136,7 @@ fn on_native_loaded(_event: On<Loaded>, mut state: ResMut<NativeSaveState>) {
     state.load_done = true;
 }
 
-/// Consome `SaveRequest` (UI, menu e `viber.save*` do Lua) e dispara o
+/// Consome `SaveRequest` (UI, menu e `vael.save*` do Lua) e dispara o
 /// moonshine. O ficheiro é escrito/deserializado nos observers; o frame de
 /// `PostUpdate` aplica o resultado.
 fn process_save_requests(world: &mut World) {
@@ -159,7 +159,7 @@ fn process_save_requests(world: &mut World) {
     }
     request.save = false;
     request.load = false;
-    // O slot é do pedido, não um estado pegajoso: um `viber.save()` a seguir
+    // O slot é do pedido, não um estado pegajoso: um `vael.save()` a seguir
     // a um save manual não pode cair no slot manual (o monólito limpa-o).
     request.slot = None;
 
@@ -326,9 +326,9 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
         .get_resource::<VaelSave>()
         .cloned()
         .unwrap_or_default();
-    // Store do processo primeiro (o `viber.game()` dos contextos BMS); sem
+    // Store do processo primeiro (o `vael.game()` dos contextos BMS); sem
     // chaves (arranque), o save tipado.
-    let (kv, live_store) = {
+    let (mut kv, live_store) = {
         let kv = game_to_json_process();
         if kv.is_empty() {
             (save.to_world_kv(), false)
@@ -336,6 +336,11 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
             (kv, true)
         }
     };
+    if world.get_resource::<crate::content::VaelContent>()
+        .is_some_and(|content| !content.concordia.sites.is_empty())
+    {
+        kv.insert("concordia.schema".into(), json!(1));
+    }
     // O store é o espelho VIVO e o tipado só é sincronizado a 10 Hz: fundir
     // aqui deixa o `game.vael` e o `world_kv` do MESMO ficheiro a contar a
     // mesma história (hp/gear/quests), sem tocar no que é só-Rust.
@@ -443,7 +448,20 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
 }
 
 fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
-    let kv = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json).ok();
+    let mut kv = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json).ok();
+    // Saves anteriores à reconstrução já tinham a cidade inteira à disposição.
+    if let Some(kv) = &mut kv
+        && !kv.keys().any(|key| key.starts_with("concordia."))
+        && let Some(content) = world.get_resource::<crate::content::VaelContent>()
+        && !content.concordia.sites.is_empty()
+    {
+        for site in &content.concordia.sites {
+            kv.insert(format!("concordia.{}", site.id), json!(3));
+        }
+        kv.insert("concordia.schema".into(), json!(1));
+        kv.insert("biome.concordia".into(), json!(true));
+        kv.insert("mark.poco-de-concordia".into(), json!(true));
+    }
     // Um payload editado à mão (ou vindo de outra versão) pode trazer NaN/inf:
     // um `position` não finito punha a física do herói em NaN e um volume NaN
     // silenciava o áudio para sempre.
@@ -483,7 +501,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     // `seat_riders` prendia o herói ao barco velho depois do teleporte. O
     // `BoatStates` do save volta a pô-lo a bordo se for esse o caso.
     crate::boat::leave_boat_now(world);
-    // `restore_game_json` repõe o store do processo (o `viber.game()` de
+    // `restore_game_json` repõe o store do processo (o `vael.game()` de
     // todos os contextos BMS lê daqui — já não depende de haver host).
     if let Some(kv) = kv {
         restore_game_json(&kv);
@@ -726,7 +744,7 @@ fn legacy_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlo
     rows
 }
 
-/// Slot do `viber.save()`/`viber.load()` (sem slot) gravado pela nativa:
+/// Slot do `vael.save()`/`vael.load()` (sem slot) gravado pela nativa:
 /// `{key}.legacy.vsave.ron`. O envelope JSON antigo (`{key}.save.json`) é o
 /// outro candidato a slot 4, tratado pelo [`bevy_ext_save::list_save_slots`].
 fn native_legacy_slot(base: &Path, key: &str) -> Option<SaveSlotInfo> {
@@ -760,9 +778,9 @@ fn native_legacy_slot(base: &Path, key: &str) -> Option<SaveSlotInfo> {
 /// Lista os quatro slots nativos; se um slot ainda só tiver o JSON antigo,
 /// devolve o metadata antigo para o menu continuar a mostrá-lo.
 ///
-/// O **slot 4** é o `viber.save()`/`viber.load()` (sem slot), como no
+/// O **slot 4** é o `vael.save()`/`vael.load()` (sem slot), como no
 /// monólito: a UI pede-o ao load com `slot = None` e assim o save escrito por
-/// `viber.save()` deixa de ser invisível no menu. Mapear `None` → slot 0
+/// `vael.save()` deixa de ser invisível no menu. Mapear `None` → slot 0
 /// (autosave) foi rejeitado: uma gravação manual apagaria o autosave.
 pub fn list_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlotInfo> {
     let old = legacy_slots(world_key, save_dir);
@@ -1006,7 +1024,7 @@ mod tests {
         }
     }
 
-    /// O `viber.save()` (sem slot) grava `{key}.legacy.vsave.ron`; o menu tem
+    /// O `vael.save()` (sem slot) grava `{key}.legacy.vsave.ron`; o menu tem
     /// de o ver como slot 4 (a UI pede o 4 ao load como `slot = None`).
     #[test]
     fn o_save_sem_slot_aparece_como_slot_4() {
@@ -1162,7 +1180,9 @@ mod tests {
 
     #[test]
     fn loading_mid_swim_restores_remaining_stamina_and_the_same_shore() {
-        let _lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().unwrap();
+        let _lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .unwrap();
         let mut world = World::new();
         world.init_resource::<VaelSave>();
         let bus = crate::player::HeroMotionBus::default();
@@ -1187,7 +1207,7 @@ mod tests {
     /// por aplicar — o `drive_boat_states` é que a aplica às entidades.
     #[test]
     fn capture_e_apply_levam_as_poses_dos_barcos() {
-        // O store de `viber.game()` é do processo e o `apply_payload` escreve
+        // O store de `vael.game()` é do processo e o `apply_payload` escreve
         // nele: o lock serializa com os outros testes que o tocam.
         let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()

@@ -51,6 +51,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "chapel:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.chapel" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.46 0 22.46" },
             ],
@@ -95,6 +96,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "forge:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.forge" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30.47 0 -29.06" },
             ],
@@ -139,6 +141,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.house_a" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.35 0 8.44" },
             ],
@@ -315,6 +318,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.barn" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-26.11 0 30" },
             ],
@@ -345,7 +349,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"portal.longhouse"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 35.529999, y: 0.0, z: -37.529999 },
+            translation: glam::Vec3 { x: 25.47, y: 0.0, z: -27.47 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -359,8 +363,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "hall:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.longhouse" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.53 0 -37.53" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "25.47 0 -27.47" },
             ],
             text: "",
             origin_file: "world/cities/discordia/portals.xml",
@@ -403,6 +408,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.market.stall_a" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "9 0 -18.5" },
             ],
@@ -450,6 +456,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.market.stall_b" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "11.5 0 -13.2" },
             ],
@@ -497,6 +504,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "ScenePortal",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.market.stall_c" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "17 0 -19" },
             ],

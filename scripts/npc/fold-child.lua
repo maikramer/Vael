@@ -1,5 +1,6 @@
 local rules = vael.load("lib/rules.lua")
 local opening = vael.load("lib/opening.lua")
+local concordia = vael.load("lib/concordia.lua")
 local talk = vael.load("ui/say.lua")
 
 local QUEST = "story_first_fold"
@@ -49,16 +50,18 @@ function on_update(_dt)
   local _, hp = rules.player_hp()
   if hp <= 0 then return end
   vael.face_player()
-  if state == "done" then
-    talk.say(game["campaign.fold"] == "roof" and "Sigo o telhado branco até casa." or "A curva do muro leva-me a casa.")
+  if state ~= "done" and not concordia.open("gate") then
+    talk.say("Primeiro levanta o portão. A placa diz de que precisamos.")
+  elseif state == "done" then
+    talk.say(game["campaign.fold"] == "roof" and "Sigo o telhado branco até casa." or "A esquina da cerca leva-me a casa.")
   elseif state ~= "active" then
-    talk.say("O Edmar está à tua espera junto ao salão.")
+    talk.say("O Edmar está à tua espera debaixo da lona, junto ao poço.")
   elseif stage == 1 then
     talk.say("Assina a Atalaia do Vale [F]. Traz o mapa ao portão e eu experimento-o contigo.")
   elseif stage == 2 then
     if not st.paper then
       st.paper = true
-      talk.say("Anda à minha volta para orientar a folha. Escolhe o telhado, o muro ou a seta do curral. Confirma quando quiseres.", 8)
+      talk.say("Anda à minha volta para orientar a folha. Escolhe o telhado, a cerca ou a seta do curral. Confirma quando quiseres.", 8)
     elseif legend == "yard" then
       st.paper = false
       st.wrong = true

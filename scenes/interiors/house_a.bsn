@@ -1133,6 +1133,7 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef { path: "poi/cartographer-bed.lua" }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1390,7 +1391,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1434,7 +1435,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1990,7 +1991,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2041,7 +2042,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2092,7 +2093,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2577,4 +2578,45 @@ bevy_ecs::hierarchy::Children [
         }
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216081565)
     ]
+--
+    #"Baú do Cartógrafo"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 2.65, y: 0.05, z: -2.1 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+}
+bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+bevy_ext_scene::ScriptRef { path: "chest.lua" }
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Baú do Cartógrafo" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "0" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "0" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o teu baú" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(599874603917536902)
+bevy_ecs::hierarchy::Children [
+    #"Baú do Cartógrafo · modelo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Baú do Cartógrafo · modelo" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1088191732468425924)
+]
 ]

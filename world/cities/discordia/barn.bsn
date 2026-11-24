@@ -50,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "village_barn" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-31.1 0 30" },
@@ -101,6 +102,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-hay-1" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.50 0.00 27.50" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0" },
@@ -151,6 +153,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-hay-2" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.20 0.00 28.40" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -24 0" },
@@ -201,6 +204,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-trough" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.50 0.00 26.80" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
@@ -237,7 +241,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -251,6 +255,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-barrel" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-29.90 0.00 25.80" },
             ],
@@ -286,7 +291,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -300,6 +305,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-crate" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-31.00 0.00 25.50" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
@@ -350,6 +356,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-logs" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.80 0.00 25.50" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 8 0" },
@@ -400,6 +407,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-chopping-block" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-33.10 0.00 25.60" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0" },
@@ -450,6 +458,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-torch" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27.50 0.00 32.80" },
             ],
@@ -521,6 +530,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Composition",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-fireflies" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-32.20 0.00 26.60" },
             ],
@@ -548,5 +558,125 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083152)
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
+    ]
+--
+    #"Canteiro · Celeiro"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Canteiro · Celeiro" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(1853745774599292202)
+bevy_ecs::hierarchy::Children [
+    #"Estacas · Celeiro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -31.1, y: 0.0, z: 30.0 },
+        scale: glam::Vec3 { x: 2.2, y: 1.0, z: 2.5 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Celeiro" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4005132486501595393)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Celeiro · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Celeiro · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3671446990183790496)
+    ]
+    --
+    #"Placa · Celeiro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -24.3, y: 0.0, z: 29.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Celeiro" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "barn" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(998635890935636024)
+    bevy_ecs::hierarchy::Children [
+        #"Placa de madeira · Celeiro"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Celeiro" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4074730386646358411)
+    ]
+--
+        #"Esqueleto · Celeiro"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: -31.1, y: 0.0, z: 30.0 },
+    scale: glam::Vec3 { x: 2.2, y: 1.0, z: 2.5 },
+}
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/canteiro-esqueleto_collision.glb", base: true },
+}
+bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Celeiro" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "barn:1" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(1887240895986080571)
+bevy_ecs::hierarchy::Children [
+    #"Esqueleto · Celeiro · malha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Celeiro · malha" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-esqueleto.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4233763892935282328)
+]
     ]
 ]

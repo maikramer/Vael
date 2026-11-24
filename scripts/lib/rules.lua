@@ -1219,7 +1219,10 @@ function M.kill_xp(kind)
   return tonumber(KILL_XP[kind]) or KILL_XP_DEFAULT
 end
 
+local concordia = vael.load("lib/concordia.lua")
+
 function M.award_kill(kind, id)
+  concordia.grant_piece(M, kind)
   M.add_xp(M.kill_xp(kind))
   local elites = g().elites
   M.report_kill(kind, id ~= nil and type(elites) == "table" and elites[id] == true)
@@ -1231,7 +1234,7 @@ function M.award_kill(kind, id)
   -- `tick` (`save_at`). Adiado: o `fsm` paga o loot DEPOIS de `award_kill`,
   -- e o save síncrono gravava o estado sem a bolsa/poções do chefe (morrer
   -- ou Carregar perdia-as). O flush só grava com o herói de pé.
-  if KILL_XP[kind] then
+  if KILL_XP[kind] or concordia.by_boss[kind] then
     save_at = vael.time() + 0.05
   end
 end
@@ -1334,30 +1337,40 @@ end
 local DEATH_GOLD_FRAC = 0.25
 local PURSE_RADIUS = 2.5
 
+local function purse_amount()
+  local count = num("lost_gold", 0)
+  for kind in pairs(concordia.materials) do
+    count = count + num("lost_material." .. kind, 0)
+  end
+  return count
+end
+
 local function drop_purse(game)
   local scene = vael.scene_name and vael.scene_name() or nil
-  if scene ~= nil and scene ~= "main" then
-    return
-  end
+  if scene ~= nil and scene ~= "main" then return end
   local has, x, y, z = vael.player_position()
-  if not has or not finite(x) or not finite(y) or not finite(z) then
-    return
+  if not has or not finite(x) or not finite(y) or not finite(z) then return end
+  local function drop(kind, key)
+    local amount = math.floor(M.vault_get(kind) * DEATH_GOLD_FRAC)
+    if amount >= 1 and M.vault_take(kind, amount) then
+      game[key] = num(key, 0) + amount
+      return true
+    end
+    return false
   end
-  local lost = math.floor(M.vault_get("gold") * DEATH_GOLD_FRAC)
-  if lost < 1 or not M.vault_take("gold", lost) then
-    return
+  local dropped = drop("gold", "lost_gold")
+  for kind in pairs(concordia.materials) do
+    dropped = drop(kind, "lost_material." .. kind) or dropped
   end
-  game.lost_gold = lost
-  game.lost_x, game.lost_y, game.lost_z = x, y, z
+  if dropped then
+    game.lost_x, game.lost_y, game.lost_z = x, y, z
+  end
 end
 
 local purse_fx_t = 0
 
 local function tick_purse(game, dt)
-  local lost = num("lost_gold", 0)
-  if lost < 1 then
-    return
-  end
+  if purse_amount() < 1 then return end
   local scene = vael.scene_name and vael.scene_name() or nil
   if (scene ~= nil and scene ~= "main") or (game.hp or 0) <= 0 then
     return
@@ -1370,12 +1383,23 @@ local function tick_purse(game, dt)
   local dx, dz = px - x, pz - z
   local d2 = dx * dx + dz * dz
   if d2 <= PURSE_RADIUS * PURSE_RADIUS then
-    game.lost_gold = 0
-    local back = M.vault_add("gold", lost) or 0
-    vael.damage_number("+" .. back .. " ouro", { color = "#ffd35a", x = x, y = y + 1.6, z = z })
-    vael.burst("sparkle", x, y + 0.8, z, 16)
-    vael.sound("coin", { x = x, y = y, z = z })
-    vael.toast("Recuperaste a bolsa: +" .. back .. " de ouro.")
+    local recovered = {}
+    local function recover(kind, key)
+      local lost = num(key, 0)
+      if lost < 1 then return end
+      local back = M.vault_add(kind, lost) or 0
+      game[key] = lost - back
+      if back > 0 then
+        recovered[#recovered + 1] = "+" .. back .. " " .. M.item_label(kind):lower()
+      end
+    end
+    recover("gold", "lost_gold")
+    for kind in pairs(concordia.materials) do recover(kind, "lost_material." .. kind) end
+    if #recovered > 0 then
+      vael.burst("sparkle", x, y + 0.8, z, 16)
+      vael.sound("coin", { x = x, y = y, z = z })
+      vael.toast("Recuperaste da bolsa: " .. table.concat(recovered, " · ") .. ".")
+    end
     return
   end
   -- Brilho periódico: a bolsa lê-se de longe (a 70 m já se vê o anel).
@@ -1389,7 +1413,7 @@ end
 
 -- Onde está a bolsa perdida (a seta/mapa podem apontá-la): x, y, z, ouro.
 function M.lost_purse()
-  local lost = num("lost_gold", 0)
+  local lost = purse_amount()
   local game = g()
   if lost < 1 or not finite(game.lost_x) or not finite(game.lost_z) then
     return nil
@@ -1565,9 +1589,8 @@ function M.respawn()
   game.iframes = 2.0
   vael.ui.open("death", false)
   vael.ui.set_visible("hud", true)
-  if num("lost_gold", 0) >= 1 then
-    vael.toast("Renasces no último descanso. A tua bolsa ("
-      .. math.floor(num("lost_gold", 0)) .. " de ouro) ficou onde caíste.")
+  if purse_amount() >= 1 then
+    vael.toast("Renasces no último descanso. A tua bolsa ficou onde caíste.")
   else
     vael.toast("Renasces no último descanso.")
   end

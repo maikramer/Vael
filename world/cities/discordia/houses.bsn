@@ -50,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "house_a" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "25 0 12" },
@@ -62,21 +63,31 @@ bevy_ecs::hierarchy::Children [
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216083435)
         bevy_ecs::hierarchy::Children [
             #"GltfScene village_house"
-            jackdaw::prefab::components::IsA {
-                source: "world/prefabs/village/village-house.bsn",
-                deleted: [],
-            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/village/village_house_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/village/village_house_lod2.glb"),
+                near: core::option::Option::Some(45.0),
+                mid: core::option::Option::Some(110.0),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "casa-do-cartografo-modelo" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_house_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
             }
             bevy_world_xml::bsn::WorldOrigin {
                 file: "world/cities/discordia/houses.xml",
                 path: [0, 0, 0],
             }
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083436)
-            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #house_b
@@ -273,6 +284,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.house-a-bench" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "21.80 0.00 10.60" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
@@ -309,7 +321,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -323,6 +335,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.house-a-barrel" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.40 0.00 8.00" },
             ],
@@ -372,6 +385,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.house-a-logs" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "21.80 0.00 13.80" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 10 0" },
@@ -403,7 +417,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.house-a-torch"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 29.4, y: 0.0, z: 6.2 },
+            translation: glam::Vec3 { x: 28.65, y: 0.0, z: 7.5 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -422,8 +436,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.house-a-torch" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "29.40 0.00 6.20" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "28.65 0 7.5" },
             ],
             text: "",
             origin_file: "world/cities/discordia/houses.xml",
@@ -541,7 +556,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -773,7 +788,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1104,7 +1119,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1278,5 +1293,179 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083488)
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
+    ]
+--
+    #"Canteiro · Casa do Cartógrafo"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Canteiro · Casa do Cartógrafo" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(842559075173889636)
+bevy_ecs::hierarchy::Children [
+    #"Estacas · Casa do Cartógrafo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 25.0, y: 0.0, z: 12.0 },
+        scale: glam::Vec3 { x: 2.35, y: 1.0, z: 2.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Casa do Cartógrafo" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2246593035812028618)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Casa do Cartógrafo · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Casa do Cartógrafo · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(656645359408013902)
+    ]
+    --
+    #"Placa · Casa do Cartógrafo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 24.0, y: 0.0, z: 6.9 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Casa do Cartógrafo" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "house" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(540122357242648661)
+    bevy_ecs::hierarchy::Children [
+        #"Placa de madeira · Casa do Cartógrafo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Casa do Cartógrafo" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3950454913979372078)
+    ]
+    --
+    #"campfire-cartografo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 19.7, y: 0.0, z: 7.3 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "campfire.lua" }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/campfire_pit_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "campfire-cartografo" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:3" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2569050351789670279)
+    bevy_ecs::hierarchy::Children [
+        #"Fogueira da casa"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Fogueira da casa" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3511492270318318084)
+        --
+        #"Fogo do Cartógrafo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.38, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Fogo do Cartógrafo" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2101678487176930396)
+    ]
+--
+        #"Esqueleto · Casa do Cartógrafo"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 25.0, y: 0.0, z: 12.0 },
+    scale: glam::Vec3 { x: 2.35, y: 1.0, z: 2.0 },
+}
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/canteiro-esqueleto_collision.glb", base: true },
+}
+bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Casa do Cartógrafo" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "house:1" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(1955718722357430828)
+bevy_ecs::hierarchy::Children [
+    #"Esqueleto · Casa do Cartógrafo · malha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Casa do Cartógrafo · malha" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-esqueleto.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3400637077232635086)
+]
     ]
 ]

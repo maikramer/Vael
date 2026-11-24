@@ -1,4 +1,4 @@
-//! Conteúdo do Vael: os JSON que o jogo já lê via `viber.load_json`.
+//! Conteúdo do Vael: os JSON que o jogo já lê via `vael.load_json`.
 //!
 //! Os schemas são os ficheiros existentes — nenhum campo é renomeado nem
 //! reescrito. Campos desconhecidos são ignorados (edições do editor e
@@ -21,10 +21,26 @@ pub use vael_content::{
 
 // ── catálogo carregado ──────────────────────────────────────────────────
 
+#[derive(Debug, Clone, Default, serde::Deserialize)]
+pub struct ConcordiaFile {
+    pub sites: Vec<ConcordiaSite>,
+}
+
+#[derive(Debug, Clone, serde::Deserialize)]
+pub struct ConcordiaSite {
+    pub id: String,
+    pub name: String,
+    pub work: Vec<(String, u32)>,
+    pub piece_name: Option<String>,
+    pub boss: Option<String>,
+    pub place: Option<String>,
+}
+
 /// Todo o conteúdo estático do Vael, carregado uma vez no arranque.
 #[derive(Resource, Debug, Clone, Default)]
 pub struct VaelContent {
     pub items: ItemsFile,
+    pub concordia: ConcordiaFile,
     pub progression: ProgressionFile,
     pub recipes: RecipesFile,
     pub landmarks: LandmarksFile,
@@ -48,6 +64,9 @@ impl VaelContent {
         let mut errors = Vec::new();
         let mut content = Self::default();
 
+        if root.join("data/concordia.json").is_file() {
+            content.concordia = load_required(root, "data/concordia.json", &mut errors);
+        }
         content.items = load_required(root, "data/items.json", &mut errors);
         content.progression = load_required(root, "data/progression.json", &mut errors);
         content.recipes = load_required(root, "data/recipes.json", &mut errors);

@@ -5,6 +5,7 @@
 local rules = vael.load("lib/rules.lua")
 local opening = vael.load("lib/opening.lua")
 local marks = vael.load("lib/landmarks.lua")
+local concordia = vael.load("lib/concordia.lua")
 local talk = vael.load("ui/say.lua")
 local decide = vael.load("lib/decide.lua")
 
@@ -62,7 +63,7 @@ function on_update(_dt)
   elseif id == "story_notas" and state == "not_taken" then
     local dx, dz = opening.offset()
     if not dx or dx * dx + dz * dz > 25 then st.contract_open = false end
-    if st.contract_open then
+    if st.contract_open and concordia.open("house") then
       region, label = opening.region(dx, dz)
     else
       label = "Abrir o contrato dobrado"
@@ -100,15 +101,19 @@ function on_update(_dt)
       talk.say("Que a estrada te seja leve.")
     end
   elseif id == "story_notas" and state == "not_taken" then
-    if not st.contract_open then
+    if not concordia.open("house") then
+      talk.say("Mede o que ainda se pode levantar. A primeira obra é a tua casa: oito de madeira e seis de pedra.", 7)
+    elseif not st.contract_open then
       st.contract_open = true
       say(def.lines_intro, "Escolhe uma terra.", 0)
     elseif region and vael.vael.opening_action("contract", region) then
       st.contract_open = false
       rules.sync_collect()
-      talk.say("Contrato assinado. Assina a Atalaia do Vale [F] e volta à criança ao portão norte.", 7)
+      talk.say("Contrato assinado. Levanta o portão da cerca. Depois ensinas à criança como voltar da Atalaia do Vale.", 7)
       vael.save_slot(0)
     end
+  elseif id == "story_notas" and state == "ready" and not concordia.open("hall") then
+    talk.say("Traz as Notas ao salão quando a trave estiver no sítio.")
   elseif id == "story_notas" and state == "ready" and vael.game()["campaign.opening"]
       and rules.quest_state("story_first_fold") ~= "done" then
     talk.say("Primeiro mostra à criança o caminho de volta.")

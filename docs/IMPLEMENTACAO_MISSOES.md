@@ -73,7 +73,7 @@ Quando a última interacção já é a entrega (a criança que encontrou o port�
 | 1 · `fold_sign` | Interacção de assinatura no primeiro marco, ou leitura de uma assinatura anterior ao activar a etapa | Conferir no registo de marcos a assinatura válida. Promover apenas a etapa 1. A proximidade do poste, sozinha, deixa o desenho por fazer. |
 | 2 · `fold_confirm` | Criança no portão, quando acaba o ensaio do caminho | Validar a orientação e a legenda escolhida. Gravar `campaign.fold` e concluir. Uma direcção errada leva ao curral e volta à etapa 2. Uma segunda confirmação na mesma frame encontra a quest entregue. |
 
-No Jackdaw, atribuir nomes estáveis à criança, ao poste de orientação e aos destinos do ensaio (portão/curral). Verificar no terreno a linha de vista para o telhado e para o muro antes de fixar as poses. Ainda se pode mudar o marco de referência na autoria. O teste em cena deve usar o nome referenciado no conteúdo. Na tradução, distinguir `fold_sign` («Assina o marco») de `fold_confirm` («Mostra o caminho de volta»); manter os dois rótulos disponíveis na navegação por comando.
+No Jackdaw, atribuir nomes estáveis à criança, ao poste de orientação e aos destinos do ensaio (portão/curral). Verificar no terreno a linha de vista para o telhado e para a esquina da cerca antes de fixar as poses. Ainda se pode mudar o marco de referência na autoria. O teste em cena deve usar o nome referenciado no conteúdo. Na tradução, distinguir `fold_sign` («Assina o marco») de `fold_confirm` («Mostra o caminho de volta»); manter os dois rótulos disponíveis na navegação por comando.
 
 ## 3. Fichas de implementação das 17 missões
 
@@ -105,7 +105,7 @@ Conservar `q.<id>` e os campos existentes de progresso, `tracked_quest`, `story_
 
 | Chave proposta | Valores | Momento de escrita e leitor |
 |---|---|---|
-| `campaign.region`, `campaign.fold` | ID de uma das quatro quests regionais; `roof` ou `wall` | Confirmação no contrato e no portão. Seguimento da primeira região e folha mostrada no fim. A região pode mudar enquanto se procuram Notas. |
+| `campaign.region`, `campaign.fold` | ID de uma das quatro quests regionais; `roof` ou `wall` (`wall` é a esquina da cerca; o id fica por causa dos saves) | Confirmação no contrato e no portão. Seguimento da primeira região e folha mostrada no fim. A região pode mudar enquanto se procuram Notas. |
 | `campaign.seen.<pista>` | booleano por vestígio opcional | Inspecção dos sulcos, manifesto, soleira ou seta. As provas obrigatórias da fivela, pano e cópia podem ser derivadas de M07–M09 entregues. |
 | `campaign.stretcher.rest`, `campaign.stretcher.grip` | `start`, `rest1`, `rest2`, `shelter`; `original` ou `swapped` | Confirmar pouso ou troca. O posicionamento no retorno usa o identificador do apoio e as poses autoradas do par. |
 | `campaign.discovered.<id>` | booleano por pedido local | Primeiro anúncio válido após os créditos. Uma local em curso ou entregue num save antigo já conta como descoberta. |

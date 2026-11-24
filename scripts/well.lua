@@ -1,13 +1,19 @@
 local rules = vael.load("lib/rules.lua")
+local concordia = vael.load("lib/concordia.lua")
 -- well.lua: beber restaura 25 HP (o mesmo descanso da fogueira). Antes era
 -- um toast único e a vida não mexia.
 function on_update(dt)
   local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
-  if not st.ready then
-    st.ready = true
-    vael.set_interaction("Beber", "e", 3.0)
+  local open = concordia.open("well")
+  if st.open ~= open then
+    st.open = open
+    vael.set_interaction(open and "Puxar o balde" or "Examinar a borda do poço", "e", 3.0)
   end
   if vael.menu_open() or not vael.interacted("e") then
+    return
+  end
+  if not open then
+    vael.toast("A borda ainda aguenta. O balde espera pela obra.")
     return
   end
   local ok, hp, max_hp = rules.player_hp()

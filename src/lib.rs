@@ -41,6 +41,7 @@ pub mod collect_fx;
 pub mod combat;
 mod compat;
 pub mod components;
+mod concordia;
 pub mod content;
 pub mod economy;
 pub mod editor_link;
@@ -255,7 +256,7 @@ impl Plugin for VaelPlugin {
         app.add_plugins(snow_caps::VaelSnowCapsPlugin);
         // Barcos a remos: casco procedural, flutuação (engine), embarque/
         // saída com E e condução com WASD. Fora da tupla acima (15 é o teto).
-        app.add_plugins(boat::VaelBoatPlugin);
+        app.add_plugins((boat::VaelBoatPlugin, concordia::ConcordiaPlugin));
         // Luzes práticas (`bevy_lights`): as luzes de fogo viram candidatas de
         // um pool orçamentado com flicker e chama, em vez da lavagem quente
         // uniforme do ganho nocturno global. `VAEL_PRACTICAL_LIGHTS=0`

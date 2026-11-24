@@ -2,12 +2,12 @@
 //!
 //! O HUD/menus desenham-se a partir de `VaelSave` + `VaelContent`; as ações
 //! usam as regras já portadas (`economy`, `gear`, `quest`, `vault`, `xp`) e
-//! escrevem as chaves partilhadas no `viber.game()` por `apply_patch` (o
+//! escrevem as chaves partilhadas no `vael.game()` por `apply_patch` (o
 //! estado que o resto do jogo ainda lê). Nada aqui chama `dispatch` de Lua.
 //!
 //! Os roots declarativos de `world/menu.xml`, `title.xml` e `death.xml`
 //! continuam no autoload apenas para o estado dos modais/`UiTabs` e para o
-//! `viber.ui.is_open("title"/"death")` dos scripts de jogo; estão escondidos
+//! `vael.ui.is_open("title"/"death")` dos scripts de jogo; estão escondidos
 //! e já não têm `script=` — a apresentação e as ações são deste módulo.
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -278,7 +278,7 @@ impl ScreensVm {
 // ── helpers de estado ───────────────────────────────────────────────────
 
 fn game_kv(_world: &World) -> BTreeMap<String, Value> {
-    // Store do processo: o `viber.game()` de todos os contextos BMS.
+    // Store do processo: o `vael.game()` de todos os contextos BMS.
     vael_engine::luau::game::game_to_json_process()
 }
 
@@ -292,7 +292,7 @@ fn patch_game(_world: &mut World, patch: BTreeMap<String, Value>) {
 /// Registo de ações observáveis pelo juiz, no store do jogo (o mesmo onde
 /// vivem `mark.<name>`/`q.*`): `act.seq` é o próximo índice e cada ação
 /// ocupa `act.<n>.v` (verbo), `.k` (tipo do id) e `.i` (id), com `.t` no
-/// relógio de `viber.time()`.
+/// relógio de `vael.time()`.
 ///
 /// O `patch` é aplicado por quem chama (`patch_game`), para a ação entrar no
 /// mesmo `apply_patch` das outras chaves.
@@ -335,7 +335,7 @@ fn sfx(world: &mut World, clip: SfxClip) {
     }
 }
 
-/// Cofre no espaço de chaves do `viber.game()` (`item.<id>`), que é o que o
+/// Cofre no espaço de chaves do `vael.game()` (`item.<id>`), que é o que o
 /// `vault_get`/`shop_rows`/`craft_status` esperam. O `patch_items` devolve
 /// estas mesmas chaves à engine — não voltar a prefixá-las.
 fn inventory_kv(save: &VaelSave) -> BTreeMap<String, i64> {
@@ -524,7 +524,7 @@ fn death_should_open(save: &VaelSave, modal_open: bool) -> bool {
     death_pending(save) && !modal_open
 }
 
-/// `death_pending` do store VIVO (`viber.game()`), mais fresco que o
+/// `death_pending` do store VIVO (`vael.game()`), mais fresco que o
 /// [`VaelSave`] (snapshot a 10 Hz). `None` quando a chave não existe.
 fn death_pending_live() -> Option<bool> {
     vael_engine::luau::game::game_get_bool("death_pending")
@@ -915,6 +915,10 @@ fn forge_click(world: &mut World, id: &str) {
     let Some(content) = world.get_resource::<VaelContent>().cloned() else {
         return;
     };
+    if !content.concordia.sites.is_empty() && crate::concordia::stage("forge") != 3 {
+        toast(world, "A bigorna de Bram ainda falta à forja.");
+        return;
+    }
     let save = world.resource::<VaelSave>().clone();
     let mut kv = inventory_kv(&save);
     let outcome = craft_make(&rules.craft, &mut kv, id);
@@ -1325,7 +1329,7 @@ fn item_icon(id: &str) -> Option<String> {
 
 fn biome_label(content: Option<&VaelContent>, lang: &str, biome: &str) -> String {
     match biome {
-        "city" => label(content, lang, "menu.biome.city", "Discórdia"),
+        "city" => label(content, lang, "menu.biome.city", "Concórdia"),
         "dark_forest" | "dark-forest" => {
             label(content, lang, "menu.biome.dark_forest", "Floresta Sombria")
         }
@@ -1399,7 +1403,15 @@ fn objective_line(
         String::new()
     };
     if !view.title.is_empty() {
-        return format!("{prefix}{}", label(content, lang, &format!("quest.{}", view.target), &view.title));
+        return format!(
+            "{prefix}{}",
+            label(
+                content,
+                lang,
+                &format!("quest.{}", view.target),
+                &view.title
+            )
+        );
     }
     let count = view.count;
     match view.objective_type.as_str() {
@@ -1455,7 +1467,12 @@ fn quest_rows(
         if let Some(def) = quests.get(crate::quest::CONTRACT) {
             let (title, hint) = crate::hud::opening_offer_text(def, content, lang);
             let signed = kv.contains_key("campaign.region");
-            let mut row = RowVm::menu("opening-contract", title, hint, quest_status_label(content, lang, signed));
+            let mut row = RowVm::menu(
+                "opening-contract",
+                title,
+                hint,
+                quest_status_label(content, lang, signed),
+            );
             row.clickable = false;
             rows.push(row);
         }
@@ -1463,7 +1480,12 @@ fn quest_rows(
             && def.id != crate::quest::CONTRACT
         {
             let (title, hint) = crate::hud::opening_offer_text(def, content, lang);
-            let mut row = RowVm::menu("opening-region", title, hint, quest_status_label(content, lang, false));
+            let mut row = RowVm::menu(
+                "opening-region",
+                title,
+                hint,
+                quest_status_label(content, lang, false),
+            );
             row.clickable = false;
             rows.push(row);
         }
@@ -1474,8 +1496,10 @@ fn quest_rows(
         if state == "not_taken" || state == "unknown" {
             continue;
         }
-        if opening && id_string == crate::quest::CONTRACT
-            && quest_state(&rules.quests, &kv, crate::quest::FIRST_FOLD) == "active" {
+        if opening
+            && id_string == crate::quest::CONTRACT
+            && quest_state(&rules.quests, &kv, crate::quest::FIRST_FOLD) == "active"
+        {
             continue;
         }
         let (have, need) = quest_progress(&rules.quests, &kv, &id_string);
@@ -1501,17 +1525,37 @@ fn quest_rows(
         let tracked = save.quests.tracked.as_deref() == Some(id_string.as_str())
             && (state == "active" || state == "ready");
         let subtitle = if opening && id_string == "forest_witch" && state == "ready" {
-            label(content, lang, "quest.forest_witch.return", "Mostra a Nota do Bosque a Vessa")
+            label(
+                content,
+                lang,
+                "quest.forest_witch.return",
+                "Mostra a Nota do Bosque a Vessa",
+            )
         } else if id_string == crate::quest::FIRST_FOLD && state == "done" {
             if kv.get("campaign.fold").and_then(Value::as_str) == Some("roof") {
-                label(content, lang, "quest.fold.roof", "A criança guardou o desenho do telhado.")
+                label(
+                    content,
+                    lang,
+                    "quest.fold.roof",
+                    "A criança guardou o desenho do telhado.",
+                )
             } else {
-                label(content, lang, "quest.fold.wall", "A criança guardou o desenho do muro.")
+                label(
+                    content,
+                    lang,
+                    "quest.fold.wall",
+                    "A criança guardou o desenho da cerca.",
+                )
             }
         } else {
             objective_line(content, def, &state, &view, lang)
         };
-        let title = label(content, lang, &format!("quest.{}.title", def.id), &def.title);
+        let title = label(
+            content,
+            lang,
+            &format!("quest.{}.title", def.id),
+            &def.title,
+        );
         rows.push(
             RowVm::menu(
                 format!("track-{id_string}"),
@@ -1520,11 +1564,7 @@ fn quest_rows(
                 } else {
                     title
                 },
-                format!(
-                    "{} · {}",
-                    subtitle,
-                    biome_label(content, lang, &def.biome)
-                ),
+                format!("{} · {}", subtitle, biome_label(content, lang, &def.biome)),
                 status_text,
             )
             .with_progress(progress)
@@ -1532,12 +1572,60 @@ fn quest_rows(
         );
         let _ = progress_text;
     }
+    if let Some(content) = content {
+        let finished = |id: &str| {
+            kv.get(&format!("concordia.{id}")).and_then(Value::as_u64) == Some(3)
+        };
+        for site in &content.concordia.sites {
+            let state = kv.get(&format!("concordia.{}", site.id)).and_then(Value::as_u64).unwrap_or(0);
+            if opening && state == 0 && !finished("house") && site.id != "house" {
+                continue;
+            }
+            if opening && state == 0 && !finished("gate") && !matches!(site.id.as_str(), "house" | "gate") {
+                continue;
+            }
+            let (subtitle, status) = match state {
+                3 => ("".to_string(), "Habitado"),
+                2 => ("O tecto está a fechar.".to_string(), "Peça encaixada"),
+                1 if site.piece_name.is_none() => ("A levantar o abrigo.".into(), "Esqueleto"),
+                1 => (
+                    [site.piece_name.as_deref(), site.boss.as_deref(), site.place.as_deref()]
+                        .into_iter().flatten().collect::<Vec<_>>().join(" · "),
+                    "Esqueleto",
+                ),
+                _ => (
+                    site.work.iter().filter_map(|(id, need)| {
+                        let stored = kv.get(&format!("concordia.work.{}.{id}", site.id))
+                            .and_then(Value::as_u64).unwrap_or(0);
+                        let remaining = u64::from(*need).saturating_sub(stored);
+                        let name = content.items.items.iter().find(|item| &item.id == id)
+                            .map_or(id.as_str(), |item| item.label.as_str());
+                        (remaining > 0).then(|| format!("{remaining} {}", name.to_lowercase()))
+                    }).collect::<Vec<_>>().join(" · "),
+                    "Estacas",
+                ),
+            };
+            let mut row = RowVm::menu(
+                format!("canteiro-{}", site.id),
+                format!("{}{}", if state == 3 { "✓ " } else { "" }, site.name),
+                subtitle,
+                status,
+            );
+            row.clickable = false;
+            rows.push(row);
+        }
+    }
     if opening {
         rows.sort_by_key(|row| match row.action.as_str() {
+            "canteiro-house" => 0,
+            "canteiro-gate" => 1,
             "opening-contract" => 0,
-            "track-story_first_fold" => 1,
-            "opening-region" | "track-forest_witch" | "track-desert_worm"
-                | "track-swamp_bogwarden" | "track-peaks_ogre" => 2,
+            "track-story_first_fold" => 2,
+            "opening-region"
+            | "track-forest_witch"
+            | "track-desert_worm"
+            | "track-swamp_bogwarden"
+            | "track-peaks_ogre" => 2,
             "track-story_notas" => 3,
             _ => 4,
         });
@@ -1702,6 +1790,11 @@ fn forge_rows(
     rules: &VaelUiRules,
     lang: &str,
 ) -> Vec<RowVm> {
+    if content.is_some_and(|content| !content.concordia.sites.is_empty())
+        && crate::concordia::stage("forge") != 3
+    {
+        return Vec::new();
+    }
     let kv = inventory_kv(save);
     rules
         .craft
@@ -1758,7 +1851,11 @@ fn controls_rows(content: Option<&VaelContent>, lang: &str) -> Vec<RowVm> {
         ("SHIFT", "menu.controls.run", "correr"),
         ("ESPAÇO", "menu.controls.jump", "saltar"),
         ("RATO/J", "menu.controls.attack", "atacar"),
-        ("C", "menu.controls.dodge", "esquiva na direção do movimento"),
+        (
+            "C",
+            "menu.controls.dodge",
+            "esquiva na direção do movimento",
+        ),
         ("E", "menu.controls.heal", "curar"),
         ("R", "menu.controls.strike", "golpe forte"),
         ("L", "menu.controls.guard", "guarda / aparar"),
@@ -2106,7 +2203,7 @@ pub fn refresh_slots(
     );
 }
 
-/// Repõe escala/idioma/a11y/volumes guardados no `viber.game()` (o antigo
+/// Repõe escala/idioma/a11y/volumes guardados no `vael.game()` (o antigo
 /// `menu.lua` fazia-o; sem ele o save carregado ficava com os defaults).
 /// As chaves de preferência que o [`apply_preferences`] aplica; a assinatura
 /// de mudança deriva da mesma lista, para a sig e o corpo não divergirem.
@@ -2562,7 +2659,13 @@ pub fn sync_screens(
         );
         m.bag_empty_text = label(content, &lang, "menu.bag.empty", "Mochila vazia.");
         m.shop_empty_text = label(content, &lang, "menu.shop.empty", "Sem ofertas.");
-        m.forge_empty_text = label(content, &lang, "menu.forge.empty", "Sem receitas.");
+        m.forge_empty_text = if content.is_some_and(|content| !content.concordia.sites.is_empty())
+            && crate::concordia::stage("forge") != 3
+        {
+            "A forja está em obra.".into()
+        } else {
+            label(content, &lang, "menu.forge.empty", "Sem receitas.")
+        };
         m.quests = quests.clone();
         m.bag = bag.clone();
         m.shop = shop.clone();

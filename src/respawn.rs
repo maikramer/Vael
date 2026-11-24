@@ -98,7 +98,7 @@ pub fn flasks_from_stat(stat: f64) -> u32 {
     (FLASK_BASE as f64 + stat.floor()).max(1.0) as u32
 }
 
-/// Chaves de `viber.game()` que o respawn repõe. Igual ao `M.respawn`:
+/// Chaves de `vael.game()` que o respawn repõe. Igual ao `M.respawn`:
 /// vida cheia, morte desarmada, estados limpos e frascos no máximo.
 pub fn respawn_patch(save: &VaelSave, flasks: u32) -> BTreeMap<String, Value> {
     let mut patch = BTreeMap::new();
@@ -166,37 +166,41 @@ pub fn start_death_side_effects(world: &mut World) {
     }
 }
 
-/// `drop_purse`: um quarto do ouro fica numa bolsa no sítio da queda, pelo
-/// cofre em Rust (`vault_get`/`vault_take`) e com o patch no `viber.game()`
-/// que o `tick_purse` do Lua lê.
+/// Larga um quarto do ouro e dos materiais de obra, cobrado pelo cofre.
 fn drop_purse(world: &mut World, position: Vec3) {
     let Some(content) = world.get_resource::<crate::content::VaelContent>() else {
         return;
     };
     let rules = crate::vault::VaultRules::from_items(&content.items);
-    let gold_key = crate::vault::item_key("gold");
     let store = game_to_json_process();
-    let mut items = BTreeMap::new();
-    if let Some(gold) = store.get(&gold_key).and_then(crate::compat::json_i64) {
-        items.insert(gold_key.clone(), gold.max(0));
+    let materials: std::collections::BTreeSet<_> = content.concordia.sites.iter()
+        .flat_map(|site| site.work.iter().map(|(id, _)| id.as_str()))
+        .collect();
+    let mut patch = BTreeMap::new();
+    for (kind, purse_key) in std::iter::once(("gold", "lost_gold".to_string())).chain(
+        materials.into_iter().map(|kind| (kind, format!("lost_material.{kind}"))),
+    ) {
+        let item_key = crate::vault::item_key(kind);
+        let Some(have) = store.get(&item_key).and_then(crate::compat::json_i64) else { continue };
+        let lost = (have as f64 * DEATH_GOLD_FRAC).floor() as i64;
+        let mut items = BTreeMap::from([(item_key.clone(), have)]);
+        if lost < 1 || !crate::vault::vault_take(&rules, &mut items, kind, lost as f64) {
+            continue;
+        }
+        let previous = store.get(&purse_key).and_then(crate::compat::json_i64).unwrap_or(0);
+        patch.insert(item_key.clone(), json!(items[&item_key]));
+        patch.insert(purse_key, json!(previous.saturating_add(lost)));
     }
-    let have = crate::vault::vault_get(&rules, &items, "gold");
-    let lost = (have as f64 * DEATH_GOLD_FRAC).floor() as i64;
-    if lost < 1 || !crate::vault::vault_take(&rules, &mut items, "gold", lost as f64) {
+    if patch.is_empty() {
         return;
     }
-    let mut patch = BTreeMap::new();
-    if let Some(now) = items.get(&gold_key) {
-        patch.insert(gold_key, json!(*now));
-    }
-    patch.insert("lost_gold".to_string(), json!(lost));
     patch.insert("lost_x".to_string(), json!(position.x));
     patch.insert("lost_y".to_string(), json!(position.y));
     patch.insert("lost_z".to_string(), json!(position.z));
     apply_patch_json(&patch);
 }
 
-/// `(dying, death_pending)` do `viber.game()`.
+/// `(dying, death_pending)` do `vael.game()`.
 fn death_flags() -> (f32, bool) {
     use vael_engine::luau::game::{game_value_to_json, with_game_store};
 
@@ -204,11 +208,13 @@ fn death_flags() -> (f32, bool) {
         let dying = store.get("dying").map(game_value_to_json);
         let pending = store.get("death_pending").map(game_value_to_json);
         (
-            dying.as_ref()
+            dying
+                .as_ref()
                 .and_then(crate::compat::json_f32)
                 .filter(|value| value.is_finite())
                 .unwrap_or(0.0),
-            pending.as_ref()
+            pending
+                .as_ref()
                 .and_then(crate::compat::json_bool)
                 .unwrap_or(false),
         )
@@ -280,7 +286,7 @@ impl Plugin for VaelRespawnPlugin {
 }
 
 /// Teleporta o herói para `requested` com o chão da física (a mesma via do
-/// `viber.teleport_player`: `teleport_landing` + `TeleportSettle`).
+/// `vael.teleport_player`: `teleport_landing` + `TeleportSettle`).
 pub fn teleport_player(world: &mut World, requested: Vec3) {
     crate::puppet::release_player_puppets(world);
     let Some(entity) = world
@@ -322,7 +328,7 @@ pub fn respawn_now(world: &mut World, spawn: Vec3, flasks: u32) {
     if interior {
         patch.insert("pending_respawn".to_string(), json!(true));
     }
-    // O patch vai para o STORE do processo — o `viber.game()` de todos os
+    // O patch vai para o STORE do processo — o `vael.game()` de todos os
     // contextos BMS lê daqui (sem host, sem handle mlua).
     vael_engine::luau::game::apply_patch_json(&patch);
     if let Some(writer) = world.get_resource::<UiWriter>() {
@@ -525,11 +531,11 @@ mod tests {
     /// deixando o personagem e a arma invisíveis na praça.
     #[test]
     fn respawn_now_dismantles_dead_hero_puppet_so_hero_and_weapon_stay_visible_at_spawn() {
-        use std::time::Duration;
         use avian3d::prelude::*;
         use bevy::time::TimeUpdateStrategy;
         use bevy_ext_puppet::prelude::*;
         use bevy_ext_puppet::skeleton::spawn_test_skeleton_world;
+        use std::time::Duration;
 
         let _store_lock = vael_engine::luau::game::test_support::PROCESS_STORE_TEST_LOCK
             .lock()
@@ -600,13 +606,21 @@ mod tests {
             "respawn_now tem de desmontar o Puppet do herói"
         );
 
-        let hero_gt = app.world().get::<GlobalTransform>(hero).unwrap().translation();
+        let hero_gt = app
+            .world()
+            .get::<GlobalTransform>(hero)
+            .unwrap()
+            .translation();
         let pelvis_gt = app
             .world()
             .get::<GlobalTransform>(bones[PuppetPart::Pelvis.index()])
             .unwrap()
             .translation();
-        let weapon_gt = app.world().get::<GlobalTransform>(weapon).unwrap().translation();
+        let weapon_gt = app
+            .world()
+            .get::<GlobalTransform>(weapon)
+            .unwrap()
+            .translation();
 
         assert!(
             hero_gt.distance(spawn_pos) < 0.5,

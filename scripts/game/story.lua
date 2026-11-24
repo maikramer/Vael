@@ -1,5 +1,6 @@
 local rules = vael.load("lib/rules.lua")
 local dev = vael.load("lib/dev.lua")
+local concordia = vael.load("lib/concordia.lua")
 -- game/story.lua: o fio do Capítulo I — O Silêncio de Vael (ver STORY.md).
 --
 --   * PRÓLOGO na primeira entrada no mundo (marca `story_prologo` no save);
@@ -112,6 +113,11 @@ function on_update(dt)
     return
   end
 
+  -- Derrotas de um save anterior à construção também dão a peça distinta.
+  for kind in pairs(concordia.by_boss) do
+    if g["boss_dead." .. kind] then concordia.grant_piece(rules, kind) end
+  end
+
   -- Uma assinatura anterior ou feita neste frame vale em qualquer ordem.
   if g["q.story_first_fold"] == "active" and (g["q.story_first_fold.stage"] or 1) == 1
       and g["mark.atalaia-do-vale"] then
@@ -167,7 +173,7 @@ function on_update(dt)
 
   for _, ev in ipairs(vael.events()) do
     if ev.type == "cinematic_end" and ev.id == "prologo" then
-      vael.toast("Fala com o Ancião Edmar, junto ao salão comunal.")
+      vael.toast("Fala com o Ancião Edmar, debaixo da lona junto ao poço.")
     elseif ev.type == "cinematic_end" and ev.id == "epilogo" then
       -- A entrega grava o autosave ANTES de este controller marcar
       -- `story_epilogo` (a ordem dos `on_update` não é garantida). Carregar
