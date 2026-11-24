@@ -1,10 +1,5 @@
-# Grupo farm — alvos de recolha e identidade de quinta para o simple-farm.
-#
-# O pack existia como pasta vazia: `meshes/farm/` sem um único ficheiro e sem
-# manifesto. Estes assets tapam os buracos que o mapa 512x512 expôs:
-#   - não havia nenhum alvo de recolha de COMIDA (só madeira e pedra)
-#   - não havia nada que dissesse "quinta" além de props de aldeia emprestados
-#   - a floresta tinha 4 espécies e repetia-se à vista
+# Grupo farm — alvos de recolha e identidade rural do Vale (Ofício Talhado & Iluminura Rural).
+# Defs base em ../game.yaml e ../docs/ART.md.
 #
 # `category` + `size_m` bastam: o bbox_tune escolhe o octree a partir do
 # char_m, e o soft-fill do Omni preenche control_type/presets por categoria.
@@ -23,16 +18,14 @@ assets:
   - id: berry_bush
     seed: 51101
     idea:
-      one single small cartoon fantasy orchard tree, about two meters tall,
-      sturdy short warm brown trunk with two low forked roots gripping the soil,
-      trunk splitting into a few short branches, broad rounded crown of large
-      layered painterly green leaves, dense even canopy covering every branch,
-      many small clusters of glossy ripe red berries hanging between the leaves
-      all around the crown, each berry round with a tiny bright highlight,
-      perfectly centered front view, whole tree visible from roots to crown top,
-      plain pure white background, no ground plane, no grass, no cast shadow,
-      crisp clean silhouette, storybook painterly style, bright cheerful Crystal
-      Vale fantasy game asset
+      one single small rural valley orchard tree, about two meters tall, sturdy short
+      chamfered warm-umbrian bark trunk with two low forked roots gripping the soil, trunk
+      splitting into a few short branches, broad rounded crown of large layered foliage
+      masses in deep olive and meadow green, dense even canopy covering every branch, many
+      small clusters of ripe madder-red berries hanging between the leaves all around the
+      crown, perfectly centered front view, whole tree visible from roots to crown top,
+      plain pure white background, no ground plane, no grass, no cast shadow, crisp clean
+      silhouette, matte gouache and tempera finish in broad clean color blocks
     kind: environment
     category: vegetation
     pipeline: [3d, paint, lod, collision]
@@ -43,15 +36,14 @@ assets:
   - id: berry_bush_bare
     seed: 51102
     idea:
-      one single small cartoon fantasy orchard tree, about two meters tall,
-      sturdy short warm brown trunk with two low forked roots gripping the soil,
-      trunk splitting into a few short branches, broad rounded crown of large
-      layered painterly green leaves, dense even canopy covering every branch,
-      every branch covered in plain layered green foliage with no berries and no
-      fruit on the tree, perfectly centered front view, whole tree visible from
-      roots to crown top, plain pure white background, no ground plane, no grass,
-      no cast shadow, crisp clean silhouette, storybook painterly style, bright
-      cheerful Crystal Vale fantasy game asset
+      one single small rural valley orchard tree, about two meters tall, sturdy short
+      chamfered warm-umbrian bark trunk with two low forked roots gripping the soil, trunk
+      splitting into a few short branches, broad rounded crown of large layered foliage
+      masses in deep olive and meadow green, dense even canopy covering every branch, every
+      branch covered in plain layered green foliage with no berries and no fruit on the tree,
+      perfectly centered front view, whole tree visible from roots to crown top, plain pure
+      white background, no ground plane, no grass, no cast shadow, crisp clean silhouette,
+      matte gouache and tempera finish in broad clean color blocks
     kind: environment
     category: vegetation
     pipeline: [3d, paint, lod, collision]
@@ -62,9 +54,10 @@ assets:
   - id: ore_vein
     seed: 51107
     idea:
-      cartoon fantasy ore vein boulder, grey rock with glinting copper and iron
-      metal streaks running through the cracks, chunky faceted stone, a couple of
-      loose nuggets at the foot, painterly storybook style, white background
+      angular chamfered quarry boulder of dark slate-grey rock with oxidized copper-ochre and
+      dull wrought-iron ore seams running through the fractured facets, a couple of loose
+      faceted ore chunks at the foot, matte gouache and tempera finish in broad clean color
+      blocks, white background
     kind: environment
     category: terrain
     pipeline: [3d, paint, lod, collision]
@@ -74,9 +67,9 @@ assets:
 
   - id: flint_rock
     seed: 51113
-    idea: cartoon fantasy small flint stones, a low cluster of three sharp grey
-      pebbles resting on the ground, chipped angular faces, painterly storybook
-      style, white background
+    idea:
+      low cluster of three sharp knapped flint stones resting on the ground, crisp chamfered
+      chipped dark slate and pale chalk edges, matte mineral tempera finish, white background
     kind: prop
     category: terrain
     pipeline: [3d, paint, lod, collision]
@@ -85,38 +78,17 @@ assets:
       size_m: [0.6, 0.3, 0.55]
 
   # ── Identidade de quinta ────────────────────────────────────────────
-  - id: fence_segment
-    seed: 51119
-    idea:
-      cartoon fantasy wooden fence segment, two horizontal rough planks between
-      two square posts, straight run seen from the front, weathered warm brown
-      timber, painterly storybook style, white background
-    kind: environment
-    category: building
-    pipeline: [3d, paint, lod, collision]
-    omni:
-      control_type: bbox
-      size_m: [3.0, 1.2, 0.18]
-
-  - id: fence_gate
-    seed: 51127
-    idea:
-      cartoon fantasy wooden farm gate, a single hinged plank gate between two
-      taller posts, simple iron latch, closed, front view, weathered warm brown
-      timber, painterly storybook style, white background
-    kind: environment
-    category: building
-    pipeline: [3d, paint, lod, collision]
-    omni:
-      control_type: bbox
-      size_m: [2.6, 1.5, 0.2]
+  # As cercas (`fence_segment`, `fence_gate`) saíram do pool a 2026-11-23: o
+  # mundo autora linhas e o `bevy_ext_fence` gera-as (`tools/fence_migrate.py`,
+  # docs/FENCES.md). As texturas das madeiras são de `manifests/wood-textures.yaml`.
 
   - id: scarecrow
     seed: 51131
     idea:
-      cartoon fantasy scarecrow standing upright on a single wooden post, straw
-      stuffed body, patched burlap sack head with stitched face, wide brimmed
-      floppy hat, outstretched arms, painterly storybook style, white background
+      rural field scarecrow standing upright on a single chamfered wooden post, dry golden-ochre
+      straw stuffed under a mended coarse linen tunic, burlap sack head with simple charcoal
+      stitched marks, wide-brimmed felt work hat, outstretched wooden cross-arm, matte gouache
+      and tempera finish in broad clean color blocks, white background
     kind: environment
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -127,9 +99,9 @@ assets:
   - id: hay_bale
     seed: 51137
     idea:
-      cartoon fantasy round hay bale, tightly rolled golden straw cylinder lying
-      on its side, bound with twine, loose wisps sticking out, painterly
-      storybook style, white background
+      tightly bound rural hay bale cylinder lying on its side, carved chamfered straw bundles
+      in warm dry ochre and raw sienna tied with thick hemp rope, matte gouache and tempera
+      finish in broad clean color zones, white background
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -139,9 +111,11 @@ assets:
 
   - id: chicken_coop
     seed: 51141
-    idea: cartoon fantasy chicken coop, small wooden hut on short stilts with a
-      sloped shingled roof, round entrance hole with a ramp, nesting boxes on the
-      side, painterly storybook style, three quarter view, white background
+    idea:
+      rural wooden poultry coop hut on short chamfered oak stilts with a sloped dark-slate
+      and timber shingle roof, arched entrance hatch with a grooved plank ramp, nesting box
+      on the side, lime-washed lower boards, matte gouache and tempera finish in broad clean
+      color blocks, three-quarter view, white background
     kind: environment
     category: building
     pipeline: [3d, paint, lod, collision]
@@ -153,9 +127,9 @@ assets:
   - id: tree_birch
     seed: 51149
     idea:
-      cartoon fantasy birch tree, slender white bark trunk with dark horizontal
-      scars, airy canopy of small bright yellow-green leaves, painterly
-      storybook style, white background
+      valley silver birch tree, slender chamfered chalk-white bark trunk with dark umber
+      horizontal lenticel bands, layered canopy of warm olive and ochre-green leaf masses,
+      matte gouache and tempera finish in broad clean color blocks, white background
     kind: environment
     category: vegetation
     pipeline: [3d, paint, lod, collision]
@@ -166,9 +140,10 @@ assets:
   - id: fallen_log
     seed: 51153
     idea:
-      cartoon fantasy fallen log lying on the ground, thick mossy tree trunk on
-      its side with broken splintered ends, patches of green moss and small
-      mushrooms along the top, painterly storybook style, white background
+      fallen old-growth timber log lying on the ground, thick chamfered bark trunk on its
+      side with split heartwood ends, broad patches of deep forest moss and shelf fungi along
+      the upper ridge, matte gouache and tempera finish in broad clean color blocks, white
+      background
     kind: environment
     category: vegetation
     pipeline: [3d, paint, lod, collision]

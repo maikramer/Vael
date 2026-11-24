@@ -9,9 +9,10 @@
 #
 # Este ficheiro é SÓ para manifests/characters-interiors. O game.yaml
 # partilhado fica intacto (outros lotes/pools leem dele).
-title: Crystal Vale shared packs
-genre: cartoon fantasy
-tone: bright cheerful adventure, vibrant colors, playful cartoon world, Crystal Vale
+# Direção de arte: Ofício Talhado & Iluminura Rural (ver ../docs/ART.md).
+title: O Silêncio de Vael
+genre: rural craft fantasy, carved chamfered wood and lime-washed stone, matte gouache and tempera finish
+tone: handcrafted artisanal materials, crisp chamfered planes, broad clean color blocks, functional worn craft tools, earthy mineral pigments, quiet rural valley
 style_preset: painterly
 output_dir: public/assets
 path_layout: split
@@ -24,8 +25,7 @@ generation: low
 # Packs canónicos (audio-bgm/audio-sfx-*/characters/desert/farm/forest/infra/
 # interiors/props-rpg/props/swamp/terrain/village). O happy path de
 # regen é `cd assets` (raiz do Vael) — o batch escreve em public/assets
-# **daqui** (fonte canónica dos binários); os exemplos leem o pool por URL.
-# Não há passo de sync nem symlinks.
+# **daqui** (fonte canónica dos binários). Não há passo de sync nem symlinks.
 master_validate: true
 master_bake_normals: false
 negative_keywords:
@@ -34,6 +34,13 @@ negative_keywords:
   - photorealistic
   - dark gritty
   - scary
+  - plastic glossy sheen
+  - neon oversaturated colors
+  - chibi bobblehead proportions
+  - generic mobile cartoon
+  - busy micro-patterns
+  - ornate filigree noise
+  - melted organic edges
 text2d:
   width: 768
   height: 768
@@ -47,7 +54,7 @@ text3d:
   split_at_height: true
   sdnq_preset: sdnq-int4
   memory_efficient: true
-# Refine multiview opcional (ver game.yaml/README): refine: {views: 4}
+# Refine multiview opcional (ver game.yaml/README): refine: {views: 1}
 # Personagens: retarget encadeado villager + UAL1+UAL2 — trabalhos kevdev
 # (mining/hammer/pesca por-ficheiro) com a UAL por cima em idle/gather/combos.
 animator3d:
@@ -57,9 +64,9 @@ animator3d:
 # níveis (default 1 deixaria o lod2 estático = inimigos congelados).
 lod:
   rig_max_level: 2
-  # Pós-lod automático: text3d patch-pbr garante normal+AO em todos os níveis
-  # (idempotente; derivados do albedo via Materialize). 0 desliga.
+  # Pós-lod automático UV-masked (normal OpenGL + ORM R=AO sem costuras UV).
   patch_pbr: true
 paint3d:
   preserve_origin: true
   texture_size: 2048
+  pbr_enrich: true

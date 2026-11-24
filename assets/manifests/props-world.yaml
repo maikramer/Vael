@@ -1,6 +1,5 @@
-# Grupo worldprops — props que substituem os objetos ainda feitos de primitivas
-# (bandeiras, carroças, carrinho de mina, cais, paliçada, varal, leiras, derrick,
-# portão do mercado e abrigo do posto). Consumidos por URL/prefab no mundo.
+# Grupo worldprops — estruturas de trabalho, travessia e acampamento (Ofício Talhado & Iluminura Rural).
+# Consumidos por URL/prefab no mundo. Defs base em ../game.yaml e ../docs/ART.md.
 # Regenerar: cd assets && gameassets resume --profile game.yaml --manifest manifests/props-world
 output_dir: ../public/assets
 meshes_subdir: meshes/props
@@ -8,11 +7,11 @@ images_subdir: images/props
 assets:
   - id: banner_stand
     idea:
-      cartoon fantasy tall wooden banner stand, single thick round wooden pole
-      planted in a low grey stone plinth, short horizontal cross arm at the top,
-      long rectangular cloth banner hanging from the arm, deep red cloth with
-      gold trim and a simple heraldic emblem, weathered timber, painterly
-      storybook style, white background, straight front view
+      tall hand-hewn timber banner stand, single thick chamfered oak pole planted in a low
+      squared stone plinth with lime wash, short horizontal cross arm at the top, long
+      rectangular coarse wool banner hanging from the arm in deep madder-carmine and ochre
+      with a simple carved Choir emblem, matte gouache and tempera finish in broad clean
+      color blocks, white background, straight front view
     kind: environment
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -22,12 +21,12 @@ assets:
   - id: hand_cart
     seed: 70201
     idea:
-      cartoon fantasy wooden hand cart, one single clean open rectangular cargo
-      box made of straight planks with four square corner brackets, two round
-      spoked wheels on a straight axle at the back, two straight pull shafts
-      pointing forward low to the ground, empty open top, simple clean silhouette,
-      no canopy, no lid, weathered warm brown timber, painterly storybook style,
-      white background, side view
+      rural wooden hand cart, one single clean open rectangular cargo box built of straight
+      chamfered oak planks with four forged black wrought-iron corner brackets, two round
+      spoked wooden wheels on a straight iron axle at the back, two straight pull shafts
+      pointing forward low to the ground with grips worn smooth on one side, empty open top,
+      simple clean silhouette, no canopy, no lid, weathered smoked-oak timber, matte gouache
+      and tempera finish, white background, side view
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -37,11 +36,11 @@ assets:
   - id: covered_wagon
     seed: 70207
     idea:
-      cartoon fantasy covered wagon, simple clean wooden box body on four round
-      spoked wheels, one smooth curved pale canvas canopy over the top like a
-      half cylinder, two straight wooden pull shafts at the front, tidy readable
-      silhouette, medieval pilgrim caravan wagon, no tears, painterly storybook
-      style, white background, three quarter side view
+      rural merchant caravan covered wagon, clean hand-hewn chamfered oak box body on four
+      iron-rimmed spoked wooden wheels, one smooth arched unbleached heavy linen canvas canopy
+      stretched over bent ash ribs, two straight wooden pull shafts at the front, tidy
+      readable silhouette, no tears, matte gouache and tempera finish in broad clean color
+      blocks of smoked oak, raw linen and ochre, white background, three-quarter side view
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -51,10 +50,10 @@ assets:
   - id: minecart
     seed: 70141
     idea:
-      cartoon fantasy mine ore cart, small heavy wooden hopper made of thick
-      planks with dark iron bands, four small solid iron wheels on short axles,
-      empty inside, ore dust stains, painterly storybook style, white
-      background, three quarter view
+      quarry mine ore cart, small heavy hopper built of thick chamfered oak planks reinforced
+      with forged dark iron straps and rivets, four small solid cast-iron flanged wheels on
+      short axles, empty inside, slate and turquoise crystal dust stains, matte gouache and
+      tempera finish, white background, three-quarter view
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -64,9 +63,9 @@ assets:
   - id: mine_rail
     seed: 70147
     idea:
-      cartoon fantasy mine rail track segment, two parallel dark iron rails on
-      short weathered wooden sleepers, straight flat run, gravel dust, no cart,
-      painterly storybook style, white background, top three quarter view
+      quarry mine rail track segment, two parallel forged dark wrought-iron rails spiked onto
+      short chamfered oak sleepers, straight flat run with crushed slate ballast, no cart,
+      matte gouache and tempera finish, white background, top three-quarter view
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -76,10 +75,10 @@ assets:
   - id: jetty
     seed: 70151
     idea:
-      cartoon fantasy wooden fishing jetty segment, rough plank deck on thick
-      round timber piles driven into the water, a couple of crates and a coiled
-      rope at the end, weathered grey-brown timber, painterly storybook style,
-      white background, three quarter view
+      rural lake fishing jetty segment, hand-hewn chamfered oak plank deck resting on thick
+      tarred timber piles with white lime flood-level marks near the base, two wooden crates
+      and a coiled hemp mooring rope at the end, matte gouache and tempera finish in weathered
+      grey-oak and ochre, white background, three-quarter view
     kind: environment
     category: building
     pipeline: [3d, paint, lod, collision]
@@ -89,9 +88,10 @@ assets:
   - id: clothesline
     seed: 70163
     idea:
-      cartoon fantasy clothesline, two rough wooden posts holding a sagging rope,
-      three simple linen and wool garments hanging from it, dry grass at the
-      base, painterly storybook style, white background, front view
+      rural village clothesline, two hand-hewn chamfered wooden posts holding a taut hemp
+      rope, three plain coarse linen and mended wool garments in unbleached cream, ochre and
+      moss-green hanging from it, matte gouache and tempera finish in broad clean color
+      blocks, white background, front view
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -101,10 +101,10 @@ assets:
   - id: crop_row
     seed: 70169
     idea:
-      cartoon fantasy vegetable crop row, low raised bed of dark tilled soil
-      with a neat row of leafy green cabbages and small sprouts, short wooden
-      edging planks, painterly storybook style, white background, top three
-      quarter view
+      rural vegetable garden crop row, low raised bed of dark tilled earth edged with short
+      chamfered oak retaining planks, neat row of sculpted leafy sage-green cabbages and
+      sprouts, matte gouache and tempera finish in broad clean color zones, white background,
+      top three-quarter view
     kind: prop
     category: prop
     pipeline: [3d, paint, lod, collision]
@@ -114,10 +114,10 @@ assets:
   - id: mine_derrick
     seed: 70173
     idea:
-      cartoon fantasy mine derrick, tall wooden A frame headframe of rough beams
-      over a square shaft opening, iron pulley wheel and hanging rope at the
-      top, cross braces, weathered timber with dark iron bolts, painterly
-      storybook style, white background, front three quarter view
+      mountain crystal-mine timber derrick, tall A-frame headframe of thick hand-hewn
+      chamfered pine beams over a squared stone shaft collar, forged iron pulley wheel and
+      hemp rope at the top, diagonal timber cross braces with dark iron bolts, matte gouache
+      and tempera finish, white background, front three-quarter view
     kind: environment
     category: building
     pipeline: [3d, paint, lod, collision]
@@ -127,11 +127,11 @@ assets:
   - id: market_gate
     seed: 70179
     idea:
-      cartoon fantasy wooden market gate arch, two square timber posts with
-      stone footings, long horizontal lintel beam, small triangular pennant
-      banners in red gold and blue hanging from the beam, open passage below,
-      warm brown timber, painterly storybook style, white background, straight
-      front view
+      rural market timber gate arch, two squared hand-hewn oak posts on chamfered lime-washed
+      stone footings, long horizontal lintel beam with small triangular wool pennants in
+      solid ochre, madder-carmine and slate-blue hanging from the beam, open passage below,
+      matte gouache and tempera finish in broad clean color blocks, white background,
+      straight front view
     kind: environment
     category: building
     pipeline: [3d, paint, lod, collision]
@@ -141,10 +141,10 @@ assets:
   - id: assay_shelter
     seed: 70183
     idea:
-      cartoon fantasy miners lean to shelter, open fronted wooden hut with four
-      rough posts, slanted plank roof, low stone base and a workbench inside,
-      no walls on the front, weathered timber, painterly storybook style, white
-      background, three quarter front view
+      rural surveyor and miner lean-to shelter, open-fronted hut with four hand-hewn chamfered
+      timber posts, slanted dark slate and plank roof, low squared stone base with lime wash
+      and a wooden mapping workbench inside, no walls on the front, matte gouache and tempera
+      finish, white background, three-quarter front view
     kind: environment
     category: building
     pipeline: [3d, paint, lod, collision]
@@ -154,10 +154,10 @@ assets:
   - id: ruined_tower
     seed: 70189
     idea:
-      cartoon fantasy ruined stone watchtower, broken cylindrical tower stump
-      with a jagged collapsed top, missing roof, cracked mossy stone blocks,
-      dark empty window slit, rubble at the base, painterly storybook style,
-      white background, three quarter view
+      ruined citadel watchtower stump, broken masonry tower built of squared chamfered
+      calcined grey stone blocks with weathered lime mortar and moss, jagged collapsed parapet
+      top, missing roof, narrow vertical arrow-slit opening, fallen dressed stone blocks at
+      the base, matte gouache and tempera finish, white background, three-quarter view
     kind: environment
     category: building
     pipeline: [3d, paint, lod, collision]

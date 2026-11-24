@@ -31,8 +31,8 @@ negative_keywords:
   - ornate filigree noise
   - melted organic edges
 text2d:
-  width: 768
-  height: 768
+  width: 1024
+  height: 1024
 text2sound:
   # highest = 24 steps + OGG 0.85 + mastering -14 LUFS. O regen_audio.py baixa
   # os one-shots para -16 LUFS/-1 dBTP por conta própria.
@@ -49,15 +49,17 @@ text3d:
   split_at_height: true
   sdnq_preset: sdnq-int4
   memory_efficient: true
-# Hi3D refine (pós-shape, antes do paint). MONO-VISTA: o FLUX.3 Klein é um
-# modelo de edição e copia a imagem de referência — as vistas "back/left/right"
-# saíam ~99% idênticas à frontal (diff médio 2/255, medido a 2026-11-11), por
-# isso o encadeamento multiview não acrescentava informação e só custava 4-6
-# passes por asset. Fica views: 1 (refine provado) até haver vistas reais
-# (render do mesh ou modelo view-conditioned). Personagens/criaturas já ficavam
-# de fora (o Hi3D muda a pose). Ver assets/README.md.
+  # Humanoides usam turnaround automático FLUX.3 Klein (front→back+left+right)
+  # com alinhamento anti-6-dedos + Hunyuan3D-2mv FP16 (~2.8 GiB VRAM) e alimentam
+  # o Paint3D v3 Multi-Ref com 3 vistas coerentes.
+  auto_turnaround_categories:
+    - humanoid
+  turnaround_include_right: true
+# Hi3D refine desligado (2026-11-21): em GPU de 6 GB o VAE do Hi3D estoura VRAM
+# (~5 GiB de ativação) e gera arestas não-manifold; substituído por Hunyuan3D-2mv
+# FP16 em personagens + mesh_denoise bilateral e Paint3D v3 FP16 em edifícios/props.
 refine:
-  enabled: true
+  enabled: false
   resolution: auto
   steps: 25
   max_faces_scale: 4.0
@@ -71,18 +73,18 @@ animator3d:
 # níveis (default 1 deixaria o lod2 estático = inimigos congelados).
 lod:
   rig_max_level: 2
-  # Pós-lod automático: text3d patch-pbr garante normal+AO em todos os níveis
-  # (derivados do albedo via Materialize). DESLIGADO: cada bordo de ilha UV do
-  # atlas vira uma aresta normal/AO falsa — as costuras visíveis nos modelos.
-  patch_pbr: false
+  # Pós-lod automático: text3d patch-pbr (UV-masked + OpenGL +Y + ORM R=AO)
+  # garante normal + occlusion sem costuras nas bordas das ilhas UV.
+  patch_pbr: true
 paint3d:
   preserve_origin: true
   texture_size: 2048
-  # O _to_paint segue a fórmula do paint_budget (~270k faces a 2048): o xatlas
-  # a 265k fica em ~160 s agora que o refine é refixado com morph-close antes
-  # do simplify (ver pipeline.py). Sem esse refix, decimar o _refined
-  # estilhaçava a malha e o unwrap passava dos 600 s (medido a 2026-11-11).
-  # Personagens têm cap próprio de 100k em pipeline.py.
-  # Normal+AO via Materialize sobre o albedo do atlas: mesma causa das
-  # costuras (bordos das ilhas UV). O albedo/MR do paint ficam.
-  pbr_enrich: false
+  # Multi-ref automático: usa <id>_back.png e <id>_right.png quando presentes.
+  multi_ref: true
+  # Direção de arte Ofício Talhado & Iluminura Rural (guache/têmpera mate):
+  # impede o Paint 2.1 de alucinar pele plástica (roughness 0.25) ou rosto metálico.
+  roughness_min: 0.72
+  metallic_max: 0.15
+  # Normal OpenGL + AO de fenda UV-masked via Materialize (aigamekit_shared.pbr_uv):
+  # preenche gutter por Voronoi antes do Materialize e atenua costuras UV para (128,128,255).
+  pbr_enrich: true

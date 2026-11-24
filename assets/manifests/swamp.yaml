@@ -1,5 +1,5 @@
-# Grupo swamp — vegetação e estruturas do Pântano.
-# Defs base (estilo, ferramentas, presets) em ../game.yaml.
+# Grupo swamp — vegetação e estruturas do Pântano da Bruma / Lodo (Ofício Talhado & Iluminura Rural).
+# Defs base (estilo, ferramentas, presets) em ../game.yaml e ../docs/ART.md.
 # Regenerar: gameassets resume --profile game.yaml --manifest manifests/swamp
 output_dir: ../public/assets
 meshes_subdir: meshes/swamp
@@ -7,9 +7,10 @@ images_subdir: images/swamp
 assets:
   - id: dead_willow
     idea:
-      cartoon dead willow tree with wide drooping leafless branches spanning left-right,
-      twisted dark grey trunk, moss-covered roots in murky water, spooky fantasy swamp
-      tree, broad canopy silhouette
+      ancient dead bog willow tree with wide drooping leafless branches spanning left-right,
+      twisted dark peat-grey trunk with carved chamfered bark planes, moss-covered roots
+      emerging from dark mire, matte gouache and tempera finish in broad clean color blocks,
+      broad canopy silhouette
     kind: environment
     category: vegetation
     pipeline:
@@ -41,8 +42,9 @@ assets:
     refine: false
   - id: lily_pad
     idea:
-      cartoon large green lily pad with small pink lily flower, floating on dark
-      water surface, fantasy swamp vegetation prop
+      broad bog water-lily pad with carved chamfered leaf rim in deep olive-reed green and
+      a pale cream-ochre lotus bud on top, matte gouache and tempera finish, Pântano da Bruma
+      floating vegetation prop
     kind: prop
     category: vegetation
     pipeline:
@@ -62,9 +64,9 @@ assets:
     # saiu com textura manchada/embaralhada).
     seed: 40411
     idea:
-      cartoon dark grey angular swamp boulder with faceted rocky silhouette, patches
-      of bright green moss on the top and sides, small mushrooms at the base, wet stone
-      surface clearly visible, fantasy swamp terrain rock
+      dark slate-grey angular bog boulder with crisp chamfered rocky facets, thick patches
+      of olive-green peat moss on the top and upper ledges, pale lime water-level flood marks
+      near the base, matte gouache and tempera finish in broad clean color blocks
     kind: prop
     category: terrain
     pipeline:
@@ -84,8 +86,10 @@ assets:
     # saiu com textura manchada/embaralhada).
     seed: 40412
     idea:
-      cartoon dilapidated wooden swamp shack on stilts above murky water, mossy
-      plank walls, sagging thatched roof, small lantern, fantasy swamp dwelling
+      weathered fisher wooden shack on sturdy hand-hewn timber stilts with crisp chamfered
+      architectural planes, tarred plank walls with white lime flood-level gauge marks along
+      the door jamb and lower pilings, sagging reed-thatch roof, small warm amber brass
+      lantern by the doorway, matte gouache and tempera finish in broad clean color zones
     kind: environment
     category: building
     pipeline:
@@ -102,8 +106,9 @@ assets:
         - 5.0
   - id: wrecked_boat
     idea:
-      broken cartoon wooden boat hull half-buried, cracked planks and missing stern,
-      fantasy swamp wreck prop sitting flush to ground, exterior only, no characters
+      broken wooden rowboat hull half-sunk in mire with hand-hewn chamfered tarred oak planks,
+      cracked gunwale, missing stern and coiled hemp rope, sitting flush to ground, exterior
+      only, matte gouache and tempera finish in dark tarred timber and mud-ochre, no characters
     kind: prop
     category: prop
     pipeline:
@@ -119,8 +124,9 @@ assets:
         - 1.4
   - id: bone_altar
     idea:
-      eerie cartoon swamp bone altar made of stacked skulls and femurs on a flat
-      stone slab, fantasy bog ritual prop, low wide silhouette, stylized not gory
+      ancient bog memorial cairn altar built of a flat chamfered slate slab resting on bog-oak
+      posts, arranged with weathered pale animal skulls, river stones and a faint turquoise
+      crystal notch, low wide silhouette, matte gouache and tempera finish, stylized not gory
     kind: prop
     category: prop
     pipeline:

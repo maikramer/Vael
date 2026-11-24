@@ -1,5 +1,5 @@
-# Grupo characters — herói, NPCs, criaturas e bosses.
-# Defs base (estilo, ferramentas, presets) em ../game.yaml.
+# Grupo characters — herói, NPCs, criaturas e bosses (Ofício Talhado & Iluminura Rural).
+# Defs base (estilo, ferramentas, presets) em ../game.yaml e ../docs/ART.md.
 # Regenerar: gameassets resume --profile game.yaml --manifest manifests/characters
 output_dir: ../public/assets
 meshes_subdir: meshes/characters
@@ -13,12 +13,20 @@ assets:
     # override de 40 era um downgrade) e o piso humanoid fixa o octree em 384.
     text3d:
       mc_level: 0
+      back_details: a single cylindrical weathered brown leather map tube with brass end-caps strapped diagonally across the closed back of the brown leather vest below the short moss-green collar capelet (only ONE map tube, completely external outside the vest, never duplicated, never sunk into the body)
     idea:
-      young cartoon fantasy adventurer wearing leather tunic with rolled-up sleeves,
-      cloth bandana, simple belt with pouch, cheerful determined expression, short boots,
-      no helmet no armor, standing upright in relaxed A-pose with both arms straight and angled down at
-      45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no
-      weapons, no props, full body visible, front-facing, RPG hero boy
+      stylized rural fantasy cartographer with 6.5-head craft proportions and sculpted
+      chamfered facial planes, wearing coarse unbleached linen shirt with rolled-up sleeves,
+      weathered brown leather work vest and short moss-green shoulder collar capelet that
+      stays above the shoulders leaving arms and legs completely unobstructed, external cylindrical
+      leather map case strapped diagonally completely outside high on the back, simple leather tool belt with small pouch,
+      sturdy mud-stained leather marching boots, slightly emphasized working hands and
+      forearms, matte gouache and tempera finish with broad clean color blocks and earthy
+      mineral pigments, no helmet, no armor, no hip lantern in mesh, standing upright in
+      relaxed A-pose with both arms straight and angled down at 45 degrees away from the
+      body, legs straight and slightly apart, feet shoulder-width apart, clear gap between
+      the legs from thighs to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
+      props, full body visible, front-facing
     kind: character
     category: humanoid
     omni:
@@ -45,10 +53,15 @@ assets:
       clips: idle,walk,run,sprint,jump,fall,jumpland,roll,attack,hit,hithead,death,punch,sword,sworda,swordb,swordc,swordheavy,axe,spear,chop,swordidle,axeidle,spearidle,chopidle,mine,gather,interact,harvest,fixing,roar,dance,talk,yes,no,crouchidle,chestopen
   - id: npc_merchant
     idea:
-      friendly cartoon merchant NPC wearing brown apron over green tunic, round
-      belly, warm smile, short chubby proportions, standing upright in relaxed A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, visible gap between arms
-      and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props,
-      full body visible, front-facing, fantasy shopkeeper
+      stout rural merchant NPC with 6-head stocky craft proportions and sculpted chamfered
+      facial planes, wearing heavy weathered brown leather apron over deep moss-green wool
+      tunic with rolled sleeves, sturdy belt with ledger pouch, broad shoulders and stout
+      build, warm seasoned expression, matte gouache and tempera finish with broad clean
+      color blocks and earthy mineral pigments, standing upright in relaxed A-pose with
+      both arms straight and angled down at 45 degrees away from the body, legs straight
+      and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs
+      to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body
+      visible, front-facing, rural village shopkeeper
     kind: character
     category: humanoid
     pipeline:
@@ -65,26 +78,24 @@ assets:
       clips: idle,walk,talk,call,foldarms,yes,no,eat
     omni:
       control_type: pose
-      # Chibi de cabeça grande e ombros largos. O A-pose adulto põe o ombro a
-      # ±0,10 m num corpo de 1,5 m e deixa o cotovelo DENTRO da barriga: o
-      # modelo funde os braços ao tronco (saíam em bico, sem antebraço/mão) e o
-      # rig ficava sem ossos de braço. O dwarf — ombros largos, braços longos,
-      # pernas curtas — é o preset do goblin e abre o vão ombro/barriga.
+      # Tronco largo: o preset dwarf (ombros largos, braços afastados) abre o vão
+      # ombro/barriga para o SkinTokens não fundir os braços ao tronco.
       pose_preset: quaternius-apose-dwarf
-      # Com pose, size_m é só a escala mundo (o molde Omni vem do esqueleto e
-      # a escala pós-mesh é uniforme no eixo maior = altura). O vão dos braços
-      # na A-pose mede ~1,32 m — a largura antiga (0,65) não cabia no corpo.
       size_m:
         - 1.5
         - 1.5
         - 0.6
   - id: npc_scout
     idea:
-      lean cartoon scout NPC wearing hooded green cloak over leather jerkin, map
-      case on belt, short boots, alert friendly expression, standing upright in relaxed
-      A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, visible gap between
-      arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props,
-      full body visible, front-facing, fantasy ranger cartographer
+      lean rural scout and regional cartographer NPC with 6.5-head craft proportions and
+      sculpted chamfered facial planes, wearing deep pine-green wool hood and short collar
+      mantle over weathered brown leather jerkin, ochre and carmine trail-marker ribbons tied
+      at belt, sturdy mud-worn boots, alert seasoned expression, matte gouache and tempera
+      finish with broad clean color blocks and earthy mineral tones, standing upright in
+      relaxed A-pose with both arms straight and angled down at 45 degrees away from the
+      body, legs straight and slightly apart, feet shoulder-width apart, clear gap between
+      the legs from thighs to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
+      props, no long cape, full body visible, front-facing, rural border watcher
     kind: character
     category: humanoid
     pipeline:
@@ -108,11 +119,16 @@ assets:
         - 0.45
   - id: npc_blacksmith
     idea:
-      burly cartoon blacksmith NPC wearing thick leather apron over sleeveless tunic,
-      broad shoulders, bushy beard, soot smudges, sturdy boots, standing upright in
-      relaxed A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, visible
-      gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons,
-      no props, full body visible, front-facing, fantasy village smith
+      burly village blacksmith NPC with 6.5-head craft proportions and sculpted chamfered
+      facial planes, wearing thick singed dark leather forge apron over sleeveless coarse
+      linen tunic, broad muscular shoulders and heavy working forearms, thick beard, soot
+      and char smudges on apron edges, heavy iron-shod work boots, matte gouache and tempera
+      finish with broad clean color blocks in burnt leather, charcoal and warm ochre,
+      standing upright in relaxed A-pose with both arms straight and angled down at 45
+      degrees away from the body, legs straight and slightly apart, feet shoulder-width
+      apart, clear gap between the legs from thighs to feet, visible gap between arms and
+      torso, relaxed open hands with fingers held together and palms facing the thighs,
+      hands empty, no weapons, no props, full body visible, front-facing, rural village smith
     kind: character
     category: humanoid
     pipeline:
@@ -143,12 +159,16 @@ assets:
     # separados do corpo = esqueleto humanoide.
     seed: 51772
     idea:
-      kind cartoon healer NPC wearing pale blue robe that ends above the ankles with
-      visible lower legs and simple boots, white sash at the waist, short sleeves ending
-      at the elbows with visible forearms, simple headscarf, gentle smile, standing
-      upright in relaxed A-pose with both arms straight and angled down
-      at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, wide gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, no cape, full body visible,
-      front-facing, fantasy temple cleric
+      rural village herbalist healer NPC with 6.5-head craft proportions and sculpted
+      chamfered facial planes, wearing muted sage-slate linen coat that ends above the
+      ankles with clearly visible lower legs and sturdy leather boots, unbleached linen
+      waist sash with dried herb pouch, short sleeves ending at the elbows with visible
+      forearms, simple linen headscarf, calm compassionate expression, matte gouache and
+      tempera finish with broad clean color blocks and mineral pigments, standing upright
+      in relaxed A-pose with both arms straight and angled down at 45 degrees away from
+      the body, legs straight and slightly apart, feet shoulder-width apart, clear gap
+      between the legs from thighs to feet, wide gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no
+      weapons, no props, no cape, full body visible, front-facing
     kind: character
     category: humanoid
     pipeline:
@@ -172,11 +192,15 @@ assets:
         - 0.45
   - id: npc_guard
     idea:
-      cartoon town guard NPC wearing padded gambeson with chainmail collar and blue
-      tabard, no helmet, short cropped hair, stern friendly face, boots with greaves,
-      standing upright in relaxed A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs,
-      hands empty, no weapons, no props, full body visible, front-facing, fantasy city
-      watchman
+      rural town watchman NPC with 6.5-head craft proportions and sculpted chamfered
+      facial planes, wearing quilted raw-wool gambeson with dark wrought-iron mail collar
+      and slate-ochre communal hall tabard, no helmet, short cropped hair, weathered
+      attentive face, heavy leather boots with boiled-leather greaves, matte gouache and
+      tempera finish with broad clean color blocks and earthy mineral pigments, standing
+      upright in relaxed A-pose with both arms straight and angled down at 45 degrees away
+      from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap
+      between the legs from thighs to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no
+      weapons, no props, full body visible, front-facing
     kind: character
     category: humanoid
     pipeline:
@@ -200,11 +224,16 @@ assets:
         - 0.5
   - id: npc_elder
     idea:
-      old cartoon village elder NPC wearing long brown robe with fur collar, long
-      white beard, slight stoop, wooden sandals, warm wise expression, standing upright
-      in relaxed A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, visible
-      gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons,
-      no props, full body visible, front-facing, fantasy village elder
+      aged village council elder NPC with 6.5-head craft proportions and deeply sculpted
+      chamfered facial planes, wearing heavy slate-grey and dark ochre wool coat ending at
+      mid-calf with visible lower legs and sturdy leather shoes, leather belt with iron keys
+      and small map-scraper tool sheath, lime-white beard, dignified weathered expression,
+      matte gouache and tempera finish with broad clean color blocks and mineral tones,
+      standing upright in relaxed A-pose with both arms straight and angled down at 45
+      degrees away from the body, legs straight and slightly apart, feet shoulder-width
+      apart, clear gap between the legs from thighs to feet, visible gap between arms and
+      torso, relaxed open hands with fingers held together and palms facing the thighs,
+      hands empty, no weapons, no props, full body visible, front-facing
     kind: character
     category: humanoid
     pipeline:
@@ -227,11 +256,15 @@ assets:
         - 1.5
         - 0.45
   - id: goblin
+    text3d:
+      auto_turnaround: true
     idea:
-      small wiry cartoon goblin with big pointy ears, crooked teeth, tattered loincloth,
-      green skin, standing upright in relaxed A-pose with both arms straight and angled down at 45 degrees
-      away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
-      props, full body visible, front-facing, fantasy enemy creature
+      wiry rural hill-goblin scavenger with angular carved facial planes, long pointed ears,
+      patched rawhide and burlap vest over short trousers, olive-ochre weathered skin,
+      matte gouache and tempera finish with broad clean color blocks, standing upright in
+      relaxed A-pose with both arms straight and angled down at 45 degrees away from the
+      body, legs straight and slightly apart, feet shoulder-width apart, clear gap between
+      the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:
@@ -256,11 +289,14 @@ assets:
   - id: slime
     seed: 55192
     idea:
-      cute blue jelly slime dwarf humanoid standing upright in relaxed A-pose,
-      short stout gelatin body, stubby arms angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet,
-      relaxed open blobby hands with fingers held together and palms facing the thighs, short thick legs and feet planted on the
-      ground, two sparkly eyes and smile on the front, glossy translucent blue slime
-      skin, no weapons no props, full body visible, front-facing, white background
+      stout mineral-mire golem creature with dwarf humanoid silhouette standing upright in
+      relaxed A-pose, faceted semi-opaque bog-slate and turquoise crystal resin body with
+      carved chamfered planes, stubby arms angled down at 45 degrees away from the body,
+      legs straight and slightly apart, feet shoulder-width apart, clear gap between the
+      legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, short
+      thick legs and feet planted on the ground, two glowing cyan crystal eyes in chest
+      head, matte mineral tempera finish, no weapons, no props, full body visible,
+      front-facing, white background
     kind: character
     category: creature
     pipeline:
@@ -284,9 +320,10 @@ assets:
         - 0.55
   - id: wolf
     idea:
-      cartoon feral grey wolf walking on all fours, side view, four legs on the
-      ground, horizontal animal body, low head, bushy tail, grey-black fur, yellow glowing
-      eyes, snarling fangs, wild quadruped forest predator animal
+      feral timber wolf walking on all fours in side view, four distinct legs planted on
+      the ground, horizontal animal body, low head, thick tail, sculpted chamfered fur
+      masses in charcoal-slate and umber grey, amber eyes, bared fangs, matte gouache and
+      tempera painted finish with broad clean color blocks, wild forest predator
     kind: character
     category: creature
     pipeline:
@@ -310,10 +347,17 @@ assets:
         - 0.75
         - 0.45
   - id: shade
+    text3d:
+      auto_turnaround: true
     idea:
-      cartoon shadow shade creature, floating dark ghostly wraith with glowing purple
-      eyes, tattered cloak, ethereal smoky body, standing upright in relaxed A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing, fantasy
-      undead spirit
+      battlefield shadow soldier figure made of wet dark basalt and charcoal-ash with
+      carved chamfered planes, weathered military tunic ending above the knees with
+      distinct separate legs and boots, sharp clearly sculpted working hands and forearms
+      tinged with a faint muted turquoise crystal trace, matte mineral tempera finish,
+      standing upright in relaxed A-pose with both arms straight and angled down at 45
+      degrees away from the body, legs straight and slightly apart, feet shoulder-width
+      apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
+      props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:
@@ -336,11 +380,19 @@ assets:
         - 1.6
         - 0.4
   - id: witch_boss
+    text3d:
+      auto_turnaround: true
     idea:
-      menacing cartoon witch boss with long hooked nose, pointed black hat, tattered
-      dark purple robe, glowing green hands, sinister grin, standing upright in relaxed
-      A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing,
-      dark fantasy forest witch, game asset
+      forest witch guardian boss with 6.5-head proportions and angular carved facial
+      planes, wearing layered mantle of dark pine bark, twisted roots and lichen-stained
+      wool ending above the ankles with visible lower legs and boots, jagged shards of
+      glowing turquoise-blue Choir crystal embedded at the throat and collar like a
+      mineral wound, pale weathered hands, matte gouache and tempera finish with broad
+      clean color blocks in pine-black, moss-green and turquoise crystal, standing upright
+      in relaxed A-pose with both arms straight and angled down at 45 degrees away from
+      the body, legs straight and slightly apart, feet shoulder-width apart, clear gap
+      between the legs from thighs to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no
+      weapons, no props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:
@@ -365,8 +417,10 @@ assets:
         - 0.5
   - id: scorpion
     idea:
-      cartoon desert scorpion with segmented tan-orange tail ending in glowing red
-      stinger, large pincers, eight legs, armored carapace, fantasy desert predator
+      red-wastes giant scorpion with faceted chamfered chitin plates in ferruginous
+      terracotta and dark oxidized iron, segmented tail curving up to a sharp turquoise-veined
+      stinger, heavy angular pincers, eight distinct legs, matte gouache and tempera finish
+      with broad clean color blocks
     kind: character
     category: creature
     pipeline:
@@ -393,11 +447,18 @@ assets:
         - 0.66
         - 0.9
   - id: bandit
+    text3d:
+      auto_turnaround: true
     idea:
-      cartoon desert bandit with tan hood and face mask, leather armor scraps, dark
-      eyes visible, standing upright in relaxed A-pose with both arms straight and angled down at 45 degrees
-      away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
-      props, full body visible, front-facing, fantasy rogue enemy
+      red-wastes highway bandit with 6.5-head craft proportions and sculpted chamfered
+      facial planes, wearing ochre dust-hood and cloth face wrap, boiled-leather brigandine
+      vest with forged iron buckles over coarse linen shirt, sturdy leather boots, matte
+      gouache and tempera finish with broad clean color blocks in terracotta, raw umber and
+      slate, standing upright in relaxed A-pose with both arms straight and angled down at
+      45 degrees away from the body, legs straight and slightly apart, feet shoulder-width
+      apart, clear gap between the legs from thighs to feet, visible gap between arms and
+      torso, relaxed open hands with fingers held together and palms facing the thighs,
+      hands empty, no weapons, no props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:
@@ -421,11 +482,13 @@ assets:
         - 0.4
   - id: sand_worm
     idea:
-      cartoon dune sandworm, tall limbless segmented tubular worm body in S-curve,
-      no legs no arms no wings no claws no feet, circular gaping maw with rings of teeth
-      on top, tiny side eyes, sandy armored rings, single continuous worm mesh, white
-      background, no base disk no pedestal no platform no rubble no ground plate no
-      miniature stand
+      colossal red-wastes sandworm guardian, tall limbless segmented tubular worm body in
+      S-curve with carved chamfered armor rings of ferruginous red sandstone and dark
+      oxidized iron, glowing turquoise-blue Choir crystal veins embedded between the upper
+      head segments like a resonant mineral wound, circular gaping maw with stone-like teeth
+      at top, no legs no arms no wings no claws no feet, matte gouache and tempera painted
+      finish in broad clean color blocks, single continuous worm mesh, white background, no
+      base disk no pedestal no platform no rubble no ground plate
     kind: character
     category: creature
     pipeline:
@@ -454,12 +517,15 @@ assets:
         - 5.4
         - 1.5
   - id: bogling
+    text3d:
+      auto_turnaround: true
     idea:
-      small cartoon swamp bogling creature with round green-brown body, big yellow
-      eyes, webbed feet, dripping moss on back, standing upright in relaxed A-pose with
-      both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs,
-      hands empty, no weapons, no props, full body visible, front-facing, mischievous
-      fantasy amphibian monster
+      small swamp mire-imp bogling creature with carved chamfered planes, stout peat-brown
+      and reed-green body, amber eyes, webbed feet, patches of wet bog moss on shoulders,
+      matte gouache and tempera finish with broad clean color blocks, standing upright in
+      relaxed A-pose with both arms straight and angled down at 45 degrees away from the
+      body, legs straight and slightly apart, feet shoulder-width apart, clear gap between
+      the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:
@@ -482,10 +548,17 @@ assets:
         - 1.1
         - 0.4
   - id: bog_warden_boss
+    text3d:
+      auto_turnaround: true
     idea:
-      large cartoon bog warden elemental boss made of swamp mud, vines, and glowing
-      green eyes, mossy stone core, dripping water, standing upright in relaxed A-pose with both arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing, intimidating
-      fantasy swamp boss, game asset
+      colossal swamp guardian boss constructed of heavy angular bog-peat blocks, tarred
+      shipwreck timber planks, tangled mangrove roots and dark mud planes, with a fractured
+      glowing turquoise-blue Choir crystal core embedded inside its open chest cavity,
+      matte gouache and tempera finish with broad clean color blocks in dark mire, reed-olive
+      and turquoise crystal, standing upright in relaxed A-pose with both arms straight and
+      angled down at 45 degrees away from the body, legs straight and slightly apart, feet
+      shoulder-width apart, clear gap between the legs from thighs to feet, visible gap
+      between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:
@@ -509,15 +582,20 @@ assets:
         - 2.6
         - 1.0
   - id: boss_ogre
+    text3d:
+      auto_turnaround: true
     # seed 40416: regenerado na review visual de 2026-10-22 (a geração anterior
     # saiu com textura manchada/embaralhada).
     seed: 40416
     idea:
-      menacing large fantasy RPG boss monster, muscular green ogre troll with sharp
-      teeth and small tusks, hunched powerful build, thick dark armor scraps, standing
-      upright in relaxed A-pose with both massive arms straight and angled down at 45 degrees away from the body, legs straight and slightly apart, feet shoulder-width apart, clear gap between the legs from thighs to feet, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs,
-      hands empty, no weapons, no props, full body visible, front-facing, cartoon stylized
-      but bigger and scarier than a goblin, game asset
+      monolithic frozen-peaks ogre guardian boss with heavy carved chamfered anatomy,
+      blue-grey granite skin and coarse frost-white shoulder pelts, massive quarry-block
+      fists and broad shoulders threaded with glowing turquoise-blue Choir crystal veins,
+      weathered iron and timber belt scraps, matte gouache and tempera finish with broad
+      clean color blocks, standing upright in relaxed A-pose with both massive arms straight
+      and angled down at 45 degrees away from the body, legs straight and slightly apart,
+      feet shoulder-width apart, clear gap between the legs from thighs to feet, visible gap
+      between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing
     kind: character
     category: creature
     pipeline:

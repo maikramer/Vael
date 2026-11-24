@@ -1,6 +1,6 @@
-# Grupo props-rpg — armas, ferramentas e itens de identidade RPG.
-# Props genéricos partilhados (rock_mossy) estão em assets
-# (manifests/props.yaml, symlink nesta pasta). Defs base em ../game.yaml.
+# Grupo props-rpg — armas, ferramentas e cristais do Coro (Ofício Talhado & Iluminura Rural).
+# Props de terreno partilhados (rock_mossy) estão em manifests/props.yaml.
+# Defs base em ../game.yaml e ../docs/ART.md.
 # Regenerar: gameassets resume --profile game.yaml --manifest manifests/props-rpg
 output_dir: ../public/assets
 meshes_subdir: meshes/props
@@ -9,10 +9,12 @@ assets:
   - id: sword_hero
     seed: 44102
     idea:
-      cartoon fantasy broadsword standing perfectly upright vertical on its pommel,
-      tip pointing straight up, thin flat steel blade, golden crossguard, blue gem pommel
-      at bottom on ground, front view, not tilted not diagonal not lying on side, hero
-      weapon, clean simple design
+      hand-forged rural broadsword standing perfectly upright vertical on its pommel, tip
+      pointing straight up, flat chamfered wrought-steel blade with sharpened edge bevels,
+      plain forged iron and aged-brass crossguard, leather-wrapped grip and faceted turquoise
+      Choir crystal pommel at bottom on ground, front view, not tilted not diagonal not lying
+      on side, matte tempera finish with clean sharpened edge, hero weapon, clean simple
+      silhouette
     kind: prop
     category: weapon
     pipeline:
@@ -28,10 +30,11 @@ assets:
   - id: axe
     seed: 77419
     idea:
-      cartoon fantasy battle axe perfectly straight vertical like a plumb line,
-      wooden handle butt on ground, steel axe head centered at very top, wide thin flat
-      blade, leather wrap, orthographic front view, zero tilt zero lean, not diagonal
-      not sideways, white background, hero weapon
+      hand-forged battle axe standing perfectly straight vertical like a plumb line, chamfered
+      ash-wood handle butt on ground with worn leather grip wrap, heavy forged dark iron axe
+      head centered at very top with wide flat chamfered cutting bevel, orthographic front
+      view, zero tilt zero lean, not diagonal not sideways, matte gouache and tempera finish,
+      white background, hero weapon
     kind: prop
     category: weapon
     pipeline:
@@ -46,9 +49,10 @@ assets:
         - 0.05
   - id: spear
     idea:
-      cartoon fantasy spear with leaf-shaped steel tip and sturdy wooden shaft,
-      visible shaft thickness, leather grip wrap, hero weapon, clean simple
-      design, proportions readable at game distance
+      hand-forged leaf-bladed hunting and guard spear with chamfered steel tip and sturdy
+      hand-hewn ash-wood shaft, visible shaft thickness, worn stitched leather grip wrap,
+      matte gouache and tempera finish in smoked wood and forged iron, hero weapon, clean
+      simple design, proportions readable at game distance
     kind: prop
     category: weapon
     pipeline:
@@ -69,10 +73,11 @@ assets:
   - id: felling_axe
     seed: 90612
     idea:
-      cartoon woodcutting felling axe standing perfectly upright vertical, long
-      wooden handle butt on ground, large curved steel chopping blade head at top like
-      a lumberjack axe not a knife not a dagger, flat thin blade profile, orthographic
-      front view, zero tilt, white background, logging tool
+      rural woodcutting felling axe standing perfectly upright vertical, long chamfered oak
+      handle butt on ground worn smooth at the grip, large curved forged dark iron chopping
+      blade head at top with sharpened bevel like a woodsman axe not a knife not a dagger,
+      flat thin blade profile, orthographic front view, zero tilt, matte gouache and tempera
+      finish, white background, logging tool
     kind: prop
     category: tool
     pipeline:
@@ -87,8 +92,9 @@ assets:
         - 0.05
   - id: pickaxe
     idea:
-      cartoon mining pickaxe with slender double-pointed iron head, worn wooden
-      handle, simple prospecting tool, thin head not chunky
+      rural quarry mining pickaxe with slender double-pointed forged wrought-iron head and
+      chamfered worn hickory handle, practical stonecutter and prospecting tool, matte gouache
+      and tempera finish, thin head not chunky
     kind: prop
     category: tool
     pipeline:
@@ -103,8 +109,9 @@ assets:
         - 0.06
   - id: bomb
     idea:
-      round black cartoon bomb with lit fuse spark, shiny sphere, cartoon explosive,
-      game item
+      handcrafted cast-iron and glazed clay powder bomb bound with crossed hemp cord and a
+      thick braided tallow fuse at the top, faceted matte charcoal-iron sphere with ochre
+      clay collar, no plastic gloss, rural sapper explosive item
     kind: prop
     category: item
     pipeline:
@@ -120,8 +127,9 @@ assets:
         - 0.25
   - id: crystal_blue
     idea:
-      glowing blue cartoon crystal cluster floating above small rock base, magical
-      gem collectible, bright luminescent facets, fantasy loot
+      resonant Choir blue crystal cluster growing from a dark chamfered basalt rock base,
+      sharp geometric hexagonal prisms in deep turquoise and cyan with internal rhythmic
+      acoustic vein intervals, mineral tempera finish with clean crystal facets
     kind: prop
     category: item
     pipeline:
@@ -139,9 +147,10 @@ assets:
   - id: stone_pillar
     seed: 77291
     idea:
-      tall slender ancient cartoon stone column with cracked grey surface and faint
-      glowing blue rune carvings, sparse mossy vines, upright fantasy landmark pillar,
-      cylindrical shaft not a short block
+      tall slender carved limestone cartographer landmark pillar with crisp chamfered edges,
+      weathered grey stone surface with a recessed turquoise-blue Choir crystal tuning notch
+      and geometric survey marks, sparse moss at the base, matte gouache and tempera finish,
+      upright landmark column not a short block
     kind: environment
     category: building
     pipeline:
@@ -155,8 +164,9 @@ assets:
       footprint_m: 1.0
   - id: mushroom_red
     idea:
-      big cartoon red mushroom with white polka dots on cap, thick white stalk,
-      fantasy forest mushroom, whimsical look
+      wild forest fly-agaric mushroom with broad chamfered madder-carmine cap and cream-lime
+      flecks, sturdy unbleached stalk with moss at the base, matte gouache and tempera finish
+      in broad clean color blocks
     kind: prop
     category: vegetation
     pipeline:

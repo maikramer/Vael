@@ -1,6 +1,5 @@
-# Grupo terrain — formações rochosas genéricas do Crystal Vale (partilhado).
-# Canónico em assets/ (manifests + binários em public/assets).
-# Exemplos consomem o pool diretamente por URL — sem cópias nem symlinks.
+# Grupo terrain — formações rochosas, mojões e marcos do Vale (Ofício Talhado & Iluminura Rural).
+# Defs base em ../game.yaml e ../docs/ART.md.
 # Regenerar: cd assets && gameassets resume --profile game.yaml --manifest manifests/terrain
 output_dir: ../public/assets
 meshes_subdir: meshes/terrain
@@ -8,8 +7,9 @@ images_subdir: images/terrain
 assets:
   - id: form_cliff_1
     idea:
-      cartoon fantasy jagged mountain cliff, grey stone with snow patches, steep
-      rocky face, deeper front-to-back rock mass, solid closed base, game terrain prop
+      jagged alpine granite mountain cliff with crisp chamfered rock facets, blue-grey stone
+      with snow accumulation on the upper ledges, steep rocky face, deeper front-to-back rock
+      mass, solid closed base, matte gouache and tempera finish in broad clean color blocks
     kind: environment
     category: terrain
     text3d:
@@ -26,8 +26,9 @@ assets:
         - 2.15
   - id: form_cliff_20
     idea:
-      cartoon fantasy wide mountain cliff wall, layered grey stone strata with snow,
-      solid closed base, deep rock mass, game terrain prop
+      wide mountain cliff wall of stratified slate-grey granite with crisp chamfered rock
+      ledges and snow on the horizontal shelves, solid closed base, deep rock mass, matte
+      gouache and tempera finish in broad clean color blocks
     kind: environment
     category: terrain
     text3d:
@@ -45,8 +46,9 @@ assets:
         - 2.16
   - id: form_arch_3
     idea:
-      cartoon fantasy natural stone arch, walkable grey rock bridge with open tunnel
-      underneath, weathered mountain pass, solid feet on both sides, game terrain prop
+      natural mountain stone arch with carved chamfered granite facets, walkable grey rock
+      bridge with open passage underneath, golden lichen touches, solid wide feet on both
+      sides, matte gouache and tempera finish
     kind: environment
     category: terrain
     text3d:
@@ -63,8 +65,9 @@ assets:
         - 1.6
   - id: form_stack_6
     idea:
-      cartoon fantasy stacked cairn of three rounded grey boulders balanced vertically,
-      trail marker, solid base, game terrain prop
+      stacked mountain survey cairn of three angular chamfered grey granite boulders balanced
+      vertically with a white lime route mark on the middle stone, solid base, matte gouache
+      and tempera finish
     kind: environment
     category: terrain
     text3d:
@@ -81,8 +84,9 @@ assets:
         - 1.4
   - id: form_stack_11
     idea:
-      cartoon fantasy tall thin stacked stone spire, five flat slate slabs piled
-      unevenly, cairn landmark, solid base, game terrain prop
+      tall thin stacked stone mojão spire built of five flat chamfered dark slate slabs piled
+      vertically with golden lichen on the upper faces, mountain trail landmark, solid base,
+      matte gouache and tempera finish
     kind: environment
     category: terrain
     text3d:
@@ -100,8 +104,9 @@ assets:
   - id: form_outcrop_2
     seed: 71402
     idea:
-      cartoon fantasy low mossy riverside rock outcrop, two chunky grey boulders
-      fused at base, wet stone, solid closed underside, game terrain prop
+      low mossy riverside rock outcrop of two chunky chamfered slate-grey boulders fused at
+      the base, dark wet stone skirt with white lime water-level trace, olive moss on top,
+      solid closed underside, matte gouache and tempera finish
     kind: environment
     category: terrain
     text3d:
@@ -119,8 +124,9 @@ assets:
         - 1.8
   - id: form_outcrop_5
     idea:
-      cartoon fantasy angular cracked desert rock outcrop, warm grey-tan stone with
-      sharp facets, single blocky mass, solid base, game terrain prop
+      angular fractured Ermo Rubro sandstone rock outcrop, ferruginous terracotta and warm
+      ochre-grey stone with crisp chamfered facets, single blocky mass, solid base, matte
+      gouache and tempera finish
     kind: environment
     category: terrain
     text3d:
@@ -137,8 +143,9 @@ assets:
         - 1.7
   - id: form_outcrop_8
     idea:
-      cartoon fantasy sprawling clustered rock outcrop, five mossy grey stones of
-      mixed sizes hugging ground, solid closed bases, game terrain prop
+      sprawling clustered valley rock outcrop of five angular chamfered slate-grey stones of
+      mixed sizes hugging the ground with moss and golden lichen on top, solid closed bases,
+      matte gouache and tempera finish
     kind: environment
     category: terrain
     text3d:
@@ -155,9 +162,9 @@ assets:
         - 2.2
   - id: stone_cairn
     idea:
-      stacked cartoon stone cairn trail marker of uneven grey rocks piled into a
-      small tower, fantasy mountain path marker prop, solid stacked silhouette flush
-      to ground
+      stacked cartographer stone mojão trail marker of uneven chamfered grey slate rocks piled
+      into a sturdy tapered cairn with a small carved turquoise crystal direction notch,
+      solid stacked silhouette flush to ground, matte gouache and tempera finish
     kind: prop
     category: terrain
     pipeline:
@@ -174,9 +181,9 @@ assets:
         - 0.9
   - id: druid_stone_altar
     idea:
-      flat cartoon ancient stone altar slab on short rough pillars, moss patches
-      and faint carved runes, fantasy druid circle center prop, low wide silhouette
-      flush to ground
+      ancient valley wayfarer stone table slab resting on short squared chamfered stone
+      supports, olive moss patches and carved acoustic Choir interval grooves along the top
+      edge, low wide silhouette flush to ground, matte gouache and tempera finish
     kind: prop
     category: terrain
     pipeline:
@@ -193,9 +200,10 @@ assets:
         - 1.2
   - id: crystal_mine_entrance
     idea:
-      cartoon rocky mountain mine entrance with timber frame posts and crossbeam,
-      dark tunnel mouth, sparse blue crystal shards on ground, fantasy peaks mine portal
-      flush to ground, exterior only
+      frozen-peaks rocky mountain mine portal framed with heavy hand-hewn chamfered pine
+      timber posts and crossbeam, dark closed tunnel mouth, sharp turquoise-blue Choir crystal
+      veins and shards protruding from the granite jambs at the base, flush to ground,
+      exterior only, matte gouache and tempera finish
     kind: environment
     category: building
     pipeline:

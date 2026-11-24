@@ -1,6 +1,6 @@
-# Grupo interiors — mobiliário e itens para ambientes internos.
-# Igreja (capela), ferraria, casa comum, taverna, celeiro.
-# Defs base (estilo, ferramentas, presets) em ../game.yaml.
+# Grupo interiors — mobiliário e itens de interiores (Ofício Talhado & Iluminura Rural).
+# Igreja (capela), ferraria, casa comum, taverna, celeiro, salão comunal.
+# Defs base (estilo, ferramentas, presets) em ../game.yaml e ../docs/ART.md.
 # Regenerar: gameassets resume --profile game.yaml --manifest manifests/interiors
 #
 # REUSO de assets externos já gerados (ficam nos seus grupos; NÃO duplicar):
@@ -16,9 +16,11 @@ images_subdir: images/interiors
 assets:
   # ── Capela ────────────────────────────────────────────────────────────────
   - id: chapel_pew
-    idea: cartoon wooden church pew with carved backrest, short bench row, warm
-      brown oak, medieval chapel seating, fantasy interior furniture, isolated
-      furniture item no room no floor, clean silhouette, game-ready
+    idea:
+      hand-hewn oak church pew bench with crisp chamfered backrest and thick side supports,
+      worn seat plank polished by use, matte gouache and tempera finish in warm smoked oak,
+      rural chapel seating, isolated furniture item no room no floor, clean silhouette,
+      game-ready
     kind: prop
     category: furniture
     # Step 33 (1 acima do auto 32): detalhe fino.
@@ -38,10 +40,11 @@ assets:
         - 0.95
         - 0.75
   - id: chapel_altar
-    idea: cartoon stone church altar table with white cloth draped over top, two
-      brass candlesticks with lit candles, carved stone base, medieval chapel centerpiece,
-      fantasy interior furniture, isolated item no room no floor, clean silhouette,
-      game-ready
+    idea:
+      squared dressed stone chapel altar table with chamfered edges and weathered lime-mortar
+      wash, unbleached linen cloth draped neatly over top with ochre border, two heavy aged
+      brass candlesticks, solid carved stone base, matte gouache and tempera finish in broad
+      clean color blocks, isolated item no room no floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     # Step 33 (1 acima do auto 32): detalhe fino.
@@ -62,9 +65,10 @@ assets:
         - 1.2
   - id: chapel_pulpit
     idea:
-      cartoon wooden church pulpit with angled reading desk, carved side panels,
-      small step base, warm oak, medieval chapel preacher stand, fantasy interior
-      furniture, isolated item no room no floor, clean silhouette, game-ready
+      hand-hewn oak chapel lectern pulpit with angled reading desk, chamfered wooden side
+      panels with a simple carved Choir diamond motif, low step base, matte gouache and
+      tempera finish in smoked oak and ochre, isolated item no room no floor, clean
+      silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -80,9 +84,11 @@ assets:
         - 1.9
         - 1.0
   - id: chapel_statue
-    idea: cartoon stone saint statue on small pedestal, robed figure with hands
-      clasped, weathered grey stone, fantasy church decoration prop, upright,
-      isolated item no room no floor, clean silhouette, game-ready
+    idea:
+      carved limestone statue of a Choir singer on a low squared stone plinth, robed figure
+      with crisp chamfered chisel planes and hands clasped over a small turquoise crystal
+      tuning fork at chest, weathered pale grey stone with lime wash, matte mineral tempera
+      finish, upright, isolated item no room no floor, clean silhouette, game-ready
     kind: prop
     category: prop
     pipeline:
@@ -98,9 +104,11 @@ assets:
         - 1.8
         - 0.7
   - id: candelabra_tall
-    idea: tall cartoon brass candelabra stand with three curved arms holding lit
-      candles, round base, fantasy church or tavern candle holder, upright prop,
-      isolated item no room no floor, clean silhouette, game-ready
+    idea:
+      tall forged iron and aged brass floor candelabra stand with three chamfered arms holding
+      thick beeswax candles, solid tripod base, matte tempera finish, rural chapel or communal
+      hall candle stand, upright prop, isolated item no room no floor, clean silhouette,
+      game-ready
     kind: prop
     category: prop
     pipeline:
@@ -116,9 +124,11 @@ assets:
         - 1.7
         - 0.55
   - id: church_organ
-    idea: cartoon small wooden church pipe organ with gold front pipes of graded
-      lengths, bench seat, carved case, fantasy chapel music instrument, isolated
-      item no room no floor, clean silhouette, game-ready
+    idea:
+      handcrafted rural chapel pipe organ with chamfered oak cabinet and vertical aged-brass
+      and glass-harmonica pipes of graded lengths, wooden bench seat, matte gouache and tempera
+      finish in smoked oak, dull brass and muted turquoise accents, isolated item no room no
+      floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -138,9 +148,11 @@ assets:
         - 2.2
         - 1.2
   - id: confessional
-    idea: cartoon wooden confessional booth with two curtained side compartments
-      and central carved priest door, dark oak, fantasy church furniture, isolated
-      item no room no floor, clean silhouette, game-ready
+    idea:
+      hand-hewn dark oak confessional booth with crisp chamfered timber frame, two side
+      compartments hung with heavy plain ochre-linen curtains and central slatted wooden door,
+      matte gouache and tempera finish in broad clean color blocks, isolated item no room no
+      floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -162,10 +174,11 @@ assets:
   # ── Ferraria ──────────────────────────────────────────────────────────────
   - id: forge_furnace
     idea:
-      cartoon stone blacksmith forge furnace with wide brick firebox opening,
-      tall chimney hood, iron tools hanging on the side, dark hearth interior,
-      fantasy smithy interior fixture, solid base flush to ground, exterior of
-      the furnace only, no characters, clean silhouette, game-ready
+      squared stone and brick blacksmith forge furnace with chamfered masonry edges, wide
+      arched firebox opening, tall chimney hood bound with wrought-iron straps, iron tongs
+      hanging on the side, dark cold hearth interior, solid base flush to ground, matte
+      gouache and tempera finish in soot-grey, terracotta brick and dark iron, exterior of the
+      furnace only, no smoke no flames, no characters, clean silhouette, game-ready
     kind: environment
     category: building
     pipeline:
@@ -182,11 +195,12 @@ assets:
         - 1.8
   - id: sledge_hammer
     seed: 44107
-    idea: cartoon blacksmith sledge hammer standing perfectly upright vertical,
-      massive rectangular steel hammer head at the very top, thick round wooden
-      handle butt on ground, leather grip wrap, clearly a sledgehammer not a shovel
-      not a spade not an axe, orthographic front view, zero tilt, fantasy smithy
-      tool, white background, clean silhouette, game-ready
+    idea:
+      forged blacksmith sledgehammer standing perfectly upright vertical, massive chamfered
+      rectangular dark iron hammer head at the very top, thick hickory wooden handle butt on
+      ground with worn leather grip wrap, clearly a sledgehammer not a shovel not a spade not
+      an axe, orthographic front view, zero tilt, matte gouache and tempera finish, white
+      background, clean silhouette, game-ready
     kind: prop
     category: tool
     pipeline:
@@ -202,10 +216,11 @@ assets:
         - 0.25
   # ── Casa / taverna ────────────────────────────────────────────────────────
   - id: fireplace_hearth
-    idea: cartoon stone fireplace hearth with wide firebox opening, thick wooden
-      mantel shelf above, short side columns, warm cottage interior fixture, solid
-      base flush to ground, no flames no logs mesh, no characters, clean silhouette,
-      game-ready
+    idea:
+      squared dressed stone cottage fireplace hearth with chamfered masonry blocks and
+      weathered lime-mortar wash, wide firebox opening, thick hand-hewn oak mantel beam above,
+      short side pillars, solid base flush to ground, matte gouache and tempera finish, no
+      flames no logs mesh, no characters, clean silhouette, game-ready
     kind: environment
     category: building
     pipeline:
@@ -222,9 +237,10 @@ assets:
         - 0.9
   - id: dining_table
     idea:
-      long cartoon wooden dining table with thick plank top, four sturdy legs,
-      medieval tavern or cottage table, fantasy interior furniture, isolated item
-      no room no floor, clean silhouette, game-ready
+      long hand-hewn oak communal dining table with thick chamfered plank top, four sturdy
+      squared timber legs and stretcher bar, matte gouache and tempera finish in warm smoked
+      oak, rural tavern or communal hall table, isolated item no room no floor, clean
+      silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -241,9 +257,9 @@ assets:
         - 1.2
   - id: wooden_chair
     idea:
-      simple cartoon wooden chair with straight backrest, four legs, medieval
-      cottage seating, fantasy interior furniture, isolated item no room no floor,
-      clean silhouette, game-ready
+      hand-hewn oak cottage chair with chamfered straight backrest posts and four sturdy legs,
+      worn wooden seat, matte gouache and tempera finish in warm oak, isolated item no room no
+      floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -259,8 +275,9 @@ assets:
         - 0.95
         - 0.5
   - id: stool_wood
-    idea: cartoon three-legged wooden stool with round seat, rustic medieval
-      cottage stool, fantasy interior furniture, isolated item no room no floor,
+    idea:
+      three-legged hand-hewn wooden work stool with thick chamfered octagonal seat, worn top
+      surface, matte gouache and tempera finish in smoked oak, isolated item no room no floor,
       clean silhouette, game-ready
     kind: prop
     category: furniture
@@ -277,9 +294,10 @@ assets:
         - 0.6
         - 0.45
   - id: cupboard
-    idea: tall cartoon wooden cupboard with two closed doors, iron hinges and
-      handles, carved top cornice, medieval cottage storage furniture, fantasy
-      interior item, isolated item no room no floor, clean silhouette, game-ready
+    idea:
+      tall hand-hewn oak cupboard cabinet with two closed plank doors, forged black wrought-iron
+      strap hinges and latch, chamfered top cornice, matte gouache and tempera finish in broad
+      clean color blocks, isolated item no room no floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -295,9 +313,11 @@ assets:
         - 1.9
         - 0.55
   - id: bed_simple
-    idea: cartoon simple wooden bed with straw mattress and folded wool blanket,
-      four postless corner legs, low headboard, medieval cottage bed, fantasy
-      interior furniture, isolated item no room no floor, clean silhouette, game-ready
+    idea:
+      rural cottage bed built of hand-hewn chamfered oak planks with coarse linen mattress and
+      folded moss-green and ochre mended wool blanket, four low corner legs and solid headboard,
+      matte gouache and tempera finish in broad clean color blocks, isolated item no room no
+      floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -313,9 +333,11 @@ assets:
         - 1.0
         - 1.2
   - id: bookshelf
-    idea: cartoon wooden bookshelf with three shelves full of colorful books,
-      some leaning, wooden side panels, medieval scholar furniture, fantasy interior
-      item, isolated item no room no floor, clean silhouette, game-ready
+    idea:
+      hand-hewn oak archive bookshelf with three thick shelves holding leather-bound ledgers,
+      folded parchment maps and wooden map cases in earthy ochre, umber, slate and carmine
+      tones, chamfered side panels, matte gouache and tempera finish, isolated item no room no
+      floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -331,11 +353,11 @@ assets:
         - 1.9
         - 0.4
   - id: rug_woven
-    idea: very thick braided cartoon wool rug with raised rolled edges and big
-      tassel fringe at both ends, puffy padded center with striped geometric border
-      pattern, warm red and cream colors, rounded corners, medieval cottage floor
-      decoration, fantasy interior prop, clearly a thick soft rug not a wooden
-      plank not a board not a flat sheet, clean silhouette, game-ready
+    idea:
+      very thick braided coarse wool floor rug with raised rolled edges and heavy knotted
+      fringe at both ends, padded center in solid madder-carmine and unbleached cream border
+      without fine stripes, rounded corners, matte gouache and tempera finish, clearly a thick
+      heavy wool rug not a wooden plank not a board, clean silhouette, game-ready
     kind: prop
     category: prop
     pipeline:
@@ -352,9 +374,10 @@ assets:
         - 0.5
         - 1.6
   - id: cauldron_iron
-    idea: big cartoon black iron cauldron with round belly and three short legs,
-      iron rim handles, dark cooking pot, fantasy tavern or cottage hearth prop,
-      isolated item no room no floor, clean silhouette, game-ready
+    idea:
+      heavy forged dark wrought-iron cooking cauldron with faceted round belly, three short
+      chamfered legs and thick rim handles, soot-blackened matte tempera finish, rural hearth
+      pot, isolated item no room no floor, clean silhouette, game-ready
     kind: prop
     category: prop
     pipeline:
@@ -370,9 +393,10 @@ assets:
         - 1.1
         - 1.0
   - id: lantern_hanging
-    idea: cartoon brass hanging lantern with glass panels and lit candle flame
-      glow, chain ring at top, round base, fantasy tavern or cottage light prop,
-      hanging from a hook, isolated item, clean silhouette, game-ready
+    idea:
+      forged dark iron and aged brass hanging lantern with chamfered frame, warm amber glass
+      panels and suspension ring at top, octagonal base, matte gouache and tempera finish,
+      rural hall or inn light fixture, isolated item, clean silhouette, game-ready
     kind: prop
     category: prop
     pipeline:
@@ -388,9 +412,10 @@ assets:
         - 0.35
   - id: tavern_bar
     idea:
-      long cartoon tavern bar counter with wooden plank top, front panel with
-      carved detail, foot rail, medieval inn serving counter, fantasy interior
-      furniture, isolated item no room no floor, clean silhouette, game-ready
+      long hand-hewn oak tavern counter with thick chamfered plank top worn smooth along the
+      serving edge, recessed panel front with dark iron corner straps and low iron foot rail,
+      matte gouache and tempera finish in smoked oak and slate, isolated item no room no floor,
+      clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:
@@ -406,9 +431,10 @@ assets:
         - 1.15
         - 0.8
   - id: spinning_wheel
-    idea: cartoon wooden spinning wheel with large drive wheel, spindle, bench
-      seat, medieval cottage textile tool, fantasy interior prop, upright, isolated
-      item no room no floor, clean silhouette, game-ready
+    idea:
+      handcrafted rural wooden spinning wheel with chamfered oak spoked wheel, flax distaff
+      and angled bench frame, matte gouache and tempera finish in warm weathered oak and raw
+      linen, upright, isolated item no room no floor, clean silhouette, game-ready
     kind: prop
     category: furniture
     pipeline:

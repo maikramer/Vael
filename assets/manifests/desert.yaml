@@ -1,5 +1,5 @@
-# Grupo desert — vegetação e ruínas do Deserto.
-# Defs base (estilo, ferramentas, presets) em ../game.yaml.
+# Grupo desert — vegetação e ruínas do Ermo Rubro (Ofício Talhado & Iluminura Rural).
+# Defs base (estilo, ferramentas, presets) em ../game.yaml e ../docs/ART.md.
 # Regenerar: gameassets resume --profile game.yaml --manifest manifests/desert
 output_dir: ../public/assets
 meshes_subdir: meshes/desert
@@ -7,9 +7,9 @@ images_subdir: images/desert
 assets:
   - id: cactus
     idea:
-      cartoon desert saguaro cactus tall column with wider left-right silhouette,
-      three green arms spreading sideways, ribbed texture, small spines, stylized fantasy
-      desert plant, vertical trunk
+      red-wastes columnar saguaro cactus with wide left-right silhouette, three thick arms
+      spreading sideways, carved chamfered vertical ribs in dusty olive-sage green, matte
+      gouache and tempera finish with broad clean color blocks, vertical trunk
     kind: environment
     category: vegetation
     pipeline:
@@ -26,8 +26,9 @@ assets:
         - 0.71
   - id: dead_bush
     idea:
-      cartoon dry desert tumbleweed bush with twisted brown branches, sparse leaves,
-      arid climate plant, fantasy desert prop
+      sun-bleached dry desert scrub bush with angular chamfered wooden branches in bone-ochre
+      and burnt umber, sparse dry leaves, matte gouache and tempera finish, Ermo Rubro arid
+      plant prop
     kind: prop
     category: vegetation
     pipeline:
@@ -44,8 +45,10 @@ assets:
         - 1.5
   - id: ruin_pillar
     idea:
-      ancient cartoon sandstone ruin pillar with cracked carved hieroglyphs, weathered
-      top, broken base, fantasy desert monument
+      ancient Ermo Rubro ferruginous sandstone ruin pillar with crisp chamfered stone drums,
+      weathered geometric cartographic survey notches carved in the shaft, fractured capital,
+      solid base flush to ground, matte gouache and tempera finish in terracotta, dry ochre
+      and slate-grey
     kind: environment
     category: building
     pipeline:
@@ -64,9 +67,9 @@ assets:
     text3d:
       octree_resolution: 256
     idea:
-      low wide cartoon desert sand mound burrow with a small dark tunnel entrance
-      hole, packed sand termite-hill lump hugging the ground, scattered bones around
-      the entrance, flat wide base, fantasy creature lair
+      low wide red-wastes sandstone and packed ochre-clay burrow mound with a dark tunnel
+      entrance hole, angular stratified earth ledges hugging the ground, sun-bleached rib
+      bones by the entrance, flat wide solid base, matte gouache and tempera finish
     kind: environment
     category: terrain
     pipeline:
@@ -86,9 +89,10 @@ assets:
         - 2.5
   - id: desert_obelisk
     idea:
-      tall slender cartoon sandstone desert obelisk with carved sun symbol near
-      top, warm orange stone, square tapered shaft on small stepped base flush to ground,
-      fantasy landmark needle, upright
+      tall slender Ermo Rubro red-sandstone survey obelisk with crisp chamfered edges and a
+      recessed turquoise-blue Choir crystal vein notch near the pyramidal peak, ferruginous
+      terracotta and dry ochre stone, square tapered shaft on stepped base flush to ground,
+      matte gouache and tempera finish, upright landmark
     kind: environment
     category: building
     pipeline:
@@ -102,10 +106,10 @@ assets:
       footprint_m: 1.4
   - id: sandstone_arch
     idea:
-      monumental cartoon sandstone desert arch ten meters tall, thick weathered
-      pillars and curved top, warm orange stone with erosion cracks, fantasy canyon
-      gate freestanding flush to ground, front view, clean architectural silhouette,
-      no characters
+      monumental Ermo Rubro stratified red-sandstone arch ten meters tall, thick chamfered
+      rock pillars and flat-faceted keystone arch, ferruginous terracotta and ochre stone with
+      slate-blue shadow crevices, canyon landmark freestanding flush to ground, front view,
+      matte gouache and tempera finish, clean architectural silhouette, no characters
     kind: environment
     category: building
     pipeline:

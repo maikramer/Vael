@@ -1,6 +1,5 @@
-# Grupo forest — vegetação e construções da Floresta (Crystal Vale, partilhado).
-# Canónico em assets/ (manifests + binários em public/assets).
-# Exemplos consomem o pool diretamente por URL — sem cópias nem symlinks.
+# Grupo forest — vegetação e construções da Floresta Sombria (Ofício Talhado & Iluminura Rural).
+# Defs base em ../game.yaml e ../docs/ART.md.
 # Regenerar: cd assets && gameassets resume --profile game.yaml --manifest manifests/forest
 output_dir: ../public/assets
 meshes_subdir: meshes/forest
@@ -8,9 +7,9 @@ images_subdir: images/forest
 assets:
   - id: pine_dark
     idea:
-      tall cartoon dark pine tree with dense layered triangle foliage in deep forest
-      green, narrow brown trunk, slightly gloomy stylized shape, dark fantasy forest
-      tree
+      tall dark-forest pine tree with dense layered foliage masses in deep pine-black and
+      moss-green, narrow chamfered dark bark trunk, matte gouache and tempera finish with
+      broad clean color blocks, Floresta Sombria conifer tree
     kind: environment
     category: vegetation
     pipeline:
@@ -29,10 +28,10 @@ assets:
   - id: dead_tree
     seed: 44119
     idea:
-      bare cartoon dead tree wide silhouette in front view, broad gnarled trunk
-      and branches spanning left-right, shallow depth front-to-back not a deep volume,
-      natural thick twisted leafless branches, pale grey bark, spooky dark fantasy forest
-      tree, full body visible, three-quarter front view
+      bare dead forest tree with wide silhouette in front view, broad angular trunk with
+      carved chamfered bark planes and thick leafless branches spanning left-right, shallow
+      depth front-to-back not a deep volume, weathered lichen-grey bark, matte gouache and
+      tempera finish, full body visible, three-quarter front view
     kind: environment
     category: vegetation
     pipeline:
@@ -49,9 +48,9 @@ assets:
         - 1.7
   - id: mushroom_glow
     idea:
-      cartoon tall glowing blue mushroom with slender vertical stalk and round cap,
-      bioluminescent fantasy fungi, soft cyan light, upright prop on dark forest floor,
-      narrow footprint
+      tall forest mushroom with slender chamfered stalk and faceted cap emitting a soft
+      turquoise-cyan Choir luminescence, dark moss at base, matte gouache and tempera finish
+      with broad clean color zones, upright prop on dark forest floor, narrow footprint
     kind: prop
     category: vegetation
     pipeline:
@@ -72,10 +71,12 @@ assets:
     # de enxaimel com telhado curto em chapéu de bruxa (text2d seed 7002).
     seed: 40424
     idea:
-      tall narrow two-storey crooked witch house, timber frame and mauve plaster walls
-      clearly visible on every side, tall witch-hat shaped pointed roof of dark purple
-      shingles with tiny overhang, glowing yellow windows, wooden door with iron hinges,
-      chimney, mossy stone base, cartoon dark fantasy forest building
+      tall narrow two-storey crooked forest witch dwelling with crisp chamfered hand-hewn
+      dark pine timber frame and weathered lichen-slate plaster walls clearly visible on
+      every side, steep pointed roof of dark slate shingles with small overhang, warm amber
+      window glow, heavy plank door with wrought-iron hinges and carmine cloth talisman
+      ribbons, cold stone chimney without smoke, mossy squared stone base flush to ground,
+      matte gouache and tempera finish in broad clean color blocks
     kind: environment
     category: building
     pipeline:
@@ -105,8 +106,9 @@ assets:
       view_resolution: 640
   - id: tree_oak
     idea:
-      cartoon oak tree with big round puffy green canopy on thick brown trunk, stylized
-      fantasy forest tree, bright cheerful foliage
+      valley oak tree with broad sculpted canopy of layered olive and meadow-green foliage
+      masses on a thick chamfered brown bark trunk with exposed roots, matte gouache and
+      tempera finish in broad clean color blocks
     kind: environment
     category: vegetation
     pipeline:
@@ -126,8 +128,9 @@ assets:
         - 4.0
   - id: tree_pine
     idea:
-      tall cartoon pine tree with layered triangle foliage in rich green, narrow
-      brown trunk, stylized Christmas tree shape, fantasy forest
+      tall valley pine tree with layered triangular foliage masses in deep sage and forest
+      green, straight chamfered umber bark trunk, matte gouache and tempera finish with broad
+      clean color blocks
     kind: environment
     category: vegetation
     pipeline:

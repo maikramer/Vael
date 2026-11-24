@@ -1,6 +1,5 @@
-# Grupo infra — muralha, portão e pontes do rio Discordia (Crystal Vale, partilhado).
-# Canónico em assets/ (manifests + binários em public/assets).
-# Exemplos consomem o pool diretamente por URL — sem cópias nem symlinks.
+# Grupo infra — muralha, portão e pontes de Discórdia (Ofício Talhado & Iluminura Rural).
+# Defs base em ../game.yaml e ../docs/ART.md.
 # Regenerar: cd assets && gameassets resume --profile game.yaml --manifest manifests/infra
 output_dir: ../public/assets
 meshes_subdir: meshes/infra
@@ -10,15 +9,17 @@ assets:
     # Collision: mode envelope (inflate+voxel) — especial p/ arcos côncavos c/ vão.
     # size L=10 encaixa vão ±5; H≈muro+merlons; W≈muro. Arco redondo + abutments prismáticos.
     idea:
-      medieval stone city gate arch portal for tiling with curtain wall, classic round
+      medieval stone town gate arch portal for tiling with curtain wall, classic round
       semicircular arched opening about eight meters wide between two pillars, left and
       right abutment pillars are constant-width rectangular stone prisms from ground to
       top with perfectly flat vertical outer side faces same thickness all the way up,
       no pedestal no plinth no flared base no wider footing no overhanging cornice no
       cantilever top corner no stepped buttress, straight outer profile flush for wall
-      join, heavy stone arch voussoirs forming the round opening, simple square merlon
-      battlements on top of lintel above the arch, warm grey stone blocks, no doors no
-      portcullis, bottom flush with ground plane, front view game-ready prop
+      join, heavy chamfered stone arch voussoirs forming the round opening with a carved
+      turquoise crystal Choir keystone mark, simple square merlon battlements on top of
+      lintel above the arch, squared dressed stone blocks with weathered lime-mortar wash,
+      matte gouache and tempera finish, no doors no portcullis, bottom flush with ground
+      plane, front view game-ready prop
     kind: environment
     category: building
     pipeline:
@@ -41,9 +42,10 @@ assets:
   # Lab shapes em sample-gameassets/_wall_lab/ (2026-07-29). size_m = [L,H,W]=[X,Y,Z].
   - id: city_wall_seg_a
     idea:
-      modular medieval stone curtain wall segment, straight thin masonry panel,
-      crenellated merlons along top, warm grey stone blocks, flat vertical ends for
-      tiling, solid footing flush to ground, freestanding wall piece, no towers no
+      modular medieval stone curtain wall segment, straight thin masonry panel built of
+      squared chamfered ashlar blocks with weathered lime-mortar wash, crenellated merlons
+      along top, flat vertical ends for tiling, solid footing flush to ground, matte gouache
+      and tempera finish in warm lime-grey and slate, freestanding wall piece, no towers no
       gates no doors, game-ready prop
     kind: environment
     category: building
@@ -65,9 +67,10 @@ assets:
         - 0.9
   - id: city_wall_seg_b
     idea:
-      thin freestanding stone curtain wall panel only, battlement merlons, hollow
-      feel not a solid hut, no building volume inside bbox, flat tileable ends, fantasy
-      village wall, front view
+      thin freestanding dressed-stone curtain wall panel only, crisp chamfered battlement
+      merlons, weathered lime-mortar wash over slate-grey masonry, hollow feel not a solid
+      hut, no building volume inside bbox, flat tileable ends, matte gouache and tempera
+      finish, rural town wall, front view
     kind: environment
     category: building
     pipeline:
@@ -88,10 +91,11 @@ assets:
         - 0.9
   - id: city_wall_seg_c
     idea:
-      modular medieval stone curtain wall segment, straight thin masonry panel,
-      crenellated merlons along top, warm grey stone blocks, flat vertical ends for
-      tiling, solid footing flush to ground, freestanding wall piece, no towers no
-      gates no doors, game-ready prop
+      modular medieval stone curtain wall segment, straight thin masonry panel built of
+      squared chamfered stone blocks with weathered lime-mortar wash and moss near the base,
+      crenellated merlons along top, flat vertical ends for tiling, solid footing flush to
+      ground, matte gouache and tempera finish, freestanding wall piece, no towers no gates
+      no doors, game-ready prop
     kind: environment
     category: building
     pipeline:
@@ -112,11 +116,12 @@ assets:
         - 1.2
   - id: city_wall_corner
     idea:
-      square straight medieval stone corner watchtower, prismatic box silhouette,
-      perfectly vertical flat walls on all four sides for tiling with curtain wall
-      segments, square footprint, simple flat-top with square merlon battlements, warm
-      grey stone blocks, solid footing flush to ground, no round tower no cone roof no
-      doors no windows low, game-ready modular prop
+      square straight medieval stone corner watchtower, prismatic box silhouette, perfectly
+      vertical flat walls on all four sides for tiling with curtain wall segments, square
+      footprint, simple flat-top with crisp chamfered square merlon battlements, dressed
+      stone blocks with weathered lime-mortar wash, solid footing flush to ground, matte
+      gouache and tempera finish, no round tower no cone roof no doors no windows low,
+      game-ready modular prop
     kind: environment
     category: building
     pipeline:
@@ -141,10 +146,11 @@ assets:
   # size_m [L,H,W]=span×altura×largura_deck. Placement: W yaw=0 (span∥X); S yaw=90 (span∥Z).
   - id: river_bridge_wood
     idea:
-      low wooden plank river bridge eighteen meters long, orthographic side profile,
+      low hand-hewn oak plank river bridge eighteen meters long, orthographic side profile,
       flat walkable deck about one meter above ground, gentle approach ramps on BOTH ends
       meeting the ground plane for walk-on access, continuous surface ground-ramp-deck-ramp-ground,
-      four timber posts SYNMMETRIC two-by-two under midspan, low handrails, warm brown boards,
+      four thick chamfered timber posts SYMMETRIC two-by-two under midspan, low chamfered oak
+      handrails with iron bolts, matte gouache and tempera finish in weathered smoked oak,
       freestanding, game-ready
     kind: environment
     category: building
@@ -166,11 +172,12 @@ assets:
         - 3.6
   - id: river_bridge_stone
     idea:
-      low stone slab river bridge eighteen meters long, orthographic side profile,
-      flat walkable grey stone deck about one meter above ground, gentle stone approach
-      ramps on BOTH ends meeting the ground plane for walk-on access, continuous surface
-      ground-ramp-deck-ramp-ground, four square stone piers SYNMMETRIC under midspan, low
-      parapets, freestanding, game-ready
+      low dressed-stone slab river bridge eighteen meters long, orthographic side profile,
+      flat walkable chamfered grey stone deck about one meter above ground, gentle stone
+      approach ramps on BOTH ends meeting the ground plane for walk-on access, continuous
+      surface ground-ramp-deck-ramp-ground, four squared stone piers SYMMETRIC under midspan
+      with white lime water-level marks, low stone parapets, matte gouache and tempera finish,
+      freestanding, game-ready
     kind: environment
     category: building
     pipeline:
