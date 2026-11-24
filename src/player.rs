@@ -96,7 +96,8 @@ pub fn vael_hero_config(jump_height: f32) -> VaelHeroSchemeConfig {
         basis: TnuaBuiltinWalkConfig {
             speed: 1.0,
             // Medido a partir do disco elevado (HERO_SENSOR_LIFT na engine).
-            float_height: vael_engine::player::HERO_FLOAT_HEIGHT + vael_engine::player::HERO_SENSOR_LIFT,
+            float_height: vael_engine::player::HERO_FLOAT_HEIGHT
+                + vael_engine::player::HERO_SENSOR_LIFT,
             cling_distance: vael_engine::player::HERO_CLING_DISTANCE,
             spring_strength: 400.0,
             spring_dampening: 1.2,
@@ -202,6 +203,8 @@ pub const STEER_TAU: f32 = 0.09;
 pub const AIR_TAU: f32 = 0.3;
 /// Duração do avanço curto (lunge) de um golpe.
 pub const LUNGE_SECS: f32 = 0.16;
+/// Duração do ajuste suave de posição (avanço ou recuo) antes do golpe de ferramenta.
+pub const STEP_SECS: f32 = 0.20;
 /// Multiplicador do giro do herói enquanto um golpe o vira para o alvo.
 pub const ATTACK_TURN_BOOST: f32 = 2.5;
 /// Raio horizontal de interação do herói com a água (m).
@@ -328,6 +331,8 @@ pub struct AttackMotion {
     pub slow: f32,
     /// Avanço curto (m) na direção do golpe.
     pub lunge: f32,
+    /// Ajuste radial suave no plano XZ (m), independente de `face` (pode recuar).
+    pub step: Vec2,
     /// Direção do golpe (para onde o herói se vira); `None` = a frente atual.
     pub face: Option<Vec2>,
 }
@@ -777,20 +782,38 @@ fn table_f32(table: &Table, key: &str, default: f32) -> f32 {
 pub(crate) fn install_motion(lua: &Lua, bus: HeroMotionBus) -> mlua::Result<()> {
     use crate::vault::{vael_fn, vael_table};
     let vael = vael_table(lua)?;
-    vael_fn!(lua, vael, "spend_attack_stamina", [bus = bus.clone()], move |_, ()| {
-        Ok(bus.lock().stamina.attack())
-    });
-    vael_fn!(lua, vael, "hero_at_rest", [bus = bus.clone()], move |_, ()| {
-        Ok(bus.lock().at_rest)
-    });
-    vael_fn!(lua, vael, "hero_crouching", [bus = bus.clone()], move |_, ()| {
-        Ok(bus.lock().crouching)
-    });
-    vael_fn!(lua, vael, "combat_target", [bus = bus.clone()], move |_, (x, z): (f32, f32)| {
-        let target = Vec2::new(x, z);
-        bus.lock().combat_target = target.is_finite().then_some(target);
-        Ok(())
-    });
+    vael_fn!(
+        lua,
+        vael,
+        "spend_attack_stamina",
+        [bus = bus.clone()],
+        move |_, ()| { Ok(bus.lock().stamina.attack()) }
+    );
+    vael_fn!(
+        lua,
+        vael,
+        "hero_at_rest",
+        [bus = bus.clone()],
+        move |_, ()| { Ok(bus.lock().at_rest) }
+    );
+    vael_fn!(
+        lua,
+        vael,
+        "hero_crouching",
+        [bus = bus.clone()],
+        move |_, ()| { Ok(bus.lock().crouching) }
+    );
+    vael_fn!(
+        lua,
+        vael,
+        "combat_target",
+        [bus = bus.clone()],
+        move |_, (x, z): (f32, f32)| {
+            let target = Vec2::new(x, z);
+            bus.lock().combat_target = target.is_finite().then_some(target);
+            Ok(())
+        }
+    );
     // vael.vael.dodge() -> kind, duração | nil. `kind` ∈ roll/side/back
     // (o script escolhe o clip); nil = no ar ou já a esquivar.
     vael_fn!(lua, vael, "dodge", [bus = bus.clone()], move |_, ()| {
@@ -813,6 +836,7 @@ pub(crate) fn install_motion(lua: &Lua, bus: HeroMotionBus) -> mlua::Result<()> 
                 secs: table_f32(&opts, "secs", 0.3).clamp(0.0, 2.0),
                 slow: table_f32(&opts, "slow", 0.3).clamp(0.0, 1.0),
                 lunge: table_f32(&opts, "lunge", 0.0).clamp(0.0, 3.0),
+                step: Vec2::ZERO,
                 face: (face.length_squared() > 1e-6).then(|| face.normalize()),
             });
             Ok(())
@@ -1077,9 +1101,7 @@ fn map_anim_state(state: VaelAnimState) -> Option<bevy_ext_core::animation::Anim
     match state {
         VaelAnimState::EngineDecides | VaelAnimState::Knocked => None,
         VaelAnimState::Jumping => Some(AnimState::Jump),
-        VaelAnimState::Falling | VaelAnimState::OnWall => {
-            Some(AnimState::Fall)
-        }
+        VaelAnimState::Falling | VaelAnimState::OnWall => Some(AnimState::Fall),
         VaelAnimState::Dashing => Some(AnimState::Run),
         VaelAnimState::Crouching | VaelAnimState::Climbing => Some(AnimState::Walk),
     }
@@ -1414,7 +1436,9 @@ fn player_movement(
         // embarque (`RigidBodyDisabled`) e volta ao sair.
         if riding.is_some() {
             if let Some(bus) = bus.as_deref() {
-                bus.lock().stamina.tick(time.delta_secs(), false, false, true);
+                bus.lock()
+                    .stamina
+                    .tick(time.delta_secs(), false, false, true);
             }
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
@@ -1678,7 +1702,12 @@ fn player_movement(
                 .map(|f| Vec3::new(f.x, 0.0, f.y))
                 .unwrap_or(facing);
             controller.attack_face = Some(face);
-            if attack.lunge > 0.0 {
+            let step = Vec3::new(attack.step.x, 0.0, attack.step.y);
+            if step.is_finite() && step.length_squared() > 1e-6 {
+                // Ajuste de posição suave (avanço ou recuo) pela basis do walk:
+                // sem overshoot do Dash nem troca de estado de animação.
+                controller.lunge = Some(Burst::new(step, step.length(), STEP_SECS));
+            } else if attack.lunge > 0.0 {
                 if with_body && let Some(tnua) = tnua.as_deref_mut() {
                     // Avanço do golpe como Dash (mesma ação da esquiva; o
                     // Lua nunca pede os dois no mesmo frame).
@@ -1696,13 +1725,15 @@ fn player_movement(
         let attacking = now < controller.attack_until;
         // Uma onda pode deixar os pés no ar durante um instante. Enquanto
         // boia sobre uma coluna funda, manter-se à tona continua a custar.
-        let afloat = submersion >= SWIM_DEPTH || water_domain.is_some_and(|d| {
-            d.depth > SWIM_IDLE_DEPTH
-                && (!controller.grounded || submersion > WADE_DRAG_START_DEPTH)
-                && transform.translation.y >= d.surface_y - d.depth - WATER_BED_SLACK
-                && transform.translation.y < d.surface_y + 0.5
-        });
-        let run = sprint && input_mag > 0.0 && !attacking && !crouch_held && controller.dodge.is_none();
+        let afloat = submersion >= SWIM_DEPTH
+            || water_domain.is_some_and(|d| {
+                d.depth > SWIM_IDLE_DEPTH
+                    && (!controller.grounded || submersion > WADE_DRAG_START_DEPTH)
+                    && transform.translation.y >= d.surface_y - d.depth - WATER_BED_SLACK
+                    && transform.translation.y < d.surface_y + 0.5
+            });
+        let run =
+            sprint && input_mag > 0.0 && !attacking && !crouch_held && controller.dodge.is_none();
         let mut running = run && !afloat;
         if let Some(bus) = bus.as_deref() {
             let mut shared = bus.lock();
@@ -1739,17 +1770,13 @@ fn player_movement(
             1.0
         };
         let pace = if afloat {
-            controller.speed.min(crate::stamina::SWIM_SPEED_LIMIT / water_drag)
+            controller
+                .speed
+                .min(crate::stamina::SWIM_SPEED_LIMIT / water_drag)
         } else {
             controller.speed
         };
-        let desired = dir
-            * pace
-            * sprint_mult
-            * input_mag
-            * attack_slow
-            * crouch_slow
-            * water_drag
+        let desired = dir * pace * sprint_mult * input_mag * attack_slow * crouch_slow * water_drag
             + Vec3::new(flow_drift.x, 0.0, flow_drift.y);
         let input_active = dir.length_squared() > 0.0;
         // Dash em curso (a ação corrente do tnua — um frame atrás do pedido,
@@ -1817,8 +1844,8 @@ fn player_movement(
         if vel_x * vel_x + vel_z * vel_z > 0.25 {
             controller.last_moving_time = now;
         }
-        // Lunge/empurrão SEM corpo entram na VELOCIDADE pedida (m/s); com
-        // corpo o lunge já é um Dash e o empurrão é a ação Knockback abaixo.
+        // `attack.step` (e lunge/empurrão sem corpo) entram na VELOCIDADE pedida (m/s);
+        // com corpo, `attack.lunge` usa Dash e o empurrão usa Knockback abaixo.
         let mut extra_motion = Vec3::ZERO;
         if let Some(lunge) = controller.lunge.as_mut() {
             extra_motion += lunge.dir * lunge.speed();
@@ -2731,5 +2758,58 @@ mod tests {
         assert_eq!(border_clamped_xz(f32::NAN, 0.0, 100.0), None);
         assert_eq!(border_clamped_xz(200.0, 0.0, f32::NAN), None);
         assert_eq!(border_clamped_xz(200.0, 0.0, 0.0), None, "sem raio útil");
+    }
+
+    #[test]
+    fn attack_step_backs_away_while_facing_rotated_direction() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .insert_resource(bevy::time::TimeUpdateStrategy::ManualDuration(
+                std::time::Duration::from_millis(16),
+            ))
+            .init_resource::<ButtonInput<KeyCode>>()
+            .init_resource::<HeroMotionBus>()
+            .add_message::<bevy_ext_core::SfxEvent>()
+            .add_systems(Update, player_movement);
+        let hero = app
+            .world_mut()
+            .spawn((
+                Transform::default(),
+                VaelController::default(),
+                Player::default(),
+            ))
+            .id();
+        app.update();
+
+        // Tree is along +Z; hero steps back along -Z while rotating clockwise toward -X/+Z.
+        let cw_face = (Quat::from_rotation_y(-10.0_f32.to_radians()) * Vec3::Z).xz();
+        app.world()
+            .resource::<HeroMotionBus>()
+            .request_attack(AttackMotion {
+                secs: 0.35,
+                slow: 0.25,
+                lunge: 0.0,
+                step: Vec2::new(0.0, -0.25),
+                face: Some(cw_face),
+            });
+        for _ in 0..16 {
+            app.update();
+        }
+        let tf = app.world().get::<Transform>(hero).unwrap();
+        assert!(
+            tf.translation.z < -0.20 && tf.translation.z > -0.32,
+            "expected ~0.25m step back along -Z, got z={}",
+            tf.translation.z
+        );
+        assert!(
+            tf.translation.x.abs() < 1e-4,
+            "radial step should not drift sideways: x={}",
+            tf.translation.x
+        );
+        let facing = (tf.rotation * Vec3::Z).xz().normalize();
+        assert!(
+            facing.distance(cw_face) < 1e-3,
+            "expected clockwise rotated facing {cw_face:?}, got {facing:?}"
+        );
     }
 }

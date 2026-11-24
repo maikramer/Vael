@@ -64,7 +64,7 @@ use crate::xp::{
 
 /// Variável de ambiente que liga a colheita em Rust (`1`/`true`/`on`/`yes`).
 pub const RUST_ENV: &str = "VAEL_HARVEST_RUST";
-/// Chave do `viber.game()` que avisa o Lua de que a colheita é do Rust.
+/// Chave do `vael.game()` que avisa o Lua de que a colheita é do Rust.
 pub const RUST_GATE_KEY: &str = "vael_harvest_rust";
 /// Período da verificação do gate guardado no save (s).
 pub const GATE_PERIOD_SECS: f32 = 0.5;
@@ -100,6 +100,14 @@ pub const STUMP_HALF_HEIGHT: f32 = 0.35;
 pub const BUCK_RANGE: f32 = 3.0;
 /// Intervalo entre golpes de retalhar (s).
 pub const BUCK_COOLDOWN: f32 = 0.5;
+/// Distância horizontal alvo à superfície de contacto para mineração e toros (m).
+pub const TOOL_STANDOFF: f32 = 0.88;
+/// Distância horizontal alvo para derrubar árvores em pé (+10 cm para dar mais curso ao machado).
+pub const TREE_CHOP_STANDOFF: f32 = TOOL_STANDOFF + 0.10;
+/// Banda morta (m) em torno de [`TREE_CHOP_STANDOFF`] para o herói não oscilar entre golpes.
+const TREE_CHOP_STANDOFF_DEADZONE: f32 = 0.03;
+/// Ajuste radial máximo num único golpe (m).
+const TOOL_MAX_LUNGE: f32 = 0.68;
 
 /// Estilo de quebra autorado (`break-style`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Reflect, Default)]
@@ -398,6 +406,7 @@ const REPLACEMENT_SCALE_TIMEOUT: f32 = 2.0;
 #[derive(bevy::ecs::system::SystemParam)]
 struct HarvestServices<'w, 's> {
     logs: Query<'w, 's, &'static timber::GroundLog>,
+    pools: Option<Res<'w, Assets<bevy_flora::TreePool>>>,
     mining: Res<'w, mining::Mining>,
     mouse: Option<Res<'w, ButtonInput<MouseButton>>>,
 
@@ -411,13 +420,13 @@ struct HarvestServices<'w, 's> {
     crystals: Query<'w, 's, (), With<crate::rocks::CrystalGrowth>>,
 }
 
-/// Pedidos de tombo vindos do Lua (`viber.vael.fell_tree`): a função só
+/// Pedidos de tombo vindos do Lua (`vael.vael.fell_tree`): a função só
 /// enfileira (o closure não tem o ECS); o sistema processa no `Update`.
 #[derive(Resource, Clone, Default)]
 struct PendingFloraFell(std::sync::Arc<std::sync::Mutex<Vec<u64>>>);
 
-/// Instala `viber.vael.fell_tree(id) -> true` — o `harvest.lua` usa-a no ramo
-/// `break-style: fall` no lugar de `viber.topple`. Sem isto o caminho Lua
+/// Instala `vael.vael.fell_tree(id) -> true` — o `harvest.lua` usa-a no ramo
+/// `break-style: fall` no lugar de `vael.topple`. Sem isto o caminho Lua
 /// (default) tombava a ESTAÇÃO com o `Falling` da engine e perdia o toco e o
 /// tronco deitado do `bevy_flora`.
 fn install_fell_api(
@@ -498,11 +507,11 @@ fn install_fell_api(
         Ok(())
     });
     commands.insert_resource(queue);
-    info!("vael: `viber.vael.fell_tree` registado nos contextos BMS (tombo do bevy_flora no Lua)");
+    info!("vael: `vael.vael.fell_tree` registado nos contextos BMS (tombo do bevy_flora no Lua)");
 }
 
 /// Processa os pedidos do Lua: árvore procedural → `FellTree` numa raiz com a
-/// pose global; prop antigo → o `Falling` da engine (o que o `viber.topple`
+/// pose global; prop antigo → o `Falling` da engine (o que o `vael.topple`
 /// fazia).
 fn process_pending_fell(
     mut commands: Commands,
@@ -673,7 +682,7 @@ pub enum GatePatch {
     Clear,
 }
 
-/// Decide o patch do gate a partir do valor atual do `viber.game()`.
+/// Decide o patch do gate a partir do valor atual do `vael.game()`.
 pub fn gate_patch(current: Option<bool>, rust: bool) -> GatePatch {
     if rust {
         if current != Some(true) {
@@ -720,7 +729,7 @@ impl Plugin for VaelHarvestPlugin {
             // O gate vive fora do `run_if`: quando OFF também tem de apagar
             // um `true` que venha de um save antigo.
             // Depois do cofre: o `vael_table` é ler-ou-criar, e dois
-            // instaladores em paralelo criavam cada um a sua `viber.vael` —
+            // instaladores em paralelo criavam cada um a sua `vael.vael` —
             // a do cofre perdia-se (o `vault_add` nil do `rules.lua:919`).
             .add_systems(
                 Startup,
@@ -741,7 +750,7 @@ impl Plugin for VaelHarvestPlugin {
             )
             // Props que nascem DEPOIS do load (spawn de script, `live_edit` do
             // Jackdaw): o `PostStartup`/`SceneLoad` não os vê e o caminho Lua
-            // (`viber.player_nearby`) vê-os — a colheita Rust ficava cega.
+            // (`vael.player_nearby`) vê-os — a colheita Rust ficava cega.
             .add_systems(Update, attach_late_harvestables)
             .add_systems(
                 PreUpdate,
@@ -974,7 +983,7 @@ fn provenance_label(source: &SceneSource, root: Option<&Path>) -> String {
 }
 
 /// Marca a chave em `VaelSave::harvested` e no espelho do jogo
-/// (`harvested.<chave>` no store do processo — o `viber.game()` dos
+/// (`harvested.<chave>` no store do processo — o `vael.game()` dos
 /// contextos BMS lê daqui).
 fn mark_harvested(save: Option<&mut VaelSave>, key: &str) {
     if key.is_empty() {
@@ -1096,7 +1105,7 @@ pub struct Stump {
     pub scale: f32,
 }
 
-/// Lê `stump.<chave>.*` de um snapshot do `viber.game()`/`legacy`.
+/// Lê `stump.<chave>.*` de um snapshot do `vael.game()`/`legacy`.
 pub fn stump_for(kv: &BTreeMap<String, Json>, key: &str) -> Option<Stump> {
     let field = |name: &str| format!("stump.{key}.{name}");
     let proto = kv.get(&field("proto"))?.as_str()?;
@@ -1241,7 +1250,7 @@ where
 
 // ── sistemas ────────────────────────────────────────────────────────────
 
-/// Arranque: fixa o gate no `viber.game()`.
+/// Arranque: fixa o gate no `vael.game()`.
 fn publish_harvest_gate(config: Res<VaelHarvestConfig>) {
     apply_gate(config.rust);
 }
@@ -1410,7 +1419,7 @@ fn attach_harvestables(
 
 /// O mesmo, para os props que nascem **depois** do load (`spawn_prototype`
 /// de um script, `live_edit` do Jackdaw a re-spawnar o nó). O caminho Lua lê
-/// `viber.player_nearby` (vivo) e via-os; o Rust ficava cego até ao reload.
+/// `vael.player_nearby` (vivo) e via-os; o Rust ficava cego até ao reload.
 fn attach_late_harvestables(
     mut commands: Commands,
     root: Option<Res<VaelProjectRoot>>,
@@ -1507,8 +1516,7 @@ fn sync_size_scaled_hits(
         )>,
     >,
 ) {
-    for (mut harvestable, size_scaled, transform, global, quarry, pooled, collider) in
-        &mut targets
+    for (mut harvestable, size_scaled, transform, global, quarry, pooled, collider) in &mut targets
     {
         // Não altera a contagem de uma pedra ou árvore que já levou golpes.
         if harvestable.remaining != harvestable.hits {
@@ -1525,7 +1533,12 @@ fn sync_size_scaled_hits(
             "chop" => {
                 let (trunk_r, trunk_h) = pooled
                     .and_then(|p| pools.as_ref()?.get(&p.pool))
-                    .map(|pool| (Some(pool.params.trunk.radius), Some(pool.params.trunk.height)))
+                    .map(|pool| {
+                        (
+                            Some(pool.params.trunk.radius),
+                            Some(pool.params.trunk.height),
+                        )
+                    })
                     .unwrap_or((None, None));
                 tree_hits_for_size(size_scaled.base_hits, scale, trunk_r, trunk_h, collider)
             }
@@ -1731,6 +1744,78 @@ fn spawn_felled_tree(
     tree
 }
 
+/// Rotação horária dinâmica (graus, vista de cima) aplicada ao herói ao derrubar uma árvore.
+///
+/// Troncos finos (~0,30 m) giram pouco (~4°), troncos médios (~0,41 m) ficam por volta de 5° e
+/// troncos grossos (≥0,95 m, como carvalhos adultos) chegam a 10° para abrir o ombro direito e
+/// dar mais curso ao golpe de machado.
+pub fn tree_chop_yaw_deg(trunk_radius: Option<f32>) -> f32 {
+    const MIN_DEG: f32 = 4.0;
+    const DEFAULT_DEG: f32 = 5.0;
+    const MAX_DEG: f32 = 10.0;
+    const THIN_RADIUS: f32 = 0.30;
+    const THICK_RADIUS: f32 = 0.95;
+
+    let Some(radius) = trunk_radius.filter(|r| r.is_finite() && *r > 1e-3) else {
+        return DEFAULT_DEG;
+    };
+    let t = ((radius - THIN_RADIUS) / (THICK_RADIUS - THIN_RADIUS)).clamp(0.0, 1.0);
+    MIN_DEG + (MAX_DEG - MIN_DEG) * t
+}
+
+/// Roda uma direção horizontal XZ no sentido horário quando vista de cima (+Y para cima).
+pub fn rotate_clockwise_xz(dir: Vec2, degrees: f32) -> Vec2 {
+    (Quat::from_rotation_y(-degrees.to_radians()) * Vec3::new(dir.x, 0.0, dir.y)).xz()
+}
+
+/// Calcula posicionamento e orientação do herói para o início de um golpe de ferramenta.
+fn tool_attack_motion(
+    player: Vec3,
+    target_center: Vec3,
+    contact: Vec3,
+    standing_tree: bool,
+    flora_trunk_radius: Option<f32>,
+    secs: f32,
+) -> crate::player::AttackMotion {
+    let toward = (contact - player)
+        .xz()
+        .try_normalize()
+        .or_else(|| (target_center - player).xz().try_normalize());
+    let dist = player.xz().distance(contact.xz());
+    if !standing_tree {
+        return crate::player::AttackMotion {
+            secs,
+            slow: 0.25,
+            // Close the last half-step on approach. Once planted, subsequent blows pivot in place.
+            lunge: (dist - TOOL_STANDOFF).clamp(0.0, TOOL_MAX_LUNGE),
+            step: Vec2::ZERO,
+            face: toward,
+        };
+    }
+    let delta = dist - TREE_CHOP_STANDOFF;
+    let step = if delta.abs() > TREE_CHOP_STANDOFF_DEADZONE {
+        toward.map_or(Vec2::ZERO, |dir| {
+            dir * delta.clamp(-TOOL_MAX_LUNGE, TOOL_MAX_LUNGE)
+        })
+    } else {
+        Vec2::ZERO
+    };
+    let contact_radius = contact.xz().distance(target_center.xz());
+    let trunk_radius = match flora_trunk_radius.filter(|r| r.is_finite() && *r > 1e-3) {
+        Some(flora_r) => Some(flora_r.max(contact_radius)),
+        None => (contact_radius > 1e-3).then_some(contact_radius),
+    };
+    let yaw_deg = tree_chop_yaw_deg(trunk_radius);
+    let face = toward.map(|dir| rotate_clockwise_xz(dir, yaw_deg));
+    crate::player::AttackMotion {
+        secs,
+        slow: 0.25,
+        lunge: 0.0,
+        step,
+        face,
+    }
+}
+
 /// J num alvo em foco: um golpe; no último, loot/XP/persistência/quebra.
 #[allow(clippy::too_many_arguments)]
 fn harvest_input(
@@ -1809,7 +1894,7 @@ fn harvest_input(
         false
     };
     let attack_key = attack_key(map.as_deref());
-    // Com um `UiInput` focado as teclas são texto (o `viber.input` da engine
+    // Com um `UiInput` focado as teclas são texto (o `vael.input` da engine
     // também as bloqueia): o J do chat não pode partir uma árvore.
     if typing.as_deref().is_some_and(|typing| typing.0.is_some()) {
         return;
@@ -1863,13 +1948,22 @@ fn harvest_input(
                 lock: false,
             });
         if let Some(bus) = &services.motion {
-            bus.request_attack(crate::player::AttackMotion {
-                secs: contact + 0.08,
-                slow: 0.25,
-                // Close the last half-step on approach. Once planted, subsequent chops pivot in place.
-                lunge: (player.xz().distance(focus.contact.xz()) - 0.88).clamp(0., 0.68),
-                face: (focus.contact - player).xz().try_normalize(),
-            });
+            let standing_tree = !stone && style == BreakStyle::Fall;
+            let flora_radius = standing_tree
+                .then(|| {
+                    let pool = services.pools.as_deref()?.get(&pooled?.pool)?;
+                    let scale = effective_scale(local, Some(transform));
+                    Some(pool.params.trunk.radius * (scale.x * scale.z).sqrt())
+                })
+                .flatten();
+            bus.request_attack(tool_attack_motion(
+                player,
+                position,
+                focus.contact,
+                standing_tree,
+                flora_radius,
+                contact + 0.08,
+            ));
         }
         return;
     }
@@ -1958,7 +2052,11 @@ fn harvest_input(
     if !full {
         crate::collect_fx::subtle_camera_shake(
             services.shake.as_deref_mut(),
-            if style == BreakStyle::Fall { 0.14 } else { 0.09 },
+            if style == BreakStyle::Fall {
+                0.14
+            } else {
+                0.09
+            },
         );
         if let Some(bursts) = services.collect_fx.as_deref() {
             let has_crystal = services
@@ -2186,7 +2284,7 @@ fn show_popup(commands: &mut Commands, position: Vec3, text: String, color: [f32
 // ── reap do save ────────────────────────────────────────────────────────
 
 fn kv_snapshot(save: Option<&VaelSave>) -> BTreeMap<String, Json> {
-    // Store do processo primeiro (o `viber.game()` dos contextos BMS); sem
+    // Store do processo primeiro (o `vael.game()` dos contextos BMS); sem
     // chaves (arranque), o legacy do save.
     let kv = vael_engine::luau::game::game_to_json_process();
     if !kv.is_empty() {
@@ -3139,7 +3237,7 @@ mod tests {
 
     /// Um prop que nasce com o jogo a correr (`spawn_prototype` de um script,
     /// `live_edit`) também recebe `Harvestable`: o caminho Lua lê
-    /// `viber.player_nearby` e via-o, o Rust ficava cego até ao reload.
+    /// `vael.player_nearby` e via-o, o Rust ficava cego até ao reload.
     #[test]
     fn attach_le_props_nascidos_depois_do_load() {
         let mut app = App::new();
@@ -3900,30 +3998,14 @@ mod tests {
         let small_rock_collider = avian3d::prelude::Collider::cuboid(0.8, 0.45, 0.7);
         let medium_rock_collider = avian3d::prelude::Collider::cuboid(1.4, 0.7, 1.25);
         let large_rock_collider = avian3d::prelude::Collider::cuboid(2.2, 1.3, 2.0);
-        let small_rock_hits = rock_hits_for_size(
-            3,
-            Vec3::splat(0.75),
-            Some(1),
-            Some(&small_rock_collider),
-        );
-        let medium_rock_hits = rock_hits_for_size(
-            3,
-            Vec3::ONE,
-            Some(1),
-            Some(&medium_rock_collider),
-        );
-        let multi_seg_rock_hits = rock_hits_for_size(
-            3,
-            Vec3::splat(1.1),
-            Some(3),
-            Some(&medium_rock_collider),
-        );
-        let large_rock_hits = rock_hits_for_size(
-            3,
-            Vec3::splat(1.25),
-            Some(3),
-            Some(&large_rock_collider),
-        );
+        let small_rock_hits =
+            rock_hits_for_size(3, Vec3::splat(0.75), Some(1), Some(&small_rock_collider));
+        let medium_rock_hits =
+            rock_hits_for_size(3, Vec3::ONE, Some(1), Some(&medium_rock_collider));
+        let multi_seg_rock_hits =
+            rock_hits_for_size(3, Vec3::splat(1.1), Some(3), Some(&medium_rock_collider));
+        let large_rock_hits =
+            rock_hits_for_size(3, Vec3::splat(1.25), Some(3), Some(&large_rock_collider));
         assert!(
             small_rock_hits < medium_rock_hits
                 && medium_rock_hits < multi_seg_rock_hits
@@ -3950,6 +4032,156 @@ mod tests {
         assert!(
             small_log_hits < medium_log_hits && medium_log_hits < large_log_hits,
             "golpes de tronco caído devem crescer com o tamanho: small={small_log_hits}, med={medium_log_hits}, large={large_log_hits}"
+        );
+    }
+
+    #[test]
+    fn tree_chop_yaw_escala_com_grossura_do_tronco() {
+        assert!((tree_chop_yaw_deg(None) - 5.0).abs() < 1e-5);
+        assert!((tree_chop_yaw_deg(Some(0.0)) - 5.0).abs() < 1e-5);
+        assert!((tree_chop_yaw_deg(Some(f32::NAN)) - 5.0).abs() < 1e-5);
+
+        let thin = tree_chop_yaw_deg(Some(0.25));
+        let medium = tree_chop_yaw_deg(Some(0.41));
+        let wide = tree_chop_yaw_deg(Some(0.68));
+        let thick = tree_chop_yaw_deg(Some(0.98));
+        let giant = tree_chop_yaw_deg(Some(1.35));
+
+        assert!((thin - 4.0).abs() < 1e-5, "thin={thin}");
+        assert!((medium - 5.0).abs() < 0.1, "medium={medium}");
+        assert!(thin < medium && medium < wide && wide < thick);
+        assert!((thick - 10.0).abs() < 1e-5, "thick={thick}");
+        assert!((giant - 10.0).abs() < 1e-5, "giant={giant}");
+    }
+
+    #[test]
+    fn rotate_clockwise_xz_gira_no_sentido_horario() {
+        // +Z (olhar padrão) girado 90° no sentido horário (vista de cima, +Y) aponta para -X (direita).
+        let from_pos_z = rotate_clockwise_xz(Vec2::Y, 90.0);
+        assert!(
+            from_pos_z.distance(Vec2::NEG_X) < 1e-5,
+            "got {from_pos_z:?}"
+        );
+        // -Z (norte) girado 90° no sentido horário aponta para +X (leste).
+        let from_neg_z = rotate_clockwise_xz(Vec2::NEG_Y, 90.0);
+        assert!(from_neg_z.distance(Vec2::X) < 1e-5, "got {from_neg_z:?}");
+
+        // Qualquer direção girada 10° no sentido horário reduz o yaw (atan2(x, z)) em 10°.
+        let dir = Vec2::new(0.6, 0.8);
+        let rotated = rotate_clockwise_xz(dir, 10.0);
+        let yaw0 = dir.x.atan2(dir.y);
+        let yaw1 = rotated.x.atan2(rotated.y);
+        assert!(
+            ((yaw0 - yaw1).to_degrees() - 10.0).abs() < 1e-4,
+            "delta={}",
+            (yaw0 - yaw1).to_degrees()
+        );
+        assert!((rotated.length() - 1.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn tool_attack_motion_afasta_e_gira_so_para_arvores_em_pe() {
+        let player = Vec3::ZERO;
+        // Árvore média (r=0.41 m) à frente em +Z; contacto na casca a 0.88 m (10 cm perto demais).
+        let tree_center = Vec3::new(0.0, 0.0, 0.88 + 0.41);
+        let contact = Vec3::new(0.0, 0.8, 0.88);
+        let m_close = tool_attack_motion(player, tree_center, contact, true, None, 0.34);
+        assert_eq!(m_close.lunge, 0.0);
+        assert!(
+            (m_close.step.y + 0.10).abs() < 1e-4 && m_close.step.x.abs() < 1e-5,
+            "deve recuar 10 cm na radial (-Z), got {:?}",
+            m_close.step
+        );
+        let expected_med_face = rotate_clockwise_xz(Vec2::Y, tree_chop_yaw_deg(Some(0.41)));
+        assert!(
+            m_close.face.unwrap().distance(expected_med_face) < 1e-5,
+            "face={:?} expected={expected_med_face:?}",
+            m_close.face
+        );
+
+        // Já a 0.98 m da casca: não desliza nem oscila.
+        let m_planted = tool_attack_motion(
+            player,
+            Vec3::new(0.0, 0.0, TREE_CHOP_STANDOFF + 0.41),
+            Vec3::new(0.0, 0.8, TREE_CHOP_STANDOFF),
+            true,
+            None,
+            0.34,
+        );
+        assert_eq!(m_planted.step, Vec2::ZERO);
+
+        // Árvore grossa (carvalho r=1.05 m via flora) mais longe (1.38 m): avança 0.40 m até 0.98 m e gira 10°.
+        let m_thick = tool_attack_motion(
+            player,
+            Vec3::new(0.0, 0.0, 1.38 + 0.55),
+            Vec3::new(0.0, 0.8, 1.38),
+            true,
+            Some(1.05),
+            0.34,
+        );
+        assert!(
+            (m_thick.step.y - 0.40).abs() < 1e-4 && m_thick.step.x.abs() < 1e-5,
+            "deve avançar 40 cm na radial (+Z), got {:?}",
+            m_thick.step
+        );
+        let expected_thick_face = rotate_clockwise_xz(Vec2::Y, 10.0);
+        assert!(
+            m_thick.face.unwrap().distance(expected_thick_face) < 1e-5,
+            "face={:?} expected={expected_thick_face:?}",
+            m_thick.face
+        );
+
+        // Mineração / tronco caído mantém o standoff 0.88 m e o rosto reto sem giro.
+        let m_rock = tool_attack_motion(
+            player,
+            Vec3::new(0.0, 0.0, 1.48),
+            Vec3::new(0.0, 0.8, 1.18),
+            false,
+            None,
+            0.48,
+        );
+        assert_eq!(m_rock.step, Vec2::ZERO);
+        assert!((m_rock.lunge - 0.30).abs() < 1e-5);
+        assert_eq!(m_rock.face, Some(Vec2::Y));
+    }
+
+    #[test]
+    fn derrubar_arvore_publica_recuo_e_giro_horario_no_bus() {
+        let mut app = app_rust();
+        app.init_resource::<crate::player::HeroMotionBus>();
+        spawn_player(&mut app);
+
+        let mut h = harvestable("oak", None, 4, 3.5, "wood", 3);
+        h.style = BreakStyle::Fall;
+        let tree = spawn_prop(&mut app, h);
+        // Árvore grossa (raio 1.0 m) com a casca a 0.88 m em +Z (centro em z = 1.88).
+        app.world_mut().entity_mut(tree).insert((
+            avian3d::prelude::Collider::cylinder(1.0, 3.0),
+            GlobalTransform::from_translation(Vec3::new(0.0, 0.0, 1.88)),
+        ));
+
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::KeyJ);
+        app.update();
+
+        let attack = app
+            .world()
+            .resource::<crate::player::HeroMotionBus>()
+            .lock()
+            .attack
+            .expect("golpe de machado publica movimento no bus");
+        assert_eq!(attack.lunge, 0.0);
+        assert!(
+            (attack.step.y + 0.10).abs() < 1e-3 && attack.step.x.abs() < 1e-4,
+            "step={:?}",
+            attack.step
+        );
+        let expected_face = rotate_clockwise_xz(Vec2::Y, 10.0);
+        assert!(
+            attack.face.unwrap().distance(expected_face) < 1e-3,
+            "face={:?} expected={expected_face:?}",
+            attack.face
         );
     }
 }
