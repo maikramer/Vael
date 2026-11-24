@@ -269,6 +269,7 @@ mod tests {
             half_width: Vec::new(),
             depths: Vec::new(),
             cascades: Vec::new(),
+            section: Default::default(),
         };
         let river = WaterBody {
             kind: BodyWaterKind::River,
@@ -293,6 +294,7 @@ mod tests {
                 top_y: 4.0,
                 bot_y: 0.0,
             }],
+            section: Default::default(),
         };
         let only_lake = TerrainWaterBodies::from_bodies(std::slice::from_ref(&lake));
         // Dentro do lago = distância zero (a métrica do carve é negativa na

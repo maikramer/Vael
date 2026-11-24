@@ -7,7 +7,7 @@
 
 use bevy::prelude::*;
 use bevy_ext_core::{LOOK_PIVOT_HEIGHT, Player};
-// `ScriptCameraFree`/`CameraSnapshot` são os da engine: o `viber.camera_*` do
+// `ScriptCameraFree`/`CameraSnapshot` são os da engine: o `vael.camera_*` do
 // Lua escreve neles. As cópias do `bevy_ext_core` ainda não são as mesmas.
 use vael_engine::camera::{CameraSnapshot, ScriptCameraFree};
 
@@ -49,7 +49,8 @@ impl Plugin for VaelCameraPlugin {
             // A engine inicializa-o sempre; o `init` aqui é para apps mínimas
             // de teste que montem só esta parte.
             .init_resource::<vael_engine::cinematic::CinematicPlayback>()
-            .add_observer(mark_shadow_lod_origin);
+            .add_observer(mark_shadow_lod_origin)
+            .add_systems(Update, ocean_view_distance.run_if(no_editor_camera));
         app.add_systems(
             Update,
             (orbit_camera_follow, auto_orbit)
@@ -70,6 +71,35 @@ impl Plugin for VaelCameraPlugin {
                 .run_if(no_editor_camera)
                 .run_if(no_cinematic),
         );
+    }
+}
+
+#[derive(Component)]
+struct InlandFarPlane(f32);
+
+fn ocean_view_distance(
+    mut commands: Commands,
+    terrain: Option<Res<vael_engine::terrain::runtime::TerrainRuntime>>,
+    mut cameras: Query<(Entity, &mut Projection, Option<&InlandFarPlane>), With<OrbitCamera>>,
+) {
+    let sea = terrain.as_deref().is_some_and(|terrain| {
+        terrain.water.iter().any(|body| {
+            matches!(body.kind, vael_engine::terrain::water::WaterKind::Ocean { .. })
+        })
+    });
+    for (entity, mut projection, inland) in &mut cameras {
+        let Projection::Perspective(ref mut perspective) = *projection else { continue };
+        match (sea, inland) {
+            (true, None) => {
+                commands.entity(entity).insert(InlandFarPlane(perspective.far));
+                perspective.far = perspective.far.max(26_000.0);
+            }
+            (false, Some(inland)) => {
+                perspective.far = inland.0;
+                commands.entity(entity).remove::<InlandFarPlane>();
+            }
+            _ => {}
+        }
     }
 }
 
@@ -208,14 +238,14 @@ fn third_person_camera(
     // O shake decora em tempo REAL: durante o hit-stop a câmara continua a
     // tremer. Decai ANTES do early-return para não congelar no respawn.
     shake.trauma = (shake.trauma - SHAKE_DECAY * real.delta_secs()).max(0.0);
-    // Um trauma NaN vindo de fora (`viber.shake`, BRP/editor) não pode
+    // Um trauma NaN vindo de fora (`vael.shake`, BRP/editor) não pode
     // envenenar os offsets: `f32::max` já o limpa no decaimento, mas o
     // valor lido neste frame ainda seria NaN.
     if !shake.trauma.is_finite() {
         shake.trauma = 0.0;
     }
     // A mola do kick NÃO se auto-cura (é integração linear): um impulso
-    // degenerado (`viber.camera_kick(inf)`, escrita BRP) deixava o offset
+    // degenerado (`vael.camera_kick(inf)`, escrita BRP) deixava o offset
     // NaN para sempre — a câmara desaparecia. Repor é o único caminho.
     if !kick.offset.is_finite() || !kick.vel.is_finite() {
         *kick = CameraKick::default();
@@ -230,7 +260,8 @@ fn third_person_camera(
     let (kick_off, kick_vel) = kick_spring_step(kick.offset, kick.vel, dt);
     kick.offset = kick_off;
     kick.vel = kick_vel;
-    let Some((local, parent, player, controller, teleporting, rowing)) = players.iter().next() else {
+    let Some((local, parent, player, controller, teleporting, rowing)) = players.iter().next()
+    else {
         return;
     };
     // Pose DESTE frame: o writeback do Avian acabou de a escrever no `Transform` e a
@@ -479,8 +510,8 @@ fn third_person_camera(
     }
 }
 
-/// Aplica a pose do modo livre (`viber.camera_free`/`viber.camera_pose`) e
-/// publica a pose viva para `viber.camera_state()`. Corre depois do rig:
+/// Aplica a pose do modo livre (`vael.camera_free`/`vael.camera_pose`) e
+/// publica a pose viva para `vael.camera_state()`. Corre depois do rig:
 /// no modo livre sobrescreve-o; fora dele só lê.
 fn script_camera(
     free: Res<ScriptCameraFree>,
@@ -493,7 +524,7 @@ fn script_camera(
             continue;
         }
         if free.active && free.pos.is_finite() && free.look.is_finite() {
-            // Uma pose não finita (`viber.camera_free`/`camera_pose` com lixo
+            // Uma pose não finita (`vael.camera_free`/`camera_pose` com lixo
             // vindo do Lua) apagava a câmara de vez: a pose é copiada tal e
             // qual para o `Transform` e o snapshot seguinte lia NaN.
             transform.translation = free.pos;
@@ -585,10 +616,12 @@ mod tests {
     fn lock_frames_the_enemy_while_the_hero_strafes() {
         let (mut app, hero, cam) = camera_app(Vec3::ZERO, test_camera(0.0));
         app.update();
-        app.world_mut().entity_mut(hero).insert(crate::player::VaelController {
-            combat_facing: Some(Vec3::X),
-            ..default()
-        });
+        app.world_mut()
+            .entity_mut(hero)
+            .insert(crate::player::VaelController {
+                combat_facing: Some(Vec3::X),
+                ..default()
+            });
         app.world_mut().get_mut::<Player>(hero).unwrap().vel_z = 4.0;
         for _ in 0..120 {
             app.update();

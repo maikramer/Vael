@@ -12,6 +12,7 @@ use bevy::time::TimeUpdateStrategy;
 use vael_engine::ambient::AmbientPlugin;
 use vael_engine::terrain::brush::BrushGrid;
 use vael_engine::terrain::delta::DeltaGrid;
+use vael_engine::terrain::ocean::OceanSpec;
 use vael_engine::terrain::paint::PaintGrid;
 use vael_engine::terrain::runtime::TerrainRuntime;
 use vael_engine::terrain::spec::TerrainSpec;
@@ -26,7 +27,9 @@ use vael_engine::terrain::water_fx::{
     WADE_ENTER_DEPTH, WaterContact, WaterFxPlugin, compute_entry_impulse, compute_wake_impulse,
     swept_entry_xz,
 };
-use vael_engine::terrain::water_material::{WATER_WGSL, WaterExtension, WaterMaterial, WaterUniforms};
+use vael_engine::terrain::water_material::{
+    WATER_WGSL, WaterExtension, WaterMaterial, WaterUniforms,
+};
 use vael_engine::terrain::water_waves::{
     DOMAIN_GRID_SIZE, WATER_WAVES_WGSL, WaterKinematics, WaterWavePlugin, WaterWaveWorld,
     compute_iwave_kernel, rasterize_domain_into_bytes,
@@ -57,6 +60,31 @@ fn make_test_runtime(grid: BrushGrid, water: Vec<WaterBody>) -> TerrainRuntime {
         paint: Arc::new(PaintGrid::new(256.0, side)),
         splat_tuning: SplatTuning::default(),
     }
+}
+
+#[test]
+fn ocean_respects_the_island_and_stays_wet_beyond_the_heightfield() {
+    let ocean = OceanSpec {
+        min: Vec2::new(-1000.0, -1000.0),
+        max: Vec2::new(0.0, 1000.0),
+        level: 18.0,
+        color: [0.2, 0.4, 0.5],
+        opacity: 0.97,
+    };
+    let island = make_test_runtime(make_flat_grid(256.0, 128, 24.0), vec![ocean.body()]);
+    assert!(!island.in_water(-70.0, 0.0));
+    assert_eq!(island.water_surface_at(-70.0, 0.0), None);
+    assert!(island.water_domain_at(-70.0, 0.0).is_none());
+
+    let shelf = make_test_runtime(make_flat_grid(256.0, 128, 12.0), vec![ocean.body()]);
+    assert!(shelf.in_water(-70.0, 0.0));
+    assert_eq!(shelf.water_surface_at(-70.0, 0.0), Some(18.0));
+    assert!((shelf.water_domain_at(-70.0, 0.0).unwrap().depth - 6.0).abs() < 0.01);
+
+    assert!(!shelf.in_field(-140.0, 0.0));
+    assert_eq!(shelf.water_surface_at(-140.0, 0.0), Some(18.0));
+    assert_eq!(shelf.water_domain_at(-140.0, 0.0).unwrap().depth, 35.0);
+    assert!(shelf.water_domain_at(70.0, 0.0).is_none());
 }
 
 #[test]
@@ -361,7 +389,9 @@ fn water_contact_queues_swept_craters_and_kelvin_wakes_without_legacy_discs() {
     );
 
     // Ensure no legacy floating Ripple entities were spawned.
-    let mut ripple_q = app.world_mut().query::<&vael_engine::terrain::water_fx::Ripple>();
+    let mut ripple_q = app
+        .world_mut()
+        .query::<&vael_engine::terrain::water_fx::Ripple>();
     assert_eq!(ripple_q.iter(app.world()).count(), 0);
 }
 

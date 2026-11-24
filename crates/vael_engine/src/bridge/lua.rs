@@ -3516,11 +3516,20 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
             } else {
                 terrain.voxel.surface_top(&base, x, z)
             };
+            let in_field = view.seeds.world_size.is_some_and(|size| {
+                let half = size * 0.5;
+                x.abs() <= half && z.abs() <= half
+            });
             let water_surface = view.surfaces.as_ref().and_then(|s| {
+                use crate::terrain::water::WaterKind;
                 let p = Vec2::new(x, z);
                 s.water
                     .iter()
-                    .filter(|w| w.contains(p))
+                    .filter(|w| {
+                        w.contains(p) && (!matches!(w.kind, WaterKind::Ocean { .. })
+                            || !in_field
+                            || height < w.water_y - 0.01)
+                    })
                     .filter_map(|w| w.surface_y_at(p))
                     .fold(None::<f32>, |acc, y| Some(acc.map_or(y, |max| max.max(y))))
             });
@@ -3535,12 +3544,9 @@ fn ensure_debug_api(lua: &Lua) -> mlua::Result<()> {
                 lua,
                 &json!({
                     "height": height,
-                    "in_field": view.seeds.world_size.is_some_and(|half| {
-                        let half = half * 0.5;
-                        x >= -half && x <= half && z >= -half && z <= half
-                    }),
+                    "in_field": in_field,
                     "on_road": view.surfaces.as_ref().is_some_and(|s| s.on_road(x, z)),
-                    "in_water": view.surfaces.as_ref().is_some_and(|s| s.in_water(x, z)),
+                    "in_water": water_surface.is_some(),
                     "water_surface": water_surface,
                     "distance_to_road": distance_to_road,
                 }),

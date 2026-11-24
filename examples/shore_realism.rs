@@ -775,6 +775,11 @@ fn near_any_water(p: Vec2, margin: f32, waters: &[WaterBody]) -> bool {
                     return true;
                 }
             }
+            WaterKind::Ocean { .. } => {
+                if w.is_near(p, margin) {
+                    return true;
+                }
+            }
         }
     }
     false

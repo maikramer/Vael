@@ -109,6 +109,7 @@ fn is_ground_feature(kind: &EntityKind) -> bool {
         kind,
         EntityKind::TerrainPad { .. }
             | EntityKind::Lake { .. }
+            | EntityKind::Ocean { .. }
             | EntityKind::Cut { .. }
             | EntityKind::Plateau { .. }
             | EntityKind::River { .. }
@@ -201,6 +202,13 @@ fn collect_walk(specs: &[EntitySpec], offset: Vec2, out: &mut PendingTerrain) {
                 out.features.decals.push(GroundDecalSpec {
                     at: dec.at + offset,
                     ..dec.clone()
+                });
+            }
+            EntityKind::Ocean { spec: ocean } => {
+                out.features.oceans.push(bevy_ext_terrain_runtime::ocean::OceanSpec {
+                    min: ocean.min + offset,
+                    max: ocean.max + offset,
+                    ..ocean.clone()
                 });
             }
             EntityKind::Lake { spec: lake } => {
@@ -2115,6 +2123,7 @@ fn spawn_entity(
             const PUPPET_LAYER_BIT: u32 = 1 << 30;
             entity.insert((
                 Visibility::Inherited,
+                bevy_engine_core::CharacterBodyCollider,
                 avian3d::prelude::RigidBody::Static,
                 avian3d::prelude::CollisionLayers::from_bits(
                     1,
@@ -2225,6 +2234,7 @@ fn spawn_entity(
         EntityKind::Terrain { .. }
         | EntityKind::TerrainPad { .. }
         | EntityKind::Lake { .. }
+        | EntityKind::Ocean { .. }
         | EntityKind::Cut { .. }
         | EntityKind::Plateau { .. }
         | EntityKind::River { .. }

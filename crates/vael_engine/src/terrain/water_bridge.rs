@@ -106,22 +106,35 @@ fn sync_water_environment(
     env.time = time.elapsed_secs();
 }
 
-/// Círculo que contém a zona carvada de um corpo (`contains` nunca é
-/// verdade fora dele). Rio sem casco calculado = alcance infinito.
-fn water_body_reach(body: &bevy_ext_water::WaterBody) -> (Vec2, f32) {
-    let r = match body.kind {
-        bevy_ext_water::WaterKind::Lake => body.carve_radius,
-        bevy_ext_water::WaterKind::River if body.hull > 0.0 => body.hull + body.carve_radius,
-        bevy_ext_water::WaterKind::River => f32::INFINITY,
-    };
-    (body.at, r)
+/// Limites conservadores antes de amostrar a lâmina. Rios sem casco
+/// calculado podem chegar a qualquer ponto.
+enum WaterReach {
+    Circle(Vec2, f32),
+    Rectangle(Vec2, Vec2),
 }
 
-fn rect_touches_circle(min: Vec2, max: Vec2, center: Vec2, radius: f32) -> bool {
-    if !radius.is_finite() {
-        return true;
+impl WaterReach {
+    fn from_body(body: &bevy_ext_water::WaterBody) -> Self {
+        use bevy_ext_water::WaterKind::*;
+        match body.kind {
+            Ocean { min, max } => Self::Rectangle(min, max),
+            Lake => Self::Circle(body.at, body.carve_radius),
+            River if body.hull > 0.0 => Self::Circle(body.at, body.hull + body.carve_radius),
+            River => Self::Circle(body.at, f32::INFINITY),
+        }
     }
-    center.clamp(min, max).distance_squared(center) <= radius * radius
+
+    fn touches(&self, min: Vec2, max: Vec2, pad: f32) -> bool {
+        match *self {
+            Self::Circle(center, radius) => {
+                center.clamp(min, max).distance_squared(center) <= (radius + pad).powi(2)
+            }
+            Self::Rectangle(lo, hi) => {
+                let pad = Vec2::splat(pad);
+                lo.cmple(max + pad).all() && hi.cmpge(min - pad).all()
+            }
+        }
+    }
 }
 
 /// Intervalo mínimo entre recolhas causadas só por colliders a mexer.
@@ -143,8 +156,7 @@ struct VoxelObstacleCache {
 struct ColliderObstacleCache {
     seeded: bool,
     water_key: Option<(u64, usize, usize)>,
-    all_reaches: Vec<(Vec2, f32)>,
-    reaches_scratch: Vec<(Vec2, f32)>,
+    all_reaches: Vec<WaterReach>,
     seen_gen: u32,
     map: HashMap<Entity, CachedCollider>,
     /// Apenas colliders que realmente cortam alguma lâmina (`!obstacles.is_empty()`),
@@ -159,7 +171,7 @@ impl ColliderObstacleCache {
         self.seeded = false;
         self.water_key = Some(key);
         self.all_reaches.clear();
-        self.all_reaches.extend(water.iter().map(water_body_reach));
+        self.all_reaches.extend(water.iter().map(WaterReach::from_body));
         self.map.clear();
         self.wet_cells.clear();
         self.dirty.clear();
@@ -224,7 +236,7 @@ fn wet_cells_insert(
 #[allow(clippy::too_many_arguments)]
 fn compute_collider_entry(
     rt: &TerrainRuntime,
-    all_reaches: &[(Vec2, f32)],
+    all_reaches: &[WaterReach],
     global: &GlobalTransform,
     collider: &Collider,
 ) -> (Vec3, Quat, usize, Vec3, Vec3, Vec<WaterObstacle>) {
@@ -242,7 +254,7 @@ fn compute_collider_entry(
     let mut entry_obstacles = Vec::new();
     let wet = all_reaches
         .iter()
-        .any(|&(c, r)| rect_touches_circle(wmin.xz(), wmax.xz(), c, r + 0.5));
+        .any(|reach| reach.touches(wmin.xz(), wmax.xz(), 0.5));
     if wet
         && let Some((wy_min, wy_max)) = water_surface_range_in_aabb(rt, wmin.xz(), wmax.xz())
         && wmax.y >= wy_min - OBSTACLE_SLICE_BELOW_M
@@ -363,15 +375,7 @@ fn sync_water_obstacles(
     // Corpos de água cujo alcance toca a janela: sem nenhum, não há lâmina
     // a cortar e nem os colliders nem o voxel precisam de ser vistos.
     let cache = &mut *collider_cache;
-    cache.reaches_scratch.clear();
-    cache.reaches_scratch.extend(
-        cache
-            .all_reaches
-            .iter()
-            .copied()
-            .filter(|&(c, r)| rect_touches_circle(win_min, win_max, c, r)),
-    );
-    if cache.reaches_scratch.is_empty() {
+    if !cache.all_reaches.iter().any(|reach| reach.touches(win_min, win_max, 0.0)) {
         if !obstacles.obstacles.is_empty() {
             obstacles.set(Vec::new());
         }

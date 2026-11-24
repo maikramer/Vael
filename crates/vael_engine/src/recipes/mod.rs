@@ -69,6 +69,7 @@ pub const KNOWN_TAGS: &[&str] = &[
     "terrain",
     "terrainpad",
     "lake",
+    "ocean",
     "cut",
     "plateau",
     "river",
@@ -360,6 +361,10 @@ pub enum EntityKind {
     /// `<Lake>` — carved bowl + water mirror.
     Lake {
         spec: LakeSpec,
+    },
+    /// `<Ocean>` — fixed waterline above an authored seabed.
+    Ocean {
+        spec: bevy_ext_terrain_runtime::ocean::OceanSpec,
     },
     /// `<Cut>` — dry trench along a path: floor carve + voxel wall bands
     /// (`src/terrain/cut.rs`). O "road cut" autoral: uma estrada posterior
@@ -1312,6 +1317,9 @@ fn apply_use_overrides(
                 }
                 None
             }
+            // Os `fence-*` são o transporte do componente tipado `FenceSpec`
+            // (o loader escreve-os no nó): quem os lê é o `bevy_ext_fence`.
+            key if key.starts_with("fence-") => None,
             other => Some(format!("{ctx_tag}: ignored attribute `{other}`")),
         };
         if let Some(warning) = warning {
@@ -1456,6 +1464,7 @@ fn parse_entity_kind(node: &XmlNode, ctx: &mut ParseCtx) -> Result<Option<Entity
         "terrain" => finish_terrain(node, ctx).map(Some),
         "terrainpad" => finish_terrain_pad(node, ctx).map(Some),
         "lake" => finish_lake(node, ctx).map(Some),
+        "ocean" => finish_ocean(node, ctx).map(Some),
         "cut" => finish_cut(node, ctx).map(Some),
         "plateau" => finish_plateau(node, ctx).map(Some),
         "grounddecal" => finish_ground_decal(node, ctx).map(Some),
@@ -3993,6 +4002,49 @@ fn lake_shape_attr(
     Ok(true)
 }
 
+fn finish_ocean(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
+    use bevy_ext_terrain_runtime::ocean::OceanSpec;
+
+    let (common, rest) = parse_common(node, ctx)?;
+    let mut min = None;
+    let mut max = None;
+    let mut level = None;
+    let mut color = [0.075, 0.31, 0.39];
+    let mut opacity = 0.94;
+    for (key, value) in rest {
+        let label = format!("<Ocean> {key}");
+        match key.as_str() {
+            "min" => min = Some(Vec2::from(values::parse_vec2(&value, &label)?)),
+            "max" => max = Some(Vec2::from(values::parse_vec2(&value, &label)?)),
+            "water-level" => level = Some(values::parse_f32(&value, &label)?),
+            "color" => color = values::parse_color(&value, &label)?,
+            "opacity" => opacity = values::parse_f32(&value, &label)?.clamp(0.0, 1.0),
+            _ => ctx.warnings.push(format!("<Ocean>: ignored attribute `{key}`")),
+        }
+    }
+    let (Some(min), Some(max), Some(level)) = (min, max, level) else {
+        bail!("<Ocean> requires min, max and water-level");
+    };
+    if !min.is_finite() || !max.is_finite() || !min.cmplt(max).all() || !level.is_finite() {
+        bail!("<Ocean> bounds and water-level must be finite and bounds must have positive area");
+    }
+    Ok(EntitySpec {
+        prototype_instance: None,
+        name: common.name,
+        tag: common.tag,
+        script: common.script,
+        props: common.props,
+        links: common.links,
+        transform: common.transform,
+        physics: common.physics,
+        kind: EntityKind::Ocean {
+            spec: OceanSpec { min, max, level, color, opacity },
+        },
+        children: Vec::new(),
+        source: None,
+    })
+}
+
 fn finish_lake(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
     let (common, rest) = parse_common(node, ctx)?;
     let ctx_tag = format!("<{}>", node.tag);
@@ -5307,6 +5359,7 @@ pub struct WorldSummary {
     pub terrain: usize,
     pub terrain_pads: usize,
     pub lakes: usize,
+    pub oceans: usize,
     pub rivers: usize,
     /// `<Cut>` dry trenches (floor carve + voxel wall bands).
     pub cuts: usize,
@@ -5474,6 +5527,7 @@ pub fn summarize(world: &ParsedWorld) -> WorldSummary {
                 EntityKind::Terrain { .. } => out.terrain += 1,
                 EntityKind::TerrainPad { .. } => out.terrain_pads += 1,
                 EntityKind::Lake { .. } => out.lakes += 1,
+                EntityKind::Ocean { .. } => out.oceans += 1,
                 EntityKind::Cut { .. } => out.cuts += 1,
                 EntityKind::Plateau { .. } => out.plateaus += 1,
                 EntityKind::GroundDecal { .. } => out.ground_decals += 1,
@@ -6656,6 +6710,7 @@ mod tests {
                 terrain: 1,
                 terrain_pads: 1,
                 lakes: 1,
+                oceans: 0,
                 rivers: 1,
                 cliffs: 1,
                 roads: 1,

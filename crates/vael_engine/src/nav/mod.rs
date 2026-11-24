@@ -51,14 +51,13 @@ impl TerrainGround {
             water: rt
                 .water
                 .iter()
-                .map(|w| NavWater {
-                    at: w.at,
-                    carve_radius: w.carve_radius,
-                    kind: match w.kind {
+                .filter_map(|w| {
+                    let kind = match w.kind {
                         WaterKind::Lake => NavWaterKind::Lake,
                         WaterKind::River => NavWaterKind::River,
-                    },
-                    stations: w.stations.clone(),
+                        WaterKind::Ocean { .. } => return None,
+                    };
+                    Some(NavWater { at: w.at, carve_radius: w.carve_radius, kind, stations: w.stations.clone() })
                 })
                 .collect(),
             roads: rt
@@ -115,6 +114,14 @@ impl NavGround for TerrainGround {
 
     fn water(&self) -> &[NavWater] {
         &self.water
+    }
+
+    fn ocean_at(&self, p: Vec2) -> bool {
+        self.rt.water.iter().any(|body| {
+            matches!(body.kind, WaterKind::Ocean { .. })
+                && body.contains(p)
+                && self.rt.sample(p.x, p.y) < body.water_y
+        })
     }
 
     fn roads(&self) -> &[NavRoad] {
