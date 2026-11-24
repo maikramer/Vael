@@ -16,6 +16,10 @@ __pycache__/
 # de `art/bridges` e `art/baleia` são versionadas.
 art/previews/
 
+# Folhas de verificação das pranchas (saída do `tools/gen_cutscene.py`); as
+# vinhetas que o jogo lê ficam versionadas.
+assets/public/cutscenes/**/_preview_*.png
+
 # Modelos NLU/d1 e o laboratório de treino vivem no checkout irmão CelerAI
 # (models/ + tools/); aqui ficam só os symlinks de consumo (fetch_models.sh).
 assets/public/nlu
@@ -30,6 +34,9 @@ assets/public/assets/meshes/**
 !assets/public/assets/meshes/**/*_lod0.glb
 !assets/public/assets/meshes/**/*_collision.glb
 !assets/public/assets/meshes/vegetation/*.glb
+# Adereços talhados em Blender (`tools/model_concordia.py`): modelo base de um
+# só LOD, sem o sufixo `_lod0`.
+!assets/public/assets/meshes/concordia/*.glb
 assets/public/assets/meshes/**/_intermediate/
 assets/public/assets/images/
 assets/public/assets/sky/
