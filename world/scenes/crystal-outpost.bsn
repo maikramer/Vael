@@ -318,7 +318,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -361,7 +361,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -406,6 +406,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-bomba" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 0.74 729" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 50 0" },
@@ -443,7 +444,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -904,7 +905,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"outpost-miner-b"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 795.0, y: 0.0446, z: 722.0 },
+            translation: glam::Vec3 { x: 796.4, y: 0.027, z: 721.8 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -921,7 +922,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-miner-b" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "795 0.04 722" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "796.4 0.027 721.8" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
             ],
             text: "",
@@ -1352,13 +1353,14 @@ bevy_ecs::hierarchy::Children [
         --
         #"carrinho-posto"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            translation: glam::Vec3 { x: 803.2, y: 0.005, z: 728.6 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "Group",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "carrinho-posto" },
             ],
             text: "",
@@ -1456,6 +1458,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.outpost-cart-crystal-a" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "803.05 0.51 728.45" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 12 20 -14; scale: 1.1 1.1 1.1" },
@@ -1503,6 +1506,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.outpost-cart-crystal-b" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "803.35 0.51 728.75" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: -10 -40 16; scale: 0.95 1.25 0.95" },
@@ -1666,6 +1670,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.outpost-pickaxe" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "795.40 0.44 721.80" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 65 25 0" },

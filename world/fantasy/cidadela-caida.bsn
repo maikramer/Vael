@@ -989,7 +989,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"cidadela-ruin-house-a"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -900.0, y: 188.050003, z: -270.0 },
+                translation: glam::Vec3 { x: -900.000000, y: 187.799347, z: -270.000000 },
                 rotation: glam::Quat { x: 0.085587, y: 0.125132, z: 0.070562, w: 0.98592 },
                 scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
             }
@@ -1034,7 +1034,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"cidadela-ruin-cottage-a"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -925.0, y: 187.949997, z: -282.0 },
+                translation: glam::Vec3 { x: -925.000000, y: 188.015594, z: -282.000000 },
                 rotation: glam::Quat { x: 0.024383, y: -0.345309, z: 0.069114, w: 0.935623 },
                 scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
             }
@@ -1079,7 +1079,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"cidadela-ruin-house-b"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -905.0, y: 187.949997, z: -332.0 },
+                translation: glam::Vec3 { x: -905.000000, y: 187.914490, z: -332.000000 },
                 rotation: glam::Quat { x: -0.066237, y: -0.961976, z: 0.072408, w: 0.254896 },
                 scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
             }
@@ -1124,7 +1124,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"cidadela-ruin-longhouse-b"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -925.0, y: 187.979996, z: -320.0 },
+                translation: glam::Vec3 { x: -925.000000, y: 187.900375, z: -320.000000 },
                 rotation: glam::Quat { x: 0.062965, y: 0.297831, z: 0.057266, w: 0.950817 },
                 scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
             }
@@ -2663,7 +2663,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -892.0, y: 188.574005, z: -292.0 },
+                translation: glam::Vec3 { x: -889.4, y: 188.5741, z: -290.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2676,7 +2676,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-892 188.574 -292" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-889.4 188.574 -290.5" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -2705,14 +2705,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -892.0, y: 188.574005, z: -292.0 },
+                translation: glam::Vec3 { x: -889.4, y: 188.574, z: -290.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-892 188.574 -292" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-889.4 188.574 -290.5" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -2799,7 +2799,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2844,7 +2844,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3411,14 +3411,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -880.0, y: 188.574005, z: -300.0 },
+                translation: glam::Vec3 { x: -877.0, y: 188.574, z: -300.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880 188.574 -300" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-877 188.574 -300" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -3705,7 +3705,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"cidadela-ruin-house-c"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -860.0, y: 188.0, z: -340.0 },
+                translation: glam::Vec3 { x: -860.000000, y: 187.699615, z: -340.000000 },
                 rotation: glam::Quat { x: 0.106918, y: 0.374682, z: 0.097473, w: 0.915795 },
                 scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
             }
@@ -3750,7 +3750,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"cidadela-ruin-cottage-b"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -885.0, y: 188.050003, z: -352.0 },
+                translation: glam::Vec3 { x: -885.000000, y: 188.228363, z: -352.000000 },
                 rotation: glam::Quat { x: -0.030934, y: -0.994773, z: 0.040388, w: -0.088536 },
                 scale: glam::Vec3 { x: 0.75, y: 0.75, z: 0.75 },
             }
@@ -3974,14 +3974,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -850.0, y: 188.574005, z: -262.0 },
+                translation: glam::Vec3 { x: -847.0, y: 188.5741, z: -262.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.5, z: 0.0, w: 0.866025 },
                 scale: glam::Vec3 { x: 0.6, y: 0.6, z: 0.6 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-850 188.574 -262" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-847 188.574 -262" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -60 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.6" },
                 ],
@@ -4299,7 +4299,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -880.0, y: 188.570007, z: -300.0 },
+                translation: glam::Vec3 { x: -877.0, y: 188.5741, z: -300.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4312,7 +4312,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880 188.57 -300" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-877 188.574 -300" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -4341,14 +4341,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -880.0, y: 188.570007, z: -300.0 },
+                translation: glam::Vec3 { x: -877.0, y: 188.57, z: -300.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880 188.57 -300" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-877 188.57 -300" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -4429,7 +4429,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -870.0, y: 188.570007, z: -290.0 },
+                translation: glam::Vec3 { x: -867.4, y: 188.5741, z: -288.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4442,7 +4442,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-870 188.57 -290" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-867.4 188.574 -288.5" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -4471,14 +4471,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -870.0, y: 188.570007, z: -290.0 },
+                translation: glam::Vec3 { x: -867.4, y: 188.57, z: -288.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-870 188.57 -290" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-867.4 188.57 -288.5" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -5611,7 +5611,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -874.0, y: 188.570007, z: -296.0 },
+                translation: glam::Vec3 { x: -871.0, y: 188.5753, z: -296.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -5624,7 +5624,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874 188.57 -296" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-871 188.575 -296" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -5653,14 +5653,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -874.0, y: 188.570007, z: -296.0 },
+                translation: glam::Vec3 { x: -871.0, y: 188.5712, z: -296.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874 188.57 -296" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-871 188.571 -296" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
@@ -6797,7 +6797,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -838.0, y: 188.850006, z: -288.0 },
+                translation: glam::Vec3 { x: -838.000000, y: 188.152405, z: -288.000000 },
                 rotation: glam::Quat { x: 0.052304, y: 0.998021, z: 0.034852, w: -0.001827 },
                 scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
             }
@@ -6841,7 +6841,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -854.0, y: 188.850006, z: -314.0 },
+                translation: glam::Vec3 { x: -854.000000, y: 188.151566, z: -314.000000 },
                 rotation: glam::Quat { x: 0.034852, y: -0.001826, z: 0.052304, w: 0.998021 },
                 scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
             }
@@ -6885,7 +6885,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -866.0, y: 188.850006, z: -290.0 },
+                translation: glam::Vec3 { x: -866.000000, y: 188.097046, z: -290.000000 },
                 rotation: glam::Quat { x: 0.059542, y: 0.963542, z: 0.047201, w: 0.256543 },
                 scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
             }
@@ -7566,7 +7566,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -7616,7 +7616,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -7666,7 +7666,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -7716,7 +7716,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -7765,7 +7765,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,

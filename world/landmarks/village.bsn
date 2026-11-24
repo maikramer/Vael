@@ -244,7 +244,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.9, y: 38.7304, z: -34.5 },
+                translation: glam::Vec3 { x: -4.2, y: 38.7305, z: -35.25 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -257,7 +257,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.9 38.7304 -34.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.2 38.7305 -35.25" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/village.xml",
@@ -286,14 +286,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.9, y: 38.7304, z: -34.5 },
+                translation: glam::Vec3 { x: -4.2, y: 38.7304, z: -35.25 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.9 38.7304 -34.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.2 38.7304 -35.25" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/village.xml",
@@ -360,7 +360,7 @@ bevy_ecs::hierarchy::Children [
             --
             #fogo_aldeao_1
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -10.4, y: 38.7304, z: -4.6 },
+                translation: glam::Vec3 { x: -11.7, y: 38.7304, z: -5.35 },
                 rotation: glam::Quat { x: 0.0, y: -0.939693, z: 0.0, w: 0.34202 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -368,7 +368,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "fogo_aldeao_1" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-10.4 38.7304 -4.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.7 38.7304 -5.35" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -40 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -468,61 +468,6 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216086543)
             ]
             --
-            #fogo_aldeao_3
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.8, y: 38.7304, z: -7.8 },
-                rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "fogo_aldeao_3" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.8 38.7304 -7.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 33],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086544)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene npc_guard"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/characters/npc-guard.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 33, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086545)
-                jackdaw::prefab::components::PrefabEntityId(0)
-                --
-                #NpcBody
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "NpcBody",
-                    attrs: [],
-                    text: "",
-                    origin_file: "world/landmarks/village.xml",
-                    origin_path: [0, 33, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086546)
-            ]
-            --
             #"marco-portao-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -18.0, y: 38.7304, z: -6.0 },
@@ -565,92 +510,6 @@ bevy_ecs::hierarchy::Children [
                     pose: true,
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(2376179873850411822)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -27.0, y: 38.7304, z: -28.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 }, offset_y: 0.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27 38.7304 -28" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 51],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086600)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene anvil"
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "GltfScene",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/anvil_lod0.glb" },
-                    ],
-                    text: "",
-                    origin_file: "world/landmarks/village.xml",
-                    origin_path: [0, 51, 0],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086601)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.0, y: 38.7304, z: -31.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.4, y: 0.8, z: 0.8 }, offset_y: 0.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-25 38.7304 -31" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 52],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086602)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene quench_trough"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/quench-trough.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 52, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086603)
-                jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
             #Entity
@@ -698,7 +557,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -24.0, y: 38.7304, z: -27.0 },
+                translation: glam::Vec3 { x: -24.0, y: 38.7304, z: -30.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.766044, z: 0.0, w: 0.642788 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -711,7 +570,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-24 38.7304 -27" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-24 38.7304 -30" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 100 0" },
                 ],
                 text: "",
@@ -1117,84 +976,6 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216086489)
             ]
             --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.9, y: 38.7304, z: 34.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.9 38.7304 34.5" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 16],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086508)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene iron_brazier"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/iron-brazier.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 16, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086509)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.9, y: 38.7304, z: 34.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.9 38.7304 34.5" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 17],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086510)
-            bevy_ecs::hierarchy::Children [
-                #ParticleSystem
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/fx/fire-r30.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 17, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086511)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
             #Group
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.9, y: 38.7304, z: 34.5 },
@@ -1284,7 +1065,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 38.7304, z: 14.0 },
+                translation: glam::Vec3 { x: -8.0, y: 38.7304, z: 14.0 },
                 rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1297,7 +1078,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 38.7304 14" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8 38.7304 14" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -1512,49 +1293,6 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -30.0, y: 38.7304, z: 30.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.2, y: 0.8, z: 0.8 }, offset_y: 0.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30 38.7304 30" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 44],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086580)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene hay_bale"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/hay-bale.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 44, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086581)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -32.0, y: 38.7304, z: 32.200001 },
                 rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
@@ -1593,49 +1331,6 @@ bevy_ecs::hierarchy::Children [
                     path: [0, 45, 0],
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216086583)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -28.200001, y: 38.7304, z: 33.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.2, y: 0.8, z: 0.8 }, offset_y: 0.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.2 38.7304 33" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 46],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086584)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene hay_bale"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/hay-bale.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 46, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086585)
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
@@ -1684,7 +1379,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -12.0, y: 38.7304, z: 2.0 },
+                translation: glam::Vec3 { x: -11.25, y: 38.7305, z: 3.3 },
                 rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1697,7 +1392,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 38.7304 2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.25 38.7305 3.3" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
                 ],
                 text: "",
@@ -2238,7 +1933,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.9, y: 38.7304, z: -34.5 },
+                translation: glam::Vec3 { x: 3.65, y: 38.7304, z: -35.8 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2251,7 +1946,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.9 38.7304 -34.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.65 38.7304 -35.8" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/village.xml",
@@ -2280,14 +1975,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.9, y: 38.7304, z: -34.5 },
+                translation: glam::Vec3 { x: 3.65, y: 38.7304, z: -35.8 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.9 38.7304 -34.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.65 38.7304 -35.8" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/village.xml",
@@ -2418,7 +2113,7 @@ bevy_ecs::hierarchy::Children [
                 --
                 #Entity
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.9, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.000000, y: 0.000079, z: 0.000000 },
                     rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
@@ -2916,84 +2611,6 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216086487)
             ]
             --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.9, y: 38.7304, z: 34.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.9 38.7304 34.5" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 19],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086514)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene iron_brazier"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/iron-brazier.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 19, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086515)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.9, y: 38.7304, z: 34.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.9 38.7304 34.5" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 20],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086516)
-            bevy_ecs::hierarchy::Children [
-                #ParticleSystem
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/fx/fire-r30.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 20, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086517)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
             #Group
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.9, y: 38.7304, z: 34.5 },
@@ -3137,7 +2754,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3264,48 +2881,6 @@ bevy_ecs::hierarchy::Children [
                     path: [0, 41, 0],
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216086562)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 9.3, y: 38.7304, z: 9.2 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.3 38.7304 9.2" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 42],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086563)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene wooden_barrel"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/wooden-barrel.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/landmarks/village.xml",
-                    path: [0, 42, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086564)
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --

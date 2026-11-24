@@ -386,7 +386,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -430,7 +430,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -469,12 +469,12 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -96.0, y: -0.2034, z: 233.0 },
+            translation: glam::Vec3 { x: -93.0, y: -0.5702, z: 233.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -482,7 +482,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-96 -0.2034 233" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-93 -0.5702 233" },
             ],
             text: "",
             origin_file: "world/scenes/smugglers.xml",
@@ -516,7 +516,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1180,7 +1180,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -97.0, y: -0.2475, z: 235.0 },
+            translation: glam::Vec3 { x: -99.6, y: 0.7942, z: 236.5 },
             rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1193,7 +1193,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-97 -0.2475 235" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-99.6 0.7942 236.5" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
             ],
             text: "",
@@ -1265,7 +1265,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"cais-contrabandistas"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -100.5, y: -0.6771, z: 230.5 },
+            translation: glam::Vec3 { x: -100.5, y: 0.85, z: 230.5 },
             rotation: glam::Quat { x: 0.0, y: -0.292372, z: 0.0, w: 0.956305 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1278,8 +1278,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "cais-contrabandistas" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100.5 -0.6771 230.5" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100.5 0.85 230.5" },
             ],
             text: "",
             origin_file: "world/scenes/smugglers.xml",
@@ -1328,58 +1329,14 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(4341752205346703310)
         ]
         --
-        #"palicada-contrabandistas"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -81.0, y: 0.2717, z: 239.5 },
-            rotation: glam::Quat { x: 0.0, y: 0.121869, z: 0.0, w: 0.992546 },
-            scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.0 },
-        }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/fence_segment_collision.glb", base: true },
-        }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "palicada-contrabandistas" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-81.0 0.2717 239.5" },
-            ],
-            text: "",
-            origin_file: "world/scenes/smugglers.xml",
-            origin_path: [46],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(3943025284995710226)
-        bevy_ecs::hierarchy::Children [
-            #"GltfScene fence_segment"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_segment_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 0],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(2565191163094599201)
-        ]
-        --
         #"sceneref.v2.smugglers-cargo-1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -100.1, y: -0.2371, z: 230.9 },
+            translation: glam::Vec3 { x: -95.0, y: 1.0147, z: 227.0 },
             rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1394,7 +1351,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.smugglers-cargo-1" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100.10 -0.24 230.90" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-95 1.0147 227" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
             ],
             text: "",
@@ -1424,12 +1381,12 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.smugglers-cargo-2"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -99.6, y: -0.2119, z: 229.6 },
+            translation: glam::Vec3 { x: -95.2, y: 0.736, z: 229.2 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1444,7 +1401,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.smugglers-cargo-2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-99.60 -0.21 229.60" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-95.2 0.736 229.2" },
             ],
             text: "",
             origin_file: "world/scenes/smugglers.xml",
@@ -1578,7 +1535,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1694,5 +1651,25 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216088409)
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
+--
+        #"palicada-contrabandistas"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -84.1947, y: 0.2717, z: 240.2965 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::FenceSpec {
+            points: "0.0 0.0; 6.3894 -1.5931",
+            style: core::option::Option::Some("palisade"),
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "palicada-contrabandistas" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84.1947 0.2717 240.2965" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(828809953595043951)
     ]
 ]

@@ -282,7 +282,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -569,7 +569,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"swamp-bog-idol"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -268.0, y: 32.900002, z: 88.0 },
+                translation: glam::Vec3 { x: -268.0, y: 33.2167, z: 88.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -585,8 +585,9 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "swamp-bog-idol" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-268 32.9 88" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-268 33.2167 88" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -900,7 +901,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -260.0, y: 32.09, z: 92.0 },
+                translation: glam::Vec3 { x: -256.1, y: 32.0004, z: 94.25 },
                 rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.25, y: 1.25, z: 1.25 },
             }
@@ -913,7 +914,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-260 32.09 92" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-256.1 32.0004 94.25" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -15 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.25" },
                 ],
@@ -1159,7 +1160,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.swamp-altar-brazier-e"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -261.8, y: 32.3696, z: 94.0 },
+                translation: glam::Vec3 { x: -259.2, y: 32.3198, z: 95.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1179,7 +1180,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-altar-brazier-e" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-261.80 32.37 94.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-259.2 32.3198 95.5" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -1451,12 +1452,12 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -180.0, y: 25.9705, z: -38.5 },
+                translation: glam::Vec3 { x: -180.0, y: 25.7481, z: -41.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1464,7 +1465,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-180 25.9705 -38.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-180 25.7481 -41.5" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -1493,12 +1494,12 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -174.0, y: 25.9991, z: -42.0 },
+                translation: glam::Vec3 { x: -174.000000, y: 25.686497, z: -42.000000 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1535,7 +1536,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -249.0, y: 34.5778, z: -70.0 },
+                translation: glam::Vec3 { x: -249.0, y: 35.0397, z: -67.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.829038, z: 0.0, w: -0.559193 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1548,7 +1549,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-249 34.5778 -70" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-249 35.0397 -67" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 68 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -1837,7 +1838,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"barco-arca"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -183.600006, y: 25.9, z: -36.200001 },
+                translation: glam::Vec3 { x: -183.600006, y: 25.285694, z: -36.200001 },
                 rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2015,7 +2016,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.swamp-boat-torch"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -184.5, y: 25.7273, z: -41.5 },
+                translation: glam::Vec3 { x: -184.500000, y: 25.808041, z: -41.500000 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2114,7 +2115,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2159,12 +2160,12 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.swamp-boat-barrel"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -182.2, y: 25.8278, z: -39.5 },
+                translation: glam::Vec3 { x: -182.199997, y: 25.747042, z: -39.500000 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2250,7 +2251,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2471,7 +2472,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -228.0, y: 27.223101, z: 52.0 },
+                translation: glam::Vec3 { x: -225.0, y: 27.0135, z: 52.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.461749, z: 0.0, w: 0.887011 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2484,7 +2485,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-228 27.2231 52" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-225 27.0135 52" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 55 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -2995,7 +2996,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -185.0, y: 25.7608, z: 14.5 },
+                translation: glam::Vec3 { x: -185.0, y: 25.8706, z: 16.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3008,7 +3009,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-185 25.7608 14.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-185 25.8706 16" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -20 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -3039,7 +3040,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -190.100006, y: 26.1457, z: 15.9 },
+                translation: glam::Vec3 { x: -190.100006, y: 26.025257, z: 15.900000 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3081,12 +3082,12 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -185.9, y: 25.7803, z: 14.1 },
+                translation: glam::Vec3 { x: -187.4, y: 26.0164, z: 16.7 },
                 rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3094,7 +3095,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-185.9 25.7803 14.1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-187.4 26.0164 16.7" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -3125,7 +3126,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -190.9, y: 25.7966, z: 12.7 },
+                translation: glam::Vec3 { x: -192.4, y: 26.1126, z: 15.3 },
                 rotation: glam::Quat { x: 0.0, y: 0.62932, z: 0.0, w: 0.777146 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3138,7 +3139,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-190.9 25.7966 12.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-192.4 26.1126 15.3" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 78 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -3898,7 +3899,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"mojao-pantano-1"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -236.0, y: 26.84, z: 12.0 },
+                translation: glam::Vec3 { x: -236.0, y: 26.8433, z: 15.0 },
                 rotation: glam::Quat { x: 0.002736, y: 0.104493, z: 0.026034, w: 0.994181 },
                 scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
@@ -3912,7 +3913,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-1" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236.0 26.84 12.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236 26.8433 15" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -4303,7 +4304,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.swamp-lagoon-fireflies"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -190.0, y: 25.7396, z: 13.0 },
+                translation: glam::Vec3 { x: -190.75, y: 25.9563, z: 14.3 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4311,7 +4312,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-lagoon-fireflies" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-190 25.7396 13" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-190.75 25.9563 14.3" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",

@@ -75,6 +75,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/ponte_norte_lod0.glb" },
             ],
             text: "",
@@ -493,7 +494,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v2.ponte-brazier-sw"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.65, y: 47.77, z: 167.0 },
+        translation: glam::Vec3 { x: 0.65, y: 46.5, z: 170.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
     }
@@ -512,8 +513,9 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.ponte-brazier-sw" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.65 47.77 167.00" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.65 46.5 170" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 0.82 0.82 0.82" },
         ],
         text: "",
@@ -577,7 +579,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v2.ponte-brazier-se"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 7.35, y: 47.77, z: 167.0 },
+        translation: glam::Vec3 { x: 7.35, y: 46.5, z: 170.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
     }
@@ -596,8 +598,9 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.ponte-brazier-se" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 47.77 167.00" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 46.5 170" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 0.82 0.82 0.82" },
         ],
         text: "",
@@ -661,7 +664,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v2.ponte-brazier-nw"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.65, y: 43.72, z: 239.5 },
+        translation: glam::Vec3 { x: 0.65, y: 43.25, z: 237.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
     }
@@ -680,8 +683,9 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.ponte-brazier-nw" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.65 43.72 239.50" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.65 43.25 237" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 0.82 0.82 0.82" },
         ],
         text: "",
@@ -745,7 +749,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v2.ponte-brazier-ne"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 7.35, y: 43.72, z: 239.5 },
+        translation: glam::Vec3 { x: 7.35, y: 43.25, z: 237.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
     }
@@ -764,8 +768,9 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.ponte-brazier-ne" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 43.72 239.50" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 43.25 237" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 0.82 0.82 0.82" },
         ],
         text: "",
@@ -848,6 +853,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.ponte-brazier-mid-w" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.65 45.57 215.25" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 0.72 0.72 0.72" },
@@ -932,6 +938,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.ponte-brazier-mid-e" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 45.57 215.25" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 0.72 0.72 0.72" },
@@ -1140,7 +1147,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1190,7 +1197,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1289,7 +1296,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1334,7 +1341,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v2.ponte-n-rock-e"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 11.4, y: 42.584759, z: 242.4 },
+        translation: glam::Vec3 { x: 11.400000, y: 42.734104, z: 242.399994 },
         rotation: glam::Quat { x: 0.0, y: -0.34202, z: 0.0, w: 0.939693 },
         scale: glam::Vec3 { x: 1.2, y: 1.0, z: 1.2 },
     }

@@ -331,69 +331,6 @@ bevy_ecs::hierarchy::Children [
         ]
     ]
     --
-    #"Prototype cerca"
-    bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-    }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "Prototype",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "id", value: "cerca" },
-        ],
-        text: "",
-        origin_file: "world/cities/discordia/approach.xml",
-        origin_path: [5],
-        pose: false,
-    }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082988)
-    bevy_ecs::hierarchy::Children [
-        #"cerca"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.5, y: 1.0, z: 1.0 },
-        }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/fence_segment_collision.glb", base: true },
-        }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.0 0.0 0.0" },
-            ],
-            text: "",
-            origin_file: "world/cities/discordia/approach.xml",
-            origin_path: [5, 0],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1762042126057946303)
-        bevy_ecs::hierarchy::Children [
-            #"GltfScene fence_segment"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_segment_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [5, 0, 0],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(3981808868525704877)
-        ]
-    ]
-    --
     #"Prototype leira-cultivo"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
@@ -837,7 +774,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -887,7 +824,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -978,7 +915,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -6.2, y: 0.0, z: 31.799999 },
+                translation: glam::Vec3 { x: -6.2, y: 0.0001, z: 28.8 },
                 rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -991,7 +928,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.2 0 31.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.2 0.0001 28.8" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
                 ],
                 text: "",
@@ -1021,7 +958,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -6.8, y: 0.0, z: 33.599998 },
+                translation: glam::Vec3 { x: -4.2, y: 0.0, z: 35.1 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1034,7 +971,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.8 0 33.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.2 0 35.1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/approach.xml",
@@ -1312,394 +1249,6 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #"cerca-w-s1"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 94.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 94" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 32],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083049)
-            --
-            #"cerca-w-s2"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 97.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 97.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s2" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 33],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083050)
-            --
-            #"cerca-w-s3"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 101.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 101" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s3" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 34],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083051)
-            --
-            #"cerca-w-s4"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 104.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 104.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s4" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 35],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083052)
-            --
-            #"cerca-w-s5"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 108.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 108" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s5" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 36],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083053)
-            --
-            #"cerca-w-s6"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 111.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 111.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s6" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 37],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083054)
-            --
-            #"cerca-w-s7"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 115.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 115" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s7" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 38],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083055)
-            --
-            #"cerca-w-s8"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 118.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 118.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s8" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 39],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083056)
-            --
-            #"cerca-w-w1"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -28.799999, y: 8.2704, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-28.8 8.2704 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 40],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083057)
-            --
-            #"cerca-w-w2"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.299999, y: 8.2704, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-25.3 8.2704 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w2" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 41],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083058)
-            --
-            #"cerca-w-s9"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -21.799999, y: 8.2704, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-21.8 8.2704 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s9" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 42],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083059)
-            --
-            #"cerca-w-s10"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -18.299999, y: 8.2704, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.3 8.2704 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s10" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 43],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083060)
-            --
-            #"cerca-w-s11"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -14.8, y: 8.2704, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-14.8 8.2704 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s11" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 44],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083061)
-            --
-            #"portao-socalco"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -11.7, y: 8.2404, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/fence_gate_collision.glb", base: true },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-socalco" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.7 8.2404 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 45],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083062)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_gate"
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_ext_scene::ModelLod {
-                    lod1: core::option::Option::Some("/assets/meshes/farm/fence_gate_lod1.glb"),
-                    lod2: core::option::Option::Some("/assets/meshes/farm/fence_gate_lod2.glb"),
-                    near: core::option::Option::Some(40.0),
-                    mid: core::option::Option::Some(110.0),
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "GltfScene",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_gate_lod0.glb" },
-                    ],
-                    text: "",
-                    origin_file: "world/cities/discordia/approach.xml",
-                    origin_path: [7, 45, 0],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216083063)
-            ]
-            --
-            #"cerca-w-s12"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -8.9, y: 8.2704, z: 94.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.9 8.2704 94.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s12" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 46],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083064)
-            --
-            #"cerca-w-w3"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -28.799999, y: 8.2704, z: 119.800003 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-28.8 8.2704 119.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w3" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 47],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083065)
-            --
-            #"cerca-w-w4"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.299999, y: 8.2704, z: 119.800003 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "-25.3 8.2704 119.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w4" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 48],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083066)
-            --
             #"sceneref.v3.approach-n-torch-w"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -5.4, y: 0.0045, z: 44.5 },
@@ -1890,7 +1439,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1940,7 +1489,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1981,6 +1530,86 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216083102)
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
+--
+            #"cerca-w-se"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 119.9966 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 0.0 -25.7966; -2.1987 -25.7966",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-se" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.2 8.2704 119.9966" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(620654530309593723)
+--
+            #"cerca-w-2"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -30.2966, y: 8.2704, z: 94.2 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 17.2952 0.0",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30.2966 8.2704 94.2" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(402998726593372870)
+--
+            #"cerca-w-3"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -30.2966, y: 8.2704, z: 119.8 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 6.4932 0.0",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30.2966 8.2704 119.8" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(378089404659900477)
+--
+            #"portao-socalco"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -13.0013, y: 8.2404, z: 94.2 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 2.6027 0.0",
+                style: core::option::Option::Some("gate"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-socalco" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.0013 8.2404 94.2" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(188440356382768353)
         ]
         --
         #"célula x0 z-1"
@@ -1996,6 +1625,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Use",
                 attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "market:3" },
                     bevy_world_xml::bsn::WorldProp { key: "prototype", value: "carreta" },
                     bevy_world_xml::bsn::WorldProp { key: "pos", value: "32.6 0 -19.8" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -8 0" },
@@ -2219,7 +1849,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2269,7 +1899,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2325,6 +1955,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Use",
                 attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "approach:3" },
                     bevy_world_xml::bsn::WorldProp { key: "prototype", value: "carreta" },
                     bevy_world_xml::bsn::WorldProp { key: "pos", value: "6.8 0 15.5" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -15 0" },
@@ -2750,237 +2381,6 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216083048)
             ]
             --
-            #"cerca-e-w1"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 97.0 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 97" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 49],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083067)
-            --
-            #"cerca-e-w2"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 100.5 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 100.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w2" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 50],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083068)
-            --
-            #"cerca-e-w3"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 104.0 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 104" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w3" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 51],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083069)
-            --
-            #"cerca-e-w4"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 107.5 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 107.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w4" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 52],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083070)
-            --
-            #"cerca-e-w5"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 111.0 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 111" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w5" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 53],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083071)
-            --
-            #"cerca-e-w6"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 114.5 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 114.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w6" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 54],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083072)
-            --
-            #"cerca-e-w7"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 118.0 },
-                rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 118" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w7" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 55],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083073)
-            --
-            #"cerca-e-e1"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 27.799999, y: 8.7709, z: 97.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "27.8 8.7709 97.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 56],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083074)
-            --
-            #"cerca-e-e2"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 24.299999, y: 8.7709, z: 97.199997 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "24.3 8.7709 97.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e2" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 57],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083075)
-            --
-            #"cerca-e-e3"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 27.799999, y: 8.7709, z: 118.800003 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "27.8 8.7709 118.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e3" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 58],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083076)
-            --
-            #"cerca-e-e4"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 24.299999, y: 8.7709, z: 118.800003 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Use",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "24.3 8.7709 118.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e4" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/approach.xml",
-                origin_path: [7, 59],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083077)
-            --
             #"barril-portao-a"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 8.7, y: 0.0, z: 15.4 },
@@ -2988,7 +2388,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3032,7 +2432,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3076,7 +2476,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3303,7 +2703,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3353,7 +2753,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3394,6 +2794,252 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216083104)
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
+--
+            #"cerca-e-2"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 95.5034 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 0.0 23.9932",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.2 8.7709 95.5034" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(319461371318598251)
+--
+            #"cerca-e-3"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 22.8034, y: 8.7709, z: 97.2 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 6.4932 0.0",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.8034 8.7709 97.2" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(898279039621467190)
+--
+            #"cerca-e-4"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 22.8034, y: 8.7709, z: 118.8 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 6.4932 0.0",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.8034 8.7709 118.8" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(651957043735229233)
         ]
+    ]
+--
+    #"Canteiro · Acesso das carroças"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Group",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Canteiro · Acesso das carroças" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(922453226150185413)
+bevy_ecs::hierarchy::Children [
+    #"Estacas · Acesso das carroças"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -1.0, y: -0.03, z: -44.3 },
+        scale: glam::Vec3 { x: 2.6, y: 1.0, z: 1.4 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Acesso das carroças" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "approach:0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1535819751311109720)
+    bevy_ecs::hierarchy::Children [
+        #"Estacas · Acesso das carroças · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Estacas · Acesso das carroças · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-estacas.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1415735537847041679)
+    ]
+    --
+    #"Placa · Acesso das carroças"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.5, y: -0.03, z: -42.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/concordia-site.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa · Acesso das carroças" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-site", value: "approach" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(795283467283446096)
+    bevy_ecs::hierarchy::Children [
+        #"Placa de madeira · Acesso das carroças"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Placa de madeira · Acesso das carroças" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-placa.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4535344165707623270)
+    ]
+    --
+    #"Esqueleto · Acesso das carroças"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -1.0, y: -0.03, z: -44.3 },
+        scale: glam::Vec3 { x: 2.6, y: 1.0, z: 1.4 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/concordia/canteiro-esqueleto_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Acesso das carroças" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "approach:1-2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(509770513607400693)
+    bevy_ecs::hierarchy::Children [
+        #"Esqueleto · Acesso das carroças · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Esqueleto · Acesso das carroças · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-esqueleto.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4597046920834930720)
+    ]
+    --
+    #"Peça · Acesso das carroças"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -1.0, y: -0.03, z: -44.3 },
+        scale: glam::Vec3 { x: 2.6, y: 1.0, z: 1.4 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Peça · Acesso das carroças" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "approach:2" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1680327491842571626)
+    bevy_ecs::hierarchy::Children [
+        #"Peça · Acesso das carroças · malha"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Peça · Acesso das carroças · malha" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/canteiro-fecho.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1045387298484881835)
+    ]
+--
+        #"Lastro"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: -1.0, y: -0.03, z: -44.3 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "name", value: "Lastro" },
+        bevy_world_xml::bsn::WorldProp { key: "prop-concordia-stage", value: "approach:2" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(1239445237258965520)
+bevy_ecs::hierarchy::Children [
+    #"Lastro · malha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Lastro · malha" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/concordia/lastro.glb" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(310920580286156418)
+]
     ]
 ]

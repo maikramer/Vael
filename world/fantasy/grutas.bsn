@@ -52,7 +52,7 @@ bevy_ecs::hierarchy::Children [
         depth: 11.0,
         mouth_fraction: 0.12,
         chambers: [
-            bevy_ext_terrain::voxel::VoxelChamber { at: [590.0, -46.0], radius: 7.0, height: 7.0, depth: core::option::Option::Some(14.0) },
+            bevy_ext_terrain::voxel::VoxelChamber { at: [590.0, -46.0], radius: 7.0, height: 7.0, depth: core::option::Option::Some(16.5) },
         ],
         shafts: [
             bevy_ext_terrain::voxel::VoxelShaft { at: [620.0, -45.0], radius: 2.2, depth: core::option::Option::Some(17.0) },
@@ -105,7 +105,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -113,6 +113,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-52.0 96.682 -210.0" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
@@ -144,12 +145,12 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -49.5, y: 97.8774, z: -213.0 },
+            translation: glam::Vec3 { x: -49.500000, y: 98.284813, z: -213.000000 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -199,6 +200,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-66 93.6676 -210" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 62 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
@@ -287,6 +289,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 87.509 -204" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 62 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
@@ -325,6 +328,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 87.509 -204" },
             ],
             text: "",
@@ -402,7 +406,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -56.0, y: 102.094902, z: -222.0 },
+            translation: glam::Vec3 { x: -56.000000, y: 98.569054, z: -222.000000 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -528,7 +532,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -50.0, y: 102.179199, z: -220.0 },
+            translation: glam::Vec3 { x: -50.000000, y: 100.069122, z: -220.000000 },
             rotation: glam::Quat { x: 0.0, y: -0.5, z: 0.0, w: 0.866025 },
             scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
         }
@@ -802,7 +806,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 538.334473, y: 94.918999, z: -62.237801 },
+                translation: glam::Vec3 { x: 538.334473, y: 94.804970, z: -62.237801 },
                 rotation: glam::Quat { x: 0.176376, y: -0.982852, z: 0.048462, w: -0.023341 },
                 scale: glam::Vec3 { x: 0.855, y: 0.855, z: 0.855 },
             }
@@ -918,7 +922,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 500.700012, y: 80.898499, z: -62.900002 },
+            translation: glam::Vec3 { x: 500.7, y: 80.9002, z: -63.8 },
             rotation: glam::Quat { x: 0.0, y: -0.566406, z: 0.0, w: 0.824126 },
             scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
         }
@@ -929,7 +933,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.7 80.8985 -62.9" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.7 80.9002 -63.8" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
             ],
@@ -960,7 +964,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 499.299988, y: 81.028702, z: -53.099998 },
+            translation: glam::Vec3 { x: 499.3, y: 80.9917, z: -52.2 },
             rotation: glam::Quat { x: 0.0, y: -0.824126, z: 0.0, w: -0.566406 },
             scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
         }
@@ -971,7 +975,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.3 81.0287 -53.1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.3 80.9917 -52.2" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 69 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
             ],
@@ -1136,7 +1140,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1565,7 +1569,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 719.400024, y: 174.984894, z: -61.0 },
+            translation: glam::Vec3 { x: 719.4, y: 175.024, z: -61.8 },
             rotation: glam::Quat { x: 0.0, y: -0.743145, z: 0.0, w: -0.669131 },
             scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
         }
@@ -1576,7 +1580,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.4 174.9849 -61" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.4 175.024 -61.8" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 84 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
             ],
@@ -1607,7 +1611,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 720.599976, y: 174.788605, z: -51.0 },
+            translation: glam::Vec3 { x: 720.6, y: 174.7601, z: -50.2 },
             rotation: glam::Quat { x: 0.0, y: -0.669131, z: 0.0, w: 0.743145 },
             scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
         }
@@ -1618,7 +1622,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.6 174.7886 -51" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.6 174.76 -50.2" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -84 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
             ],
@@ -1783,7 +1787,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1995,6 +1999,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "mina-do-veio-hoard" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 92.9 -256" },
         ],
@@ -2038,6 +2043,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-91.5 93.4 -258.5" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0; scale: 2.2 2.2 2.2" },
         ],
@@ -2081,6 +2087,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84.5 93.5 -259" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 170 0; scale: 1.7 1.7 1.7" },
         ],
@@ -2124,6 +2131,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-91 93.5 -252.5" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 260 0; scale: 1.9 1.9 1.9" },
         ],
@@ -2167,6 +2175,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-85 93.5 -252.5" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0; scale: 1.3 1.3 1.3" },
         ],
@@ -2210,6 +2219,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92.5 93.5 -255" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 210 0; scale: 2.6 2.6 2.6" },
         ],
@@ -2440,6 +2450,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "porta-do-ermo-hoard" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 112.45 -46" },
         ],
@@ -2483,6 +2494,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "587 112.9 -48" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0; scale: 1.8 1.8 1.8" },
         ],
@@ -2526,6 +2538,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "593 113 -48.5" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 200 0; scale: 2.4 2.4 2.4" },
         ],
@@ -2563,6 +2576,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "587.5 113.05 -43" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 300 0; scale: 1.5 1.5 1.5" },
         ],
@@ -2606,6 +2620,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 112.8 -49" },
         ],
         text: "",
@@ -2642,6 +2657,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 113.4 -49" },
         ],
         text: "",
@@ -2708,7 +2724,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v3.grutas-mina-bench"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -58.2, y: 95.7041, z: -212.4 },
+        translation: glam::Vec3 { x: -58.200001, y: 96.020866, z: -212.399994 },
         rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
@@ -2727,6 +2743,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.grutas-mina-bench" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.2 95.7041 -212.4" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
@@ -2758,12 +2775,12 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v3.grutas-mina-crate"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -61.8, y: 95.5731, z: -212.6 },
+        translation: glam::Vec3 { x: -61.799999, y: 95.512306, z: -212.600006 },
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2777,6 +2794,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.grutas-mina-crate" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.80 95.57 -212.60" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
@@ -2813,7 +2831,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2827,6 +2845,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.grutas-mina-barrel" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.60 95.00 -213.80" },
         ],
@@ -2873,6 +2892,7 @@ bevy_ecs::hierarchy::Children [
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.grutas-mina-pickaxe" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.40 95.60 -212.20" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
@@ -2987,7 +3007,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v3.grutas-mina-crystal"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -61.8, y: 97.0267, z: -215.2 },
+        translation: glam::Vec3 { x: -61.799999, y: 98.399658, z: -215.199997 },
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
         scale: glam::Vec3 { x: 1.15, y: 1.25, z: 1.15 },
     }
@@ -3054,7 +3074,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"sceneref.v3.grutas-mina-cairn"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -58.0, y: 98.5914, z: -215.4 },
+        translation: glam::Vec3 { x: -56.5, y: 98.3993, z: -215.4 },
         rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
@@ -3074,7 +3094,7 @@ bevy_ecs::hierarchy::Children [
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.grutas-mina-cairn" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.0 98.5914 -215.4" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56.5 98.3993 -215.4" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0" },
         ],
         text: "",
@@ -3159,7 +3179,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3209,7 +3229,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3555,7 +3575,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3605,7 +3625,7 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,

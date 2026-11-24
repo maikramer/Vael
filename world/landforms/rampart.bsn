@@ -398,7 +398,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.rampart-pillar-sw1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 135.2, y: 100.120134, z: 356.2 },
+            translation: glam::Vec3 { x: 135.199997, y: 100.269867, z: 356.200012 },
             rotation: glam::Quat { x: 0.021776, y: 0.216779, z: -0.022698, w: 0.975714 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -448,7 +448,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.rampart-pillar-sw2"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 137.4, y: 100.120134, z: 354.5 },
+            translation: glam::Vec3 { x: 137.399994, y: 100.269852, z: 354.500000 },
             rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
             scale: glam::Vec3 { x: 1.05, y: 1.15, z: 1.05 },
         }
@@ -498,7 +498,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.rampart-pillar-fallen"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 142.8, y: 100.520134, z: 354.8 },
+            translation: glam::Vec3 { x: 142.800003, y: 100.270332, z: 354.799988 },
             rotation: glam::Quat { x: 0.574174, y: -0.252035, z: 0.228049, w: 0.744846 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -908,7 +908,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -957,7 +957,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1002,7 +1002,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.rampart-rock-ne"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 145.4, y: 100.090603, z: 364.0 },
+            translation: glam::Vec3 { x: 145.399994, y: 100.269791, z: 364.000000 },
             rotation: glam::Quat { x: 0.0, y: 0.358368, z: 0.0, w: 0.93358 },
             scale: glam::Vec3 { x: 1.2, y: 1.0, z: 1.2 },
         }
@@ -1052,7 +1052,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.rampart-rock-s"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 141.4, y: 100.090134, z: 354.6 },
+            translation: glam::Vec3 { x: 141.399994, y: 100.269684, z: 354.600006 },
             rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.1, y: 0.9, z: 1.1 },
         }

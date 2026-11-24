@@ -41,7 +41,7 @@ bevy_ecs::hierarchy::Children [
         bevy_ecs::hierarchy::Children [
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -64.0, y: 34.549999, z: -12.0 },
+                translation: glam::Vec3 { x: -105.000000, y: 30.092163, z: -22.000000 },
                 rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
                 scale: glam::Vec3 { x: 0.6, y: 0.6, z: 0.6 },
             }
@@ -54,7 +54,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-64 34.55 -12" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-105 30.0138 -22" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0; scale: 0.6 0.6 0.6" },
                 ],
                 text: "",
@@ -85,12 +85,12 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -57.0, y: 36.610001, z: -13.0 },
+                translation: glam::Vec3 { x: -98.4, y: 30.64008, z: -14.3 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/campfire_pit_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.45, y: 0.26, z: 1.45 }, offset_y: 0.13 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -98,7 +98,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-57 36.61 -13" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-98.4 30.64008 -14.3" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -107,34 +107,37 @@ bevy_ecs::hierarchy::Children [
             }
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216087720)
             bevy_ecs::hierarchy::Children [
-                #"GltfScene campfire_pit"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/campfire-pit.bsn",
-                    deleted: [],
-                }
+                #"Fogueira de Ferre"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GltfScene",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/fogueira-de-cantaria_lod0.glb" },
+                    ],
+                    text: "",
+                    pose: true,
                 }
                 bevy_world_xml::bsn::WorldOrigin {
                     file: "world/quest-stations.xml",
                     path: [0, 93, 0],
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216087721)
-                jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -57.0, y: 36.610001, z: -13.0 },
+                translation: glam::Vec3 { x: -98.4, y: 30.64008, z: -14.3 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-57 36.61 -13" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-98.4 30.64008 -14.3" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -163,7 +166,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Group
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -57.0, y: 36.610001, z: -13.0 },
+                translation: glam::Vec3 { x: -98.4, y: 30.64008, z: -14.3 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -171,7 +174,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Group",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-57 36.61 -13" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-98.4 30.64008 -14.3" },
                     bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
                 ],
                 text: "",
@@ -201,7 +204,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -65.0, y: 34.439999, z: -19.0 },
+                translation: glam::Vec3 { x: -103.0, y: 30.43364, z: -12.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.8, y: 1.8, z: 1.8 },
             }
@@ -214,7 +217,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-65 34.44 -19" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-103 30.43364 -12" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 1.8 1.8 1.8" },
                 ],
                 text: "",
@@ -244,7 +247,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -58.0, y: 36.419998, z: -19.0 },
+                translation: glam::Vec3 { x: -107.0, y: 29.96436, z: -17.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
             }
@@ -257,7 +260,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58 36.42 -19" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-107 29.96436 -17" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0; scale: 1.5 1.5 1.5" },
                 ],
                 text: "",
@@ -287,7 +290,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -63.0, y: 34.98, z: -18.0 },
+                translation: glam::Vec3 { x: -101.5, y: 30.39489, z: -21.3 },
                 rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -300,7 +303,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-63 34.98 -18" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-101.5 30.39489 -21.3" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -310,109 +313,30 @@ bevy_ecs::hierarchy::Children [
             }
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216087730)
             bevy_ecs::hierarchy::Children [
-                #"GltfScene wooden_crate"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/wooden-crate.bsn",
-                    deleted: [],
-                }
+                #"Caixote do abrigo"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GltfScene",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/caixote-de-carga_lod0.glb" },
+                    ],
+                    text: "",
+                    pose: true,
                 }
                 bevy_world_xml::bsn::WorldOrigin {
                     file: "world/quest-stations.xml",
                     path: [0, 98, 0],
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216087731)
-                jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -56.0, y: 36.959999, z: -20.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 36.96 -20" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 99],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087732)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 99, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087733)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -54.0, y: 37.419998, z: -18.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-54 37.42 -18" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 100],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087734)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 100, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087735)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -61.0, y: 35.599998, z: -20.0 },
+                translation: glam::Vec3 { x: -101.7, y: 30.40719, z: -22.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -425,7 +349,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61 35.6 -20" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-101.7 30.40719 -22.5" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -435,22 +359,25 @@ bevy_ecs::hierarchy::Children [
             }
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216087736)
             bevy_ecs::hierarchy::Children [
-                #"GltfScene wooden_barrel"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/village/wooden-barrel.bsn",
-                    deleted: [],
-                }
+                #"Caixote dos fungos"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GltfScene",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/caixote-de-carga_lod0.glb" },
+                    ],
+                    text: "",
+                    pose: true,
                 }
                 bevy_world_xml::bsn::WorldOrigin {
                     file: "world/quest-stations.xml",
                     path: [0, 101, 0],
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216087737)
-                jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
             #Entity
@@ -989,7 +916,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -3.0, y: 53.889999, z: -103.0 },
+                translation: glam::Vec3 { x: 7.35, y: 53.9063, z: -103.38 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1002,7 +929,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3 53.89 -103" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 53.9063 -103.38" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -1031,14 +958,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -3.0, y: 53.889999, z: -103.0 },
+                translation: glam::Vec3 { x: 7.35, y: 53.9063, z: -103.38 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3 53.89 -103" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.35 53.9063 -103.38" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -1105,7 +1032,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -4.0, y: 51.950001, z: -97.0 },
+                translation: glam::Vec3 { x: 6.35, y: 52.0489, z: -97.38 },
                 rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1118,7 +1045,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4 51.95 -97" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.35 52.0489 -97.38" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -1148,7 +1075,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 51.599998, z: -96.0 },
+                translation: glam::Vec3 { x: 8.35, y: 52.1082, z: -97.88 },
                 rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1161,7 +1088,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 51.6 -96" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.35 52.1082 -97.88" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -1448,7 +1375,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-south-brazier"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -5.8, y: 53.235, z: -101.2 },
+                translation: glam::Vec3 { x: 6.05, y: 53.4767, z: -101.58 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1468,7 +1395,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-south-brazier" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.80 53.23 -101.20" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.05 53.4767 -101.58" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -1531,7 +1458,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-south-bench"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.4, y: 53.1072, z: -100.4 },
+                translation: glam::Vec3 { x: 9.95, y: 52.8578, z: -100.78 },
                 rotation: glam::Quat { x: 0.0, y: -0.34202, z: 0.0, w: 0.939693 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -1551,7 +1478,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-south-bench" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.40 53.11 -100.40" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.95 52.8578 -100.78" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -40 0" },
                 ],
                 text: "",
@@ -1578,627 +1505,32 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216087912)
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
+--
+            #"cerca-x-1-z-1"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -95.5, y: 30.8469, z: -16.5034 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; 0.0 -4.4966; 1.4966 -4.4966",
+                style: core::option::Option::Some("pasture_rail"),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-x-1-z-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-95.5 30.8469 -16.5034" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(486098793762175489)
         ]
         --
         #"célula x-1 z0"
         bevy_transform::components::transform::Transform
         jackdaw_scene_types::node_id::SceneNodeId(9207754130614595268)
         bevy_ecs::hierarchy::Children [
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.0, y: 39.880001, z: 56.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-25 39.88 56" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 0],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087522)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 0, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087523)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.0, y: 40.220001, z: 58.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-25 40.22 58" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087524)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 1, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087525)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.0, y: 40.57, z: 60.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-25 40.57 60" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087526)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 2, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087527)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.0, y: 40.939999, z: 62.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-25 40.94 62" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087528)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 3, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087529)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -25.0, y: 41.310001, z: 64.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-25 41.31 64" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087530)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 4, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087531)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -17.0, y: 40.169998, z: 56.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17 40.17 56" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087532)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 5, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087533)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -17.0, y: 40.59, z: 58.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17 40.59 58" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087534)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 6, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087535)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -17.0, y: 41.040001, z: 60.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17 41.04 60" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087536)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 7, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087537)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -17.0, y: 41.5, z: 62.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17 41.5 62" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087538)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 8, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087539)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -17.0, y: 41.959999, z: 64.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17 41.96 64" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087540)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 9, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087541)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -23.0, y: 41.66, z: 65.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-23 41.66 65" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087542)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 10, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087543)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -21.0, y: 41.84, z: 65.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-21 41.84 65" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 11],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087544)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 11, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087545)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -19.0, y: 42.02, z: 65.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-19 42.02 65" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 12],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087546)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 12, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087547)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -23.0, y: 39.779999, z: 55.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-23 39.78 55" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 13],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087548)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 13, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087549)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
-            #Entity
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -21.0, y: 39.84, z: 55.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::BodySpec {
-                kind: bevy_ext_scene::BodyKind::Fixed,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Entity",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-21 39.84 55" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 0.2" },
-                ],
-                text: "",
-                origin_file: "world/quest-stations.xml",
-                origin_path: [0, 14],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087550)
-            bevy_ecs::hierarchy::Children [
-                #"GltfScene fence_segment"
-                jackdaw::prefab::components::IsA {
-                    source: "world/prefabs/farm/fence-segment.bsn",
-                    deleted: [],
-                }
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldOrigin {
-                    file: "world/quest-stations.xml",
-                    path: [0, 14, 0],
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087551)
-                jackdaw::prefab::components::PrefabEntityId(0)
-            ]
-            --
             #Entity
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -26.0, y: 40.52, z: 60.0 },
@@ -2575,7 +1907,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -3.0, y: 45.23, z: 103.0 },
+                translation: glam::Vec3 { x: -13.7, y: 47.0008, z: 102.43 },
                 rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2588,7 +1920,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3 45.23 103" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.7 47.0008 102.43" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -15 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -2618,7 +1950,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -4.0, y: 45.150002, z: 98.0 },
+                translation: glam::Vec3 { x: -14.7, y: 47.0008, z: 97.43 },
                 rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2631,7 +1963,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4 45.15 98" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-14.7 47.0008 97.43" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -2662,7 +1994,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 45.209999, z: 102.0 },
+                translation: glam::Vec3 { x: -11.2, y: 47.0008, z: 101.43 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2675,7 +2007,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 45.21 102" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.2 47.0008 101.43" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3072,7 +2404,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -84.0, y: 42.610001, z: 86.0 },
+                translation: glam::Vec3 { x: -61.89, y: 42.4817, z: 85.24 },
                 rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3085,7 +2417,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 42.61 86" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.89 42.4817 85.24" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3115,7 +2447,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -76.0, y: 42.540001, z: 84.0 },
+                translation: glam::Vec3 { x: -57.79, y: 41.0267, z: 80.99 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3128,7 +2460,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 42.54 84" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-57.79 41.0267 80.99" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -3157,14 +2489,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -76.0, y: 42.540001, z: 84.0 },
+                translation: glam::Vec3 { x: -57.79, y: 41.0267, z: 80.99 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 42.54 84" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-57.79 41.0267 80.99" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -3231,7 +2563,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -77.0, y: 42.689999, z: 88.0 },
+                translation: glam::Vec3 { x: -58.79, y: 41.6489, z: 84.99 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3244,7 +2576,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-77 42.69 88" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.79 41.6489 84.99" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3274,7 +2606,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -83.0, y: 42.240002, z: 82.0 },
+                translation: glam::Vec3 { x: -58.79, y: 41.126, z: 78.99 },
                 rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3287,7 +2619,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-83 42.24 82" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.79 41.126 78.99" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3317,7 +2649,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -74.0, y: 42.759998, z: 88.0 },
+                translation: glam::Vec3 { x: -55.79, y: 42.5697, z: 84.99 },
                 rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
                 scale: glam::Vec3 { x: 0.7, y: 0.7, z: 0.7 },
             }
@@ -3330,7 +2662,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-74 42.76 88" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-55.79 42.5697 84.99" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0; scale: 0.7 0.7 0.7" },
                 ],
                 text: "",
@@ -3360,7 +2692,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -78.0, y: 42.32, z: 82.0 },
+                translation: glam::Vec3 { x: -59.79, y: 41.4436, z: 80.49 },
                 rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3373,7 +2705,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-78 42.32 82" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-59.79 41.4436 80.49" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3646,7 +2978,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -84.0, y: 32.580002, z: 35.0 },
+                translation: glam::Vec3 { x: -84.0, y: 37.3502, z: 35.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: 0.5 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3659,7 +2991,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 32.58 35" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 37.3502 35" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 120 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3689,7 +3021,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -77.0, y: 32.93, z: 34.0 },
+                translation: glam::Vec3 { x: -77.0, y: 37.2332, z: 34.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3699,7 +3031,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-77 32.93 34" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-77 37.2332 34" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1 1 1" },
                     bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 0.8 1.0" },
                 ],
@@ -3730,7 +3062,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -76.0, y: 33.130001, z: 35.0 },
+                translation: glam::Vec3 { x: -76.0, y: 36.8774, z: 35.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3743,7 +3075,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 33.13 35" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 36.8774 35" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -3773,7 +3105,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -77.0, y: 32.540001, z: 30.0 },
+                translation: glam::Vec3 { x: -77.000000, y: 36.777245, z: 30.000000 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3816,7 +3148,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -76.0, y: 32.490002, z: 28.0 },
+                translation: glam::Vec3 { x: -79.0, y: 36.7901, z: 28.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
                 scale: glam::Vec3 { x: 0.5, y: 0.5, z: 0.5 },
             }
@@ -3829,7 +3161,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 32.49 28" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-79 36.7901 28" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 10 0; scale: 0.5 0.5 0.5" },
                 ],
                 text: "",
@@ -3859,7 +3191,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"estandarte-quest-stations-7"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -84.0, y: 32.119999, z: 30.0 },
+                translation: glam::Vec3 { x: -84.000000, y: 36.949024, z: 30.000000 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
             }
@@ -4041,7 +3373,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4091,7 +3423,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4222,7 +3554,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-brazier"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -81.5, y: 42.6236, z: 88.2 },
+                translation: glam::Vec3 { x: -63.29, y: 42.438, z: 86.69 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4242,7 +3574,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-brazier" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-81.5 42.6236 88.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-63.29 42.438 86.69" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -4305,7 +3637,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-torch"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -73.2, y: 42.4632, z: 83.0 },
+                translation: glam::Vec3 { x: -53.49, y: 41.9808, z: 79.99 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4325,7 +3657,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-torch" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-73.20 42.46 83.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-53.49 41.9808 79.99" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -4388,7 +3720,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-bench"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -75.2, y: 42.2571, z: 81.2 },
+                translation: glam::Vec3 { x: -56.99, y: 40.6329, z: 78.19 },
                 rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4408,7 +3740,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-bench" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-75.20 42.26 81.20" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56.99 40.6329 78.19" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0" },
                 ],
                 text: "",
@@ -4438,12 +3770,12 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-barrel"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -85.2, y: 42.3255, z: 83.2 },
+                translation: glam::Vec3 { x: -61.79, y: 42.1841, z: 83.19 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4458,7 +3790,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-barrel" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-85.20 42.33 83.20" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.79 42.1841 83.19" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -4487,12 +3819,12 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-crate"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -79.8, y: 42.7333, z: 89.2 },
+                translation: glam::Vec3 { x: -60.09, y: 41.9722, z: 86.19 },
                 rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4507,7 +3839,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-crate" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-79.8 42.7333 89.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60.09 41.9722 86.19" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
                 ],
                 text: "",
@@ -4537,7 +3869,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-cairn"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -86.5, y: 42.5045, z: 85.8 },
+                translation: glam::Vec3 { x: -64.29, y: 42.6515, z: 89.72 },
                 rotation: glam::Quat { x: 0.0, y: -0.34202, z: 0.0, w: 0.939693 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4557,7 +3889,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-cairn" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-86.5 42.5045 85.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-64.29 42.6515 89.72" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -40 0" },
                 ],
                 text: "",
@@ -4587,7 +3919,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-nw-fireflies"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -80.0, y: 44.13, z: 85.5 },
+                translation: glam::Vec3 { x: -60.29, y: 41.8135, z: 82.49 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4595,7 +3927,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-nw-fireflies" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-80.00 44.13 85.50" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60.29 41.8135 82.49" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -4621,6 +3953,27 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216087902)
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
+--
+            #"cerca-x-1-z0"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -17.0, y: 40.17, z: 55.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::FenceSpec {
+                points: "0.0 0.0; -8.0 0.0; -8.0 10.0; 0.0 10.0",
+                style: core::option::Option::Some("pasture_rail"),
+                closed: core::option::Option::Some(true),
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Entity",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-x-1-z0" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17.0 40.17 55.0" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(605729619081929479)
         ]
         --
         #"célula x0 z-1"
@@ -5606,7 +4959,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 3.0, y: 53.869999, z: -103.0 },
+                translation: glam::Vec3 { x: 13.35, y: 52.814, z: -103.38 },
                 rotation: glam::Quat { x: 0.0, y: 0.422618, z: 0.0, w: 0.906308 },
                 scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
             }
@@ -5619,7 +4972,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "3 53.87 -103" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.35 52.814 -103.38" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 50 0; scale: 0.8 0.8 0.8" },
                 ],
                 text: "",
@@ -5649,7 +5002,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 4.0, y: 51.93, z: -97.0 },
+                translation: glam::Vec3 { x: 15.85, y: 49.919, z: -94.78 },
                 rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -5662,7 +5015,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 51.93 -97" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "15.85 49.919 -94.78" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -5692,7 +5045,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.0, y: 54.34, z: -105.0 },
+                translation: glam::Vec3 { x: 11.35, y: 53.7267, z: -105.38 },
                 rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 0.5, y: 0.5, z: 0.5 },
             }
@@ -5705,7 +5058,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1 54.34 -105" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "11.35 53.7267 -105.38" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 0.5 0.5 0.5" },
                 ],
                 text: "",
@@ -5735,7 +5088,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-south-torch"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 6.2, y: 53.1094, z: -100.5 },
+                translation: glam::Vec3 { x: 15.25, y: 51.616, z: -101.63 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -5755,7 +5108,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-south-torch" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.20 53.11 -100.50" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "15.25 51.616 -101.63" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -5818,12 +5171,12 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-south-barrel"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 5.6, y: 51.5013, z: -95.8 },
+                translation: glam::Vec3 { x: 17.25, y: 50.9399, z: -96.93 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5838,7 +5191,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-south-barrel" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.60 51.50 -95.80" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.25 50.9399 -96.93" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -5867,7 +5220,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-south-cairn"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.5, y: 50.7989, z: -93.8 },
+                translation: glam::Vec3 { x: 12.35, y: 50.1946, z: -94.18 },
                 rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -5887,7 +5240,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-south-cairn" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.50 50.80 -93.80" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "12.35 50.1946 -94.18" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
                 ],
                 text: "",
@@ -5917,7 +5270,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-south-fireflies"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 54.1292, z: -99.0 },
+                translation: glam::Vec3 { x: 10.35, y: 52.3263, z: -99.38 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -5925,7 +5278,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-south-fireflies" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 54.13 -99.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.35 52.3263 -99.38" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -6325,7 +5678,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 4.0, y: 45.209999, z: 101.0 },
+                translation: glam::Vec3 { x: -7.45, y: 47.0008, z: 101.72 },
                 rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -6338,7 +5691,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 45.21 101" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.45 47.0008 101.72" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -6368,7 +5721,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.0, y: 45.139999, z: 98.0 },
+                translation: glam::Vec3 { x: -8.7, y: 47.0008, z: 97.43 },
                 rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -6381,7 +5734,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2 45.14 98" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.7 47.0008 97.43" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 10 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -6411,7 +5764,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.6, y: 45.150002, z: 98.599998 },
+                translation: glam::Vec3 { x: -7.35, y: 47.0008, z: 99.32 },
                 rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -6424,7 +5777,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.6 45.15 98.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.35 47.0008 99.32" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -6454,7 +5807,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 6.0, y: 46.709999, z: 104.0 },
+                translation: glam::Vec3 { x: -7.7, y: 47.0008, z: 103.43 },
                 rotation: glam::Quat { x: 0.0, y: 0.819152, z: 0.0, w: 0.573576 },
                 scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
             }
@@ -6467,7 +5820,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "6 46.71 104" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.7 47.0008 103.43" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 110 0; scale: 0.8 0.8 0.8" },
                 ],
                 text: "",
@@ -7556,7 +6909,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -8009,7 +7362,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -8253,7 +7606,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 287.0, y: 49.470001, z: 107.0 },
+                translation: glam::Vec3 { x: 277.25, y: 50.0167, z: 100.12 },
                 rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8266,7 +7619,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "287 49.47 107" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "277.25 50.0167 100.12" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0; scale: 1.0 1.0 1.0" },
                 ],
                 text: "",
@@ -8339,7 +7692,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 282.0, y: 49.349998, z: 107.0 },
+                translation: glam::Vec3 { x: 272.25, y: 49.8761, z: 100.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8352,7 +7705,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "282 49.35 107" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "272.25 49.8761 100.12" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0; scale: 1 1 1" },
                 ],
                 text: "",
@@ -8382,7 +7735,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 288.0, y: 49.7509, z: 110.0 },
+                translation: glam::Vec3 { x: 278.25, y: 49.9734, z: 103.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.965926, z: 0.0, w: 0.258819 },
                 scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
             }
@@ -8395,7 +7748,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "288 49.7509 110" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "278.25 49.9734 103.12" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 150 0; scale: 0.8 0.8 0.8" },
                 ],
                 text: "",
@@ -8425,7 +7778,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 281.0, y: 49.6668, z: 110.0 },
+                translation: glam::Vec3 { x: 271.25, y: 49.7695, z: 103.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8438,7 +7791,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "281 49.6668 110" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "271.25 49.7695 103.12" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -8467,14 +7820,14 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 281.0, y: 49.6668, z: 110.0 },
+                translation: glam::Vec3 { x: 271.25, y: 49.7695, z: 103.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "281 49.6668 110" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "271.25 49.7695 103.12" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -8624,7 +7977,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-oasis-torch"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 285.5, y: 49.7366, z: 113.8 },
+                translation: glam::Vec3 { x: 275.75, y: 49.8062, z: 106.92 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8644,7 +7997,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-oasis-torch" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "285.50 49.74 113.80" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "275.75 49.8062 106.92" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -8707,7 +8060,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-oasis-bench"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 281.5, y: 49.5834, z: 113.2 },
+                translation: glam::Vec3 { x: 271.75, y: 49.6827, z: 106.33 },
                 rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8727,7 +8080,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-oasis-bench" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "281.50 49.58 113.20" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "271.75 49.6827 106.33" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
                 ],
                 text: "",
@@ -8762,7 +8115,7 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -8806,7 +8159,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-oasis-rack"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 284.2, y: 50.136, z: 103.5 },
+                translation: glam::Vec3 { x: 285.7, y: 50.1788, z: 103.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8826,7 +8179,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-oasis-rack" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "284.20 50.14 103.50" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "285.7 50.1788 103.5" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
@@ -8905,7 +8258,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"sceneref.v3.qs-oasis-fireflies"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 284.0, y: 50.4001, z: 108.0 },
+                translation: glam::Vec3 { x: 274.25, y: 49.9046, z: 101.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -8913,7 +8266,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.qs-oasis-fireflies" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "284.00 50.40 108.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "274.25 49.9046 101.12" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",

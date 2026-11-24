@@ -50,18 +50,20 @@ uma entidade `FloraSpecies` por espécie (`key` = `prop-flora`, `variants`,
 abaixo é a origem (`POOLS` em `src/flora.rs`, usado por
 `vael --export-settings` e como reserva se a cena não tiver espécies).
 
-| `prop-flora` | Instâncias | Preset | Variantes |
-|---|---|---:|---:|
-| `pine_dark` | 487 | Pine | 8 |
-| `dead_tree` | 367 | DeadTree | 5 |
-| `dead_willow` | 342 | Willow (sem folha) | 6 |
-| `tree_oak` | 184 | Oak | 8 |
-| `tree_pine` | 150 | Pine | 6 |
-| `tree_birch` | 94 | Birch | 6 |
-| `palm_tree` | 10 | Palm | 3 |
+| `prop-flora` | Preset | Variantes |
+|---|---|---:|
+| `pine_dark` | Pine | 8 |
+| `dead_tree` | DeadTree | 5 |
+| `dead_willow` | Willow (sem folha) | 6 |
+| `tree_oak` | Oak | 8 |
+| `tree_pine` | Pine | 6 |
+| `tree_birch` | Birch | 6 |
+| `palm_tree` | Palm | 3 |
+| `tree_cherry` | Cherry | 2 |
 
-Total: **1634 estações** (1617 no `world/`, 17 em `scenes/menu`). A mata adicional
-da entrada norte inclui duas cerejeiras (`tree_cherry`, preset Cherry, duas variantes).
+As 84 árvores dos módulos em `world/scenery/` são estações com poses
+escolhidas à mão. O painel **Vael: Flora** permite trocar a espécie sem
+mexer na posição da estação.
 
 Nos oito carvalhos adultos (sementes do pool, LOD0), o tronco e a folhagem
 somam 294 076 triângulos. O modelo anterior somava 315 556. A copa usa

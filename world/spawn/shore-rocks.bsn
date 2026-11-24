@@ -36,7 +36,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000000)
 bevy_ecs::hierarchy::Children [
         #"shore-rock-0000"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -81.2218, y: 42.0499, z: 119.0495 },
+translation: glam::Vec3 { x: -81.221802, y: 42.224098, z: 119.049500 },
 rotation: glam::Quat { x: -0.083691, y: 0.986393, z: -0.067833, w: 0.124192 },
 scale: glam::Vec3 { x: 1.7143, y: 1.6757, z: 1.6059 },
 }
@@ -70,7 +70,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000001)
         --
         #"shore-rock-0001"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -84.3533, y: 43.0237, z: 121.1861 },
+translation: glam::Vec3 { x: -84.353302, y: 43.541077, z: 121.186096 },
 rotation: glam::Quat { x: 0.034306, y: 0.979819, z: -0.115524, w: -0.159477 },
 scale: glam::Vec3 { x: 1.2106, y: 1.2690, z: 1.2859 },
 }
@@ -104,7 +104,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000002)
         --
         #"shore-rock-0002"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -92.2163, y: 43.2892, z: 123.0196 },
+translation: glam::Vec3 { x: -92.216301, y: 43.502949, z: 123.019600 },
 rotation: glam::Quat { x: 0.046053, y: 0.928289, z: -0.145713, w: -0.339008 },
 scale: glam::Vec3 { x: 1.4086, y: 1.1237, z: 1.3623 },
 }
@@ -132,7 +132,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000003)
         --
         #"shore-rock-0003"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -96.7797, y: 42.9212, z: 121.2532 },
+translation: glam::Vec3 { x: -96.779701, y: 43.278954, z: 121.253197 },
 rotation: glam::Quat { x: 0.077111, y: 0.981196, z: -0.076966, w: -0.159324 },
 scale: glam::Vec3 { x: 1.3554, y: 1.2657, z: 1.4070 },
 }
@@ -166,7 +166,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000004)
         --
         #"shore-rock-0004"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -98.7232, y: 42.86, z: 119.1493 },
+translation: glam::Vec3 { x: -98.723198, y: 43.065449, z: 119.149300 },
 rotation: glam::Quat { x: -0.067991, y: 0.504605, z: -0.076308, w: 0.857280 },
 scale: glam::Vec3 { x: 0.9637, y: 1.1146, z: 0.9518 },
 }
@@ -198,139 +198,9 @@ pose: true,
 }
 jackdaw_scene_types::node_id::SceneNodeId(6852620029000000005)
         --
-        #"shore-rock-0005"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -101.4708, y: 42.8307, z: 113.878 },
-rotation: glam::Quat { x: 0.056527, y: 0.741496, z: -0.086664, w: 0.662932 },
-scale: glam::Vec3 { x: 1.2873, y: 1.3398, z: 1.1888 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_boulder_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0005" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-101.4708 42.8307 113.878" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "117.523 76.736 -119.981" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2873 1.3398 1.1888" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 5],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000006)
-        --
-        #"shore-rock-0006"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -102.5270, y: 42.9141, z: 113.9196 },
-rotation: glam::Quat { x: 0.103417, y: 0.683007, z: 0.044109, w: -0.721707 },
-scale: glam::Vec3 { x: 1.0952, y: 1.1571, z: 0.9749 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_mossy_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0006" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-102.5270 42.9141 113.9196" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "-77.719 -77.618 -72.884" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0952 1.1571 0.9749" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 6],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000007)
-        --
-        #"shore-rock-0007"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -102.0939, y: 42.8824, z: 110.552 },
-rotation: glam::Quat { x: 0.010864, y: 0.007005, z: 0.010350, w: -0.999863 },
-scale: glam::Vec3 { x: 1.5556, y: 1.3196, z: 1.2526 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_mossy_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0007" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-102.0939 42.8824 110.552" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "-1.253 -0.790 -1.195" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5556 1.3196 1.2526" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 7],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000008)
-        --
-        #"shore-rock-0008"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -103.1827, y: 42.9116, z: 108.0755 },
-rotation: glam::Quat { x: -0.011403, y: 0.244686, z: 0.006774, w: 0.969512 },
-scale: glam::Vec3 { x: 1.4662, y: 1.7391, z: 1.5216 },
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/farm/flint_rock_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/farm/flint_rock_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/flint_rock_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0008" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-103.1827 42.9116 108.0755" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "-1.655 28.314 1.218" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4662 1.7391 1.5216" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 8],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000009)
-        --
         #"shore-rock-0009"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -100.7018, y: 42.0834, z: 97.0347 },
+translation: glam::Vec3 { x: -100.701797, y: 42.379593, z: 97.034698 },
 rotation: glam::Quat { x: -0.032375, y: 0.318355, z: 0.041107, w: -0.946527 },
 scale: glam::Vec3 { x: 1.1848, y: 1.3294, z: 1.2796 },
 }
@@ -364,7 +234,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000010)
         --
         #"shore-rock-0010"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -98.6253, y: 42.2985, z: 91.0907 },
+translation: glam::Vec3 { x: -98.625298, y: 42.461605, z: 91.090698 },
 rotation: glam::Quat { x: 0.046642, y: 0.709833, z: 0.004289, w: 0.702811 },
 scale: glam::Vec3 { x: 1.2539, y: 1.0625, z: 1.2244 },
 }
@@ -398,7 +268,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000011)
         --
         #"shore-rock-0011"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -97.8229, y: 42.3346, z: 91.3522 },
+translation: glam::Vec3 { x: -97.822899, y: 42.441959, z: 91.352203 },
 rotation: glam::Quat { x: 0.006898, y: 0.564748, z: -0.008241, w: -0.825193 },
 scale: glam::Vec3 { x: 1.6098, y: 1.5753, z: 1.4564 },
 }
@@ -432,7 +302,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000012)
         --
         #"shore-rock-0012"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -93.1211, y: 42.0193, z: 87.012 },
+translation: glam::Vec3 { x: -93.121101, y: 42.240726, z: 87.012001 },
 rotation: glam::Quat { x: 0.051822, y: 0.666766, z: -0.026810, w: 0.742979 },
 scale: glam::Vec3 { x: 1.2952, y: 1.0905, z: 1.3308 },
 }
@@ -466,7 +336,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000013)
         --
         #"shore-rock-0013"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -97.1787, y: 42.2667, z: 89.8252 },
+translation: glam::Vec3 { x: -97.178703, y: 42.430817, z: 89.825203 },
 rotation: glam::Quat { x: -0.005326, y: 0.885706, z: 0.060027, w: -0.460318 },
 scale: glam::Vec3 { x: 0.9354, y: 0.9443, z: 1.0544 },
 }
@@ -500,7 +370,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000014)
         --
         #"shore-rock-0014"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -92.9989, y: 42.102, z: 86.7749 },
+translation: glam::Vec3 { x: -92.998901, y: 42.322937, z: 86.774902 },
 rotation: glam::Quat { x: -0.004149, y: 0.558003, z: -0.030445, w: 0.829270 },
 scale: glam::Vec3 { x: 1.2849, y: 1.3089, z: 1.3922 },
 }
@@ -534,7 +404,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000015)
         --
         #"shore-rock-0015"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -91.9575, y: 42.2299, z: 85.7877 },
+translation: glam::Vec3 { x: -91.957497, y: 42.319981, z: 85.787697 },
 rotation: glam::Quat { x: -0.047619, y: 0.760975, z: -0.015378, w: 0.646849 },
 scale: glam::Vec3 { x: 1.5753, y: 1.3166, z: 1.5324 },
 }
@@ -568,7 +438,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000016)
         --
         #"shore-rock-0016"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -87.1761, y: 42.2975, z: 84.9796 },
+translation: glam::Vec3 { x: -87.176102, y: 42.452179, z: 84.979599 },
 rotation: glam::Quat { x: 0.006367, y: 0.097462, z: -0.034803, w: -0.994610 },
 scale: glam::Vec3 { x: 0.8906, y: 0.8161, z: 0.9822 },
 }
@@ -602,7 +472,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000017)
         --
         #"shore-rock-0017"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 151.94, y: 48.4579, z: 94.3162 },
+translation: glam::Vec3 { x: 151.940002, y: 48.567936, z: 94.316200 },
 rotation: glam::Quat { x: 0.028720, y: 0.247363, z: -0.018936, w: -0.968312 },
 scale: glam::Vec3 { x: 1.5887, y: 1.2713, z: 1.4650 },
 }
@@ -634,43 +504,9 @@ pose: true,
 }
 jackdaw_scene_types::node_id::SceneNodeId(6852620029000000018)
         --
-        #"shore-rock-0018"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 142.5812, y: 48.6992, z: 107.8656 },
-rotation: glam::Quat { x: 0.060059, y: 0.484433, z: -0.046231, w: -0.871539 },
-scale: glam::Vec3 { x: 1.6746, y: 1.5159, z: 1.5918 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/flint_rock_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/farm/flint_rock_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/farm/flint_rock_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/flint_rock_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0018" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "142.5812 48.6992 107.8656" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "-6.528 -58.207 2.436" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6746 1.5159 1.5918" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 18],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000019)
-        --
         #"shore-rock-0019"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 143.7616, y: 48.8151, z: 106.6951 },
+translation: glam::Vec3 { x: 143.761597, y: 48.291473, z: 106.695099 },
 rotation: glam::Quat { x: -0.037681, y: 0.386463, z: -0.036810, w: 0.920800 },
 scale: glam::Vec3 { x: 1.4827, y: 1.2103, z: 1.5577 },
 }
@@ -704,7 +540,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000020)
         --
         #"shore-rock-0020"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 129.0973, y: 48.7702, z: 108.2309 },
+translation: glam::Vec3 { x: 129.097305, y: 48.917530, z: 108.230904 },
 rotation: glam::Quat { x: -0.039169, y: 0.934182, z: -0.058329, w: 0.349812 },
 scale: glam::Vec3 { x: 1.8218, y: 1.4309, z: 1.5531 },
 }
@@ -772,7 +608,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000022)
         --
         #"shore-rock-0022"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 126.9143, y: 48.5373, z: 101.2451 },
+translation: glam::Vec3 { x: 126.914299, y: 48.792274, z: 101.245102 },
 rotation: glam::Quat { x: 0.021117, y: 0.586341, z: -0.007879, w: 0.809751 },
 scale: glam::Vec3 { x: 1.4102, y: 1.1700, z: 1.2401 },
 }
@@ -840,7 +676,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000024)
         --
         #"shore-rock-0024"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 128.4983, y: 48.8444, z: 87.5269 },
+translation: glam::Vec3 { x: 128.498306, y: 48.967148, z: 87.526901 },
 rotation: glam::Quat { x: 0.027011, y: 0.986012, z: -0.029363, w: 0.161829 },
 scale: glam::Vec3 { x: 1.5034, y: 1.6819, z: 1.7641 },
 }
@@ -874,7 +710,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000025)
         --
         #"shore-rock-0025"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 126.876, y: 49.0093, z: 86.808 },
+translation: glam::Vec3 { x: 126.875999, y: 49.141483, z: 86.807999 },
 rotation: glam::Quat { x: -0.015316, y: 0.448525, z: 0.015863, w: -0.893498 },
 scale: glam::Vec3 { x: 1.3928, y: 1.4587, z: 1.7120 },
 }
@@ -906,43 +742,9 @@ pose: true,
 }
 jackdaw_scene_types::node_id::SceneNodeId(6852620029000000026)
         --
-        #"shore-rock-0026"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -167.7466, y: 25.5838, z: -15.3027 },
-rotation: glam::Quat { x: -0.019682, y: 0.992753, z: -0.018560, w: 0.117089 },
-scale: glam::Vec3 { x: 1.1044, y: 0.9002, z: 0.8772 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/moss_rock_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0026" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-167.7466 25.5838 -15.3027" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "178.100 13.486 177.953" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1044 0.9002 0.8772" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 26],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000027)
-        --
         #"shore-rock-0027"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -163.7757, y: 25.5622, z: -4.8678 },
+translation: glam::Vec3 { x: -163.775696, y: 25.716457, z: -4.867800 },
 rotation: glam::Quat { x: 0.029006, y: 0.797804, z: -0.001564, w: 0.602217 },
 scale: glam::Vec3 { x: 1.1596, y: 1.1588, z: 1.2998 },
 }
@@ -976,7 +778,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000028)
         --
         #"shore-rock-0028"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -178.9184, y: 25.4358, z: 13.7279 },
+translation: glam::Vec3 { x: -178.918396, y: 25.662724, z: 13.727900 },
 rotation: glam::Quat { x: -0.060982, y: 0.048695, z: -0.026146, w: 0.996608 },
 scale: glam::Vec3 { x: 1.2986, y: 1.0395, z: 1.3490 },
 }
@@ -1010,7 +812,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000029)
         --
         #"shore-rock-0029"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -178.9969, y: 25.4854, z: 13.8814 },
+translation: glam::Vec3 { x: -178.996902, y: 25.686525, z: 13.881400 },
 rotation: glam::Quat { x: -0.004449, y: 0.979634, z: -0.061381, w: -0.191127 },
 scale: glam::Vec3 { x: 1.1042, y: 0.9642, z: 1.0509 },
 }
@@ -1044,7 +846,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000030)
         --
         #"shore-rock-0030"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -180.3632, y: 25.7063, z: 14.9326 },
+translation: glam::Vec3 { x: -180.363205, y: 25.820839, z: 14.932600 },
 rotation: glam::Quat { x: -0.054283, y: 0.487639, z: 0.011407, w: 0.871281 },
 scale: glam::Vec3 { x: 1.4366, y: 1.5375, z: 1.6603 },
 }
@@ -1078,7 +880,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000031)
         --
         #"shore-rock-0031"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -179.8858, y: 25.6724, z: 14.5527 },
+translation: glam::Vec3 { x: -179.885803, y: 25.789801, z: 14.552700 },
 rotation: glam::Quat { x: 0.064675, y: 0.533964, z: -0.013195, w: -0.842927 },
 scale: glam::Vec3 { x: 1.4750, y: 1.5497, z: 1.4274 },
 }
@@ -1106,7 +908,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000032)
         --
         #"shore-rock-0032"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -195.8963, y: 25.4431, z: 9.1808 },
+translation: glam::Vec3 { x: -195.896301, y: 25.602842, z: 9.180800 },
 rotation: glam::Quat { x: 0.020217, y: 0.530529, z: 0.013814, w: -0.847313 },
 scale: glam::Vec3 { x: 0.9667, y: 0.8719, z: 0.8660 },
 }
@@ -1140,7 +942,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000033)
         --
         #"shore-rock-0033"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -204.9939, y: 25.9786, z: 12.7974 },
+translation: glam::Vec3 { x: -204.993896, y: 26.111773, z: 12.797400 },
 rotation: glam::Quat { x: -0.017798, y: 0.280542, z: -0.021352, w: 0.959439 },
 scale: glam::Vec3 { x: 1.4140, y: 1.2506, z: 1.2990 },
 }
@@ -1168,7 +970,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000034)
         --
         #"shore-rock-0034"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -206.1764, y: 25.9433, z: 8.0337 },
+translation: glam::Vec3 { x: -206.176407, y: 26.175102, z: 8.033700 },
 rotation: glam::Quat { x: 0.014994, y: 0.705724, z: 0.017766, w: -0.708106 },
 scale: glam::Vec3 { x: 1.4263, y: 1.1402, z: 1.2067 },
 }
@@ -1202,7 +1004,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000035)
         --
         #"shore-rock-0035"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -206.9758, y: 26.1023, z: 7.0412 },
+translation: glam::Vec3 { x: -206.975800, y: 26.186493, z: 7.041200 },
 rotation: glam::Quat { x: 0.016730, y: 0.986814, z: 0.012990, w: 0.160467 },
 scale: glam::Vec3 { x: 1.5035, y: 1.3215, z: 1.5651 },
 }
@@ -1236,7 +1038,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000036)
         --
         #"shore-rock-0036"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -205.4231, y: 26.0604, z: 8.3499 },
+translation: glam::Vec3 { x: -205.423096, y: 26.179682, z: 8.349900 },
 rotation: glam::Quat { x: 0.022521, y: 0.962733, z: -0.002673, w: -0.269500 },
 scale: glam::Vec3 { x: 1.3567, y: 1.5799, z: 1.6197 },
 }
@@ -1270,7 +1072,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000037)
         --
         #"shore-rock-0037"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -208.7016, y: 25.6784, z: -3.0449 },
+translation: glam::Vec3 { x: -208.701599, y: 25.788105, z: -3.044900 },
 rotation: glam::Quat { x: 0.003520, y: 0.015372, z: -0.016838, w: 0.999734 },
 scale: glam::Vec3 { x: 1.2338, y: 1.4113, z: 1.4984 },
 }
@@ -1298,7 +1100,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000038)
         --
         #"shore-rock-0038"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -211.1906, y: 25.5831, z: -3.6587 },
+translation: glam::Vec3 { x: -211.190598, y: 25.826258, z: -3.658700 },
 rotation: glam::Quat { x: 0.002644, y: 0.546837, z: -0.057105, w: 0.835285 },
 scale: glam::Vec3 { x: 1.3019, y: 1.2442, z: 1.2015 },
 }
@@ -1332,7 +1134,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000039)
         --
         #"shore-rock-0039"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -213.1604, y: 25.8197, z: -3.9733 },
+translation: glam::Vec3 { x: -213.160400, y: 25.933863, z: -3.973300 },
 rotation: glam::Quat { x: 0.007681, y: 0.991621, z: -0.026254, w: -0.126249 },
 scale: glam::Vec3 { x: 1.4237, y: 1.5312, z: 1.3293 },
 }
@@ -1360,7 +1162,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000040)
         --
         #"shore-rock-0040"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -212.7592, y: 25.241, z: -13.3937 },
+translation: glam::Vec3 { x: -212.759201, y: 25.369579, z: -13.393700 },
 rotation: glam::Quat { x: 0.061573, y: 0.961293, z: -0.036180, w: 0.266113 },
 scale: glam::Vec3 { x: 1.1480, y: 1.0449, z: 1.1909 },
 }
@@ -1394,7 +1196,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000041)
         --
         #"shore-rock-0041"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -213.4188, y: 25.6594, z: -24.3914 },
+translation: glam::Vec3 { x: -213.418793, y: 25.710073, z: -24.391399 },
 rotation: glam::Quat { x: 0.056600, y: 0.872845, z: 0.028032, w: -0.483892 },
 scale: glam::Vec3 { x: 1.6255, y: 1.4205, z: 1.6402 },
 }
@@ -1428,7 +1230,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000042)
         --
         #"shore-rock-0042"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -207.1072, y: 25.6136, z: -33.2796 },
+translation: glam::Vec3 { x: -207.107193, y: 25.822260, z: -33.279598 },
 rotation: glam::Quat { x: 0.034183, y: 0.975586, z: 0.043052, w: 0.212627 },
 scale: glam::Vec3 { x: 1.1876, y: 1.1420, z: 0.9750 },
 }
@@ -1462,7 +1264,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000043)
         --
         #"shore-rock-0043"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -204.1534, y: 25.6284, z: -39.1996 },
+translation: glam::Vec3 { x: -204.153397, y: 25.917509, z: -39.199600 },
 rotation: glam::Quat { x: 0.023192, y: 0.999156, z: 0.028679, w: -0.018076 },
 scale: glam::Vec3 { x: 0.8821, y: 1.0476, z: 1.0630 },
 }
@@ -1496,7 +1298,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000044)
         --
         #"shore-rock-0044"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -203.0243, y: 25.7603, z: -41.0283 },
+translation: glam::Vec3 { x: -203.024307, y: 26.001841, z: -41.028301 },
 rotation: glam::Quat { x: 0.002442, y: 0.999020, z: 0.043750, w: 0.006260 },
 scale: glam::Vec3 { x: 1.4816, y: 1.4449, z: 1.5818 },
 }
@@ -1530,7 +1332,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000045)
         --
         #"shore-rock-0045"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -145.8712, y: 28.8769, z: 66.1811 },
+translation: glam::Vec3 { x: -145.871201, y: 29.140039, z: 66.181099 },
 rotation: glam::Quat { x: 0.026539, y: 0.068799, z: -0.068162, w: -0.994945 },
 scale: glam::Vec3 { x: 1.4896, y: 1.1723, z: 1.3595 },
 }
@@ -1564,7 +1366,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000046)
         --
         #"shore-rock-0046"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -145.9147, y: 29.1238, z: 67.1193 },
+translation: glam::Vec3 { x: -145.914703, y: 29.319469, z: 67.119301 },
 rotation: glam::Quat { x: -0.015878, y: 0.714331, z: 0.022413, w: -0.699269 },
 scale: glam::Vec3 { x: 0.9128, y: 1.0739, z: 0.9161 },
 }
@@ -1598,7 +1400,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000047)
         --
         #"shore-rock-0047"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -143.5369, y: 29.1245, z: 62.9763 },
+translation: glam::Vec3 { x: -143.536896, y: 29.222219, z: 62.976299 },
 rotation: glam::Quat { x: -0.022114, y: 0.972979, z: -0.040320, w: -0.226267 },
 scale: glam::Vec3 { x: 1.4409, y: 1.1744, z: 1.4575 },
 }
@@ -1626,7 +1428,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000048)
         --
         #"shore-rock-0048"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -154.766, y: 28.8039, z: 82.34 },
+translation: glam::Vec3 { x: -154.766006, y: 28.992027, z: 82.339996 },
 rotation: glam::Quat { x: 0.020013, y: 0.399990, z: -0.050651, w: -0.914900 },
 scale: glam::Vec3 { x: 0.8559, y: 0.7949, z: 1.0470 },
 }
@@ -1660,7 +1462,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000049)
         --
         #"shore-rock-0049"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -156.106, y: 29.0533, z: 84.5516 },
+translation: glam::Vec3 { x: -156.106003, y: 29.284384, z: 84.551598 },
 rotation: glam::Quat { x: 0.025440, y: 0.122070, z: -0.026953, w: -0.991829 },
 scale: glam::Vec3 { x: 1.3368, y: 1.0734, z: 1.1948 },
 }
@@ -1694,7 +1496,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000050)
         --
         #"shore-rock-0050"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -155.8523, y: 28.9607, z: 83.2458 },
+translation: glam::Vec3 { x: -155.852295, y: 29.178440, z: 83.245796 },
 rotation: glam::Quat { x: -0.023095, y: 0.954312, z: -0.051391, w: -0.293452 },
 scale: glam::Vec3 { x: 0.9673, y: 1.0099, z: 1.0323 },
 }
@@ -1728,7 +1530,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000051)
         --
         #"shore-rock-0051"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -163.3763, y: 29.5126, z: 87.073 },
+translation: glam::Vec3 { x: -163.376297, y: 29.603300, z: 87.072998 },
 rotation: glam::Quat { x: 0.040802, y: 0.661939, z: -0.023384, w: -0.748081 },
 scale: glam::Vec3 { x: 1.5618, y: 1.4480, z: 1.5525 },
 }
@@ -1762,7 +1564,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000052)
         --
         #"shore-rock-0052"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -164.8417, y: 29.1173, z: 81.4119 },
+translation: glam::Vec3 { x: -164.841705, y: 29.328930, z: 81.411903 },
 rotation: glam::Quat { x: 0.002719, y: 0.410960, z: -0.048052, w: 0.910382 },
 scale: glam::Vec3 { x: 1.0000, y: 1.0706, z: 0.9724 },
 }
@@ -1796,7 +1598,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000053)
         --
         #"shore-rock-0053"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -172.6442, y: 29.6493, z: 71.1966 },
+translation: glam::Vec3 { x: -172.644196, y: 29.751434, z: 71.196602 },
 rotation: glam::Quat { x: 0.004829, y: 0.385901, z: -0.029534, w: 0.922055 },
 scale: glam::Vec3 { x: 1.4353, y: 1.1967, z: 1.4039 },
 }
@@ -1824,7 +1626,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000054)
         --
         #"shore-rock-0054"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -165.2688, y: 28.9269, z: 62.8164 },
+translation: glam::Vec3 { x: -165.268799, y: 29.045557, z: 62.816399 },
 rotation: glam::Quat { x: 0.105331, y: 0.579522, z: -0.011032, w: 0.808046 },
 scale: glam::Vec3 { x: 1.3067, y: 1.2297, z: 1.5385 },
 }
@@ -1858,7 +1660,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000055)
         --
         #"shore-rock-0055"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -214.3235, y: 34.5759, z: -89.9222 },
+translation: glam::Vec3 { x: -214.323502, y: 34.828712, z: -89.922203 },
 rotation: glam::Quat { x: -0.009855, y: 0.999454, z: 0.026195, w: -0.017554 },
 scale: glam::Vec3 { x: 1.3592, y: 1.3025, z: 1.2287 },
 }
@@ -1892,7 +1694,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000056)
         --
         #"shore-rock-0056"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -221.6872, y: 34.612, z: -71.1136 },
+translation: glam::Vec3 { x: -221.687195, y: 34.709164, z: -71.113602 },
 rotation: glam::Quat { x: -0.037551, y: 0.919963, z: -0.011916, w: 0.390021 },
 scale: glam::Vec3 { x: 1.2529, y: 1.1383, z: 1.3410 },
 }
@@ -1920,7 +1722,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000057)
         --
         #"shore-rock-0057"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -226.8183, y: 34.3784, z: -68.7606 },
+translation: glam::Vec3 { x: -226.818298, y: 34.606560, z: -68.760597 },
 rotation: glam::Quat { x: 0.002070, y: 0.437304, z: -0.054670, w: -0.897648 },
 scale: glam::Vec3 { x: 1.2067, y: 1.1755, z: 1.1242 },
 }
@@ -1954,7 +1756,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000058)
         --
         #"shore-rock-0058"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -226.9355, y: 34.5839, z: -68.2197 },
+translation: glam::Vec3 { x: -226.935501, y: 34.683247, z: -68.219704 },
 rotation: glam::Quat { x: -0.026129, y: 0.771154, z: -0.008885, w: 0.636050 },
 scale: glam::Vec3 { x: 1.6074, y: 1.3809, z: 1.5859 },
 }
@@ -1988,7 +1790,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000059)
         --
         #"shore-rock-0059"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -226.5187, y: 34.2654, z: -69.5947 },
+translation: glam::Vec3 { x: -226.518707, y: 34.482193, z: -69.594704 },
 rotation: glam::Quat { x: -0.011063, y: 0.760296, z: 0.015433, w: 0.649300 },
 scale: glam::Vec3 { x: 0.9549, y: 1.1249, z: 1.0014 },
 }
@@ -2020,77 +1822,9 @@ pose: true,
 }
 jackdaw_scene_types::node_id::SceneNodeId(6852620029000000060)
         --
-        #"shore-rock-0060"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -253.0642, y: 34.3473, z: -85.5116 },
-rotation: glam::Quat { x: 0.008296, y: 0.774287, z: 0.037573, w: -0.631664 },
-scale: glam::Vec3 { x: 1.3388, y: 1.4740, z: 1.4969 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/moss_rock_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0060" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-253.0642 34.3473 -85.5116" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "-160.979 -77.838 -163.364" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3388 1.4740 1.4969" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 60],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000061)
-        --
-        #"shore-rock-0061"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -253.064, y: 34.3624, z: -85.8819 },
-rotation: glam::Quat { x: 0.001161, y: 0.449113, z: 0.003047, w: 0.893469 },
-scale: glam::Vec3 { x: 1.1348, y: 1.1883, z: 1.0030 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/moss_rock_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0061" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "-253.064 34.3624 -85.8819" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "-0.064 53.374 0.423" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1348 1.1883 1.0030" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 61],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000062)
-        --
         #"shore-rock-0062"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -249.5420, y: 34.4074, z: -97.7735 },
+translation: glam::Vec3 { x: -249.542007, y: 34.453442, z: -97.773499 },
 rotation: glam::Quat { x: -0.021977, y: 0.913720, z: 0.038199, w: -0.403949 },
 scale: glam::Vec3 { x: 1.0427, y: 0.9932, z: 0.9574 },
 }
@@ -2124,7 +1858,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000063)
         --
         #"shore-rock-0063"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -244.1357, y: 34.8963, z: -103.4264 },
+translation: glam::Vec3 { x: -244.135696, y: 34.993332, z: -103.426399 },
 rotation: glam::Quat { x: 0.019509, y: 0.611712, z: 0.020320, w: 0.790579 },
 scale: glam::Vec3 { x: 1.4675, y: 1.4042, z: 1.2022 },
 }
@@ -2152,7 +1886,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000064)
         --
         #"shore-rock-0064"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 94.3678, y: 79.1887, z: -185.8935 },
+translation: glam::Vec3 { x: 94.367798, y: 79.453384, z: -185.893494 },
 rotation: glam::Quat { x: -0.018399, y: 0.212582, z: 0.000102, w: 0.976970 },
 scale: glam::Vec3 { x: 1.4614, y: 1.3392, z: 1.2868 },
 }
@@ -2186,7 +1920,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000065)
         --
         #"shore-rock-0065"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 93.1784, y: 79.1966, z: -184.6472 },
+translation: glam::Vec3 { x: 93.178398, y: 79.297798, z: -184.647202 },
 rotation: glam::Quat { x: 0.025338, y: 0.111903, z: 0.009380, w: 0.993352 },
 scale: glam::Vec3 { x: 1.8709, y: 1.6502, z: 1.5064 },
 }
@@ -2220,7 +1954,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000066)
         --
         #"shore-rock-0066"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 95.4215, y: 79.4296, z: -184.8177 },
+translation: glam::Vec3 { x: 95.421501, y: 79.489586, z: -184.817703 },
 rotation: glam::Quat { x: -0.004448, y: 0.991501, z: 0.001793, w: -0.130013 },
 scale: glam::Vec3 { x: 1.7978, y: 1.3462, z: 1.4749 },
 }
@@ -2288,7 +2022,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000068)
         --
         #"shore-rock-0068"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 95.0349, y: 79.3542, z: -182.0355 },
+translation: glam::Vec3 { x: 95.034897, y: 79.583885, z: -182.035507 },
 rotation: glam::Quat { x: -0.027339, y: 0.883926, z: -0.021414, w: 0.466335 },
 scale: glam::Vec3 { x: 1.1038, y: 0.8897, z: 1.0919 },
 }
@@ -2322,7 +2056,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000069)
         --
         #"shore-rock-0069"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 92.9369, y: 79.3125, z: -179.8882 },
+translation: glam::Vec3 { x: 92.936897, y: 79.494827, z: -179.888199 },
 rotation: glam::Quat { x: -0.001096, y: 0.999974, z: 0.007151, w: 0.000097 },
 scale: glam::Vec3 { x: 1.5282, y: 1.3856, z: 1.4168 },
 }
@@ -2350,7 +2084,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000070)
         --
         #"shore-rock-0070"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 89.5145, y: 79.1100, z: -176.6425 },
+translation: glam::Vec3 { x: 89.514503, y: 79.153839, z: -176.642502 },
 rotation: glam::Quat { x: 0.008977, y: 0.232954, z: -0.061567, w: -0.970496 },
 scale: glam::Vec3 { x: 1.1573, y: 0.9475, z: 1.2991 },
 }
@@ -2384,7 +2118,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000071)
         --
         #"shore-rock-0071"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 91.9263, y: 79.3269, z: -174.1848 },
+translation: glam::Vec3 { x: 91.926300, y: 79.448830, z: -174.184799 },
 rotation: glam::Quat { x: 0.003149, y: 0.995449, z: -0.067104, w: -0.067593 },
 scale: glam::Vec3 { x: 1.3251, y: 1.6135, z: 1.6337 },
 }
@@ -2418,7 +2152,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000072)
         --
         #"shore-rock-0072"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 92.2522, y: 79.2876, z: -172.1089 },
+translation: glam::Vec3 { x: 92.252197, y: 79.510666, z: -172.108902 },
 rotation: glam::Quat { x: 0.032323, y: 0.204299, z: 0.008942, w: -0.978334 },
 scale: glam::Vec3 { x: 1.1267, y: 1.0884, z: 1.1201 },
 }
@@ -2486,7 +2220,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000074)
         --
         #"shore-rock-0074"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 90.9046, y: 79.2191, z: -172.8179 },
+translation: glam::Vec3 { x: 90.904602, y: 79.329674, z: -172.817902 },
 rotation: glam::Quat { x: 0.024703, y: 0.861921, z: -0.031064, w: -0.505486 },
 scale: glam::Vec3 { x: 1.4020, y: 1.3716, z: 1.4793 },
 }
@@ -2514,7 +2248,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000075)
         --
         #"shore-rock-0075"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 73.1813, y: 79.447, z: -159.4247 },
+translation: glam::Vec3 { x: 73.181297, y: 79.543381, z: -159.424698 },
 rotation: glam::Quat { x: -0.031299, y: 0.896392, z: -0.041518, w: -0.440203 },
 scale: glam::Vec3 { x: 1.4921, y: 1.3392, z: 1.4703 },
 }
@@ -2542,7 +2276,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000076)
         --
         #"shore-rock-0076"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 73.1354, y: 79.4735, z: -159.1496 },
+translation: glam::Vec3 { x: 73.135399, y: 79.567497, z: -159.149597 },
 rotation: glam::Quat { x: -0.058496, y: 0.946649, z: -0.030330, w: 0.315457 },
 scale: glam::Vec3 { x: 1.3918, y: 1.2994, z: 1.3020 },
 }
@@ -2604,7 +2338,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000078)
         --
         #"shore-rock-0078"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 72.9798, y: 79.2064, z: -161.0371 },
+translation: glam::Vec3 { x: 72.979797, y: 79.324257, z: -161.037094 },
 rotation: glam::Quat { x: -0.056350, y: 0.778816, z: -0.015048, w: 0.624535 },
 scale: glam::Vec3 { x: 1.5230, y: 1.5815, z: 1.4948 },
 }
@@ -2666,7 +2400,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000080)
         --
         #"shore-rock-0080"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 70.1001, y: 79.3764, z: -161.4416 },
+translation: glam::Vec3 { x: 70.100098, y: 79.483788, z: -161.441605 },
 rotation: glam::Quat { x: 0.045039, y: 0.534386, z: -0.036380, w: -0.843255 },
 scale: glam::Vec3 { x: 1.3814, y: 1.5958, z: 1.4395 },
 }
@@ -2694,7 +2428,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000081)
         --
         #"shore-rock-0081"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 70.5784, y: 79.2055, z: -162.6637 },
+translation: glam::Vec3 { x: 70.578400, y: 79.318199, z: -162.663696 },
 rotation: glam::Quat { x: 0.022247, y: 0.472777, z: -0.061933, w: -0.878721 },
 scale: glam::Vec3 { x: 1.6114, y: 1.6007, z: 1.5138 },
 }
@@ -2728,7 +2462,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000082)
         --
         #"shore-rock-0082"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 66.14, y: 79.3139, z: -164.3817 },
+translation: glam::Vec3 { x: 66.139999, y: 79.547714, z: -164.381699 },
 rotation: glam::Quat { x: -0.004645, y: 0.951405, z: -0.025133, w: -0.306881 },
 scale: glam::Vec3 { x: 1.2443, y: 1.2278, z: 1.1976 },
 }
@@ -2796,7 +2530,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000084)
         --
         #"shore-rock-0084"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 64.9253, y: 79.1951, z: -166.7383 },
+translation: glam::Vec3 { x: 64.925301, y: 79.380196, z: -166.738297 },
 rotation: glam::Quat { x: -0.027491, y: 0.050536, z: -0.020905, w: 0.998125 },
 scale: glam::Vec3 { x: 1.0005, y: 0.9820, z: 1.0118 },
 }
@@ -2830,7 +2564,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000085)
         --
         #"shore-rock-0085"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 57.733, y: 79.3569, z: -156.9035 },
+translation: glam::Vec3 { x: 57.733002, y: 79.476830, z: -156.903503 },
 rotation: glam::Quat { x: -0.016117, y: 0.997413, z: -0.020444, w: 0.067012 },
 scale: glam::Vec3 { x: 1.6434, y: 1.2289, z: 1.6131 },
 }
@@ -2898,7 +2632,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000087)
         --
         #"shore-rock-0087"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 59.0184, y: 79.4518, z: -159.0799 },
+translation: glam::Vec3 { x: 59.018398, y: 79.805489, z: -159.079895 },
 rotation: glam::Quat { x: 0.015439, y: 0.870345, z: -0.013802, w: 0.492008 },
 scale: glam::Vec3 { x: 1.0552, y: 1.2480, z: 1.2649 },
 }
@@ -2932,7 +2666,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000088)
         --
         #"shore-rock-0088"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 51.3305, y: 79.11, z: -159.4075 },
+translation: glam::Vec3 { x: 51.330502, y: 79.352119, z: -159.407501 },
 rotation: glam::Quat { x: 0.015353, y: 0.552300, z: 0.010686, w: -0.833435 },
 scale: glam::Vec3 { x: 1.1964, y: 1.3545, z: 1.2964 },
 }
@@ -2966,7 +2700,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000089)
         --
         #"shore-rock-0089"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 51.3983, y: 79.2488, z: -159.9268 },
+translation: glam::Vec3 { x: 51.398300, y: 79.442581, z: -159.926804 },
 rotation: glam::Quat { x: 0.057313, y: 0.957321, z: -0.027794, w: -0.281920 },
 scale: glam::Vec3 { x: 1.0633, y: 0.9490, z: 1.1000 },
 }
@@ -3066,74 +2800,6 @@ pose: true,
 }
 jackdaw_scene_types::node_id::SceneNodeId(6852620029000000092)
         --
-        #"shore-rock-0092"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 47.9428, y: 78.9192, z: -178.2161 },
-rotation: glam::Quat { x: 0.012941, y: 0.950046, z: -0.006923, w: -0.311764 },
-scale: glam::Vec3 { x: 1.1520, y: 1.2974, z: 1.1866 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_5_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/terrain/form_outcrop_5_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/terrain/form_outcrop_5_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_5_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0092" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "47.9428 78.9192 -178.2161" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "179.638 -36.339 -178.558" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1520 1.2974 1.1866" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 92],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000093)
-        --
-        #"shore-rock-0093"
-        bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 48.8949, y: 79.0643, z: -179.0408 },
-rotation: glam::Quat { x: 0.020358, y: 0.249069, z: -0.049316, w: 0.967015 },
-scale: glam::Vec3 { x: 1.0672, y: 0.9140, z: 1.0393 },
-}
-        bevy_ext_scene::ColliderSpec {
-shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_boulder_collision.glb", base: true },
-}
-bevy_ext_scene::BodySpec {
-kind: bevy_ext_scene::BodyKind::Fixed,
-}
-        bevy_ext_scene::ModelLod {
-lod1: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod1.glb"),
-lod2: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod2.glb"),
-near: core::option::Option::Some(50.0),
-mid: core::option::Option::Some(120.0),
-}
-bevy_world_xml::bsn::WorldNode {
-tag: "GltfScene",
-attrs: [
-bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
-bevy_world_xml::bsn::WorldProp { key: "name", value: "shore-rock-0093" },
-bevy_world_xml::bsn::WorldProp { key: "translation", value: "48.8949 79.0643 -179.0408" },
-bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.179 28.666 -6.907" },
-bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0672 0.9140 1.0393" },
-],
-text: "",
-origin_file: "world/spawn/shore-rocks.xml",
-origin_path: [0, 93],
-pose: true,
-}
-jackdaw_scene_types::node_id::SceneNodeId(6852620029000000094)
-        --
         #"shore-rock-0094"
         bevy_transform::components::transform::Transform {
 translation: glam::Vec3 { x: 47.3450, y: 79.2613, z: -181.6346 },
@@ -3164,7 +2830,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000095)
         --
         #"shore-rock-0095"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 44.9007, y: 79.3413, z: -182.5781 },
+translation: glam::Vec3 { x: 44.900700, y: 79.304688, z: -182.578094 },
 rotation: glam::Quat { x: 0.005049, y: 0.993960, z: 0.020249, w: -0.107742 },
 scale: glam::Vec3 { x: 1.4877, y: 1.5083, z: 1.3547 },
 }
@@ -3226,7 +2892,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000097)
         --
         #"shore-rock-0097"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 42.4963, y: 79.5489, z: -182.6407 },
+translation: glam::Vec3 { x: 42.496300, y: 79.337898, z: -182.640701 },
 rotation: glam::Quat { x: 0.029405, y: 0.481764, z: -0.004197, w: 0.875797 },
 scale: glam::Vec3 { x: 1.3662, y: 1.5493, z: 1.4285 },
 }
@@ -3288,7 +2954,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000099)
         --
         #"shore-rock-0099"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 45.4601, y: 79.1862, z: -184.0382 },
+translation: glam::Vec3 { x: 45.460098, y: 79.282280, z: -184.038193 },
 rotation: glam::Quat { x: 0.008463, y: 0.930389, z: -0.016107, w: -0.366122 },
 scale: glam::Vec3 { x: 1.2134, y: 1.0963, z: 1.4097 },
 }
@@ -3316,7 +2982,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000100)
         --
         #"shore-rock-0100"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 50.4117, y: 79.3332, z: -205.0428 },
+translation: glam::Vec3 { x: 50.411701, y: 79.580299, z: -205.042801 },
 rotation: glam::Quat { x: -0.003934, y: 0.172445, z: 0.002173, w: -0.985009 },
 scale: glam::Vec3 { x: 1.0421, y: 1.2825, z: 1.2336 },
 }
@@ -3350,7 +3016,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000101)
         --
         #"shore-rock-0101"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 53.5859, y: 79.4464, z: -203.9535 },
+translation: glam::Vec3 { x: 53.585899, y: 79.535896, z: -203.953506 },
 rotation: glam::Quat { x: -0.003037, y: 0.788704, z: -0.032716, w: 0.613894 },
 scale: glam::Vec3 { x: 1.5390, y: 1.4083, z: 1.3630 },
 }
@@ -3452,7 +3118,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000104)
         --
         #"shore-rock-0104"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 58.9392, y: 79.1037, z: -201.4550 },
+translation: glam::Vec3 { x: 58.939201, y: 79.179962, z: -201.455002 },
 rotation: glam::Quat { x: 0.017459, y: 0.903259, z: 0.047152, w: -0.426139 },
 scale: glam::Vec3 { x: 1.0562, y: 1.0877, z: 1.1237 },
 }
@@ -3486,7 +3152,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000105)
         --
         #"shore-rock-0105"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 62.3402, y: 79.2315, z: -205.4726 },
+translation: glam::Vec3 { x: 62.340199, y: 79.584251, z: -205.472595 },
 rotation: glam::Quat { x: -0.005758, y: 0.741650, z: 0.048811, w: -0.668984 },
 scale: glam::Vec3 { x: 1.4231, y: 1.3535, z: 1.3301 },
 }
@@ -3520,7 +3186,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000106)
         --
         #"shore-rock-0106"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -505.3249, y: 61.1613, z: 37.0451 },
+translation: glam::Vec3 { x: -505.324890, y: 61.262352, z: 37.045101 },
 rotation: glam::Quat { x: 0.016986, y: 0.170005, z: 0.055212, w: -0.983749 },
 scale: glam::Vec3 { x: 1.5821, y: 1.5446, z: 1.3267 },
 }
@@ -3554,7 +3220,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000107)
         --
         #"shore-rock-0107"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -506.7489, y: 60.9951, z: 42.7793 },
+translation: glam::Vec3 { x: -506.748901, y: 61.236294, z: 42.779301 },
 rotation: glam::Quat { x: 0.019063, y: 0.943068, z: -0.021967, w: 0.331326 },
 scale: glam::Vec3 { x: 1.2529, y: 1.2121, z: 1.2016 },
 }
@@ -3588,7 +3254,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000108)
         --
         #"shore-rock-0108"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -505.8629, y: 61.0091, z: 40.9551 },
+translation: glam::Vec3 { x: -505.862915, y: 61.196785, z: 40.955101 },
 rotation: glam::Quat { x: 0.056062, y: 0.991131, z: 0.000993, w: 0.120480 },
 scale: glam::Vec3 { x: 0.9376, y: 0.8730, z: 1.0067 },
 }
@@ -3622,7 +3288,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000109)
         --
         #"shore-rock-0109"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -507.9438, y: 61.0635, z: 45.2990 },
+translation: glam::Vec3 { x: -507.943787, y: 61.264297, z: 45.299000 },
 rotation: glam::Quat { x: 0.011982, y: 0.810458, z: 0.064703, w: -0.582089 },
 scale: glam::Vec3 { x: 1.1425, y: 0.9349, z: 1.0835 },
 }
@@ -3656,7 +3322,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000110)
         --
         #"shore-rock-0110"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -508.5079, y: 61.0933, z: 45.5961 },
+translation: glam::Vec3 { x: -508.507904, y: 61.326542, z: 45.596100 },
 rotation: glam::Quat { x: 0.001552, y: 0.905362, z: -0.021534, w: 0.424093 },
 scale: glam::Vec3 { x: 1.2107, y: 1.2819, z: 1.1399 },
 }
@@ -3690,7 +3356,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000111)
         --
         #"shore-rock-0111"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -508.2983, y: 61.1565, z: 43.5748 },
+translation: glam::Vec3 { x: -508.298309, y: 61.390568, z: 43.574799 },
 rotation: glam::Quat { x: 0.039453, y: 0.981971, z: 0.019487, w: -0.183838 },
 scale: glam::Vec3 { x: 0.8752, y: 0.9774, z: 0.8595 },
 }
@@ -3724,7 +3390,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000112)
         --
         #"shore-rock-0112"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -525.221, y: 61.2763, z: 47.6391 },
+translation: glam::Vec3 { x: -525.221008, y: 61.530197, z: 47.639099 },
 rotation: glam::Quat { x: -0.024089, y: 0.839786, z: -0.011141, w: -0.542268 },
 scale: glam::Vec3 { x: 1.1459, y: 1.1789, z: 1.1417 },
 }
@@ -3758,7 +3424,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000113)
         --
         #"shore-rock-0113"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -519.3973, y: 61.7486, z: 47.0827 },
+translation: glam::Vec3 { x: -519.397278, y: 61.913147, z: 47.082699 },
 rotation: glam::Quat { x: -0.045077, y: 0.187452, z: 0.009302, w: 0.981195 },
 scale: glam::Vec3 { x: 0.8587, y: 0.7843, z: 0.9180 },
 }
@@ -3792,7 +3458,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000114)
         --
         #"shore-rock-0114"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -518.0427, y: 61.7952, z: 48.2152 },
+translation: glam::Vec3 { x: -518.042725, y: 61.892841, z: 48.215199 },
 rotation: glam::Quat { x: -0.026174, y: 0.919776, z: -0.047765, w: 0.388646 },
 scale: glam::Vec3 { x: 1.3595, y: 1.4103, z: 1.2896 },
 }
@@ -3820,7 +3486,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000115)
         --
         #"shore-rock-0115"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -527.382, y: 61.0607, z: 48.4559 },
+translation: glam::Vec3 { x: -527.382019, y: 61.322407, z: 48.455898 },
 rotation: glam::Quat { x: -0.033343, y: 0.922037, z: -0.021994, w: 0.385036 },
 scale: glam::Vec3 { x: 1.2551, y: 1.3527, z: 1.3680 },
 }
@@ -3854,7 +3520,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000116)
         --
         #"shore-rock-0116"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -525.198, y: 61.367, z: 49.2945 },
+translation: glam::Vec3 { x: -525.197998, y: 61.503784, z: 49.294498 },
 rotation: glam::Quat { x: -0.031816, y: 0.916090, z: -0.050967, w: 0.396446 },
 scale: glam::Vec3 { x: 1.3381, y: 1.4254, z: 1.3113 },
 }
@@ -3882,7 +3548,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000117)
         --
         #"shore-rock-0117"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -525.829, y: 61.3534, z: 49.466 },
+translation: glam::Vec3 { x: -525.828979, y: 61.470772, z: 49.466000 },
 rotation: glam::Quat { x: 0.014066, y: 0.980049, z: 0.003347, w: -0.198228 },
 scale: glam::Vec3 { x: 1.7441, y: 1.5462, z: 1.6777 },
 }
@@ -3916,7 +3582,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000118)
         --
         #"shore-rock-0118"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -527.2567, y: 61.1598, z: 50.4018 },
+translation: glam::Vec3 { x: -527.256714, y: 61.350784, z: 50.401798 },
 rotation: glam::Quat { x: 0.002099, y: 0.997136, z: -0.012023, w: -0.074639 },
 scale: glam::Vec3 { x: 1.2430, y: 1.2780, z: 1.3842 },
 }
@@ -3950,7 +3616,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000119)
         --
         #"shore-rock-0119"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -528.4136, y: 61.0873, z: 52.701 },
+translation: glam::Vec3 { x: -528.413574, y: 61.323521, z: 52.701000 },
 rotation: glam::Quat { x: 0.021527, y: 0.077008, z: -0.010250, w: -0.996745 },
 scale: glam::Vec3 { x: 1.3143, y: 1.2105, z: 1.3500 },
 }
@@ -3984,7 +3650,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000120)
         --
         #"shore-rock-0120"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -527.7738, y: 61.3899, z: 55.8549 },
+translation: glam::Vec3 { x: -527.773804, y: 61.494621, z: 55.854900 },
 rotation: glam::Quat { x: -0.025093, y: 0.095491, z: -0.041684, w: -0.994241 },
 scale: glam::Vec3 { x: 1.7052, y: 1.4846, z: 1.7440 },
 }
@@ -4018,7 +3684,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000121)
         --
         #"shore-rock-0121"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -528.2949, y: 61.1834, z: 55.8786 },
+translation: glam::Vec3 { x: -528.294922, y: 61.421234, z: 55.878601 },
 rotation: glam::Quat { x: -0.002566, y: 0.993654, z: 0.002117, w: 0.112431 },
 scale: glam::Vec3 { x: 1.2255, y: 1.2233, z: 1.1876 },
 }
@@ -4052,7 +3718,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000122)
         --
         #"shore-rock-0122"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -536.3506, y: 61.2183, z: 60.5867 },
+translation: glam::Vec3 { x: -536.350586, y: 61.412113, z: 60.586700 },
 rotation: glam::Quat { x: -0.031033, y: 0.509447, z: -0.014488, w: -0.859820 },
 scale: glam::Vec3 { x: 0.9621, y: 0.9663, z: 1.0249 },
 }
@@ -4086,7 +3752,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000123)
         --
         #"shore-rock-0123"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -537.2086, y: 61.1, z: 59.6085 },
+translation: glam::Vec3 { x: -537.208618, y: 61.324566, z: 59.608501 },
 rotation: glam::Quat { x: -0.018245, y: 0.980017, z: -0.003830, w: 0.198038 },
 scale: glam::Vec3 { x: 1.2816, y: 1.2747, z: 1.4533 },
 }
@@ -4120,7 +3786,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000124)
         --
         #"shore-rock-0124"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -542.4839, y: 61.0717, z: 59.5632 },
+translation: glam::Vec3 { x: -542.483887, y: 61.301739, z: 59.563202 },
 rotation: glam::Quat { x: 0.017615, y: 0.249809, z: -0.011906, w: 0.968062 },
 scale: glam::Vec3 { x: 1.3135, y: 1.3137, z: 1.1369 },
 }
@@ -4154,7 +3820,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000125)
         --
         #"shore-rock-0125"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -542.8045, y: 61.1059, z: 58.962 },
+translation: glam::Vec3 { x: -542.804504, y: 61.241138, z: 58.962002 },
 rotation: glam::Quat { x: 0.004630, y: 0.965364, z: -0.040322, w: 0.257730 },
 scale: glam::Vec3 { x: 1.7790, y: 1.7415, z: 1.5758 },
 }
@@ -4188,7 +3854,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000126)
         --
         #"shore-rock-0126"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -545.2336, y: 61.1174, z: 60.2673 },
+translation: glam::Vec3 { x: -545.233582, y: 61.345562, z: 60.267300 },
 rotation: glam::Quat { x: -0.017457, y: 0.900477, z: -0.038636, w: -0.432833 },
 scale: glam::Vec3 { x: 1.3002, y: 1.2747, z: 1.1890 },
 }
@@ -4222,7 +3888,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000127)
         --
         #"shore-rock-0127"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -549.9628, y: 61.1789, z: 59.7630 },
+translation: glam::Vec3 { x: -549.962830, y: 61.295315, z: 59.763000 },
 rotation: glam::Quat { x: -0.010185, y: 0.532894, z: -0.046891, w: 0.844820 },
 scale: glam::Vec3 { x: 1.2598, y: 1.1188, z: 1.2027 },
 }
@@ -4256,7 +3922,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000128)
         --
         #"shore-rock-0128"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -552.2269, y: 60.9842, z: 56.7356 },
+translation: glam::Vec3 { x: -552.226929, y: 61.131634, z: 56.735600 },
 rotation: glam::Quat { x: 0.020901, y: 0.238558, z: -0.020595, w: -0.970685 },
 scale: glam::Vec3 { x: 1.2587, y: 1.1024, z: 1.3620 },
 }
@@ -4290,7 +3956,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000129)
         --
         #"shore-rock-0129"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -552.4048, y: 60.9078, z: 55.5023 },
+translation: glam::Vec3 { x: -552.404785, y: 61.101986, z: 55.502300 },
 rotation: glam::Quat { x: 0.056677, y: 0.052075, z: -0.019235, w: -0.996848 },
 scale: glam::Vec3 { x: 1.0195, y: 0.8315, z: 1.0114 },
 }
@@ -4324,7 +3990,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000130)
         --
         #"shore-rock-0130"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -554.4014, y: 60.8965, z: 55.3972 },
+translation: glam::Vec3 { x: -554.401428, y: 61.216217, z: 55.397202 },
 rotation: glam::Quat { x: -0.051000, y: 0.301794, z: -0.009568, w: 0.951960 },
 scale: glam::Vec3 { x: 1.1005, y: 1.1771, z: 1.0054 },
 }
@@ -4358,7 +4024,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000131)
         --
         #"shore-rock-0131"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -554.067, y: 60.92, z: 53.7668 },
+translation: glam::Vec3 { x: -554.067017, y: 61.148125, z: 53.766800 },
 rotation: glam::Quat { x: 0.025051, y: 0.967712, z: -0.013739, w: 0.250435 },
 scale: glam::Vec3 { x: 1.2586, y: 1.1125, z: 1.2647 },
 }
@@ -4392,7 +4058,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000132)
         --
         #"shore-rock-0132"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -557.7078, y: 61.1477, z: 53.595 },
+translation: glam::Vec3 { x: -557.707825, y: 61.357853, z: 53.595001 },
 rotation: glam::Quat { x: -0.005131, y: 0.983842, z: -0.018548, w: -0.178004 },
 scale: glam::Vec3 { x: 1.1735, y: 1.0579, z: 1.0675 },
 }
@@ -4426,7 +4092,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000133)
         --
         #"shore-rock-0133"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -560.929, y: 61.2416, z: 52.619 },
+translation: glam::Vec3 { x: -560.929016, y: 61.475784, z: 52.618999 },
 rotation: glam::Quat { x: 0.003502, y: 0.230015, z: 0.012994, w: 0.973094 },
 scale: glam::Vec3 { x: 1.4770, y: 1.3658, z: 1.5007 },
 }
@@ -4460,7 +4126,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000134)
         --
         #"shore-rock-0134"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -561.0106, y: 61.3211, z: 53.8991 },
+translation: glam::Vec3 { x: -561.010620, y: 61.524830, z: 53.899101 },
 rotation: glam::Quat { x: 0.008947, y: 0.892303, z: 0.004048, w: 0.451330 },
 scale: glam::Vec3 { x: 0.9223, y: 1.0874, z: 0.8943 },
 }
@@ -4494,7 +4160,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000135)
         --
         #"shore-rock-0135"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -558.8854, y: 60.9957, z: 48.9807 },
+translation: glam::Vec3 { x: -558.885376, y: 61.241604, z: 48.980701 },
 rotation: glam::Quat { x: 0.044989, y: 0.557021, z: 0.044281, w: -0.828096 },
 scale: glam::Vec3 { x: 1.4039, y: 1.3537, z: 1.3729 },
 }
@@ -4528,7 +4194,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000136)
         --
         #"shore-rock-0136"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -562.9596, y: 61.0714, z: 42.5808 },
+translation: glam::Vec3 { x: -562.959595, y: 61.172134, z: 42.580799 },
 rotation: glam::Quat { x: -0.003862, y: 0.070741, z: -0.051114, w: 0.996177 },
 scale: glam::Vec3 { x: 1.4182, y: 1.0984, z: 1.2403 },
 }
@@ -4556,7 +4222,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000137)
         --
         #"shore-rock-0137"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -561.7416, y: 61.3784, z: 51.046 },
+translation: glam::Vec3 { x: -561.741577, y: 61.484867, z: 51.046001 },
 rotation: glam::Quat { x: 0.005859, y: 0.757783, z: -0.012003, w: -0.652370 },
 scale: glam::Vec3 { x: 1.5572, y: 1.3265, z: 1.5262 },
 }
@@ -4590,7 +4256,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000138)
         --
         #"shore-rock-0138"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -567.5776, y: 61.0924, z: 41.4233 },
+translation: glam::Vec3 { x: -567.577576, y: 61.296909, z: 41.423302 },
 rotation: glam::Quat { x: 0.011569, y: 0.665595, z: -0.012889, w: 0.746112 },
 scale: glam::Vec3 { x: 1.4303, y: 1.1213, z: 1.2139 },
 }
@@ -4624,7 +4290,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000139)
         --
         #"shore-rock-0139"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -564.7057, y: 61.1386, z: 42.6942 },
+translation: glam::Vec3 { x: -564.705688, y: 61.235554, z: 42.694199 },
 rotation: glam::Quat { x: 0.008401, y: 0.134339, z: -0.009711, w: -0.990852 },
 scale: glam::Vec3 { x: 1.3046, y: 1.2238, z: 1.2241 },
 }
@@ -4652,7 +4318,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000140)
         --
         #"shore-rock-0140"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -570.7043, y: 60.9888, z: 37.8845 },
+translation: glam::Vec3 { x: -570.704285, y: 61.268616, z: 37.884499 },
 rotation: glam::Quat { x: 0.041029, y: 0.739942, z: -0.038797, w: 0.670297 },
 scale: glam::Vec3 { x: 1.3743, y: 1.4018, z: 1.3153 },
 }
@@ -4686,7 +4352,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000141)
         --
         #"shore-rock-0141"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -570.4, y: 61.2648, z: 40.6448 },
+translation: glam::Vec3 { x: -570.400024, y: 61.434849, z: 40.644798 },
 rotation: glam::Quat { x: 0.017923, y: 0.978628, z: -0.040805, w: 0.200752 },
 scale: glam::Vec3 { x: 1.1179, y: 0.9358, z: 1.1026 },
 }
@@ -4720,7 +4386,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000142)
         --
         #"shore-rock-0142"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -572.4586, y: 61.0238, z: 37.3256 },
+translation: glam::Vec3 { x: -572.458618, y: 61.345325, z: 37.325600 },
 rotation: glam::Quat { x: -0.010662, y: 0.224691, z: -0.035604, w: 0.973721 },
 scale: glam::Vec3 { x: 1.0742, y: 0.9035, z: 1.0200 },
 }
@@ -4754,7 +4420,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000143)
         --
         #"shore-rock-0143"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -572.9406, y: 61.0440, z: 35.6938 },
+translation: glam::Vec3 { x: -572.940613, y: 61.310589, z: 35.693802 },
 rotation: glam::Quat { x: 0.004304, y: 0.990557, z: 0.022171, w: -0.135231 },
 scale: glam::Vec3 { x: 1.3331, y: 1.2922, z: 1.1953 },
 }
@@ -4788,7 +4454,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000144)
         --
         #"shore-rock-0144"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -572.6831, y: 61.1490, z: 32.8414 },
+translation: glam::Vec3 { x: -572.683105, y: 61.238369, z: 32.841400 },
 rotation: glam::Quat { x: 0.006797, y: 0.999623, z: -0.024494, w: -0.010365 },
 scale: glam::Vec3 { x: 1.1080, y: 0.9506, z: 1.1000 },
 }
@@ -4822,7 +4488,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000145)
         --
         #"shore-rock-0145"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -573.7318, y: 61.2353, z: 36.8506 },
+translation: glam::Vec3 { x: -573.731812, y: 61.365612, z: 36.850601 },
 rotation: glam::Quat { x: 0.016253, y: 0.446925, z: -0.021517, w: 0.894165 },
 scale: glam::Vec3 { x: 1.4782, y: 1.4746, z: 1.7897 },
 }
@@ -4856,7 +4522,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000146)
         --
         #"shore-rock-0146"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -571.3962, y: 61.0906, z: 30.0524 },
+translation: glam::Vec3 { x: -571.396179, y: 61.235493, z: 30.052401 },
 rotation: glam::Quat { x: -0.013895, y: 0.407508, z: -0.031435, w: 0.912555 },
 scale: glam::Vec3 { x: 1.3011, y: 1.3645, z: 1.4496 },
 }
@@ -4918,7 +4584,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000148)
         --
         #"shore-rock-0148"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -573.1237, y: 61.2477, z: 31.7027 },
+translation: glam::Vec3 { x: -573.123718, y: 61.286438, z: 31.702700 },
 rotation: glam::Quat { x: 0.001579, y: 0.962507, z: -0.016526, w: 0.270747 },
 scale: glam::Vec3 { x: 1.6764, y: 1.5158, z: 1.6573 },
 }
@@ -4952,7 +4618,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000149)
         --
         #"shore-rock-0149"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -568.9791, y: 61.1671, z: 25.1914 },
+translation: glam::Vec3 { x: -568.979126, y: 61.324471, z: 25.191401 },
 rotation: glam::Quat { x: 0.029671, y: 0.394279, z: -0.035083, w: 0.917841 },
 scale: glam::Vec3 { x: 1.2975, y: 1.1502, z: 1.4290 },
 }
@@ -4986,7 +4652,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000150)
         --
         #"shore-rock-0150"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -567.8547, y: 61.2073, z: 23.8604 },
+translation: glam::Vec3 { x: -567.854675, y: 61.362114, z: 23.860399 },
 rotation: glam::Quat { x: -0.024845, y: 0.019623, z: 0.033297, w: -0.998944 },
 scale: glam::Vec3 { x: 1.0258, y: 0.9762, z: 1.0898 },
 }
@@ -5020,7 +4686,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000151)
         --
         #"shore-rock-0151"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -564.7255, y: 61.0983, z: 19.9829 },
+translation: glam::Vec3 { x: -564.725525, y: 61.327038, z: 19.982901 },
 rotation: glam::Quat { x: -0.015441, y: 0.783152, z: 0.005158, w: -0.621617 },
 scale: glam::Vec3 { x: 1.2691, y: 1.1959, z: 1.2394 },
 }
@@ -5054,7 +4720,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000152)
         --
         #"shore-rock-0152"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -565.2097, y: 61.4007, z: 17.5452 },
+translation: glam::Vec3 { x: -565.209717, y: 61.494968, z: 17.545200 },
 rotation: glam::Quat { x: -0.009919, y: 0.257053, z: -0.012023, w: -0.966272 },
 scale: glam::Vec3 { x: 1.3390, y: 1.2432, z: 1.3892 },
 }
@@ -5082,7 +4748,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000153)
         --
         #"shore-rock-0153"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -564.465, y: 61.1117, z: 18.467 },
+translation: glam::Vec3 { x: -564.465027, y: 61.369305, z: 18.466999 },
 rotation: glam::Quat { x: 0.013936, y: 0.141121, z: 0.067267, w: -0.987606 },
 scale: glam::Vec3 { x: 1.3361, y: 1.2570, z: 1.1978 },
 }
@@ -5116,7 +4782,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000154)
         --
         #"shore-rock-0154"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -563.0566, y: 61.1386, z: 17.1252 },
+translation: glam::Vec3 { x: -563.056580, y: 61.253422, z: 17.125200 },
 rotation: glam::Quat { x: 0.023157, y: 0.983567, z: -0.011014, w: 0.178715 },
 scale: glam::Vec3 { x: 1.3068, y: 1.5125, z: 1.4566 },
 }
@@ -5144,7 +4810,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000155)
         --
         #"shore-rock-0155"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -563.1892, y: 61.2423, z: 16.2222 },
+translation: glam::Vec3 { x: -563.189209, y: 61.308823, z: 16.222200 },
 rotation: glam::Quat { x: 0.020367, y: 0.869052, z: 0.021039, w: -0.493854 },
 scale: glam::Vec3 { x: 1.0277, y: 0.9417, z: 1.1189 },
 }
@@ -5178,7 +4844,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000156)
         --
         #"shore-rock-0156"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -561.3506, y: 61.1475, z: 12.3342 },
+translation: glam::Vec3 { x: -561.350586, y: 61.273205, z: 12.334200 },
 rotation: glam::Quat { x: -0.011368, y: 0.821681, z: 0.020498, w: -0.569465 },
 scale: glam::Vec3 { x: 1.5154, y: 1.3210, z: 1.3190 },
 }
@@ -5274,7 +4940,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000159)
         --
         #"shore-rock-0159"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -558.9866, y: 61.1462, z: 10.1429 },
+translation: glam::Vec3 { x: -558.986572, y: 61.259285, z: 10.142900 },
 rotation: glam::Quat { x: 0.011820, y: 0.863913, z: 0.033150, w: 0.502410 },
 scale: glam::Vec3 { x: 1.3247, y: 1.0294, z: 1.1155 },
 }
@@ -5342,7 +5008,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000161)
         --
         #"shore-rock-0161"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -560.0446, y: 61.2388, z: 10.9870 },
+translation: glam::Vec3 { x: -560.044617, y: 61.277233, z: 10.987000 },
 rotation: glam::Quat { x: 0.002986, y: 0.237253, z: 0.010752, w: -0.971384 },
 scale: glam::Vec3 { x: 1.6469, y: 1.4583, z: 1.6455 },
 }
@@ -5376,7 +5042,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000162)
         --
         #"shore-rock-0162"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -553.6494, y: 61.0541, z: 7.9216 },
+translation: glam::Vec3 { x: -553.649414, y: 61.304859, z: 7.921600 },
 rotation: glam::Quat { x: 0.053907, y: 0.922809, z: 0.009193, w: 0.381356 },
 scale: glam::Vec3 { x: 1.1210, y: 1.3337, z: 1.1777 },
 }
@@ -5410,7 +5076,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000163)
         --
         #"shore-rock-0163"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -555.0078, y: 60.9705, z: 9.4214 },
+translation: glam::Vec3 { x: -555.007812, y: 61.084900, z: 9.421400 },
 rotation: glam::Quat { x: 0.007732, y: 0.289474, z: 0.031745, w: -0.956628 },
 scale: glam::Vec3 { x: 1.0851, y: 1.0409, z: 1.2491 },
 }
@@ -5444,7 +5110,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000164)
         --
         #"shore-rock-0164"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -548.6857, y: 61.1001, z: 6.7917 },
+translation: glam::Vec3 { x: -548.685730, y: 61.337326, z: 6.791700 },
 rotation: glam::Quat { x: 0.011893, y: 0.667170, z: 0.029969, w: 0.744207 },
 scale: glam::Vec3 { x: 1.2717, y: 1.2531, z: 1.4425 },
 }
@@ -5478,7 +5144,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000165)
         --
         #"shore-rock-0165"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -549.6227, y: 61.1701, z: 7.4832 },
+translation: glam::Vec3 { x: -549.622681, y: 61.299942, z: 7.483200 },
 rotation: glam::Quat { x: -0.019557, y: 0.057904, z: -0.007506, w: -0.998102 },
 scale: glam::Vec3 { x: 1.5996, y: 1.2819, z: 1.4114 },
 }
@@ -5512,7 +5178,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000166)
         --
         #"shore-rock-0166"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -550.2798, y: 61.2415, z: 6.3259 },
+translation: glam::Vec3 { x: -550.279785, y: 61.448570, z: 6.325900 },
 rotation: glam::Quat { x: -0.003071, y: 0.348009, z: 0.012833, w: 0.937398 },
 scale: glam::Vec3 { x: 1.7360, y: 1.4310, z: 1.5612 },
 }
@@ -5546,7 +5212,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000167)
         --
         #"shore-rock-0167"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -547.2976, y: 61.1294, z: 6.0733 },
+translation: glam::Vec3 { x: -547.297607, y: 61.322910, z: 6.073300 },
 rotation: glam::Quat { x: -0.008920, y: 0.958604, z: -0.033578, w: 0.282616 },
 scale: glam::Vec3 { x: 1.1413, y: 1.1972, z: 1.1439 },
 }
@@ -5580,7 +5246,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000168)
         --
         #"shore-rock-0168"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -541.7087, y: 60.8207, z: 5.4881 },
+translation: glam::Vec3 { x: -541.708679, y: 61.044548, z: 5.488100 },
 rotation: glam::Quat { x: -0.012339, y: 0.677283, z: 0.023287, w: -0.735250 },
 scale: glam::Vec3 { x: 1.1426, y: 1.0011, z: 1.2493 },
 }
@@ -5614,7 +5280,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000169)
         --
         #"shore-rock-0169"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 226.6728, y: 72.3190, z: 1404.5468 },
+translation: glam::Vec3 { x: 226.672806, y: 72.433395, z: 1404.546753 },
 rotation: glam::Quat { x: -0.005915, y: 0.245733, z: 0.023648, w: 0.969031 },
 scale: glam::Vec3 { x: 1.3006, y: 1.3604, z: 1.4259 },
 }
@@ -5642,7 +5308,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000170)
         --
         #"shore-rock-0170"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 221.9083, y: 72.1984, z: 1410.7686 },
+translation: glam::Vec3 { x: 221.908295, y: 72.407745, z: 1410.768555 },
 rotation: glam::Quat { x: 0.005297, y: 0.086514, z: 0.028736, w: 0.995822 },
 scale: glam::Vec3 { x: 1.1677, y: 1.1571, z: 1.1723 },
 }
@@ -5676,7 +5342,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000171)
         --
         #"shore-rock-0171"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 222.0197, y: 72.2472, z: 1409.6528 },
+translation: glam::Vec3 { x: 222.019699, y: 72.361229, z: 1409.652832 },
 rotation: glam::Quat { x: 0.017966, y: 0.684303, z: -0.050275, w: -0.727241 },
 scale: glam::Vec3 { x: 1.4990, y: 1.5818, z: 1.7499 },
 }
@@ -5710,7 +5376,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000172)
         --
         #"shore-rock-0172"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 220.7839, y: 72.2752, z: 1412.3899 },
+translation: glam::Vec3 { x: 220.783905, y: 72.400307, z: 1412.389893 },
 rotation: glam::Quat { x: 0.019208, y: 0.570556, z: -0.063937, w: -0.818541 },
 scale: glam::Vec3 { x: 0.9853, y: 0.7436, z: 0.9001 },
 }
@@ -5744,7 +5410,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000173)
         --
         #"shore-rock-0173"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 223.0668, y: 72.2680, z: 1414.2659 },
+translation: glam::Vec3 { x: 223.066803, y: 72.636711, z: 1414.265869 },
 rotation: glam::Quat { x: -0.063859, y: 0.900497, z: 0.014594, w: 0.429901 },
 scale: glam::Vec3 { x: 1.3333, y: 1.0628, z: 1.3368 },
 }
@@ -5778,7 +5444,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000174)
         --
         #"shore-rock-0174"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 220.0856, y: 72.329, z: 1414.1295 },
+translation: glam::Vec3 { x: 220.085602, y: 72.433823, z: 1414.129517 },
 rotation: glam::Quat { x: 0.021233, y: 0.607125, z: -0.000155, w: -0.794323 },
 scale: glam::Vec3 { x: 1.4943, y: 1.5754, z: 1.7832 },
 }
@@ -5846,7 +5512,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000176)
         --
         #"shore-rock-0176"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 218.9193, y: 72.0561, z: 1414.5840 },
+translation: glam::Vec3 { x: 218.919296, y: 72.313446, z: 1414.583984 },
 rotation: glam::Quat { x: -0.062420, y: 0.864493, z: 0.015105, w: 0.498525 },
 scale: glam::Vec3 { x: 1.4653, y: 1.2448, z: 1.3358 },
 }
@@ -5874,7 +5540,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000177)
         --
         #"shore-rock-0177"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 210.8875, y: 72.0592, z: 1420.1973 },
+translation: glam::Vec3 { x: 210.887497, y: 72.277809, z: 1420.197266 },
 rotation: glam::Quat { x: -0.016163, y: 0.324177, z: -0.038780, w: 0.945063 },
 scale: glam::Vec3 { x: 1.2545, y: 0.9895, z: 1.2726 },
 }
@@ -5908,7 +5574,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000178)
         --
         #"shore-rock-0178"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 210.2341, y: 72.0147, z: 1419.6533 },
+translation: glam::Vec3 { x: 210.234100, y: 72.129982, z: 1419.653320 },
 rotation: glam::Quat { x: -0.028944, y: 0.838285, z: -0.048553, w: 0.542295 },
 scale: glam::Vec3 { x: 1.6484, y: 1.4777, z: 1.4466 },
 }
@@ -5942,7 +5608,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000179)
         --
         #"shore-rock-0179"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 208.6095, y: 71.9972, z: 1421.9148 },
+translation: glam::Vec3 { x: 208.609497, y: 72.319687, z: 1421.914795 },
 rotation: glam::Quat { x: -0.027252, y: 0.350724, z: -0.048806, w: 0.934809 },
 scale: glam::Vec3 { x: 1.2013, y: 1.0953, z: 1.4430 },
 }
@@ -6004,7 +5670,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000181)
         --
         #"shore-rock-0181"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 209.8929, y: 72.2516, z: 1421.184 },
+translation: glam::Vec3 { x: 209.892899, y: 72.361084, z: 1421.183960 },
 rotation: glam::Quat { x: -0.011911, y: 0.904429, z: -0.040789, w: 0.424504 },
 scale: glam::Vec3 { x: 1.7347, y: 1.2908, z: 1.3836 },
 }
@@ -6038,7 +5704,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000182)
         --
         #"shore-rock-0182"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 206.5557, y: 72.1458, z: 1423.1392 },
+translation: glam::Vec3 { x: 206.555695, y: 72.218948, z: 1423.139160 },
 rotation: glam::Quat { x: 0.002070, y: 0.846011, z: -0.017684, w: -0.532868 },
 scale: glam::Vec3 { x: 1.1727, y: 1.2477, z: 1.3403 },
 }
@@ -6072,7 +5738,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000183)
         --
         #"shore-rock-0183"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 207.3736, y: 72.3007, z: 1423.6399 },
+translation: glam::Vec3 { x: 207.373596, y: 72.381279, z: 1423.639893 },
 rotation: glam::Quat { x: -0.004973, y: 0.934280, z: 0.006498, w: 0.356446 },
 scale: glam::Vec3 { x: 1.5373, y: 1.5912, z: 1.4785 },
 }
@@ -6106,7 +5772,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000184)
         --
         #"shore-rock-0184"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 194.6754, y: 72.0513, z: 1423.1582 },
+translation: glam::Vec3 { x: 194.675400, y: 72.352104, z: 1423.158203 },
 rotation: glam::Quat { x: -0.028232, y: 0.155914, z: 0.002068, w: 0.987365 },
 scale: glam::Vec3 { x: 1.1462, y: 1.0370, z: 1.2086 },
 }
@@ -6140,7 +5806,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000185)
         --
         #"shore-rock-0185"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 193.5076, y: 72.2579, z: 1421.6643 },
+translation: glam::Vec3 { x: 193.507599, y: 72.364403, z: 1421.664307 },
 rotation: glam::Quat { x: -0.026174, y: 0.016209, z: -0.011267, w: 0.999462 },
 scale: glam::Vec3 { x: 1.5315, y: 1.3775, z: 1.4258 },
 }
@@ -6168,7 +5834,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000186)
         --
         #"shore-rock-0186"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 193.6733, y: 72.217, z: 1422.3328 },
+translation: glam::Vec3 { x: 193.673294, y: 72.403336, z: 1422.332764 },
 rotation: glam::Quat { x: -0.030706, y: 0.876736, z: -0.027151, w: 0.479223 },
 scale: glam::Vec3 { x: 1.0409, y: 1.0232, z: 1.0241 },
 }
@@ -6202,7 +5868,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000187)
         --
         #"shore-rock-0187"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.9332, y: 72.367, z: 1422.1741 },
+translation: glam::Vec3 { x: 191.933197, y: 72.632904, z: 1422.174072 },
 rotation: glam::Quat { x: 0.039391, y: 0.866461, z: 0.031677, w: -0.496679 },
 scale: glam::Vec3 { x: 1.2800, y: 1.0471, z: 1.3140 },
 }
@@ -6236,7 +5902,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000188)
         --
         #"shore-rock-0188"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.1744, y: 72.4103, z: 1420.8068 },
+translation: glam::Vec3 { x: 191.174393, y: 72.684029, z: 1420.806763 },
 rotation: glam::Quat { x: 0.067214, y: 0.460320, z: 0.019085, w: -0.884999 },
 scale: glam::Vec3 { x: 1.0146, y: 0.9558, z: 0.8941 },
 }
@@ -6270,7 +5936,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000189)
         --
         #"shore-rock-0189"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.6817, y: 72.0228, z: 1414.677 },
+translation: glam::Vec3 { x: 191.681702, y: 72.245461, z: 1414.677002 },
 rotation: glam::Quat { x: 0.069935, y: 0.997480, z: -0.000037, w: 0.011926 },
 scale: glam::Vec3 { x: 1.4523, y: 1.1788, z: 1.3525 },
 }
@@ -6304,7 +5970,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000190)
         --
         #"shore-rock-0190"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 193.0953, y: 71.9579, z: 1417.6786 },
+translation: glam::Vec3 { x: 193.095306, y: 72.175858, z: 1417.678589 },
 rotation: glam::Quat { x: 0.024860, y: 0.722621, z: -0.060220, w: 0.688168 },
 scale: glam::Vec3 { x: 1.0521, y: 0.9476, z: 1.0804 },
 }
@@ -6338,7 +6004,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000191)
         --
         #"shore-rock-0191"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.3086, y: 72.1102, z: 1413.1078 },
+translation: glam::Vec3 { x: 191.308594, y: 72.212624, z: 1413.107788 },
 rotation: glam::Quat { x: 0.024452, y: 0.632951, z: -0.075734, w: 0.770091 },
 scale: glam::Vec3 { x: 1.4844, y: 1.3957, z: 1.3928 },
 }
@@ -6366,7 +6032,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000192)
         --
         #"shore-rock-0192"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 188.1597, y: 72.3516, z: 1415.1121 },
+translation: glam::Vec3 { x: 188.159698, y: 72.695023, z: 1415.112061 },
 rotation: glam::Quat { x: 0.008609, y: 0.324021, z: 0.048943, w: -0.944744 },
 scale: glam::Vec3 { x: 1.1035, y: 1.2438, z: 1.3034 },
 }
@@ -6400,7 +6066,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000193)
         --
         #"shore-rock-0193"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.4328, y: 72.2173, z: 1414.7827 },
+translation: glam::Vec3 { x: 191.432800, y: 72.335114, z: 1414.782715 },
 rotation: glam::Quat { x: 0.069214, y: 0.864732, z: -0.003291, w: -0.497431 },
 scale: glam::Vec3 { x: 1.6572, y: 1.5023, z: 1.5285 },
 }
@@ -6434,7 +6100,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000194)
         --
         #"shore-rock-0194"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 185.9659, y: 72.1113, z: 1410.4023 },
+translation: glam::Vec3 { x: 185.965897, y: 72.366737, z: 1410.402344 },
 rotation: glam::Quat { x: -0.003044, y: 0.917745, z: -0.054919, w: 0.393344 },
 scale: glam::Vec3 { x: 1.4792, y: 1.2287, z: 1.4514 },
 }
@@ -6468,7 +6134,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000195)
         --
         #"shore-rock-0195"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 184.54, y: 72.1694, z: 1408.8442 },
+translation: glam::Vec3 { x: 184.539993, y: 72.364609, z: 1408.844238 },
 rotation: glam::Quat { x: -0.034460, y: 0.548227, z: 0.012911, w: 0.835520 },
 scale: glam::Vec3 { x: 0.9371, y: 1.0970, z: 1.0620 },
 }
@@ -6502,7 +6168,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000196)
         --
         #"shore-rock-0196"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 178.1987, y: 72.4165, z: 1407.0262 },
+translation: glam::Vec3 { x: 178.198700, y: 72.661758, z: 1407.026245 },
 rotation: glam::Quat { x: 0.033044, y: 0.496604, z: 0.021283, w: -0.867087 },
 scale: glam::Vec3 { x: 1.2366, y: 1.0835, z: 1.2476 },
 }
@@ -6536,7 +6202,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000197)
         --
         #"shore-rock-0197"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 178.4051, y: 72.4295, z: 1406.3444 },
+translation: glam::Vec3 { x: 178.405106, y: 72.584816, z: 1406.344360 },
 rotation: glam::Quat { x: 0.000394, y: 0.519606, z: 0.006162, w: -0.854384 },
 scale: glam::Vec3 { x: 1.4702, y: 1.5237, z: 1.3478 },
 }
@@ -6564,7 +6230,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000198)
         --
         #"shore-rock-0198"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 177.6159, y: 72.4875, z: 1405.1088 },
+translation: glam::Vec3 { x: 177.615906, y: 72.597496, z: 1405.108765 },
 rotation: glam::Quat { x: 0.021790, y: 0.236777, z: -0.005537, w: 0.971304 },
 scale: glam::Vec3 { x: 1.5637, y: 1.4290, z: 1.8417 },
 }
@@ -6598,7 +6264,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000199)
         --
         #"shore-rock-0199"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 175.8986, y: 72.2625, z: 1405.6639 },
+translation: glam::Vec3 { x: 175.898605, y: 72.644653, z: 1405.663940 },
 rotation: glam::Quat { x: -0.006461, y: 0.839210, z: 0.007371, w: 0.543720 },
 scale: glam::Vec3 { x: 1.4348, y: 1.2893, z: 1.5434 },
 }
@@ -6632,7 +6298,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000200)
         --
         #"shore-rock-0200"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 177.0737, y: 72.0447, z: 1395.0511 },
+translation: glam::Vec3 { x: 177.073700, y: 72.261063, z: 1395.051147 },
 rotation: glam::Quat { x: -0.008062, y: 0.806168, z: -0.016111, w: 0.591413 },
 scale: glam::Vec3 { x: 1.1606, y: 1.0079, z: 1.1629 },
 }
@@ -6666,7 +6332,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000201)
         --
         #"shore-rock-0201"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 176.921, y: 71.9244, z: 1391.9301 },
+translation: glam::Vec3 { x: 176.921005, y: 72.159645, z: 1391.930054 },
 rotation: glam::Quat { x: 0.063542, y: 0.931805, z: 0.000015, w: -0.357353 },
 scale: glam::Vec3 { x: 1.1531, y: 1.1561, z: 0.9737 },
 }
@@ -6700,7 +6366,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000202)
         --
         #"shore-rock-0202"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 175.1558, y: 72.0498, z: 1389.9159 },
+translation: glam::Vec3 { x: 175.155807, y: 72.388626, z: 1389.915894 },
 rotation: glam::Quat { x: -0.025988, y: 0.621851, z: 0.025867, w: -0.782277 },
 scale: glam::Vec3 { x: 1.4600, y: 1.1408, z: 1.4799 },
 }
@@ -6734,7 +6400,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000203)
         --
         #"shore-rock-0203"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 176.8718, y: 71.9768, z: 1392.028 },
+translation: glam::Vec3 { x: 176.871796, y: 72.160439, z: 1392.027954 },
 rotation: glam::Quat { x: 0.002635, y: 0.369791, z: -0.005889, w: 0.929093 },
 scale: glam::Vec3 { x: 1.0242, y: 0.9545, z: 0.8791 },
 }
@@ -6768,7 +6434,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000204)
         --
         #"shore-rock-0204"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 176.5034, y: 71.9776, z: 1389.3081 },
+translation: glam::Vec3 { x: 176.503403, y: 72.251030, z: 1389.308105 },
 rotation: glam::Quat { x: 0.029682, y: 0.927246, z: 0.004357, w: 0.373249 },
 scale: glam::Vec3 { x: 1.0113, y: 0.9827, z: 0.9679 },
 }
@@ -6802,7 +6468,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000205)
         --
         #"shore-rock-0205"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 174.9095, y: 72.1697, z: 1382.2979 },
+translation: glam::Vec3 { x: 174.909500, y: 72.401924, z: 1382.297852 },
 rotation: glam::Quat { x: -0.054790, y: 0.091599, z: 0.016841, w: -0.994145 },
 scale: glam::Vec3 { x: 1.3058, y: 1.1284, z: 1.3798 },
 }
@@ -6836,7 +6502,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000206)
         --
         #"shore-rock-0206"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 175.0341, y: 72.2657, z: 1383.6609 },
+translation: glam::Vec3 { x: 175.034103, y: 72.423996, z: 1383.660889 },
 rotation: glam::Quat { x: 0.048028, y: 0.985700, z: 0.044709, w: 0.155208 },
 scale: glam::Vec3 { x: 0.9679, y: 0.9406, z: 1.0183 },
 }
@@ -6870,7 +6536,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000207)
         --
         #"shore-rock-0207"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 182.363, y: 72.0794, z: 1377.7106 },
+translation: glam::Vec3 { x: 182.363007, y: 72.190010, z: 1377.710571 },
 rotation: glam::Quat { x: 0.005808, y: 0.709712, z: 0.033935, w: -0.703650 },
 scale: glam::Vec3 { x: 1.6698, y: 1.6323, z: 1.7462 },
 }
@@ -6904,7 +6570,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000208)
         --
         #"shore-rock-0208"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 184.1633, y: 72.1653, z: 1375.0743 },
+translation: glam::Vec3 { x: 184.163300, y: 72.325172, z: 1375.074341 },
 rotation: glam::Quat { x: -0.027618, y: 0.084529, z: -0.013359, w: -0.995949 },
 scale: glam::Vec3 { x: 1.2462, y: 1.1485, z: 1.1185 },
 }
@@ -6938,7 +6604,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000209)
         --
         #"shore-rock-0209"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 187.3951, y: 72.2723, z: 1373.4626 },
+translation: glam::Vec3 { x: 187.395096, y: 72.367188, z: 1373.462646 },
 rotation: glam::Quat { x: 0.002637, y: 0.183541, z: -0.027188, w: -0.982632 },
 scale: glam::Vec3 { x: 1.4596, y: 1.5314, z: 1.3117 },
 }
@@ -6966,7 +6632,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000210)
         --
         #"shore-rock-0210"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 192.7417, y: 72.1879, z: 1375.2461 },
+translation: glam::Vec3 { x: 192.741699, y: 72.296181, z: 1375.246094 },
 rotation: glam::Quat { x: -0.038950, y: 0.523384, z: 0.046433, w: -0.849939 },
 scale: glam::Vec3 { x: 1.5663, y: 1.2735, z: 1.6223 },
 }
@@ -7000,7 +6666,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000211)
         --
         #"shore-rock-0211"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 193.8777, y: 72.2225, z: 1375.2106 },
+translation: glam::Vec3 { x: 193.877701, y: 72.417450, z: 1375.210571 },
 rotation: glam::Quat { x: -0.050161, y: 0.104125, z: -0.011711, w: -0.993229 },
 scale: glam::Vec3 { x: 1.2215, y: 0.9594, z: 1.0451 },
 }
@@ -7034,7 +6700,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000212)
         --
         #"shore-rock-0212"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 193.445, y: 72.4493, z: 1373.821 },
+translation: glam::Vec3 { x: 193.445007, y: 72.577911, z: 1373.821045 },
 rotation: glam::Quat { x: 0.051588, y: 0.968815, z: 0.041402, w: 0.238795 },
 scale: glam::Vec3 { x: 1.4781, y: 1.5503, z: 1.5669 },
 }
@@ -7068,7 +6734,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000213)
         --
         #"shore-rock-0213"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 272.9442, y: 48.7005, z: 114.7095 },
+translation: glam::Vec3 { x: 272.944214, y: 48.884136, z: 114.709503 },
 rotation: glam::Quat { x: -0.073149, y: 0.542346, z: 0.046133, w: -0.835692 },
 scale: glam::Vec3 { x: 2.0576, y: 1.7956, z: 2.2469 },
 }
@@ -7102,7 +6768,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000214)
         --
         #"shore-rock-0214"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 273.6584, y: 49.0079, z: 114.2027 },
+translation: glam::Vec3 { x: 273.658386, y: 49.197762, z: 114.202698 },
 rotation: glam::Quat { x: -0.058823, y: 0.844836, z: 0.035380, w: -0.530604 },
 scale: glam::Vec3 { x: 1.7418, y: 1.7045, z: 1.6674 },
 }
@@ -7136,7 +6802,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000215)
         --
         #"shore-rock-0215"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 269.261, y: 48.4793, z: 113.4052 },
+translation: glam::Vec3 { x: 269.260986, y: 48.666885, z: 113.405197 },
 rotation: glam::Quat { x: 0.012652, y: 0.925557, z: 0.015218, w: 0.378091 },
 scale: glam::Vec3 { x: 1.3576, y: 1.1222, z: 1.2273 },
 }
@@ -7170,7 +6836,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000216)
         --
         #"shore-rock-0216"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 268.9481, y: 48.6545, z: 112.2656 },
+translation: glam::Vec3 { x: 268.948090, y: 48.747124, z: 112.265602 },
 rotation: glam::Quat { x: -0.026594, y: 0.995631, z: -0.001333, w: 0.089502 },
 scale: glam::Vec3 { x: 1.3617, y: 1.1974, z: 1.3253 },
 }
@@ -7198,7 +6864,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000217)
         --
         #"shore-rock-0217"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 263.3807, y: 48.6428, z: 111.2004 },
+translation: glam::Vec3 { x: 263.380707, y: 48.786034, z: 111.200401 },
 rotation: glam::Quat { x: 0.008149, y: 0.904353, z: 0.017077, w: 0.426366 },
 scale: glam::Vec3 { x: 1.4669, y: 1.6698, z: 1.6787 },
 }
@@ -7232,7 +6898,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000218)
         --
         #"shore-rock-0218"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 257.1629, y: 48.2471, z: 113.5096 },
+translation: glam::Vec3 { x: 257.162903, y: 48.474522, z: 113.509598 },
 rotation: glam::Quat { x: -0.004686, y: 0.958123, z: -0.035608, w: -0.284097 },
 scale: glam::Vec3 { x: 1.7106, y: 1.3076, z: 1.7868 },
 }
@@ -7266,7 +6932,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000219)
         --
         #"shore-rock-0219"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 246.6347, y: 48.1451, z: 122.9182 },
+translation: glam::Vec3 { x: 246.634705, y: 48.222469, z: 122.918198 },
 rotation: glam::Quat { x: 0.016168, y: 0.843892, z: 0.053661, w: -0.533578 },
 scale: glam::Vec3 { x: 1.4398, y: 1.4492, z: 1.7832 },
 }
@@ -7300,7 +6966,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000220)
         --
         #"shore-rock-0220"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 243.7975, y: 48.3074, z: 125.9005 },
+translation: glam::Vec3 { x: 243.797501, y: 48.370274, z: 125.900497 },
 rotation: glam::Quat { x: 0.002013, y: 0.482141, z: -0.023782, w: 0.875769 },
 scale: glam::Vec3 { x: 1.1948, y: 1.4332, z: 1.4512 },
 }
@@ -7362,7 +7028,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000222)
         --
         #"shore-rock-0222"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 245.9537, y: 43.9798, z: 142.7049 },
+translation: glam::Vec3 { x: 245.953705, y: 44.118576, z: 142.704895 },
 rotation: glam::Quat { x: 0.067256, y: 0.647810, z: -0.025316, w: 0.758405 },
 scale: glam::Vec3 { x: 1.5430, y: 1.4954, z: 1.4632 },
 }
@@ -7396,7 +7062,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000223)
         --
         #"shore-rock-0223"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 243.3721, y: 43.8012, z: 144.9251 },
+translation: glam::Vec3 { x: 243.372101, y: 43.958984, z: 144.925095 },
 rotation: glam::Quat { x: 0.071398, y: 0.624885, z: -0.031798, w: 0.776795 },
 scale: glam::Vec3 { x: 1.6652, y: 1.9412, z: 1.8221 },
 }
@@ -7430,7 +7096,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000224)
         --
         #"shore-rock-0224"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 242.8684, y: 43.6935, z: 144.8291 },
+translation: glam::Vec3 { x: 242.868393, y: 43.818157, z: 144.829102 },
 rotation: glam::Quat { x: 0.015089, y: 0.894852, z: 0.018841, w: 0.445709 },
 scale: glam::Vec3 { x: 1.7309, y: 1.6090, z: 1.4719 },
 }
@@ -7464,7 +7130,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000225)
         --
         #"shore-rock-0225"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 235.3409, y: 44.0683, z: 150.5861 },
+translation: glam::Vec3 { x: 235.340897, y: 44.226601, z: 150.586105 },
 rotation: glam::Quat { x: 0.101175, y: 0.404932, z: -0.031947, w: 0.908170 },
 scale: glam::Vec3 { x: 1.5085, y: 1.4777, z: 1.4905 },
 }
@@ -7492,7 +7158,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000226)
         --
         #"shore-rock-0226"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 228.2801, y: 43.4729, z: 152.1911 },
+translation: glam::Vec3 { x: 228.280106, y: 43.760685, z: 152.191101 },
 rotation: glam::Quat { x: 0.078143, y: 0.718908, z: 0.041590, w: 0.689445 },
 scale: glam::Vec3 { x: 1.3360, y: 1.0329, z: 1.2837 },
 }
@@ -7526,7 +7192,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000227)
         --
         #"shore-rock-0227"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 227.7633, y: 43.8048, z: 152.8542 },
+translation: glam::Vec3 { x: 227.763306, y: 43.954391, z: 152.854202 },
 rotation: glam::Quat { x: 0.129293, y: 0.182452, z: -0.031542, w: 0.974166 },
 scale: glam::Vec3 { x: 1.2179, y: 1.4448, z: 1.4832 },
 }
@@ -7554,7 +7220,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000228)
         --
         #"shore-rock-0228"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 220.1401, y: 43.0951, z: 153.6152 },
+translation: glam::Vec3 { x: 220.140106, y: 43.324337, z: 153.615204 },
 rotation: glam::Quat { x: -0.016243, y: 0.180038, z: 0.048098, w: 0.982349 },
 scale: glam::Vec3 { x: 1.1943, y: 1.1054, z: 1.2013 },
 }
@@ -7588,7 +7254,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000229)
         --
         #"shore-rock-0229"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 222.3004, y: 43.4718, z: 153.7407 },
+translation: glam::Vec3 { x: 222.300400, y: 43.598747, z: 153.740707 },
 rotation: glam::Quat { x: -0.014392, y: 0.663640, z: -0.065516, w: -0.745038 },
 scale: glam::Vec3 { x: 1.3825, y: 1.0848, z: 1.3729 },
 }
@@ -7616,7 +7282,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000230)
         --
         #"shore-rock-0230"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 224.5868, y: 43.3222, z: 152.7725 },
+translation: glam::Vec3 { x: 224.586807, y: 43.452160, z: 152.772507 },
 rotation: glam::Quat { x: -0.085412, y: 0.705371, z: 0.015546, w: 0.703502 },
 scale: glam::Vec3 { x: 1.3128, y: 1.4677, z: 1.5624 },
 }
@@ -7650,7 +7316,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000231)
         --
         #"shore-rock-0231"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 216.1222, y: 44.4459, z: 157.0433 },
+translation: glam::Vec3 { x: 216.122192, y: 44.888397, z: 157.043304 },
 rotation: glam::Quat { x: -0.006236, y: 0.794712, z: 0.183306, w: -0.578613 },
 scale: glam::Vec3 { x: 1.3656, y: 1.4981, z: 1.3037 },
 }
@@ -7684,7 +7350,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000232)
         --
         #"shore-rock-0232"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 220.3967, y: 44.11, z: 155.3185 },
+translation: glam::Vec3 { x: 220.396698, y: 44.286877, z: 155.318497 },
 rotation: glam::Quat { x: 0.157612, y: 0.658300, z: 0.043477, w: 0.734786 },
 scale: glam::Vec3 { x: 1.5903, y: 1.4134, z: 1.5929 },
 }
@@ -7752,7 +7418,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000234)
         --
         #"shore-rock-0234"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.9576, y: 47.501, z: 146.3931 },
+translation: glam::Vec3 { x: 191.957596, y: 47.578129, z: 146.393097 },
 rotation: glam::Quat { x: -0.030858, y: 0.132975, z: -0.004505, w: -0.990629 },
 scale: glam::Vec3 { x: 1.4198, y: 1.1585, z: 1.2652 },
 }
@@ -7842,7 +7508,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000237)
         --
         #"shore-rock-0237"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 191.0489, y: 45.5218, z: 191.2643 },
+translation: glam::Vec3 { x: 191.048904, y: 45.970844, z: 191.264297 },
 rotation: glam::Quat { x: -0.045273, y: 0.986200, z: -0.158229, w: 0.017992 },
 scale: glam::Vec3 { x: 1.1031, y: 0.8995, z: 1.0480 },
 }
@@ -7876,7 +7542,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000238)
         --
         #"shore-rock-0238"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 177.8666, y: 45.5957, z: 199.7725 },
+translation: glam::Vec3 { x: 177.866592, y: 45.951710, z: 199.772507 },
 rotation: glam::Quat { x: -0.000807, y: 0.988304, z: -0.079167, w: 0.130337 },
 scale: glam::Vec3 { x: 1.2815, y: 1.2662, z: 1.4786 },
 }
@@ -7910,7 +7576,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000239)
         --
         #"shore-rock-0239"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 173.0427, y: 45.6933, z: 200.3486 },
+translation: glam::Vec3 { x: 173.042694, y: 45.847546, z: 200.348602 },
 rotation: glam::Quat { x: 0.008107, y: 0.748435, z: -0.119329, w: -0.652334 },
 scale: glam::Vec3 { x: 1.5653, y: 1.5130, z: 1.5210 },
 }
@@ -7944,7 +7610,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000240)
         --
         #"shore-rock-0240"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 168.6598, y: 45.6691, z: 201.603 },
+translation: glam::Vec3 { x: 168.659805, y: 45.924255, z: 201.602997 },
 rotation: glam::Quat { x: 0.040481, y: 0.010181, z: -0.025692, w: 0.998798 },
 scale: glam::Vec3 { x: 1.3612, y: 1.4500, z: 1.3301 },
 }
@@ -7978,7 +7644,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000241)
         --
         #"shore-rock-0241"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 168.497, y: 45.5669, z: 202.6884 },
+translation: glam::Vec3 { x: 168.496994, y: 45.806396, z: 202.688400 },
 rotation: glam::Quat { x: -0.013161, y: 0.426463, z: 0.011065, w: -0.904341 },
 scale: glam::Vec3 { x: 0.8896, y: 0.9090, z: 1.0767 },
 }
@@ -8012,7 +7678,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000242)
         --
         #"shore-rock-0242"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 170.1472, y: 45.7854, z: 202.7417 },
+translation: glam::Vec3 { x: 170.147202, y: 45.895527, z: 202.741699 },
 rotation: glam::Quat { x: 0.011588, y: 0.227724, z: -0.038333, w: -0.972902 },
 scale: glam::Vec3 { x: 1.8077, y: 1.6333, z: 1.5400 },
 }
@@ -8046,7 +7712,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000243)
         --
         #"shore-rock-0243"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 156.3844, y: 44.5801, z: 181.1974 },
+translation: glam::Vec3 { x: 156.384399, y: 45.062714, z: 181.197403 },
 rotation: glam::Quat { x: -0.036703, y: 0.969248, z: 0.174859, w: 0.169219 },
 scale: glam::Vec3 { x: 1.0951, y: 1.2466, z: 1.2871 },
 }
@@ -8080,7 +7746,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000244)
         --
         #"shore-rock-0244"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 163.5683, y: 43.501, z: 188.7268 },
+translation: glam::Vec3 { x: 163.568298, y: 43.701324, z: 188.726807 },
 rotation: glam::Quat { x: 0.015150, y: 0.929169, z: 0.184806, w: 0.319785 },
 scale: glam::Vec3 { x: 1.4985, y: 1.4031, z: 1.3986 },
 }
@@ -8108,7 +7774,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000245)
         --
         #"shore-rock-0245"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 160.0522, y: 41.6161, z: 192.5497 },
+translation: glam::Vec3 { x: 160.052200, y: 41.866440, z: 192.549698 },
 rotation: glam::Quat { x: -0.028589, y: 0.979864, z: 0.024029, w: -0.196143 },
 scale: glam::Vec3 { x: 1.3846, y: 1.2743, z: 1.3564 },
 }
@@ -8142,7 +7808,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000246)
         --
         #"shore-rock-0246"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 160.8694, y: 42.0421, z: 191.6034 },
+translation: glam::Vec3 { x: 160.869400, y: 42.179237, z: 191.603394 },
 rotation: glam::Quat { x: -0.083281, y: 0.690085, z: -0.019663, w: -0.718652 },
 scale: glam::Vec3 { x: 1.3216, y: 1.3479, z: 1.4858 },
 }
@@ -8170,7 +7836,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000247)
         --
         #"shore-rock-0247"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 149.1851, y: 45.4579, z: 206.8062 },
+translation: glam::Vec3 { x: 149.185104, y: 45.418888, z: 206.806198 },
 rotation: glam::Quat { x: 0.007258, y: 0.994206, z: -0.028806, w: 0.103307 },
 scale: glam::Vec3 { x: 1.2115, y: 1.3007, z: 1.2950 },
 }
@@ -8266,7 +7932,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000250)
         --
         #"shore-rock-0250"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 139.8145, y: 45.1302, z: 207.6652 },
+translation: glam::Vec3 { x: 139.814499, y: 45.048264, z: 207.665207 },
 rotation: glam::Quat { x: 0.019407, y: 0.436554, z: -0.025931, w: -0.899095 },
 scale: glam::Vec3 { x: 1.3291, y: 1.2080, z: 1.3655 },
 }
@@ -8300,7 +7966,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000251)
         --
         #"shore-rock-0251"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 145.1185, y: 45.3184, z: 208.0822 },
+translation: glam::Vec3 { x: 145.118500, y: 45.391964, z: 208.082199 },
 rotation: glam::Quat { x: 0.019326, y: 0.277179, z: 0.021287, w: -0.960388 },
 scale: glam::Vec3 { x: 1.4623, y: 1.3596, z: 1.5747 },
 }
@@ -8368,7 +8034,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000253)
         --
         #"shore-rock-0253"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 136.5479, y: 45.0089, z: 207.3963 },
+translation: glam::Vec3 { x: 136.547897, y: 45.198154, z: 207.396301 },
 rotation: glam::Quat { x: -0.021706, y: 0.985914, z: -0.064997, w: -0.152572 },
 scale: glam::Vec3 { x: 1.3258, y: 1.1955, z: 1.3667 },
 }
@@ -8402,7 +8068,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000254)
         --
         #"shore-rock-0254"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 135.6411, y: 45.1679, z: 207.3449 },
+translation: glam::Vec3 { x: 135.641098, y: 45.277035, z: 207.344894 },
 rotation: glam::Quat { x: 0.036338, y: 0.534179, z: -0.018741, w: -0.844382 },
 scale: glam::Vec3 { x: 1.5496, y: 1.5279, z: 1.7166 },
 }
@@ -8464,7 +8130,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000256)
         --
         #"shore-rock-0256"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 121.2349, y: 44.0839, z: 206.1496 },
+translation: glam::Vec3 { x: 121.234901, y: 44.576420, z: 206.149597 },
 rotation: glam::Quat { x: 0.038758, y: 0.797280, z: -0.173340, w: -0.576885 },
 scale: glam::Vec3 { x: 1.4725, y: 1.2000, z: 1.2391 },
 }
@@ -8498,7 +8164,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000257)
         --
         #"shore-rock-0257"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 122.3478, y: 44.8644, z: 204.2694 },
+translation: glam::Vec3 { x: 122.347801, y: 44.935310, z: 204.269394 },
 rotation: glam::Quat { x: 0.091249, y: 0.551577, z: -0.096599, w: -0.823471 },
 scale: glam::Vec3 { x: 1.7623, y: 1.3942, z: 1.6342 },
 }
@@ -8532,7 +8198,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000258)
         --
         #"shore-rock-0258"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 123.0369, y: 44.3832, z: 203.8512 },
+translation: glam::Vec3 { x: 123.036903, y: 44.678486, z: 203.851196 },
 rotation: glam::Quat { x: 0.049400, y: 0.752587, z: -0.121364, w: -0.645325 },
 scale: glam::Vec3 { x: 1.4404, y: 1.1342, z: 1.3931 },
 }
@@ -8560,7 +8226,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000259)
         --
         #"shore-rock-0259"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 76.4428, y: 43.2281, z: 186.8719 },
+translation: glam::Vec3 { x: 76.442802, y: 43.336185, z: 186.871902 },
 rotation: glam::Quat { x: -0.081612, y: 0.373862, z: 0.008105, w: 0.923851 },
 scale: glam::Vec3 { x: 1.3451, y: 1.1780, z: 1.2872 },
 }
@@ -8588,7 +8254,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000260)
         --
         #"shore-rock-0260"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 78.5314, y: 41.8136, z: 206.7952 },
+translation: glam::Vec3 { x: 78.531403, y: 42.212284, z: 206.795197 },
 rotation: glam::Quat { x: 0.017700, y: 0.978793, z: -0.167182, w: -0.117054 },
 scale: glam::Vec3 { x: 1.2582, y: 0.9673, z: 1.2467 },
 }
@@ -8622,7 +8288,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000261)
         --
         #"shore-rock-0261"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 79.2112, y: 42.9693, z: 208.2286 },
+translation: glam::Vec3 { x: 79.211197, y: 43.129417, z: 208.228607 },
 rotation: glam::Quat { x: -0.144918, y: 0.520491, z: -0.083230, w: 0.837353 },
 scale: glam::Vec3 { x: 1.6819, y: 1.3614, z: 1.7496 },
 }
@@ -8656,7 +8322,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000262)
         --
         #"shore-rock-0262"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 79.7996, y: 42.3708, z: 206.6167 },
+translation: glam::Vec3 { x: 79.799599, y: 42.676151, z: 206.616699 },
 rotation: glam::Quat { x: 0.150557, y: 0.424583, z: -0.113054, w: -0.885596 },
 scale: glam::Vec3 { x: 1.1624, y: 0.8691, z: 1.0858 },
 }
@@ -8690,7 +8356,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000263)
         --
         #"shore-rock-0263"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 75.506, y: 42.2709, z: 209.6523 },
+translation: glam::Vec3 { x: 75.505997, y: 42.811893, z: 209.652298 },
 rotation: glam::Quat { x: -0.013810, y: 0.878528, z: -0.168442, w: -0.446794 },
 scale: glam::Vec3 { x: 1.2834, y: 1.1136, z: 1.0577 },
 }
@@ -8724,7 +8390,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000264)
         --
         #"shore-rock-0264"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 75.6288, y: 41.826, z: 208.3847 },
+translation: glam::Vec3 { x: 75.628799, y: 42.016495, z: 208.384705 },
 rotation: glam::Quat { x: 0.158940, y: 0.570622, z: -0.095728, w: -0.799978 },
 scale: glam::Vec3 { x: 1.3671, y: 1.3932, z: 1.3672 },
 }
@@ -8752,7 +8418,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000265)
         --
         #"shore-rock-0265"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 75.4798, y: 43.2237, z: 210.4577 },
+translation: glam::Vec3 { x: 75.479797, y: 43.262451, z: 210.457703 },
 rotation: glam::Quat { x: 0.028639, y: 0.191612, z: -0.039646, w: -0.980251 },
 scale: glam::Vec3 { x: 0.9435, y: 0.9466, z: 1.0718 },
 }
@@ -8786,7 +8452,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000266)
         --
         #"shore-rock-0266"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 52.2417, y: 39.2982, z: 204.0034 },
+translation: glam::Vec3 { x: 52.241699, y: 39.721111, z: 204.003403 },
 rotation: glam::Quat { x: -0.112285, y: 0.619418, z: 0.108980, w: -0.769309 },
 scale: glam::Vec3 { x: 1.4201, y: 1.1186, z: 1.4732 },
 }
@@ -8820,7 +8486,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000267)
         --
         #"shore-rock-0267"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 53.7371, y: 38.7233, z: 205.1676 },
+translation: glam::Vec3 { x: 53.737099, y: 39.007252, z: 205.167603 },
 rotation: glam::Quat { x: 0.015360, y: 0.931104, z: 0.137231, w: 0.337604 },
 scale: glam::Vec3 { x: 1.0266, y: 0.8740, z: 0.9597 },
 }
@@ -8854,7 +8520,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000268)
         --
         #"shore-rock-0268"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 48.6691, y: 39.7735, z: 203.8188 },
+translation: glam::Vec3 { x: 48.669102, y: 40.229118, z: 203.818802 },
 rotation: glam::Quat { x: -0.098033, y: 0.789877, z: 0.124459, w: -0.592448 },
 scale: glam::Vec3 { x: 1.3646, y: 1.1682, z: 1.2774 },
 }
@@ -8888,7 +8554,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000269)
         --
         #"shore-rock-0269"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: 48.3777, y: 40.4266, z: 203.0482 },
+translation: glam::Vec3 { x: 48.377701, y: 40.793091, z: 203.048203 },
 rotation: glam::Quat { x: -0.179911, y: 0.000479, z: 0.020622, w: -0.983467 },
 scale: glam::Vec3 { x: 1.1887, y: 0.9282, z: 1.0142 },
 }
@@ -8922,7 +8588,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000270)
         --
         #"shore-rock-0270"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -38.5728, y: 40.4271, z: 197.2128 },
+translation: glam::Vec3 { x: -38.572800, y: 40.642986, z: 197.212799 },
 rotation: glam::Quat { x: -0.044236, y: 0.976838, z: 0.002966, w: -0.209337 },
 scale: glam::Vec3 { x: 1.1118, y: 1.3116, z: 1.3433 },
 }
@@ -8956,7 +8622,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000271)
         --
         #"shore-rock-0271"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -69.4385, y: 39.7596, z: 213.0041 },
+translation: glam::Vec3 { x: -69.438499, y: 40.002323, z: 213.004105 },
 rotation: glam::Quat { x: 0.014297, y: 0.350205, z: 0.019674, w: -0.936357 },
 scale: glam::Vec3 { x: 1.2906, y: 1.3869, z: 1.5756 },
 }
@@ -8990,7 +8656,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000272)
         --
         #"shore-rock-0272"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -70.8767, y: 39.8384, z: 213.4831 },
+translation: glam::Vec3 { x: -70.876701, y: 40.114468, z: 213.483093 },
 rotation: glam::Quat { x: -0.011741, y: 0.995602, z: -0.009666, w: 0.092439 },
 scale: glam::Vec3 { x: 1.4027, y: 1.3732, z: 1.4826 },
 }
@@ -9018,7 +8684,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000273)
         --
         #"shore-rock-0273"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -70.4039, y: 39.4777, z: 230.1248 },
+translation: glam::Vec3 { x: -70.403900, y: 39.624321, z: 230.124802 },
 rotation: glam::Quat { x: -0.005729, y: 0.838213, z: -0.018663, w: 0.544994 },
 scale: glam::Vec3 { x: 1.1474, y: 1.2416, z: 1.1285 },
 }
@@ -9052,7 +8718,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000274)
         --
         #"shore-rock-0274"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -71.3791, y: 39.5132, z: 230.9554 },
+translation: glam::Vec3 { x: -71.379097, y: 39.611908, z: 230.955399 },
 rotation: glam::Quat { x: 0.019268, y: 0.038790, z: -0.006233, w: 0.999042 },
 scale: glam::Vec3 { x: 1.4854, y: 1.4830, z: 1.4473 },
 }
@@ -9080,7 +8746,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000275)
         --
         #"shore-rock-0275"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -85.0325, y: 39.2127, z: 221.005 },
+translation: glam::Vec3 { x: -85.032501, y: 39.406242, z: 221.005005 },
 rotation: glam::Quat { x: 0.020246, y: 0.844767, z: 0.007676, w: 0.534696 },
 scale: glam::Vec3 { x: 1.1907, y: 1.0541, z: 1.2074 },
 }
@@ -9114,7 +8780,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000276)
         --
         #"shore-rock-0276"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -82.9307, y: 39.4496, z: 219.5828 },
+translation: glam::Vec3 { x: -82.930702, y: 39.561184, z: 219.582794 },
 rotation: glam::Quat { x: 0.017152, y: 0.366752, z: -0.012006, w: -0.930083 },
 scale: glam::Vec3 { x: 1.3889, y: 1.1584, z: 1.3897 },
 }
@@ -9142,7 +8808,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000277)
         --
         #"shore-rock-0277"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -82.957, y: 39.4087, z: 219.721 },
+translation: glam::Vec3 { x: -82.957001, y: 39.540897, z: 219.720993 },
 rotation: glam::Quat { x: 0.009659, y: 0.025021, z: 0.026456, w: 0.999290 },
 scale: glam::Vec3 { x: 1.4910, y: 1.6717, z: 1.5362 },
 }
@@ -9176,7 +8842,7 @@ jackdaw_scene_types::node_id::SceneNodeId(6852620029000000278)
         --
         #"shore-rock-0278"
         bevy_transform::components::transform::Transform {
-translation: glam::Vec3 { x: -78.1218, y: 39.1789, z: 240.5537 },
+translation: glam::Vec3 { x: -78.121803, y: 39.354721, z: 240.553696 },
 rotation: glam::Quat { x: -0.023376, y: 0.636608, z: 0.025323, w: 0.770417 },
 scale: glam::Vec3 { x: 1.1570, y: 0.9905, z: 1.2027 },
 }

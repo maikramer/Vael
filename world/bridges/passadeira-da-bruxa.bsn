@@ -53,6 +53,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "passadeira-bruxa-bridge" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-49 1.5096 214.5" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
@@ -665,7 +666,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.passadeira-shroom-4"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -44.6, y: 1.7026, z: 225.4 },
+            translation: glam::Vec3 { x: -44.599998, y: 1.585207, z: 225.399994 },
             rotation: glam::Quat { x: 0.0, y: 0.573576, z: 0.0, w: 0.819152 },
             scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
         }
@@ -767,7 +768,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -817,7 +818,7 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -862,7 +863,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.passadeira-prop-3"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -55.8, y: 1.8709, z: 204.7 },
+            translation: glam::Vec3 { x: -58.200001, y: 2.059861, z: 207.000000 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
             scale: glam::Vec3 { x: 1.3, y: 1.2, z: 1.3 },
         }
@@ -882,7 +883,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.passadeira-prop-3" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-55.8 1.8709 204.7" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.2 2.1727 207" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0; scale: 1.3 1.2 1.3" },
             ],
             text: "",
@@ -912,7 +913,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.passadeira-prop-4"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -43.6, y: 1.9791, z: 222.5 },
+            translation: glam::Vec3 { x: -43.599998, y: 1.874417, z: 222.500000 },
             rotation: glam::Quat { x: 0.0, y: -0.382683, z: 0.0, w: 0.92388 },
             scale: glam::Vec3 { x: 1.3, y: 1.2, z: 1.3 },
         }
