@@ -1,0 +1,328 @@
+#"routes"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+    rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+    scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: false,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4333088075591514265)
+bevy_ecs::hierarchy::Children [
+    #"Estrada das Salinas"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estrada das Salinas" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-835 -280 -866 -250 -932 -250 -954 -228 -1020 -228 -1086 -228 -1130 -228 -1174 -272 -1218 -316 -1240 -294 -1262 -294 -1284 -272 -1328 -272 -1320 -280 -1350 -272 -1416 -272 -1482 -272 -1548 -272 -1614 -272 -1680 -272 -1702 -272 -1724 -250 -1790 -250 -1812 -250 -1834 -228 -1856 -228 -1878 -206 -1900 -206 -1944 -162 -2010 -162 -2032 -162 -2054 -184 -2076 -184 -2120 -228 -2130 -230 -2142 -206 -2186 -162 -2208 -140 -2208 -74 -2208 -8 -2208 58 -2208 124 -2208 190 -2252 234 -2296 278 -2340 322 -2362 344 -2370 335 -2384 344 -2450 344 -2516 344 -2582 344 -2590 335" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1145472219376929739)
+    --
+    #"Trilho dos Freixos"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Trilho dos Freixos" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-1320 -280 -1328 -294 -1328 -360 -1328 -426 -1328 -492 -1328 -514 -1372 -558 -1372 -602 -1416 -646 -1460 -690 -1482 -712 -1482 -734 -1504 -756 -1504 -778 -1526 -800 -1526 -822 -1520 -815 -1526 -844 -1526 -910 -1526 -976 -1526 -1042 -1526 -1108 -1526 -1174 -1526 -1240 -1526 -1306 -1526 -1350 -1520 -1350 -1526 -1372 -1526 -1438 -1526 -1482 -1482 -1526 -1482 -1592 -1438 -1636 -1394 -1680 -1394 -1724 -1350 -1768 -1328 -1790 -1325 -1780" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2308333513113368242)
+    --
+    #"Caminho do Norte"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Caminho do Norte" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-1325 -1780 -1306 -1812 -1262 -1856 -1218 -1900 -1174 -1944 -1152 -1966 -1108 -1966 -1086 -1988 -1064 -1988 -1042 -2010 -976 -2010 -910 -2010 -888 -2010 -866 -2032 -822 -2032 -778 -2076 -734 -2120 -740 -2130 -712 -2142 -668 -2186 -646 -2208 -624 -2208 -580 -2252 -536 -2296 -492 -2340 -448 -2384 -404 -2428 -360 -2472 -316 -2472 -272 -2516 -228 -2560 -184 -2604 -140 -2648 -96 -2692 -52 -2736 14 -2736 80 -2736 124 -2736 125 -2735 146 -2736 212 -2736 256 -2736 300 -2692 344 -2648 388 -2604 432 -2560 476 -2516 520 -2472 564 -2428 608 -2384 652 -2340 696 -2296 740 -2252 762 -2230 770 -2230 784 -2208 806 -2208 850 -2164 894 -2120 938 -2076 982 -2032 1026 -1988 1070 -1944 1114 -1900 1158 -1856 1202 -1812 1246 -1768 1268 -1746 1334 -1746 1400 -1746 1410 -1740" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1218940823986914406)
+    --
+    #"Subida do Vidro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Subida do Vidro" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "1450 -706 1444 -734 1444 -778 1466 -800 1466 -866 1466 -888 1510 -932 1554 -976 1554 -1042 1554 -1064 1550 -1060 1554 -1086 1554 -1152 1554 -1218 1554 -1284 1554 -1350 1554 -1416 1554 -1438 1510 -1482 1466 -1526 1422 -1570 1400 -1592 1400 -1658 1400 -1724 1400 -1746 1410 -1740" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3768360079813412165)
+    --
+    #"Estrada do Barro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estrada do Barro" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "858 756 872 740 916 696 938 696 982 652 1004 630 1070 630 1136 630 1158 630 1202 674 1224 674 1246 696 1312 696 1334 696 1330 690 1356 696 1422 696 1488 696 1554 696 1620 696 1686 696 1708 696 1730 674 1774 674 1818 630 1840 608 1840 610 1862 608 1928 608 1994 608 2016 586 2082 586 2126 542 2170 498 2192 476 2258 476 2324 476 2320 470" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2974920649161937956)
+    --
+    #"Rota das Sete Margens"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Rota das Sete Margens" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "172 1370 190 1356 256 1356 322 1356 388 1356 454 1356 476 1356 520 1400 560 1440 586 1444 652 1444 674 1444 696 1466 718 1466 762 1510 784 1510 828 1554 872 1598 938 1598 982 1598 1026 1642 1070 1686 1114 1730 1158 1730 1180 1752 1202 1752 1246 1708 1268 1730 1312 1730 1320 1735" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2008289830767243567)
+    --
+    #"Caminho Comprido"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Caminho Comprido" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "560 1440 564 1466 564 1532 564 1598 564 1664 564 1730 564 1796 520 1840 476 1884 432 1928 432 1994 432 2038 430 2040 432 2060 432 2104 388 2148 344 2192 300 2236 256 2280 234 2302 234 2368 234 2434 234 2478 190 2522 146 2566 102 2610 80 2632 90 2630 58 2632 -8 2632 -52 2588 -74 2566 -140 2566 -206 2566 -272 2566 -338 2566 -404 2566 -470 2566 -536 2566 -602 2566 -668 2566 -712 2566 -734 2544 -740 2550 -756 2522 -800 2522 -844 2478 -888 2434 -932 2390 -976 2346 -1020 2302 -1042 2302 -1086 2258 -1108 2258 -1152 2214 -1174 2192 -1196 2192 -1218 2170 -1284 2170 -1350 2170 -1416 2170 -1482 2170 -1504 2170 -1526 2148 -1548 2148 -1592 2104 -1658 2104 -1650 2110" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "4.0" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3610543292890045989)
+    --
+    #"Chegada · Cais do Poente"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada · Cais do Poente" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-2590 335 -2731.5 335" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4280718153342173075)
+    --
+    #"Chegada · Cais da Lanterna"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada · Cais da Lanterna" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-3210 375 -3146.51 318.49" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4074025262878313291)
+    --
+    #"Chegada · Cais dos Juncos"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada · Cais dos Juncos" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-3070 -680 -2996.55 -667.514" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3657648432877024412)
+    --
+    #"Chegada · Cais dos Freixos"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada · Cais dos Freixos" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-1325 -1780 -1350 -1812 -1394 -1856 -1394 -1878 -1438 -1922 -1431.19 -1943.09" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3039162457929495675)
+    --
+    #"Chegada · Cais do Vidro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada · Cais do Vidro" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "1410 -1740 1422 -1768 1466 -1812 1488 -1812 1482.42 -1827.42" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(239034216876439098)
+    --
+    #"Chegada · Cais das Sete Margens"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000 },
+        scale: glam::Vec3 { x: 1.0000, y: 1.0000, z: 1.0000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Road",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada · Cais das Sete Margens" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "1320 1735 1334 1752 1378 1796 1422 1796 1420.99 1798.4" },
+            bevy_world_xml::bsn::WorldProp { key: "width", value: "2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.43" },
+            bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_trail/albedo.ktx2" },
+            bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_trail/normal.ktx2" },
+        ],
+        text: "",
+        pose: false,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2512911037830516729)
+]

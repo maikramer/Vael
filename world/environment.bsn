@@ -64,9 +64,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "WorldBorder",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "1800" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "3600" },
                 bevy_world_xml::bsn::WorldProp { key: "warn-seconds", value: "5" },
-                bevy_world_xml::bsn::WorldProp { key: "margin", value: "80" },
+                bevy_world_xml::bsn::WorldProp { key: "margin", value: "160" },
             ],
             text: "",
             origin_file: "world/environment.xml",
@@ -297,6 +297,66 @@ bevy_ecs::hierarchy::Children [
         }
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216084024)
         --
+        #"Costa do Poente"
+        bevy_transform::components::transform::Transform
+        bevy_ext_scene::BiomeRegionSpec {
+            id: "costa",
+            display_name: core::option::Option::Some("Costa do Poente"),
+            polygon: core::option::Option::Some("[-4040,-4040;-1800,-4040;-1800,4040;-4040,4040]"),
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [],
+            text: "",
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4223359399462145592)
+        --
+        #"Bosques dos Freixos"
+        bevy_transform::components::transform::Transform
+        bevy_ext_scene::BiomeRegionSpec {
+            id: "freixos",
+            display_name: core::option::Option::Some("Bosques dos Freixos"),
+            polygon: core::option::Option::Some("[-1800,-4040;640,-4040;640,-1770;-1800,-1770]"),
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [],
+            text: "",
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3323579259384513155)
+        --
+        #"Serra do Vidro"
+        bevy_transform::components::transform::Transform
+        bevy_ext_scene::BiomeRegionSpec {
+            id: "vidro",
+            display_name: core::option::Option::Some("Serra do Vidro"),
+            polygon: core::option::Option::Some("[640,-4040;4040,-4040;4040,1200;1800,1200;1800,-1650;640,-1650]"),
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [],
+            text: "",
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2608693795790489466)
+        --
+        #"Sete Margens"
+        bevy_transform::components::transform::Transform
+        bevy_ext_scene::BiomeRegionSpec {
+            id: "sete_margens",
+            display_name: core::option::Option::Some("Sete Margens"),
+            polygon: core::option::Option::Some("[1800,1200;4040,1200;4040,4040;-1800,4040;-1800,1650;1800,1650]"),
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [],
+            text: "",
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3625373521941583881)
+        --
         #"BiomeRegion dark-forest"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
@@ -306,7 +366,7 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BiomeRegionSpec {
             id: "dark-forest",
             display_name: core::option::Option::Some("Floresta Sombria"),
-            polygon: core::option::Option::Some("[-56,56;56,56;4040,4040;-4040,4040]"),
+            polygon: core::option::Option::Some("[-56,56;56,56;1800,1650;-1800,1650]"),
             tint: core::option::Option::Some("#1a3320"),
             fog_density: core::option::Option::Some(0.0008),
             pp_exposure: core::option::Option::Some(0.78),
@@ -331,7 +391,7 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BiomeRegionSpec {
             id: "desert",
             display_name: core::option::Option::Some("Ermo Rubro"),
-            polygon: core::option::Option::Some("[56,-56;56,56;4040,4040;4040,-4040]"),
+            polygon: core::option::Option::Some("[56,-56;56,56;1800,1650;1800,-1650;640,-1650]"),
             tint: core::option::Option::Some("#c2a878"),
             fog_density: core::option::Option::Some(0.0006),
             pp_exposure: core::option::Option::Some(0.74),
@@ -358,7 +418,7 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BiomeRegionSpec {
             id: "swamp",
             display_name: core::option::Option::Some("Pântano da Bruma"),
-            polygon: core::option::Option::Some("[-56,-56;-56,56;-4040,4040;-4040,-4040]"),
+            polygon: core::option::Option::Some("[-56,-56;-56,56;-1800,1650;-1800,-1770]"),
             tint: core::option::Option::Some("#3a4a30"),
             fog_density: core::option::Option::Some(0.003),
             pp_exposure: core::option::Option::Some(0.7),
@@ -383,7 +443,7 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BiomeRegionSpec {
             id: "frozen-peaks",
             display_name: core::option::Option::Some("Picos Gelados"),
-            polygon: core::option::Option::Some("[-240,-240;240,-240;4040,-4040;-4040,-4040]"),
+            polygon: core::option::Option::Some("[-56,-56;56,-56;640,-1650;640,-1770;-1800,-1770]"),
             tint: core::option::Option::Some("#cdd9e6"),
             fog_density: core::option::Option::Some(0.0006),
             pp_exposure: core::option::Option::Some(0.78),

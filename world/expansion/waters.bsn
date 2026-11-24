@@ -1,0 +1,119 @@
+#"Águas exteriores"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(2998369019882736180)
+bevy_ecs::hierarchy::Children [
+    #"Oceano do Poente"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Ocean",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Oceano do Poente" },
+            bevy_world_xml::bsn::WorldProp { key: "min", value: "-28000 -28000" },
+            bevy_world_xml::bsn::WorldProp { key: "max", value: "-2075 28000" },
+            bevy_world_xml::bsn::WorldProp { key: "water-level", value: "18" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#2b6574" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.97" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(727126154875436990)
+    --
+    #"Lago dos Freixos"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Lake",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Lago dos Freixos" },
+            bevy_world_xml::bsn::WorldProp { key: "at", value: "-1570 -2170" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "235" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "16" },
+            bevy_world_xml::bsn::WorldProp { key: "water-level", value: "46" },
+            bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "seed", value: "426" },
+            bevy_world_xml::bsn::WorldProp { key: "axis", value: "22" },
+            bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.17" },
+            bevy_world_xml::bsn::WorldProp { key: "lobes", value: "0.65" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#27677b" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.93" },
+            bevy_world_xml::bsn::WorldProp { key: "ripple", value: "0.48" },
+            bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2858508143683474355)
+    --
+    #"Lago do Vidro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Lake",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Lago do Vidro" },
+            bevy_world_xml::bsn::WorldProp { key: "at", value: "1650 -1995" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "190" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "21" },
+            bevy_world_xml::bsn::WorldProp { key: "water-level", value: "78" },
+            bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "seed", value: "381" },
+            bevy_world_xml::bsn::WorldProp { key: "axis", value: "132" },
+            bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.17" },
+            bevy_world_xml::bsn::WorldProp { key: "lobes", value: "0.65" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#34758c" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.93" },
+            bevy_world_xml::bsn::WorldProp { key: "ripple", value: "0.48" },
+            bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4405905710745641394)
+    --
+    #"Lago das Sete Margens"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Lake",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Lago das Sete Margens" },
+            bevy_world_xml::bsn::WorldProp { key: "at", value: "1650 2170" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "320" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "19" },
+            bevy_world_xml::bsn::WorldProp { key: "water-level", value: "55" },
+            bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "seed", value: "511" },
+            bevy_world_xml::bsn::WorldProp { key: "axis", value: "63" },
+            bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.17" },
+            bevy_world_xml::bsn::WorldProp { key: "lobes", value: "0.65" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#27677b" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.93" },
+            bevy_world_xml::bsn::WorldProp { key: "ripple", value: "0.48" },
+            bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2252266473592178920)
+]
