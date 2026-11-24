@@ -1,0 +1,1996 @@
+#"Margens e caminhos de Concórdia"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+    rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+    scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4205618749946299942)
+bevy_ecs::hierarchy::Children [
+    #"Margem de Concórdia · caminho do cais"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Margem de Concórdia · caminho do cais" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(951557770962345148)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Margem de Concórdia 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.000000, y: 37.920885, z: -43.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1993679, z: 0.0, w: 0.9799247 },
+            scale: glam::Vec3 { x: 1.20000, y: 1.20000, z: 1.20000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Margem de Concórdia 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5588967102271017319)
+        --
+        #"Carvalho · Margem de Concórdia 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.000000, y: 38.704355, z: 10.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8433914, z: 0.0, w: -0.5372996 },
+            scale: glam::Vec3 { x: 1.13000, y: 1.13000, z: 1.13000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Margem de Concórdia 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3145490012176394412)
+        --
+        #"Carvalho · Margem de Concórdia 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.000000, y: 38.219926, z: 27.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8191520, z: 0.0, w: 0.5735764 },
+            scale: glam::Vec3 { x: 1.06000, y: 1.06000, z: 1.06000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Margem de Concórdia 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7698548471217690658)
+        --
+        #"Carvalho · Margem de Concórdia 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -48.000000, y: 38.727708, z: 45.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6691306, z: 0.0, w: 0.7431448 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Margem de Concórdia 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1941410641351609658)
+        --
+        #"Carvalho · Margem de Concórdia 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -48.000000, y: 41.193239, z: 71.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8571673, z: 0.0, w: -0.5150381 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Margem de Concórdia 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7149856197997201453)
+        --
+        #"Salgueiro · Margem de Concórdia 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.000000, y: 31.392133, z: -25.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9659258, z: 0.0, w: -0.2588190 },
+            scale: glam::Vec3 { x: 1.05000, y: 1.05000, z: 1.05000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Margem de Concórdia 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6392119593358920841)
+        --
+        #"Salgueiro · Margem de Concórdia 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.000000, y: 31.044502, z: -4.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8870108, z: 0.0, w: 0.4617486 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Margem de Concórdia 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4888194926761360939)
+        --
+        #"Salgueiro · Margem de Concórdia 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -95.000000, y: 30.808853, z: 25.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2164396, z: 0.0, w: 0.9762960 },
+            scale: glam::Vec3 { x: 0.90000, y: 0.90000, z: 0.90000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Margem de Concórdia 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5889535759845744044)
+        --
+        #"Salgueiro · Margem de Concórdia 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.000000, y: 37.078004, z: 62.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8987940, z: 0.0, w: 0.4383711 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Margem de Concórdia 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(860158937694752765)
+        --
+        #"Salgueiro · Margem de Concórdia 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -101.000000, y: 40.931390, z: 81.000000 },
+            rotation: glam::Quat { x: 0.0, y: 1.0000000, z: 0.0, w: 0.0000000 },
+            scale: glam::Vec3 { x: 1.10000, y: 1.10000, z: 1.10000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Margem de Concórdia 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2768914000751210899)
+        --
+        #"Pedra coberta de musgo · Margem de Concórdia 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.000000, y: 38.335991, z: -20.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4617486, z: 0.0, w: 0.8870108 },
+            scale: glam::Vec3 { x: 0.75000, y: 0.48000, z: 0.75000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Margem de Concórdia 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5334987873216541571)
+        --
+        #"Pedra coberta de musgo · Margem de Concórdia 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -53.000000, y: 37.659294, z: 9.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8788171, z: 0.0, w: 0.4771588 },
+            scale: glam::Vec3 { x: 0.65000, y: 0.41600, z: 0.65000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Margem de Concórdia 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3995758672594847330)
+        --
+        #"Pedra coberta de musgo · Margem de Concórdia 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.000000, y: 38.979984, z: 51.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7253744, z: 0.0, w: 0.6883546 },
+            scale: glam::Vec3 { x: 0.71000, y: 0.45440, z: 0.71000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Margem de Concórdia 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(649820845690420183)
+        --
+        #"Pedra coberta de musgo · Margem de Concórdia 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.000000, y: 31.000729, z: 11.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4771588, z: 0.0, w: 0.8788171 },
+            scale: glam::Vec3 { x: 0.86000, y: 0.55040, z: 0.86000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Margem de Concórdia 04" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7534993819638396232)
+        --
+        #"Pedra coberta de musgo · Margem de Concórdia 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -93.000000, y: 30.924520, z: 17.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8910065, z: 0.0, w: 0.4539905 },
+            scale: glam::Vec3 { x: 0.62000, y: 0.39680, z: 0.62000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Margem de Concórdia 05" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1260226883517465826)
+        --
+        #"Pedra coberta de musgo · Margem de Concórdia 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -91.000000, y: 33.534325, z: 46.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1822355, z: 0.0, w: 0.9832549 },
+            scale: glam::Vec3 { x: 1.08000, y: 0.69120, z: 1.08000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Margem de Concórdia 06" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3692882108192472103)
+        --
+        #"Junco da margem · Margem de Concórdia 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -85.000000, y: 35.251350, z: 5.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7660444, z: 0.0, w: -0.6427876 },
+            scale: glam::Vec3 { x: 2.12000, y: 2.12000, z: 2.12000 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Margem de Concórdia 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1192829585652074364)
+        --
+        #"Junco da margem · Margem de Concórdia 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -85.000000, y: 35.639957, z: 11.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3746066, z: 0.0, w: 0.9271839 },
+            scale: glam::Vec3 { x: 1.64300, y: 1.64300, z: 1.64300 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Margem de Concórdia 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7669599737914596044)
+        --
+        #"Junco da margem · Margem de Concórdia 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -54.000000, y: 37.086048, z: 19.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6883546, z: 0.0, w: -0.7253744 },
+            scale: glam::Vec3 { x: 2.43800, y: 2.43800, z: 2.43800 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Margem de Concórdia 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4444865073151120251)
+        --
+        #"Junco da margem · Margem de Concórdia 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.00000, y: 38.46430, z: 43.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0610485, z: 0.0, w: 0.9981348 },
+            scale: glam::Vec3 { x: 1.93450, y: 1.93450, z: 1.93450 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Margem de Concórdia 04" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4662991146492531169)
+        --
+        #"Junco da margem · Margem de Concórdia 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -82.000000, y: 39.141289, z: 55.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9914449, z: 0.0, w: 0.1305262 },
+            scale: glam::Vec3 { x: 2.51750, y: 2.51750, z: 2.51750 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Margem de Concórdia 05" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8719635576848746590)
+        --
+        #"Junco da margem · Margem de Concórdia 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -82.000000, y: 39.622162, z: 59.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9799247, z: 0.0, w: -0.1993679 },
+            scale: glam::Vec3 { x: 2.25250, y: 2.25250, z: 2.25250 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Margem de Concórdia 06" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5142711702714153521)
+        --
+        #"Banco de cantaria · Margem de Concórdia 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.00000, y: 37.99799, z: -5.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7071068, z: 0.0, w: 0.7071068 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.75000, y: 0.46000, z: 0.45000 }, offset_y: 0.192 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Banco de cantaria · Margem de Concórdia 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/banco-ribeirinho_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4634168416925783917)
+        --
+        #"Lampião de margem · Margem de Concórdia 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -49.00000, y: 38.34628, z: -9.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1045285, z: 0.0, w: 0.9945219 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.34000, y: 1.30000, z: 0.34000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Lampião de margem · Margem de Concórdia 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8772877325245761804)
+        bevy_ecs::hierarchy::Children [
+            #"Malha · Lampião de margem · Margem de Concórdia 01"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+                rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+                scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/lampiao-de-margem_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(2647071920093300003)
+            --
+            #"Luz âmbar · Lampião de margem · Margem de Concórdia 01"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.00000, y: 2.00000, z: 0.00000 },
+                rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+                scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "12000" },
+                    bevy_world_xml::bsn::WorldProp { key: "range", value: "9" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "#ffb06b" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(975149201839702510)
+        ]
+    ]
+    --
+    #"Estaleiro · pátio da madeira"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estaleiro · pátio da madeira" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(6613601695972216292)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Estaleiro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.000000, y: 39.718378, z: -95.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9723699, z: 0.0, w: -0.2334454 },
+            scale: glam::Vec3 { x: 1.04000, y: 1.04000, z: 1.04000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estaleiro 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7510425452104758311)
+        --
+        #"Carvalho · Estaleiro 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -60.000000, y: 38.288965, z: -107.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9483237, z: 0.0, w: 0.3173047 },
+            scale: glam::Vec3 { x: 1.20000, y: 1.20000, z: 1.20000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estaleiro 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7091103049246737520)
+        --
+        #"Carvalho · Estaleiro 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -40.00000, y: 41.583131, z: -112.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6018150, z: 0.0, w: 0.7986355 },
+            scale: glam::Vec3 { x: 0.87000, y: 0.87000, z: 0.87000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estaleiro 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1135234591460126480)
+        --
+        #"Carvalho · Estaleiro 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -121.000000, y: 30.612051, z: -75.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8870108, z: 0.0, w: 0.4617486 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estaleiro 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8358478647319448292)
+        --
+        #"Carvalho · Estaleiro 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -107.000000, y: 31.492769, z: -71.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9799247, z: 0.0, w: 0.1993679 },
+            scale: glam::Vec3 { x: 0.87000, y: 0.87000, z: 0.87000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estaleiro 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1724111478304176722)
+        --
+        #"Carvalho · Estaleiro 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -112.000000, y: 30.864515, z: -88.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9876883, z: 0.0, w: -0.1564345 },
+            scale: glam::Vec3 { x: 1.02000, y: 1.02000, z: 1.02000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estaleiro 06" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(364885092341676940)
+        --
+        #"Pilha de madeira · Estaleiro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.00000, y: 32.18769, z: -73.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0436194, z: 0.0, w: 0.9990482 },
+            scale: glam::Vec3 { x: 0.98000, y: 0.98000, z: 0.98000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Estaleiro 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(514669830295878050)
+        --
+        #"Pilha de madeira · Estaleiro 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -49.00000, y: 32.12173, z: -75.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1045285, z: 0.0, w: 0.9945219 },
+            scale: glam::Vec3 { x: 0.90000, y: 0.90000, z: 0.90000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Estaleiro 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5385984442896747412)
+        --
+        #"Caixote de ferragens · Estaleiro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.00000, y: 32.23266, z: -72.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7604060, z: 0.0, w: 0.6494480 },
+            scale: glam::Vec3 { x: 0.84000, y: 0.84000, z: 0.84000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.85000, y: 0.84000, z: 0.75000 }, offset_y: 0.350 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Caixote de ferragens · Estaleiro 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/caixote-de-carga_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7692292344493161583)
+        --
+        #"Lampião de margem · Estaleiro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -51.00000, y: 37.22735, z: -56.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2923717, z: 0.0, w: 0.9563048 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.34000, y: 1.30000, z: 0.34000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Lampião de margem · Estaleiro 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8083378629779288846)
+        bevy_ecs::hierarchy::Children [
+            #"Malha · Lampião de margem · Estaleiro 01"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+                rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+                scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/lampiao-de-margem_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(5351791310965677161)
+            --
+            #"Luz âmbar · Lampião de margem · Estaleiro 01"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.00000, y: 2.00000, z: 0.00000 },
+                rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+                scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "12000" },
+                    bevy_world_xml::bsn::WorldProp { key: "range", value: "9" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "#ffb06b" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(1759169083258059688)
+        ]
+    ]
+    --
+    #"Acampamento · clareira e pedreira"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Acampamento · clareira e pedreira" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7182128577052611272)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Acampamento 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 17.000000, y: 43.013506, z: 66.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6293204, z: 0.0, w: 0.7771460 },
+            scale: glam::Vec3 { x: 1.13000, y: 1.13000, z: 1.13000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5460663260032988289)
+        --
+        #"Carvalho · Acampamento 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 23.000000, y: 44.408975, z: 70.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1736482, z: 0.0, w: 0.9848078 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8767559162214603834)
+        --
+        #"Carvalho · Acampamento 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 25.00000, y: 45.875467, z: 79.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7009093, z: 0.0, w: -0.7132504 },
+            scale: glam::Vec3 { x: 1.06000, y: 1.06000, z: 1.06000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5336359805109546046)
+        --
+        #"Carvalho · Acampamento 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 10.000000, y: 44.850221, z: 79.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7880108, z: 0.0, w: 0.6156615 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(990248338919784956)
+        --
+        #"Carvalho · Acampamento 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.000000, y: 44.935995, z: 87.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9762960, z: 0.0, w: -0.2164396 },
+            scale: glam::Vec3 { x: 1.10000, y: 1.10000, z: 1.10000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8352337494441253780)
+        --
+        #"Carvalho · Acampamento 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.00000, y: 46.860658, z: 89.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4383711, z: 0.0, w: 0.8987940 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 06" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(970527185486532211)
+        --
+        #"Carvalho · Acampamento 07"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.00000, y: 42.540121, z: 65.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8191520, z: 0.0, w: 0.5735764 },
+            scale: glam::Vec3 { x: 0.80000, y: 0.80000, z: 0.80000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 07" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3387571868515915094)
+        --
+        #"Carvalho · Acampamento 08"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 27.000000, y: 43.266031, z: 65.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4305111, z: 0.0, w: 0.9025853 },
+            scale: glam::Vec3 { x: 0.99000, y: 0.99000, z: 0.99000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 08" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7467391818935648556)
+        --
+        #"Carvalho · Acampamento 09"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 2.000000, y: 45.281862, z: 109.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8038569, z: 0.0, w: -0.5948228 },
+            scale: glam::Vec3 { x: 1.05000, y: 1.05000, z: 1.05000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 09" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1105844352617706307)
+        --
+        #"Carvalho · Acampamento 10"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 16.000000, y: 47.476335, z: 107.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8660254, z: 0.0, w: 0.5000000 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 10" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1812285685957479252)
+        --
+        #"Pedra de cantaria · Acampamento 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 33.000000, y: 44.663956, z: 68.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8660254, z: 0.0, w: 0.5000000 },
+            scale: glam::Vec3 { x: 1.10000, y: 1.10000, z: 1.10000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8069513884090522883)
+        --
+        #"Pedra de cantaria · Acampamento 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 37.000000, y: 45.783298, z: 72.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5075384, z: 0.0, w: 0.8616292 },
+            scale: glam::Vec3 { x: 0.87000, y: 0.87000, z: 0.87000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6900013454531527609)
+        --
+        #"Pedra de cantaria · Acampamento 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 35.000000, y: 46.481434, z: 77.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9996573, z: 0.0, w: 0.0261769 },
+            scale: glam::Vec3 { x: 0.98000, y: 0.98000, z: 0.98000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5157499635195936516)
+        --
+        #"Pedra de cantaria · Acampamento 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 40.000000, y: 46.252655, z: 74.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9537170, z: 0.0, w: -0.3007058 },
+            scale: glam::Vec3 { x: 0.82000, y: 0.82000, z: 0.82000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 04" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5841847605146846584)
+        --
+        #"Pedra de cantaria · Acampamento 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 36.000000, y: 46.749790, z: 82.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2419219, z: 0.0, w: 0.9702957 },
+            scale: glam::Vec3 { x: 0.95000, y: 0.95000, z: 0.95000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 05" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1189000170173773081)
+        --
+        #"Pedra de cantaria · Acampamento 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 41.000000, y: 47.016716, z: 84.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8386706, z: 0.0, w: 0.5446390 },
+            scale: glam::Vec3 { x: 0.85000, y: 0.85000, z: 0.85000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 06" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8852437767446672788)
+        --
+        #"Pedra de cantaria · Acampamento 07"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 33.000000, y: 47.146683, z: 88.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5948228, z: 0.0, w: -0.8038569 },
+            scale: glam::Vec3 { x: 1.05000, y: 1.05000, z: 1.05000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 07" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7037278712062379890)
+        --
+        #"Pedra de cantaria · Acampamento 08"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 39.000000, y: 47.464489, z: 91.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1564345, z: 0.0, w: 0.9876883 },
+            scale: glam::Vec3 { x: 0.90000, y: 0.90000, z: 0.90000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 08" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7486872963073298959)
+        --
+        #"Pedra de cantaria · Acampamento 09"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 45.000000, y: 47.474049, z: 89.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9063078, z: 0.0, w: 0.4226183 },
+            scale: glam::Vec3 { x: 0.89000, y: 0.89000, z: 0.89000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 09" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6102803975850543439)
+        --
+        #"Pedra de cantaria · Acampamento 10"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 49.000000, y: 47.866657, z: 94.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2334454, z: 0.0, w: 0.9723699 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 10" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7173916422157957972)
+        --
+        #"Afloramento · Acampamento 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 47.000000, y: 47.209919, z: 83.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9426415, z: 0.0, w: -0.3338069 },
+            scale: glam::Vec3 { x: 1.30000, y: 1.30000, z: 1.30000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Acampamento 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5956214884245794537)
+        --
+        #"Afloramento · Acampamento 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 45.000000, y: 47.817471, z: 94.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5948228, z: 0.0, w: 0.8038569 },
+            scale: glam::Vec3 { x: 1.06000, y: 1.06000, z: 1.06000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Acampamento 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6253104256142570068)
+        --
+        #"Banco de cantaria · Acampamento 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.00000, y: 44.54220, z: 75.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9961947, z: 0.0, w: -0.0871557 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.75000, y: 0.46000, z: 0.45000 }, offset_y: 0.192 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Banco de cantaria · Acampamento 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/banco-ribeirinho_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3281465419754659599)
+        --
+        #"Pilha de madeira · Acampamento 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 14.00000, y: 44.39870, z: 73.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5299193, z: 0.0, w: 0.8480481 },
+            scale: glam::Vec3 { x: 0.91000, y: 0.91000, z: 0.91000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Acampamento 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7911382017201502328)
+        --
+        #"Carvalho · Acampamento 11"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.000000, y: 39.053377, z: 49.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9335804, z: 0.0, w: 0.3583679 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 11" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7914084239761539635)
+        --
+        #"Carvalho · Acampamento 12"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 22.000000, y: 38.843683, z: 47.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6225146, z: 0.0, w: 0.7826082 },
+            scale: glam::Vec3 { x: 1.08000, y: 1.08000, z: 1.08000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 12" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8725945359590294665)
+        --
+        #"Carvalho · Acampamento 13"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 30.000000, y: 39.098405, z: 49.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1391731, z: 0.0, w: 0.9902681 },
+            scale: glam::Vec3 { x: 1.03000, y: 1.03000, z: 1.03000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 13" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4680339566521561407)
+        --
+        #"Carvalho · Acampamento 14"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 27.000000, y: 39.848310, z: 53.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8949344, z: 0.0, w: -0.4461978 },
+            scale: glam::Vec3 { x: 0.89000, y: 0.89000, z: 0.89000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Acampamento 14" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4180867463582566702)
+        --
+        #"Pedra de cantaria · Acampamento 11"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 40.000000, y: 47.935829, z: 98.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9961947, z: 0.0, w: 0.0871557 },
+            scale: glam::Vec3 { x: 1.06000, y: 1.06000, z: 1.06000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 11" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6469910317864388393)
+        --
+        #"Pedra de cantaria · Acampamento 12"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 44.000000, y: 48.274582, z: 103.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9335804, z: 0.0, w: -0.3583679 },
+            scale: glam::Vec3 { x: 1.18000, y: 1.18000, z: 1.18000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 12" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7312141571418431888)
+        --
+        #"Pedra de cantaria · Acampamento 13"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 49.000000, y: 48.281574, z: 104.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8571673, z: 0.0, w: 0.5150381 },
+            scale: glam::Vec3 { x: 0.90000, y: 0.90000, z: 0.90000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 13" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7181735138404442429)
+        --
+        #"Pedra de cantaria · Acampamento 14"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 48.000000, y: 48.459141, z: 111.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1045285, z: 0.0, w: 0.9945219 },
+            scale: glam::Vec3 { x: 0.83000, y: 0.83000, z: 0.83000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 14" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6040030823078530846)
+        --
+        #"Pedra de cantaria · Acampamento 15"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 41.000000, y: 48.350002, z: 107.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8241262, z: 0.0, w: 0.5664062 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 15" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4621585356183580631)
+        --
+        #"Pedra de cantaria · Acampamento 16"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.000000, y: 48.609581, z: 112.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9969173, z: 0.0, w: -0.0784591 },
+            scale: glam::Vec3 { x: 1.03000, y: 1.03000, z: 1.03000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 16" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1244896019224158542)
+        --
+        #"Pedra de cantaria · Acampamento 17"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 43.000000, y: 48.903927, z: 116.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6560590, z: 0.0, w: -0.7547096 },
+            scale: glam::Vec3 { x: 0.95000, y: 0.95000, z: 0.95000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Acampamento 17" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6489818205526802789)
+    ]
+    --
+    #"Chegada das carroças · pomar e marco"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Chegada das carroças · pomar e marco" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(696492808576776316)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Chegada das carroças 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 55.000000, y: 47.396326, z: 89.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5519370, z: 0.0, w: 0.8338858 },
+            scale: glam::Vec3 { x: 1.25000, y: 1.25000, z: 1.25000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4677151808937679220)
+        --
+        #"Carvalho · Chegada das carroças 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 61.000000, y: 47.959951, z: 99.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9659258, z: 0.0, w: 0.2588190 },
+            scale: glam::Vec3 { x: 0.86000, y: 0.86000, z: 0.86000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5054306653224570271)
+        --
+        #"Carvalho · Chegada das carroças 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 66.000000, y: 48.101854, z: 103.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3173047, z: 0.0, w: 0.9483237 },
+            scale: glam::Vec3 { x: 1.07000, y: 1.07000, z: 1.07000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3190604915171835563)
+        --
+        #"Carvalho · Chegada das carroças 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 68.000000, y: 47.423944, z: 84.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9961947, z: 0.0, w: -0.0871557 },
+            scale: glam::Vec3 { x: 0.99000, y: 0.99000, z: 0.99000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4741215245436874653)
+        --
+        #"Carvalho · Chegada das carroças 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 75.000000, y: 48.074632, z: 94.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1736482, z: 0.0, w: 0.9848078 },
+            scale: glam::Vec3 { x: 1.04000, y: 1.04000, z: 1.04000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3762714394044689687)
+        --
+        #"Carvalho · Chegada das carroças 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 68.000000, y: 46.068037, z: 68.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9998477, z: 0.0, w: -0.0174524 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 06" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5835263702633657111)
+        --
+        #"Carvalho · Chegada das carroças 07"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 83.000000, y: 46.655023, z: 69.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8526402, z: 0.0, w: -0.5224986 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 07" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7640157525960716785)
+        --
+        #"Carvalho · Chegada das carroças 08"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 81.000000, y: 47.470949, z: 79.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2840153, z: 0.0, w: 0.9588197 },
+            scale: glam::Vec3 { x: 1.06000, y: 1.06000, z: 1.06000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Chegada das carroças 08" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(9059004943105470895)
+        --
+        #"Pedra coberta de musgo · Chegada das carroças 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 56.000000, y: 48.181923, z: 103.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8616292, z: 0.0, w: 0.5075384 },
+            scale: glam::Vec3 { x: 0.75000, y: 0.48000, z: 0.75000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Chegada das carroças 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(922219563436871297)
+        --
+        #"Pedra coberta de musgo · Chegada das carroças 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 74.000000, y: 47.431042, z: 79.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9271839, z: 0.0, w: -0.3746066 },
+            scale: glam::Vec3 { x: 0.90000, y: 0.57600, z: 0.90000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Chegada das carroças 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8212780408283571440)
+        --
+        #"Pedra de cantaria · Chegada das carroças 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 84.000000, y: 48.512093, z: 92.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9238795, z: 0.0, w: -0.3826834 },
+            scale: glam::Vec3 { x: 0.90000, y: 0.90000, z: 0.90000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Chegada das carroças 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4316063282216558812)
+        --
+        #"Banco de cantaria · Chegada das carroças 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 58.00000, y: 47.58915, z: 91.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7071068, z: 0.0, w: 0.7071068 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.75000, y: 0.46000, z: 0.45000 }, offset_y: 0.192 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Banco de cantaria · Chegada das carroças 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/banco-ribeirinho_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2250083732602086516)
+        --
+        #"Lampião de margem · Chegada das carroças 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 59.00000, y: 47.44397, z: 88.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9975641, z: 0.0, w: 0.0697565 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.34000, y: 1.30000, z: 0.34000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Lampião de margem · Chegada das carroças 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2660320627263230605)
+        bevy_ecs::hierarchy::Children [
+            #"Malha · Lampião de margem · Chegada das carroças 01"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+                rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+                scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/lampiao-de-margem_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(1457031477591610911)
+            --
+            #"Luz âmbar · Lampião de margem · Chegada das carroças 01"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.00000, y: 2.00000, z: 0.00000 },
+                rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+                scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "12000" },
+                    bevy_world_xml::bsn::WorldProp { key: "range", value: "9" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "#ffb06b" },
+                ],
+                text: "",
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(3045908864192727158)
+        ]
+    ]
+]

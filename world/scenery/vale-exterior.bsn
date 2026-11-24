@@ -1,0 +1,1271 @@
+#"Cenários do Vale Exterior"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+    rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+    scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(2100318120635683325)
+bevy_ecs::hierarchy::Children [
+    #"Porto do Poente · depósitos de maré"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Porto do Poente · depósitos de maré" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1282242723168316875)
+    bevy_ecs::hierarchy::Children [
+        #"Salgueiro salgado · Porto do Poente 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2658.00000, y: 23.974390, z: 358.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9848078, z: 0.0, w: 0.1736482 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro salgado · Porto do Poente 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6769679710993171067)
+        --
+        #"Salgueiro salgado · Porto do Poente 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2667.00000, y: 23.974390, z: 366.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2164396, z: 0.0, w: 0.9762960 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro salgado · Porto do Poente 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2199690536001542214)
+        --
+        #"Afloramento · Porto do Poente 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2659.000000, y: 24.228889, z: 364.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4848096, z: 0.0, w: -0.8746197 },
+            scale: glam::Vec3 { x: 0.85000, y: 0.85000, z: 0.85000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Porto do Poente 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7322889632809003620)
+        --
+        #"Junco da margem · Porto do Poente 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2674.00000, y: 23.99939, z: 368.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9636305, z: 0.0, w: 0.2672384 },
+            scale: glam::Vec3 { x: 2.65000, y: 2.65000, z: 2.65000 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Porto do Poente 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8718378684553031118)
+        --
+        #"Pilha de madeira · Porto do Poente 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2634.00000, y: 23.99939, z: 355.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2164396, z: 0.0, w: 0.9762960 },
+            scale: glam::Vec3 { x: 0.86000, y: 0.86000, z: 0.86000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Porto do Poente 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4501398552605329596)
+    ]
+    --
+    #"Farol da Lanterna · promontório"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Farol da Lanterna · promontório" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2307697098821082160)
+    bevy_ecs::hierarchy::Children [
+        #"Afloramento · Farol da Lanterna 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3243.000000, y: 34.302269, z: 393.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9426415, z: 0.0, w: 0.3338069 },
+            scale: glam::Vec3 { x: 1.22000, y: 1.22000, z: 1.22000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Farol da Lanterna 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3521402852169628335)
+        --
+        #"Afloramento · Farol da Lanterna 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3250.000000, y: 34.124821, z: 388.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2419219, z: 0.0, w: 0.9702957 },
+            scale: glam::Vec3 { x: 0.91000, y: 0.91000, z: 0.91000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Farol da Lanterna 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5608292016744536233)
+        --
+        #"Afloramento · Farol da Lanterna 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3254.000000, y: 34.104309, z: 397.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8829476, z: 0.0, w: -0.4694716 },
+            scale: glam::Vec3 { x: 1.05000, y: 1.05000, z: 1.05000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Farol da Lanterna 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(921111615945423087)
+        --
+        #"Tufo seco · Farol da Lanterna 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3251.00000, y: 33.86157, z: 407.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6293204, z: 0.0, w: 0.7771460 },
+            scale: glam::Vec3 { x: 2.24200, y: 2.24200, z: 2.24200 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Tufo seco · Farol da Lanterna 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/plant_flatTall.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7201251800621715873)
+    ]
+    --
+    #"Ilha dos Juncos · vala abrigada"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Ilha dos Juncos · vala abrigada" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1203020882066317097)
+    bevy_ecs::hierarchy::Children [
+        #"Salgueiro salgado · Ilha dos Juncos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3089.00000, y: 26.806707, z: -711.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7880108, z: 0.0, w: 0.6156615 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro salgado · Ilha dos Juncos 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2967741838268205017)
+        --
+        #"Salgueiro salgado · Ilha dos Juncos 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3093.00000, y: 26.871030, z: -703.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9702957, z: 0.0, w: 0.2419219 },
+            scale: glam::Vec3 { x: 1.01000, y: 1.01000, z: 1.01000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro salgado · Ilha dos Juncos 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6716446298944032271)
+        --
+        #"Salgueiro salgado · Ilha dos Juncos 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3099.00000, y: 26.683218, z: -706.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6087614, z: 0.0, w: 0.7933533 },
+            scale: glam::Vec3 { x: 0.88000, y: 0.88000, z: 0.88000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro salgado · Ilha dos Juncos 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1090052982559289092)
+        --
+        #"Junco da margem · Ilha dos Juncos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3084.00000, y: 26.81890, z: -714.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6087614, z: 0.0, w: 0.7933533 },
+            scale: glam::Vec3 { x: 2.75600, y: 2.75600, z: 2.75600 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Ilha dos Juncos 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2938843503612658639)
+        --
+        #"Junco da margem · Ilha dos Juncos 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3096.00000, y: 26.69536, z: -711.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7372773, z: 0.0, w: 0.6755902 },
+            scale: glam::Vec3 { x: 3.25950, y: 3.25950, z: 3.25950 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Ilha dos Juncos 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7261928034008322343)
+    ]
+    --
+    #"Pouso dos Freixos · lenha do abrigo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Pouso dos Freixos · lenha do abrigo" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7596835530840512919)
+    bevy_ecs::hierarchy::Children [
+        #"Bétula · Pouso dos Freixos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1358.0, y: 53.0067, z: -1809.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.9993908, z: 0.0, w: 0.0348995 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.36, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Freixo", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_birch" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Bétula · Pouso dos Freixos 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8531298704711584284)
+        --
+        #"Bétula · Pouso dos Freixos 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1363.000000, y: 53.051926, z: -1815.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9781476, z: 0.0, w: -0.2079117 },
+            scale: glam::Vec3 { x: 1.03000, y: 1.03000, z: 1.03000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.36, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Freixo", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_birch" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Bétula · Pouso dos Freixos 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1876834224540509662)
+        --
+        #"Bétula · Pouso dos Freixos 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1375.000000, y: 53.399632, z: -1821.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4694716, z: 0.0, w: 0.8829476 },
+            scale: glam::Vec3 { x: 0.91000, y: 0.91000, z: 0.91000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.36, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Freixo", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_birch" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Bétula · Pouso dos Freixos 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2119245343741742984)
+        --
+        #"Bétula · Pouso dos Freixos 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1360.000000, y: 53.164608, z: -1827.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1736482, z: 0.0, w: 0.9848078 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.36, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Freixo", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_birch" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Bétula · Pouso dos Freixos 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7565366327012897443)
+        --
+        #"Pilha de madeira · Pouso dos Freixos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1351.00000, y: 60.87375, z: -1809.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5372996, z: 0.0, w: 0.8433914 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Pouso dos Freixos 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(13558185121700637)
+    ]
+    --
+    #"Refúgio do Vidro · crista de pedra"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Refúgio do Vidro · crista de pedra" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4594501938953523624)
+    bevy_ecs::hierarchy::Children [
+        #"Pinho de serra · Refúgio do Vidro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1442.000000, y: 90.000763, z: -1766.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7771460, z: 0.0, w: 0.6293204 },
+            scale: glam::Vec3 { x: 1.16000, y: 1.16000, z: 1.16000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Refúgio do Vidro 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7762586052761850413)
+        --
+        #"Pinho de serra · Refúgio do Vidro 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1448.000000, y: 90.024461, z: -1772.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3746066, z: 0.0, w: 0.9271839 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Refúgio do Vidro 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2408387779216699850)
+        --
+        #"Pinho de serra · Refúgio do Vidro 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1459.000000, y: 89.986671, z: -1774.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4383711, z: 0.0, w: 0.8987940 },
+            scale: glam::Vec3 { x: 0.85000, y: 0.85000, z: 0.85000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Refúgio do Vidro 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3266402024887699000)
+        --
+        #"Afloramento · Refúgio do Vidro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1451.000000, y: 89.809113, z: -1780.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9483237, z: 0.0, w: 0.3173047 },
+            scale: glam::Vec3 { x: 1.05000, y: 1.05000, z: 1.05000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Refúgio do Vidro 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1065691962704652658)
+        --
+        #"Afloramento · Refúgio do Vidro 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1460.000000, y: 88.991066, z: -1781.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9396926, z: 0.0, w: 0.3420201 },
+            scale: glam::Vec3 { x: 0.84000, y: 0.84000, z: 0.84000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Refúgio do Vidro 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2368190064749709427)
+    ]
+    --
+    #"Entreposto das Sete Margens · margem seca"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Entreposto das Sete Margens · margem seca" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3084984611944135980)
+    bevy_ecs::hierarchy::Children [
+        #"Bétula · Entreposto das Sete Margens 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1329.0, y: 63.0014, z: 1770.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.2249511, z: 0.0, w: 0.9743701 },
+            scale: glam::Vec3 { x: 1.04000, y: 1.04000, z: 1.04000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.36, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Freixo", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_birch" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Bétula · Entreposto das Sete Margens 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(960230617855926498)
+        --
+        #"Bétula · Entreposto das Sete Margens 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1363.000000, y: 62.923962, z: 1772.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5948228, z: 0.0, w: 0.8038569 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.36, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Freixo", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_birch" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Bétula · Entreposto das Sete Margens 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4753295169918847058)
+        --
+        #"Junco da margem · Entreposto das Sete Margens 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1366.000000, y: 62.735153, z: 1778.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9990482, z: 0.0, w: 0.0436194 },
+            scale: glam::Vec3 { x: 2.80900, y: 2.80900, z: 2.80900 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Entreposto das Sete Margens 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4847255692036202445)
+        --
+        #"Junco da margem · Entreposto das Sete Margens 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1370.000000, y: 62.607880, z: 1779.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2923717, z: 0.0, w: 0.9563048 },
+            scale: glam::Vec3 { x: 2.46450, y: 2.46450, z: 2.46450 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Entreposto das Sete Margens 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2769465692897975784)
+    ]
+    --
+    #"Pouso do Sul · sombra das mulas"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Pouso do Sul · sombra das mulas" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3361328578821517253)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Pouso do Sul 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1622.000000, y: 65.871141, z: 2148.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8746197, z: 0.0, w: 0.4848096 },
+            scale: glam::Vec3 { x: 1.17000, y: 1.17000, z: 1.17000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Pouso do Sul 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4449507175241302652)
+        --
+        #"Carvalho · Pouso do Sul 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1618.000000, y: 65.574533, z: 2156.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9799247, z: 0.0, w: 0.1993679 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Pouso do Sul 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1025435475829499765)
+        --
+        #"Carvalho · Pouso do Sul 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1611.000000, y: 65.500055, z: 2152.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2164396, z: 0.0, w: 0.9762960 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Pouso do Sul 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6406831739118166545)
+        --
+        #"Pilha de madeira · Pouso do Sul 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1629.00000, y: 65.98355, z: 2146.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6691306, z: 0.0, w: 0.7431448 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Pouso do Sul 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6017157894760748425)
+        --
+        #"Pedra de cantaria · Pouso do Sul 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1615.000000, y: 66.082497, z: 2144.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9723699, z: 0.0, w: -0.2334454 },
+            scale: glam::Vec3 { x: 0.85000, y: 0.85000, z: 0.85000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Pouso do Sul 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6486558081066278764)
+    ]
+    --
+    #"Passo da Salina · pedras-piloto"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Passo da Salina · pedras-piloto" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(8161192211907142199)
+    bevy_ecs::hierarchy::Children [
+        #"Afloramento · Passo da Salina 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2165.000000, y: 63.555202, z: -260.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9961947, z: 0.0, w: 0.0871557 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Passo da Salina 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5717335365876381372)
+        --
+        #"Afloramento · Passo da Salina 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2171.000000, y: 62.363037, z: -260.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7660444, z: 0.0, w: 0.6427876 },
+            scale: glam::Vec3 { x: 1.08000, y: 1.08000, z: 1.08000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Passo da Salina 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3552925834897649928)
+        --
+        #"Tufo seco · Passo da Salina 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2168.00000, y: 62.89669, z: -264.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4539905, z: 0.0, w: 0.8910065 },
+            scale: glam::Vec3 { x: 1.72900, y: 1.72900, z: 1.72900 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Tufo seco · Passo da Salina 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/plant_flatTall.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8452360553073218070)
+        --
+        #"Salgueiro salgado · Passo da Salina 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2168.0, y: 42.46, z: -274.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.2079117, z: 0.0, w: 0.9781476 },
+            scale: glam::Vec3 { x: 0.95000, y: 0.95000, z: 0.95000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro salgado · Passo da Salina 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4261527989332235091)
+    ]
+    --
+    #"Atalaia de Barro · borda da colina"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Atalaia de Barro · borda da colina" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(658021559789631337)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Atalaia de Barro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 2356.000000, y: 77.976068, z: 484.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3826834, z: 0.0, w: 0.9238795 },
+            scale: glam::Vec3 { x: 1.02000, y: 1.02000, z: 1.02000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Atalaia de Barro 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8249031825372766381)
+        --
+        #"Carvalho · Atalaia de Barro 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 2360.000000, y: 77.976068, z: 490.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1478094, z: 0.0, w: 0.9890159 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Atalaia de Barro 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(999660865087207702)
+        --
+        #"Afloramento · Atalaia de Barro 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 2364.000000, y: 78.325066, z: 485.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3090170, z: 0.0, w: 0.9510565 },
+            scale: glam::Vec3 { x: 1.20000, y: 1.20000, z: 1.20000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Atalaia de Barro 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3262200099695185863)
+        --
+        #"Afloramento · Atalaia de Barro 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 2370.000000, y: 78.226654, z: 482.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9170601, z: 0.0, w: 0.3987491 },
+            scale: glam::Vec3 { x: 0.86000, y: 0.86000, z: 0.86000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Atalaia de Barro 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3298280093348152437)
+    ]
+    --
+    #"Marco do Norte · quebra-vento"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Marco do Norte · quebra-vento" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(5689973907258637163)
+    bevy_ecs::hierarchy::Children [
+        #"Pinho de serra · Marco do Norte 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 159.000000, y: 80.975992, z: -2759.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8386706, z: 0.0, w: 0.5446390 },
+            scale: glam::Vec3 { x: 1.02000, y: 1.02000, z: 1.02000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Marco do Norte 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(651045598437367877)
+        --
+        #"Pinho de serra · Marco do Norte 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 163.000000, y: 80.988519, z: -2766.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9990482, z: 0.0, w: -0.0436194 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Marco do Norte 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5962617871744547508)
+        --
+        #"Pinho de serra · Marco do Norte 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 174.000000, y: 81.053094, z: -2763.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7547096, z: 0.0, w: 0.6560590 },
+            scale: glam::Vec3 { x: 1.14000, y: 1.14000, z: 1.14000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Marco do Norte 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7662718173753361661)
+        --
+        #"Pinho de serra · Marco do Norte 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 175.000000, y: 81.184930, z: -2771.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7986355, z: 0.0, w: 0.6018150 },
+            scale: glam::Vec3 { x: 0.98000, y: 0.98000, z: 0.98000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Marco do Norte 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8840373438181957386)
+    ]
+    --
+    #"Estalagem · lado das carroças"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Estalagem · lado das carroças" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(5387120486408513524)
+    bevy_ecs::hierarchy::Children [
+        #"Carvalho · Estalagem 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 54.000000, y: 77.976068, z: 2661.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4461978, z: 0.0, w: 0.8949344 },
+            scale: glam::Vec3 { x: 1.09000, y: 1.09000, z: 1.09000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estalagem 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3779794478025945397)
+        --
+        #"Carvalho · Estalagem 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 45.000000, y: 77.525049, z: 2666.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1478094, z: 0.0, w: 0.9890159 },
+            scale: glam::Vec3 { x: 0.89000, y: 0.89000, z: 0.89000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estalagem 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4213203280715288272)
+        --
+        #"Carvalho · Estalagem 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 48.000000, y: 76.980417, z: 2677.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5948228, z: 0.0, w: 0.8038569 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Carvalho", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_oak" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Carvalho · Estalagem 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2169021934388053709)
+        --
+        #"Pedra de cantaria · Estalagem 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 46.000000, y: 77.615082, z: 2670.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9799247, z: 0.0, w: 0.1993679 },
+            scale: glam::Vec3 { x: 0.87000, y: 0.87000, z: 0.87000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Estalagem 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6477003999742353285)
+        --
+        #"Pilha de madeira · Estalagem 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 59.00000, y: 78.00055, z: 2667.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3746066, z: 0.0, w: 0.9271839 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.50000, y: 0.64000, z: 0.75000 }, offset_y: 0.267 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pilha de madeira · Estalagem 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pilha-de-madeira_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7194405809511480651)
+    ]
+]

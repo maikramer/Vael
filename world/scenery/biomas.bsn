@@ -1,0 +1,1145 @@
+#"Cenários dos quatro biomas"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+    rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+    scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(2004255951494588839)
+bevy_ecs::hierarchy::Children [
+    #"Bosque · pinhal das fitas"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Bosque · pinhal das fitas" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4217385842923030681)
+    bevy_ecs::hierarchy::Children [
+        #"Pinho negro · Bosque 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -41.000000, y: 41.017427, z: 236.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9986295, z: 0.0, w: 0.0523360 },
+            scale: glam::Vec3 { x: 1.12000, y: 1.12000, z: 1.12000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1318146805651564501)
+        --
+        #"Pinho negro · Bosque 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -52.000000, y: 40.544340, z: 241.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5372996, z: 0.0, w: 0.8433914 },
+            scale: glam::Vec3 { x: 1.01000, y: 1.01000, z: 1.01000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5814238021370859583)
+        --
+        #"Pinho negro · Bosque 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -55.000000, y: 41.327745, z: 249.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8910065, z: 0.0, w: -0.4539905 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(325598956632759687)
+        --
+        #"Pinho negro · Bosque 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -45.000000, y: 43.898935, z: 255.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9961947, z: 0.0, w: -0.0871557 },
+            scale: glam::Vec3 { x: 1.07000, y: 1.07000, z: 1.07000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5748245938709869201)
+        --
+        #"Pinho negro · Bosque 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -40.000000, y: 47.633062, z: 265.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7009093, z: 0.0, w: 0.7132504 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3048587348662671208)
+        --
+        #"Pinho negro · Bosque 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -47.000000, y: 54.610502, z: 282.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9781476, z: 0.0, w: 0.2079117 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 06" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1483680612977941667)
+        --
+        #"Pinho negro · Bosque 07"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.000000, y: 48.904234, z: 278.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9537170, z: 0.0, w: 0.3007058 },
+            scale: glam::Vec3 { x: 1.18000, y: 1.18000, z: 1.18000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 07" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3828263427602245663)
+        --
+        #"Pinho negro · Bosque 08"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 14.000000, y: 53.091875, z: 281.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1822355, z: 0.0, w: 0.9832549 },
+            scale: glam::Vec3 { x: 0.95000, y: 0.95000, z: 0.95000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 08" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8967771644833256610)
+        --
+        #"Pinho negro · Bosque 09"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.000000, y: 48.874155, z: 286.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9366722, z: 0.0, w: 0.3502074 },
+            scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.4, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho negro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "pine_dark" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho negro · Bosque 09" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2857084738466608871)
+        --
+        #"Afloramento · Bosque 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.000000, y: 42.999428, z: 253.000000 },
+            rotation: glam::Quat { x: 0.0, y: 1.0000000, z: 0.0, w: 0.0000000 },
+            scale: glam::Vec3 { x: 0.71000, y: 0.71000, z: 0.71000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Bosque 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4133112652776074630)
+        --
+        #"Pedra coberta de musgo · Bosque 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -48.000000, y: 43.383507, z: 254.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6946584, z: 0.0, w: 0.7193398 },
+            scale: glam::Vec3 { x: 0.73000, y: 0.46720, z: 0.73000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.60000, y: 0.70000, z: 1.35000 }, offset_y: 0.292 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra coberta de musgo · Bosque 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8121793669381741051)
+        --
+        #"Flor roxa · Bosque 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.00000, y: 42.74995, z: 249.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9925462, z: 0.0, w: 0.1218693 },
+            scale: glam::Vec3 { x: 1.63400, y: 1.63400, z: 1.63400 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Flor roxa · Bosque 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/flower_purpleA.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7105972266285989399)
+        --
+        #"Flor roxa · Bosque 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -46.00000, y: 43.06768, z: 252.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.7880108, z: 0.0, w: -0.6156615 },
+            scale: glam::Vec3 { x: 2.12800, y: 2.12800, z: 2.12800 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Flor roxa · Bosque 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/flower_purpleA.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8096293119299528460)
+    ]
+    --
+    #"Pântano · aterro do eremita"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Pântano · aterro do eremita" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(6748579388031110020)
+    bevy_ecs::hierarchy::Children [
+        #"Salgueiro · Pântano 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -265.00000, y: 32.673933, z: -46.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9914449, z: 0.0, w: -0.1305262 },
+            scale: glam::Vec3 { x: 1.11000, y: 1.11000, z: 1.11000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Pântano 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3125911825169329639)
+        --
+        #"Salgueiro · Pântano 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -257.000000, y: 31.926811, z: -42.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9975641, z: 0.0, w: 0.0697565 },
+            scale: glam::Vec3 { x: 0.96000, y: 0.96000, z: 0.96000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Pântano 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3166336872874567769)
+        --
+        #"Salgueiro · Pântano 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -271.00000, y: 32.936609, z: -52.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9961947, z: 0.0, w: -0.0871557 },
+            scale: glam::Vec3 { x: 1.02000, y: 1.02000, z: 1.02000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Pântano 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7829709038103223923)
+        --
+        #"Salgueiro · Pântano 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -284.000000, y: 32.697748, z: -41.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9848078, z: 0.0, w: -0.1736482 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Pântano 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2696190110166626604)
+        --
+        #"Salgueiro · Pântano 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -260.000000, y: 29.988451, z: -31.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1132032, z: 0.0, w: 0.9935719 },
+            scale: glam::Vec3 { x: 0.87000, y: 0.87000, z: 0.87000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.47, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "wood", amount: 3 }
+        bevy_ext_scene::Destructible { popup_text: "Salgueiro", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "dead_willow" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Salgueiro · Pântano 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1456197053509540344)
+        --
+        #"Musgo do lodo · Pântano 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -260.000000, y: 32.656734, z: -45.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9914449, z: 0.0, w: -0.1305262 },
+            scale: glam::Vec3 { x: 0.91000, y: 0.58240, z: 0.91000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.50000, y: 0.65000, z: 1.30000 }, offset_y: 0.271 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "bog-moss", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Musgo do lodo", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Musgo do lodo · Pântano 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8407161751332758359)
+        --
+        #"Musgo do lodo · Pântano 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -267.000000, y: 32.756081, z: -45.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1132032, z: 0.0, w: 0.9935719 },
+            scale: glam::Vec3 { x: 1.08000, y: 0.69120, z: 1.08000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.50000, y: 0.65000, z: 1.30000 }, offset_y: 0.271 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "bog-moss", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Musgo do lodo", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Musgo do lodo · Pântano 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6292203519304785578)
+        --
+        #"Musgo do lodo · Pântano 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -273.000000, y: 32.698997, z: -45.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9848078, z: 0.0, w: 0.1736482 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.59520, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.50000, y: 0.65000, z: 1.30000 }, offset_y: 0.271 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "bog-moss", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Musgo do lodo", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Musgo do lodo · Pântano 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7444912061332044328)
+        --
+        #"Musgo do lodo · Pântano 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -274.000000, y: 32.250900, z: -39.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4461978, z: 0.0, w: 0.8949344 },
+            scale: glam::Vec3 { x: 0.82000, y: 0.52480, z: 0.82000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.50000, y: 0.65000, z: 1.30000 }, offset_y: 0.271 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "bog-moss", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Musgo do lodo", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Musgo do lodo · Pântano 04" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3408034621248395006)
+        --
+        #"Musgo do lodo · Pântano 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -278.000000, y: 32.476723, z: -39.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9271839, z: 0.0, w: 0.3746066 },
+            scale: glam::Vec3 { x: 0.83000, y: 0.53120, z: 0.83000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.50000, y: 0.65000, z: 1.30000 }, offset_y: 0.271 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "bog-moss", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Musgo do lodo", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Musgo do lodo · Pântano 05" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3349744318893556836)
+        --
+        #"Musgo do lodo · Pântano 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -247.000000, y: 33.218124, z: -48.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9588197, z: 0.0, w: -0.2840153 },
+            scale: glam::Vec3 { x: 0.99000, y: 0.63360, z: 0.99000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.50000, y: 0.65000, z: 1.30000 }, offset_y: 0.271 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "bog-moss", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Musgo do lodo", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Musgo do lodo · Pântano 06" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-musgosa_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4903679604043236024)
+        --
+        #"Junco da margem · Pântano 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -252.00000, y: 33.37414, z: -50.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.4067366, z: 0.0, w: -0.9135455 },
+            scale: glam::Vec3 { x: 2.43800, y: 2.43800, z: 2.43800 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Pântano 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6253446019480332094)
+        --
+        #"Junco da margem · Pântano 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -255.00000, y: 33.77810, z: -53.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2588190, z: 0.0, w: 0.9659258 },
+            scale: glam::Vec3 { x: 2.91500, y: 2.91500, z: 2.91500 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Pântano 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6291174916729883410)
+        --
+        #"Junco da margem · Pântano 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -278.00000, y: 33.13617, z: -55.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3826834, z: 0.0, w: 0.9238795 },
+            scale: glam::Vec3 { x: 2.54400, y: 2.54400, z: 2.54400 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Pântano 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7911032528925326016)
+        --
+        #"Junco da margem · Pântano 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -286.00000, y: 33.69994, z: -54.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5519370, z: 0.0, w: 0.8338858 },
+            scale: glam::Vec3 { x: 2.91500, y: 2.91500, z: 2.91500 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Junco da margem · Pântano 04" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/grass_leafsLarge.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(109657894084033114)
+    ]
+    --
+    #"Ermo · abrigo da caravana"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Ermo · abrigo da caravana" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2899632350563587921)
+    bevy_ecs::hierarchy::Children [
+        #"Cacto canelado · Ermo 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 226.00000, y: 44.45713, z: -50.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2164396, z: 0.0, w: 0.9762960 },
+            scale: glam::Vec3 { x: 1.03000, y: 1.03000, z: 1.03000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3492843603826608861)
+        --
+        #"Cacto canelado · Ermo 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 232.00000, y: 45.00639, z: -51.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5075384, z: 0.0, w: 0.8616292 },
+            scale: glam::Vec3 { x: 0.84000, y: 0.84000, z: 0.84000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5968416980759187381)
+        --
+        #"Cacto canelado · Ermo 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 233.00000, y: 45.04620, z: -56.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1908090, z: 0.0, w: 0.9816272 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(337174625663691107)
+        --
+        #"Cacto canelado · Ermo 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 225.00000, y: 45.02060, z: -65.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8788171, z: 0.0, w: -0.4771588 },
+            scale: glam::Vec3 { x: 1.10000, y: 1.10000, z: 1.10000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 04" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4879567528426305448)
+        --
+        #"Cacto canelado · Ermo 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 220.00000, y: 44.23790, z: -58.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0784591, z: 0.0, w: 0.9969173 },
+            scale: glam::Vec3 { x: 1.15000, y: 1.15000, z: 1.15000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 05" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4415457445286113620)
+        --
+        #"Cacto canelado · Ermo 06"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 236.00000, y: 45.43856, z: -62.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8191520, z: 0.0, w: 0.5735764 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 06" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8326635316810842114)
+        --
+        #"Cacto canelado · Ermo 07"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 240.00000, y: 45.67401, z: -63.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9862856, z: 0.0, w: -0.1650476 },
+            scale: glam::Vec3 { x: 1.04000, y: 1.04000, z: 1.04000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 07" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4879434077166778131)
+        --
+        #"Cacto canelado · Ermo 08"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 246.00000, y: 46.03645, z: -61.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9816272, z: 0.0, w: -0.1908090 },
+            scale: glam::Vec3 { x: 1.03000, y: 1.03000, z: 1.03000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.52000, y: 1.30000, z: 0.42000 }, offset_y: 0.542 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "cactus_fiber", amount: 2 }
+        bevy_ext_scene::Destructible { popup_text: "Cacto canelado", preset: "woodchips", hits: 2, break_style: "fall" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Cacto canelado · Ermo 08" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/cacto-canelado_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3756459307585979798)
+        --
+        #"Tufo seco · Ermo 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 219.00000, y: 44.07898, z: -56.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8290376, z: 0.0, w: 0.5591929 },
+            scale: glam::Vec3 { x: 1.48200, y: 1.48200, z: 1.48200 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Tufo seco · Ermo 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/plant_flatTall.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6248738663925391858)
+        --
+        #"Tufo seco · Ermo 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 231.00000, y: 45.41719, z: -65.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5372996, z: 0.0, w: 0.8433914 },
+            scale: glam::Vec3 { x: 1.95700, y: 1.95700, z: 1.95700 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Tufo seco · Ermo 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/plant_flatTall.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2702197084916061901)
+        --
+        #"Tufo seco · Ermo 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 239.00000, y: 45.46808, z: -58.00000 },
+            rotation: glam::Quat { x: 0.0, y: 0.1305262, z: 0.0, w: 0.9914449 },
+            scale: glam::Vec3 { x: 1.53900, y: 1.53900, z: 1.53900 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Tufo seco · Ermo 03" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/vegetation/plant_flatTall.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8857357373594029047)
+        --
+        #"Afloramento · Ermo 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 239.000000, y: 46.679508, z: -70.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5519370, z: 0.0, w: 0.8338858 },
+            scale: glam::Vec3 { x: 1.18000, y: 1.18000, z: 1.18000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Ermo 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(6405957449370761130)
+        --
+        #"Afloramento · Ermo 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 233.000000, y: 46.208420, z: -72.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9135455, z: 0.0, w: -0.4067366 },
+            scale: glam::Vec3 { x: 0.92000, y: 0.92000, z: 0.92000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Ermo 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(5242939707462949794)
+    ]
+    --
+    #"Picos · pedra e pinho da subida"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.00000, y: 0.00000, z: 0.00000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00000, y: 1.00000, z: 1.00000 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "Picos · pedra e pinho da subida" },
+        ],
+        text: "",
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3442286147082363239)
+    bevy_ecs::hierarchy::Children [
+        #"Pinho de serra · Picos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 23.000000, y: 82.682138, z: -185.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9762960, z: 0.0, w: 0.2164396 },
+            scale: glam::Vec3 { x: 1.20000, y: 1.20000, z: 1.20000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Picos 01" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1398395734724981303)
+        --
+        #"Pinho de serra · Picos 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 34.000000, y: 79.727213, z: -200.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.5299193, z: 0.0, w: 0.8480481 },
+            scale: glam::Vec3 { x: 0.94000, y: 0.94000, z: 0.94000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Picos 02" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7066194809447538417)
+        --
+        #"Pinho de serra · Picos 03"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 42.000000, y: 79.554971, z: -205.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.2249511, z: 0.0, w: 0.9743701 },
+            scale: glam::Vec3 { x: 1.13000, y: 1.13000, z: 1.13000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Picos 03" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4482541941992284865)
+        --
+        #"Pinho de serra · Picos 04"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 39.000000, y: 98.611002, z: -220.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.9271839, z: 0.0, w: -0.3746066 },
+            scale: glam::Vec3 { x: 0.98000, y: 0.98000, z: 0.98000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Picos 04" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(9164465674446394609)
+        --
+        #"Pinho de serra · Picos 05"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 52.000000, y: 102.688272, z: -232.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8949344, z: 0.0, w: 0.4461978 },
+            scale: glam::Vec3 { x: 0.97000, y: 0.97000, z: 0.97000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.42, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "dark-wood", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pinho de serra", preset: "woodchips", hits: 3, break_style: "fall", cut_height: core::option::Option::Some(0.7) }
+        bevy_ext_scene::FloraStation { species: "tree_pine" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pinho de serra · Picos 05" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2700248911986099278)
+        --
+        #"Afloramento · Picos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 31.000000, y: 81.391403, z: -207.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.8788171, z: 0.0, w: 0.4771588 },
+            scale: glam::Vec3 { x: 1.10000, y: 1.10000, z: 1.10000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Picos 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(8127763539032794010)
+        --
+        #"Afloramento · Picos 02"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 22.000000, y: 83.793221, z: -205.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.6018150, z: 0.0, w: 0.7986355 },
+            scale: glam::Vec3 { x: 0.85000, y: 0.85000, z: 0.85000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.20000, y: 1.05000, z: 1.55000 }, offset_y: 0.438 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Afloramento · Picos 02" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1788456504464200136)
+        --
+        #"Pedra de cantaria · Picos 01"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 45.000000, y: 100.228386, z: -222.000000 },
+            rotation: glam::Quat { x: 0.0, y: 0.3007058, z: 0.0, w: 0.9537170 },
+            scale: glam::Vec3 { x: 0.93000, y: 0.93000, z: 0.93000 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.80000, y: 0.86000, z: 1.45000 }, offset_y: 0.358 },
+        }
+        bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+        bevy_ext_scene::Harvestable { kind: "stone", amount: 4 }
+        bevy_ext_scene::Destructible { popup_text: "Pedra de cantaria", preset: "dust", hits: 3, break_style: "shatter" }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "Pedra de cantaria · Picos 01" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/cenario/pedra-do-vale_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(4533078289521027952)
+    ]
+]
