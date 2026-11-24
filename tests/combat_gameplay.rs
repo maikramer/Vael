@@ -187,8 +187,10 @@ fn esquiva_consume_o_buffer_uma_vez_e_a_tocha_cancela_o_impacto() -> Result<()> 
 #[test]
 fn an_exhausted_attack_does_not_advance_the_combo_or_schedule_damage() -> Result<()> {
     let lua = arena()?;
-    lua.load(include_str!("../scripts/game/combat.lua")).exec()?;
-    lua.load(r#"
+    lua.load(include_str!("../scripts/game/combat.lua"))
+        .exec()?;
+    lua.load(
+        r#"
         local charges = 0
         viber.vael.spend_attack_stamina = function() charges += 1 return false end
         viber.action = function(name) return name == "attack" end
@@ -196,7 +198,9 @@ fn an_exhausted_attack_does_not_advance_the_combo_or_schedule_damage() -> Result
         viber.toast = noop
         on_update(0.016)
         assert(charges == 1 and state.swing == nil and state.attack_t == 0)
-    "#).exec()
+    "#,
+    )
+    .exec()
 }
 
 #[test]
@@ -982,7 +986,8 @@ fn counterbeat_answers_from_the_dodge_origin_once_per_target() -> Result<()> {
     assert!(!saved.contains_key("counterbeat"));
     let flat = store.read().unwrap().snapshot();
     store.write().unwrap().replace(flat);
-    lua.load("assert(game.counterbeat == nil and game['discovery.counterbeat'])").exec()
+    lua.load("assert(game.counterbeat == nil and game['discovery.counterbeat'])")
+        .exec()
 }
 
 #[test]

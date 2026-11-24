@@ -1,7 +1,7 @@
 //! Coerções partilhadas entre o Lua, o `viber_game`, o JSON do save e as
 //! env vars de QA.
 //!
-//! Cada módulo da bridge `viber.vael` lia argumentos e chaves do jogo com a
+//! Cada módulo da bridge `vael.vael` lia argumentos e chaves do jogo com a
 //! mesma tolerância do Lua antigo (`tonumber`, "não numérico vale 0", a
 //! verdade do Lua) e a migração de saves lia o JSON legacy com as mesmas
 //! tolerâncias — cada um com a sua cópia local. Estas funções são essa
@@ -125,7 +125,7 @@ pub(crate) fn write_number(game: &Table, key: &str, value: f64) -> mlua::Result<
     }
 }
 
-/// Aplica um patch JSON ao `viber.game()` da VM — a MESMA fonte que as
+/// Aplica um patch JSON ao `vael.game()` da VM — a MESMA fonte que as
 /// leituras do módulo usam.
 ///
 /// O `apply_patch` COMPAT do host escreve sempre o store do PROCESSO; em

@@ -13,19 +13,19 @@
 //! * **Arquétipos físicos**: massa, força muscular, limiar de reação parcial e
 //!   passos adaptam-se ao arquétipo (`LuaScriptRef`/`Name`: leve, padrão,
 //!   escudo, bruto, chefe) e à escala da entidade.
-//! * `viber.hit_flash` + `viber.entity_knockback` (golpe do herói / bomba /
+//! * `vael.hit_flash` + `vael.entity_knockback` (golpe do herói / bomba /
 //!   Acorde): golpes ligeiros acertam o ombro/peito consoante o ângulo (torção
 //!   axial em `HitReaction`); empurrões fortes (`force >= 4.5`) entram como
 //!   `puppet_push` para acionar passos de captura IPM + VMC implícito ou queda
 //!   com `CatchFall`.
-//! * `viber.corpse` (a morte): o corpo morre mole na direção do último golpe
+//! * `vael.corpse` (a morte): o corpo morre mole na direção do último golpe
 //!   (substitui o ragdoll passivo do `RagdollDeath` quando o rig é bípede).
-//! * `viber.push_player` (o herói leva um golpe): reação parcial direcional no
+//! * `vael.push_player` (o herói leva um golpe): reação parcial direcional no
 //!   herói, sem lhe tirar o controlo.
 //! * [`PuppetEvent`]: quedas geram poeira no impacto + micro shake em criaturas
 //!   pesadas; `GettingUp { face_up }` dispara gesto `getup_back`/`getup_front`
 //!   quando o `AnimationSet` o define.
-//! * `viber.vael.puppet_*`: API Lua completa (`puppet_busy`, `puppet_state`,
+//! * `vael.vael.puppet_*`: API Lua completa (`puppet_busy`, `puppet_state`,
 //!   `puppet_info`, `puppet_push`, `puppet_hit`, `puppet_stagger`, `puppet_kill`,
 //!   `puppet_revive`, `puppet_getup`, `puppet_release`, `puppet_activate`,
 //!   `puppet_fall`, `puppet_start`).
@@ -100,7 +100,9 @@ const BUMP_MIN_IMPULSE: f32 = 6.5;
 const HERO_REF_MASS: f32 = 75.0;
 
 pub fn enabled() -> bool {
-    std::env::var("VAEL_PUPPET").map(|v| v.trim() != "0").unwrap_or(true)
+    std::env::var("VAEL_PUPPET")
+        .map(|v| v.trim() != "0")
+        .unwrap_or(true)
 }
 
 /// O rig não tem os ossos de um bípede (lobo, verme…): nunca tentar outra vez.
@@ -125,7 +127,7 @@ pub enum CreatureArchetype {
     Boss,
 }
 
-/// Fotografia de propriocepção publicada ao Lua em `viber.vael.puppet_info(id)`.
+/// Fotografia de propriocepção publicada ao Lua em `vael.vael.puppet_info(id)`.
 #[derive(Debug, Clone, Copy)]
 pub struct PuppetSnapshot {
     pub mode: PuppetMode,
@@ -147,22 +149,51 @@ pub struct PuppetSnapshot {
     pub peak_impact_speed: f32,
 }
 
-/// Pedidos vindos do Lua (`viber.vael.puppet_*`).
+/// Pedidos vindos do Lua (`vael.vael.puppet_*`).
 #[derive(Debug, Clone)]
 enum Request {
-    Hit { entity: Entity, part: PuppetPart, impulse: Vec3, point: Option<Vec3>, kind: HitKind },
-    Bump { entity: Entity, part: PuppetPart, impulse: Vec3, bumper_pos: Option<Vec3> },
-    Trip { entity: Entity, side: Side, impulse: Vec3 },
-    LookAt { entity: Entity, point: Vec3, duration: f32 },
-    Push { entity: Entity, impulse: Vec3 },
-    Stagger { entity: Entity, direction: Vec3, duration: f32 },
+    Hit {
+        entity: Entity,
+        part: PuppetPart,
+        impulse: Vec3,
+        point: Option<Vec3>,
+        kind: HitKind,
+    },
+    Bump {
+        entity: Entity,
+        part: PuppetPart,
+        impulse: Vec3,
+        bumper_pos: Option<Vec3>,
+    },
+    Trip {
+        entity: Entity,
+        side: Side,
+        impulse: Vec3,
+    },
+    LookAt {
+        entity: Entity,
+        point: Vec3,
+        duration: f32,
+    },
+    Push {
+        entity: Entity,
+        impulse: Vec3,
+    },
+    Stagger {
+        entity: Entity,
+        direction: Vec3,
+        duration: f32,
+    },
     Kill(Entity),
     Revive(Entity),
     GetUp(Entity),
     Release(Entity),
     Activate(Entity),
     Fall(Entity),
-    Start { entity: Entity, behaviour: String },
+    Start {
+        entity: Entity,
+        behaviour: String,
+    },
 }
 
 impl Request {
@@ -283,7 +314,11 @@ pub fn archetype_from_hint(script_path: Option<&str>, name: Option<&str>) -> Cre
     if let Some(n) = name {
         hay.push_str(&n.to_ascii_lowercase());
     }
-    if hay.contains("boss") || hay.contains("bog-warden") || hay.contains("bog_warden") || hay.contains("witch") {
+    if hay.contains("boss")
+        || hay.contains("bog-warden")
+        || hay.contains("bog_warden")
+        || hay.contains("witch")
+    {
         CreatureArchetype::Boss
     } else if hay.contains("brute") || hay.contains("ogre") || hay.contains("giant") {
         CreatureArchetype::Brute
@@ -298,17 +333,22 @@ pub fn archetype_from_hint(script_path: Option<&str>, name: Option<&str>) -> Cre
 
 /// Afinação física de uma criatura a partir do arquétipo e da escala do transform.
 pub fn creature_config_for(archetype: CreatureArchetype, scale: f32) -> PuppetConfig {
-    let scale_clamped = if scale.is_finite() && scale > 0.1 { scale.clamp(0.55, 2.2) } else { 1.0 };
+    let scale_clamped = if scale.is_finite() && scale > 0.1 {
+        scale.clamp(0.55, 2.2)
+    } else {
+        1.0
+    };
     // Massa escala ~s^2.2 (entre área e volume) para que brutos 1.25× pesem mais
     // sem exigir rigidez infinita do solver XPBD.
     let mass_mult = scale_clamped.powf(2.2);
-    let (base_mass, strength, partial, max_steps, getup_delay, reaction_delay, collapse_time) = match archetype {
-        CreatureArchetype::Light => (52.0, 0.95, 22.0, 4, 1.0, 0.032, 0.24),
-        CreatureArchetype::Standard => (70.0, 1.0, 28.0, 4, 1.2, 0.042, 0.30),
-        CreatureArchetype::Shielded => (78.0, 1.15, 36.0, 4, 1.2, 0.042, 0.32),
-        CreatureArchetype::Brute => (115.0, 1.25, 48.0, 3, 1.5, 0.055, 0.38),
-        CreatureArchetype::Boss => (150.0, 1.35, 68.0, 3, 1.4, 0.058, 0.42),
-    };
+    let (base_mass, strength, partial, max_steps, getup_delay, reaction_delay, collapse_time) =
+        match archetype {
+            CreatureArchetype::Light => (52.0, 0.95, 22.0, 4, 1.0, 0.032, 0.24),
+            CreatureArchetype::Standard => (70.0, 1.0, 28.0, 4, 1.2, 0.042, 0.30),
+            CreatureArchetype::Shielded => (78.0, 1.15, 36.0, 4, 1.2, 0.042, 0.32),
+            CreatureArchetype::Brute => (115.0, 1.25, 48.0, 3, 1.5, 0.055, 0.38),
+            CreatureArchetype::Boss => (150.0, 1.35, 68.0, 3, 1.4, 0.058, 0.42),
+        };
     PuppetConfig {
         total_mass: base_mass * mass_mult,
         strength,
@@ -482,7 +522,7 @@ impl PuppetBuilder<'_, '_> {
     }
 }
 
-/// `viber.corpse`: o corpo bípede morre mole, tombando com o último golpe.
+/// `vael.corpse`: o corpo bípede morre mole, tombando com o último golpe.
 fn die_physically(
     mut commands: Commands,
     time: Res<Time>,
@@ -498,7 +538,9 @@ fn die_physically(
             continue;
         }
         // O puppet substitui o ragdoll passivo.
-        commands.entity(entity).remove::<vael_engine::ragdoll::RagdollDeath>();
+        commands
+            .entity(entity)
+            .remove::<vael_engine::ragdoll::RagdollDeath>();
         let (part, impulse) = match last {
             Some(h) if now - h.at <= LAST_HIT_WINDOW => (h.part, h.impulse * 1.5),
             // Sem golpe recente (veneno, queda): cai para trás.
@@ -560,7 +602,9 @@ fn react_to_script_commands(
             None => {
                 // Golpe sem knockback: empurra para longe do herói.
                 let pos = target_gt.map(|g| g.translation()).unwrap_or_default();
-                let away = hero_pos.map(|h| (pos - h).with_y(0.0).normalize_or_zero()).unwrap_or(Vec3::ZERO);
+                let away = hero_pos
+                    .map(|h| (pos - h).with_y(0.0).normalize_or_zero())
+                    .unwrap_or(Vec3::ZERO);
                 (away, 0.0)
             }
         };
@@ -574,10 +618,18 @@ fn react_to_script_commands(
             let impulse = dir * (force * PUSH_KNOCKBACK_TO_IMPULSE);
             commands
                 .entity(entity)
-                .try_insert(PuppetLastHit { impulse, part: PuppetPart::SpineUpper, at: now })
+                .try_insert(PuppetLastHit {
+                    impulse,
+                    part: PuppetPart::SpineUpper,
+                    at: now,
+                })
                 .puppet_push(impulse);
         } else {
-            let mag = if force > 0.0 { force * HIT_KNOCKBACK_TO_IMPULSE } else { FLASH_IMPULSE };
+            let mag = if force > 0.0 {
+                force * HIT_KNOCKBACK_TO_IMPULSE
+            } else {
+                FLASH_IMPULSE
+            };
             let impulse = dir * mag;
             let kind = match part {
                 PuppetPart::UpperArmL | PuppetPart::UpperArmR => HitKind::Slash,
@@ -586,7 +638,11 @@ fn react_to_script_commands(
             };
             commands
                 .entity(entity)
-                .try_insert(PuppetLastHit { impulse, part, at: now })
+                .try_insert(PuppetLastHit {
+                    impulse,
+                    part,
+                    at: now,
+                })
                 .puppet_hit_kind(part, impulse, None, kind);
         }
     }
@@ -598,7 +654,11 @@ fn react_to_script_commands(
         let part = pick_hit_part(dir, hero_gt.right().as_vec3());
         // Escala pela força do empurrão, mantendo-se sempre parcial no herói.
         let mag = (HERO_HIT_IMPULSE * (0.80 + 0.25 * len)).clamp(44.0, 72.0);
-        let kind = if len > 1.3 { HitKind::Blunt } else { HitKind::Slash };
+        let kind = if len > 1.3 {
+            HitKind::Blunt
+        } else {
+            HitKind::Slash
+        };
         commands
             .entity(hero)
             .puppet_hit_kind(part, dir * mag, None, kind);
@@ -644,10 +704,7 @@ fn react_to_actor_bumps(
         if is_hero {
             HERO_REF_MASS
         } else {
-            let arch = archetype_from_hint(
-                script.map(|s| s.path.as_str()),
-                name.map(Name::as_str),
-            );
+            let arch = archetype_from_hint(script.map(|s| s.path.as_str()), name.map(Name::as_str));
             let scale = gt.to_scale_rotation_translation().0.y;
             creature_config_for(arch, scale).total_mass
         }
@@ -664,14 +721,25 @@ fn react_to_actor_bumps(
         let mass_a = estimate_mass(bump.a);
         let mass_b = estimate_mass(bump.b);
 
-        let pos_a = actors.get(bump.a).ok().map(|a| a.0.translation() + Vec3::Y * 1.45);
-        let pos_b = actors.get(bump.b).ok().map(|b| b.0.translation() + Vec3::Y * 1.45);
+        let pos_a = actors
+            .get(bump.a)
+            .ok()
+            .map(|a| a.0.translation() + Vec3::Y * 1.45);
+        let pos_b = actors
+            .get(bump.b)
+            .ok()
+            .map(|b| b.0.translation() + Vec3::Y * 1.45);
 
         for (target, other_pos, other_mass, self_mass, raw_dir, pusher_vel, is_crowd_npc) in [
             (bump.a, pos_b, mass_b, mass_a, dir_a, bump.b_vel, bump.a_npc),
-            (bump.b, pos_a, mass_a, mass_b, -dir_a, bump.a_vel, bump.b_npc),
+            (
+                bump.b, pos_a, mass_a, mass_b, -dir_a, bump.a_vel, bump.b_npc,
+            ),
         ] {
-            if cooldowns.get(&target).is_some_and(|&t| now - t < BUMP_COOLDOWN_SECS) {
+            if cooldowns
+                .get(&target)
+                .is_some_and(|&t| now - t < BUMP_COOLDOWN_SECS)
+            {
                 continue;
             }
             let Ok((gt, is_hero, is_corpse, pstate, _, _, _)) = actors.get(target) else {
@@ -719,7 +787,9 @@ fn react_to_actor_bumps(
             } else {
                 // Jogo de ombro orgânico (`BumpReaction`): rotação axial do tronco + olhar orientador!
                 let part = pick_hit_part(dir, gt.right().as_vec3());
-                commands.entity(target).puppet_bump(part, dir * imp, other_pos);
+                commands
+                    .entity(target)
+                    .puppet_bump(part, dir * imp, other_pos);
             }
         }
     }
@@ -800,22 +870,45 @@ fn apply_requests(
             Request::Release(entity) => {
                 commands.dismantle_puppet(entity);
             }
-            Request::Hit { entity, part, impulse, point, kind } => {
+            Request::Hit {
+                entity,
+                part,
+                impulse,
+                point,
+                kind,
+            } => {
                 if builder.ensure(&mut commands, entity) {
-                    commands.entity(entity).puppet_hit_kind(part, impulse, point, kind);
+                    commands
+                        .entity(entity)
+                        .puppet_hit_kind(part, impulse, point, kind);
                 }
             }
-            Request::Bump { entity, part, impulse, bumper_pos } => {
+            Request::Bump {
+                entity,
+                part,
+                impulse,
+                bumper_pos,
+            } => {
                 if builder.ensure(&mut commands, entity) {
-                    commands.entity(entity).puppet_bump(part, impulse, bumper_pos);
+                    commands
+                        .entity(entity)
+                        .puppet_bump(part, impulse, bumper_pos);
                 }
             }
-            Request::Trip { entity, side, impulse } => {
+            Request::Trip {
+                entity,
+                side,
+                impulse,
+            } => {
                 if builder.ensure(&mut commands, entity) {
                     commands.entity(entity).puppet_trip(side, impulse);
                 }
             }
-            Request::LookAt { entity, point, duration } => {
+            Request::LookAt {
+                entity,
+                point,
+                duration,
+            } => {
                 if builder.ensure(&mut commands, entity) {
                     commands.entity(entity).puppet_look_at(point, duration);
                 }
@@ -825,7 +918,11 @@ fn apply_requests(
                     commands.entity(entity).puppet_push(impulse);
                 }
             }
-            Request::Stagger { entity, direction, duration } => {
+            Request::Stagger {
+                entity,
+                direction,
+                duration,
+            } => {
                 if builder.ensure(&mut commands, entity) {
                     let mut stagger = StaggerFall::new(direction);
                     if duration.is_finite() && duration > 0.1 {
@@ -873,7 +970,7 @@ fn apply_requests(
     }
 }
 
-/// Verifica se o herói está vivo nas fontes autoritativas (`viber.game()` / `PlayerVitals`).
+/// Verifica se o herói está vivo nas fontes autoritativas (`vael.game()` / `PlayerVitals`).
 fn hero_known_alive(vitals: Option<&crate::components::PlayerVitals>) -> bool {
     use vael_engine::luau::game::{game_value_to_json, with_game_store};
 
@@ -968,7 +1065,9 @@ fn calm_kinematic_motion(
             continue;
         }
         if has_kb {
-            commands.entity(entity).remove::<vael_engine::physics_fx::Knockback>();
+            commands
+                .entity(entity)
+                .remove::<vael_engine::physics_fx::Knockback>();
         }
         if let Some(mut loco) = loco {
             loco.halt();
@@ -999,13 +1098,14 @@ fn handle_puppet_events(
         };
         let ground_pos = Vec3::new(sense.com.x, sense.ground + 0.08, sense.com.z);
         match ev.kind {
-            PuppetEventKind::ModeChanged { from: PuppetMode::Falling, to: PuppetMode::Down } => {
+            PuppetEventKind::ModeChanged {
+                from: PuppetMode::Falling,
+                to: PuppetMode::Down,
+            } => {
                 let heavy = cfg.total_mass >= 100.0;
                 let count = if heavy { 10 } else { 5 };
                 vael_engine::particles::spawn_burst(&mut commands, &dust, ground_pos, count);
-                if heavy
-                    && let Some(hpos) = hero_pos
-                {
+                if heavy && let Some(hpos) = hero_pos {
                     let dist = hpos.distance(gt.translation());
                     if dist < FALL_SHAKE_RANGE {
                         let falloff = 1.0 - (dist / FALL_SHAKE_RANGE);
@@ -1023,10 +1123,24 @@ fn handle_puppet_events(
                     speed: 1.0,
                 });
             }
-            PuppetEventKind::BodyImpact { point, impulse, speed, .. } => {
+            PuppetEventKind::BodyImpact {
+                point,
+                impulse,
+                speed,
+                ..
+            } => {
                 if speed >= 2.2 || impulse >= 16.0 {
-                    let count = if impulse >= 40.0 || speed >= 5.0 { 7 } else { 3 };
-                    vael_engine::particles::spawn_burst(&mut commands, &dust, point + Vec3::Y * 0.04, count);
+                    let count = if impulse >= 40.0 || speed >= 5.0 {
+                        7
+                    } else {
+                        3
+                    };
+                    vael_engine::particles::spawn_burst(
+                        &mut commands,
+                        &dust,
+                        point + Vec3::Y * 0.04,
+                        count,
+                    );
                     if cfg.total_mass >= 90.0
                         && impulse >= 35.0
                         && let Some(hpos) = hero_pos
@@ -1045,7 +1159,12 @@ fn handle_puppet_events(
             }
             PuppetEventKind::StepTaken { point, .. } => {
                 if cfg.total_mass >= 100.0 {
-                    vael_engine::particles::spawn_burst(&mut commands, &dust, point + Vec3::Y * 0.03, 2);
+                    vael_engine::particles::spawn_burst(
+                        &mut commands,
+                        &dust,
+                        point + Vec3::Y * 0.03,
+                        2,
+                    );
                 }
             }
             PuppetEventKind::Tripped { .. } => {
@@ -1086,13 +1205,21 @@ pub fn stance_name(stance: StanceState) -> &'static str {
 
 fn publish_snapshots(
     control: Res<VaelPuppetControl>,
-    puppets: Query<(Entity, &PuppetState, &PuppetSense, Option<&PuppetNeuroState>), With<PuppetRig>>,
+    puppets: Query<
+        (
+            Entity,
+            &PuppetState,
+            &PuppetSense,
+            Option<&PuppetNeuroState>,
+        ),
+        With<PuppetRig>,
+    >,
 ) {
     let mut ctl = control.lock();
     ctl.snapshots.clear();
     for (entity, state, sense, neuro) in &puppets {
-        let plant_quality = 0.5
-            * (sense.foot_plant_quality(Side::Left) + sense.foot_plant_quality(Side::Right));
+        let plant_quality =
+            0.5 * (sense.foot_plant_quality(Side::Left) + sense.foot_plant_quality(Side::Right));
         let (trauma, fatigue, hit_combo) = neuro
             .map(|n| (n.trauma, n.fatigue, n.hit_combo))
             .unwrap_or((0.0, 0.0, 0));
@@ -1133,47 +1260,73 @@ fn vec3(x: Option<f32>, y: Option<f32>, z: Option<f32>) -> Vec3 {
 fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
-    // `viber.vael.puppet_enabled()` → true quando `VaelPuppetPlugin` está ativo.
+    // `vael.vael.puppet_enabled()` → true quando `VaelPuppetPlugin` está ativo.
     vael.set("puppet_enabled", lua.create_function(|_, ()| Ok(true))?)?;
 
-    // `viber.vael.puppet_busy(id)` → o corpo físico manda (cambaleia, caído, a levantar).
-    vael_fn!(lua, vael, "puppet_busy", [control = control.clone()], move |_, id: i64| {
-        Ok(control.lock().snapshots.get(&(id as u64)).is_some_and(|s| busy(s.mode)))
-    });
+    // `vael.vael.puppet_busy(id)` → o corpo físico manda (cambaleia, caído, a levantar).
+    vael_fn!(
+        lua,
+        vael,
+        "puppet_busy",
+        [control = control.clone()],
+        move |_, id: i64| {
+            Ok(control
+                .lock()
+                .snapshots
+                .get(&(id as u64))
+                .is_some_and(|s| busy(s.mode)))
+        }
+    );
 
-    // `viber.vael.puppet_state(id)` → "animated"|"active"|"falling"|"down"|"getting_up"|"dead"|nil.
-    vael_fn!(lua, vael, "puppet_state", [control = control.clone()], move |_, id: i64| {
-        Ok(control.lock().snapshots.get(&(id as u64)).map(|s| mode_name(s.mode)))
-    });
+    // `vael.vael.puppet_state(id)` → "animated"|"active"|"falling"|"down"|"getting_up"|"dead"|nil.
+    vael_fn!(
+        lua,
+        vael,
+        "puppet_state",
+        [control = control.clone()],
+        move |_, id: i64| {
+            Ok(control
+                .lock()
+                .snapshots
+                .get(&(id as u64))
+                .map(|s| mode_name(s.mode)))
+        }
+    );
 
-    // `viber.vael.puppet_info(id)` → tabela de propriocepção completa (ou nil).
-    vael_fn!(lua, vael, "puppet_info", [control = control.clone()], move |lua, id: i64| {
-        let Some(s) = control.lock().snapshots.get(&(id as u64)).copied() else {
-            return Ok(mlua::Value::Nil);
-        };
-        let t = lua.create_table()?;
-        t.set("mode", mode_name(s.mode))?;
-        t.set("busy", busy(s.mode))?;
-        t.set("stance", stance_name(s.stance))?;
-        t.set("feet_down", s.feet_down)?;
-        t.set("trunk_tilt", s.trunk_tilt)?;
-        t.set("capture_margin", s.capture_margin)?;
-        t.set("capture_radius", s.capture_radius)?;
-        t.set("speed", s.speed)?;
-        t.set("angular_momentum", s.angular_momentum)?;
-        t.set("plant_quality", s.plant_quality)?;
-        t.set("pelvis_height", s.pelvis_height)?;
-        t.set("face_up", s.face_up)?;
-        t.set("trauma", s.trauma)?;
-        t.set("fatigue", s.fatigue)?;
-        t.set("hit_combo", s.hit_combo)?;
-        t.set("ground_clearance", s.ground_clearance)?;
-        t.set("wall_nearby", s.wall_nearby)?;
-        t.set("peak_impact_speed", s.peak_impact_speed)?;
-        Ok(mlua::Value::Table(t))
-    });
+    // `vael.vael.puppet_info(id)` → tabela de propriocepção completa (ou nil).
+    vael_fn!(
+        lua,
+        vael,
+        "puppet_info",
+        [control = control.clone()],
+        move |lua, id: i64| {
+            let Some(s) = control.lock().snapshots.get(&(id as u64)).copied() else {
+                return Ok(mlua::Value::Nil);
+            };
+            let t = lua.create_table()?;
+            t.set("mode", mode_name(s.mode))?;
+            t.set("busy", busy(s.mode))?;
+            t.set("stance", stance_name(s.stance))?;
+            t.set("feet_down", s.feet_down)?;
+            t.set("trunk_tilt", s.trunk_tilt)?;
+            t.set("capture_margin", s.capture_margin)?;
+            t.set("capture_radius", s.capture_radius)?;
+            t.set("speed", s.speed)?;
+            t.set("angular_momentum", s.angular_momentum)?;
+            t.set("plant_quality", s.plant_quality)?;
+            t.set("pelvis_height", s.pelvis_height)?;
+            t.set("face_up", s.face_up)?;
+            t.set("trauma", s.trauma)?;
+            t.set("fatigue", s.fatigue)?;
+            t.set("hit_combo", s.hit_combo)?;
+            t.set("ground_clearance", s.ground_clearance)?;
+            t.set("wall_nearby", s.wall_nearby)?;
+            t.set("peak_impact_speed", s.peak_impact_speed)?;
+            Ok(mlua::Value::Table(t))
+        }
+    );
 
-    // `viber.vael.puppet_push(id, ix, iy, iz)` — empurrão (N·s) no tronco.
+    // `vael.vael.puppet_push(id, ix, iy, iz)` — empurrão (N·s) no tronco.
     vael_fn!(
         lua,
         vael,
@@ -1181,12 +1334,15 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         [control = control.clone()],
         move |_, (id, x, y, z): (i64, Option<f32>, Option<f32>, Option<f32>)| {
             let entity = entity_from_id(id)?;
-            control.lock().requests.push(Request::Push { entity, impulse: vec3(x, y, z) });
+            control.lock().requests.push(Request::Push {
+                entity,
+                impulse: vec3(x, y, z),
+            });
             Ok(())
         }
     );
 
-    // `viber.vael.puppet_hit(id, "head", ix, iy, iz [, px, py, pz [, "blunt"|"slash"|"pierce"|"blast"]])`
+    // `vael.vael.puppet_hit(id, "head", ix, iy, iz [, px, py, pz [, "blunt"|"slash"|"pierce"|"blast"]])`
     vael_fn!(
         lua,
         vael,
@@ -1212,8 +1368,9 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
                 _ => None,
             };
             let kind = match kind_str.as_deref() {
-                Some(k) => hit_kind_from_name(k)
-                    .ok_or_else(|| mlua::Error::runtime(format!("tipo de golpe desconhecido: {k}")))?,
+                Some(k) => hit_kind_from_name(k).ok_or_else(|| {
+                    mlua::Error::runtime(format!("tipo de golpe desconhecido: {k}"))
+                })?,
                 None => HitKind::Blunt,
             };
             control.lock().requests.push(Request::Hit {
@@ -1227,7 +1384,7 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         }
     );
 
-    // `viber.vael.puppet_bump(id, part, ix, iy, iz [, bx, by, bz])` — esbarrão de ombro + olhar orientador.
+    // `vael.vael.puppet_bump(id, part, ix, iy, iz [, bx, by, bz])` — esbarrão de ombro + olhar orientador.
     vael_fn!(
         lua,
         vael,
@@ -1261,7 +1418,7 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         }
     );
 
-    // `viber.vael.puppet_trip(id, "left"|"right", ix, iy, iz)` — tropeço físico na canela.
+    // `vael.vael.puppet_trip(id, "left"|"right", ix, iy, iz)` — tropeço físico na canela.
     vael_fn!(
         lua,
         vael,
@@ -1280,7 +1437,7 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         }
     );
 
-    // `viber.vael.puppet_look_at(id, x, y, z [, duration])` — olhar orientador cabeça/pescoço.
+    // `vael.vael.puppet_look_at(id, x, y, z [, duration])` — olhar orientador cabeça/pescoço.
     vael_fn!(
         lua,
         vael,
@@ -1297,7 +1454,7 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         }
     );
 
-    // `viber.vael.puppet_stagger(id, dx, dz [, duration])` — cambaleio direcionado até cair.
+    // `vael.vael.puppet_stagger(id, dx, dz [, duration])` — cambaleio direcionado até cair.
     vael_fn!(
         lua,
         vael,
@@ -1315,7 +1472,7 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         }
     );
 
-    // `viber.vael.puppet_start(id, "windmill"|"writhe"|"balance"|"catchfall"|"relax"|"stagger")`.
+    // `vael.vael.puppet_start(id, "windmill"|"writhe"|"balance"|"catchfall"|"relax"|"stagger")`.
     vael_fn!(
         lua,
         vael,
@@ -1323,7 +1480,10 @@ fn install_puppet_api_inner(lua: &Lua, control: &VaelPuppetControl) -> mlua::Res
         [control = control.clone()],
         move |_, (id, behaviour): (i64, String)| {
             let entity = entity_from_id(id)?;
-            control.lock().requests.push(Request::Start { entity, behaviour });
+            control
+                .lock()
+                .requests
+                .push(Request::Start { entity, behaviour });
             Ok(())
         }
     );

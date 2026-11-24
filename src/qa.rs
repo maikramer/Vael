@@ -12,11 +12,11 @@
 //!   teste `tests/qa_scenarios.rs` passam todos os cenários;
 //! - **arranque** (`vael --scenario <nome>` ou `VAEL_SCENARIO`; o Jackdaw
 //!   usa o run config "Play (QA)" com `VAEL_SCENARIO=@active`): o
-//!   [`VaelQaPlugin`] escreve o estado no `viber.game()` e teleporta o herói
+//!   [`VaelQaPlugin`] escreve o estado no `vael.game()` e teleporta o herói
 //!   quando o mundo está pronto. Os saves vão para uma pasta à parte;
 //! - **hot reload**: gravar o JSON (ou um `extends` dele) com o jogo a
 //!   correr reaplica-o — ajusta itens/etapa/posição sem reiniciar. Pela
-//!   bridge: `viber.vael.qa_apply/qa_check/qa_snapshot` (`tools/qa.py`).
+//!   bridge: `vael.vael.qa_apply/qa_check/qa_snapshot` (`tools/qa.py`).
 //!
 //! Pré-condições: com `prerequisites` (default `true`), cada quest pedida
 //! fica com toda a cadeia anterior entregue (`requires` + quem a aponta em
@@ -120,7 +120,7 @@ pub struct Scenario {
     /// Biomas revelados no mapa.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub biomes: Vec<String>,
-    /// Chaves cruas do `viber.game()` (ganham a tudo; `null` apaga).
+    /// Chaves cruas do `vael.game()` (ganham a tudo; `null` apaga).
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     pub flags: BTreeMap<String, Value>,
     #[serde(skip_serializing_if = "PlayerSetup::is_empty")]
@@ -625,7 +625,7 @@ impl QaRules {
 /// O que um cenário escreve e faz no arranque.
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Plan {
-    /// Chaves do `viber.game()` (`null` apaga).
+    /// Chaves do `vael.game()` (`null` apaga).
     pub kv: QuestKv,
     pub pos: Option<[f32; 3]>,
     /// Nome da entidade ao pé da qual o herói nasce.
@@ -1395,7 +1395,7 @@ pub struct QaRequest {
     pub name: String,
 }
 
-/// Pedidos vindos do Lua (`viber.vael.qa_apply`).
+/// Pedidos vindos do Lua (`vael.vael.qa_apply`).
 #[derive(Default)]
 struct QaInbox {
     apply: Option<Option<String>>,
@@ -1674,7 +1674,7 @@ fn in_front(transform: &GlobalTransform, distance: f32) -> Vec3 {
     translation + forward * distance + Vec3::Y * 0.5
 }
 
-/// `viber.vael.qa_*`.
+/// `vael.vael.qa_*`.
 fn install_qa_api(
     content: Option<Res<VaelContent>>,
     shared: Res<QaShared>,
@@ -1690,7 +1690,7 @@ fn install_qa_api(
     let shared = shared.clone();
     crate::script_host::register_installer(move |lua| {
         if let Err(err) = install(lua, rules.clone(), shared.clone(), root.clone()) {
-            error!("vael qa: falha a instalar `viber.vael.qa_*`: {err}");
+            error!("vael qa: falha a instalar `vael.vael.qa_*`: {err}");
         }
         Ok(())
     });

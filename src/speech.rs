@@ -1,6 +1,6 @@
 //! Falas no MUNDO — [`bevy_speech_bubbles`].
 //!
-//! As linhas que os scripts emitem por `viber.say` deixaram de aparecer no
+//! As linhas que os scripts emitem por `vael.say` deixaram de aparecer no
 //! balão do HUD: a engine resolve o locale, baixa a música e publica
 //! [`ScriptSay`]; este plugin desenha um balão no mundo sobre quem falou
 //! (NPC, quadro de avisos, altar) e desliga o balão nativo com
@@ -381,7 +381,7 @@ mod tests {
     }
 
     /// Os scripts que falam passaram a usar `talk.say`/`say.say` e o
-    /// `viber.entity_id()`: compila-os (sem executar) para o jogo não
+    /// `vael.entity_id()`: compila-os (sem executar) para o jogo não
     /// descobrir um erro de sintaxe só quando o NPC abre a boca.
     #[test]
     fn the_scripts_that_talk_compile() {

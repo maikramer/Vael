@@ -1,7 +1,7 @@
 //! Save do Vael.
 //!
 //! O save da engine é um envelope: pose, cena, volumes e `world_kv` (o
-//! `viber.game()` do Lua) mais uma secção `game` opaca. O Vael usa as duas:
+//! `vael.game()` do Lua) mais uma secção `game` opaca. O Vael usa as duas:
 //! **`world_kv` continua a ser o espelho plano** que os scripts leem durante
 //! a transição, e `game.vael` guarda o estado tipado (a fonte de verdade
 //! quando as regras passarem para Rust).
@@ -124,7 +124,7 @@ impl Default for VaelSave {
 }
 
 impl VaelSave {
-    /// Migra o `world_kv` plano do `viber.game()` para o schema tipado.
+    /// Migra o `world_kv` plano do `vael.game()` para o schema tipado.
     ///
     /// As chaves conhecidas do `rules.lua` entram nos campos; todas as
     /// outras — incluindo progresso de quests (`q.<id>.n`, `.stage`, `.v.*`)
@@ -386,7 +386,7 @@ impl VaelSave {
         save
     }
 
-    /// Aplica um snapshot do `viber.game()` **sem apagar** o que o Rust
+    /// Aplica um snapshot do `vael.game()` **sem apagar** o que o Rust
     /// possui e o KV não trouxe.
     ///
     /// O snapshot de 10 Hz é normalmente completo, mas há campos que o Rust
@@ -471,7 +471,7 @@ impl VaelSave {
         self.legacy = legacy;
     }
 
-    /// Espelho plano compatível com o `viber.game()` do Lua.
+    /// Espelho plano compatível com o `vael.game()` do Lua.
     pub fn to_world_kv(&self) -> BTreeMap<String, Value> {
         let mut kv = BTreeMap::new();
 

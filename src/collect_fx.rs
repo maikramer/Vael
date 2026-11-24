@@ -12,7 +12,7 @@
 //! - [`PickupOrbitGlint`] e [`PickupGroundRing`]: faíscas orbitais em hélice e
 //!   halo de chão vibrante sob os itens largados por destrutíveis.
 //! - [`CollectBurstQueue`] e [`HitFlashQueue`]: filas partilhadas entre Rust e
-//!   Lua (`viber.vael.collect_burst` / `viber.vael.hit_flash`) para que ambos
+//!   Lua (`vael.vael.collect_burst` / `vael.vael.hit_flash`) para que ambos
 //!   os caminhos produzam a mesma coreografia.
 
 use std::f32::consts::{PI, TAU};
@@ -363,8 +363,8 @@ impl Plugin for VaelCollectFxPlugin {
     }
 }
 
-/// Expõe `viber.vael.collect_burst(kind, x, y, z, count)` e
-/// `viber.vael.hit_flash(entity_bits)` aos scripts Lua.
+/// Expõe `vael.vael.collect_burst(kind, x, y, z, count)` e
+/// `vael.vael.hit_flash(entity_bits)` aos scripts Lua.
 fn install_lua_fx_api(bursts: Res<CollectBurstQueue>, flashes: Res<HitFlashQueue>) {
     let bursts = bursts.clone();
     let flashes = flashes.clone();
@@ -502,7 +502,8 @@ fn spawn_collect_orbs(
                     spin: Vec3::new(5.5 + i as f32, 8.2, 4.3 * swirl_sign),
                     base_scale,
                     fly_start: req.origin,
-                    control_offset: side * (0.75 * swirl_sign) + Vec3::Y * (0.95 + 0.2 * (i % 3) as f32),
+                    control_offset: side * (0.75 * swirl_sign)
+                        + Vec3::Y * (0.95 + 0.2 * (i % 3) as f32),
                     homing: false,
                     trail_timer: 0.02,
                     emit_absorb_burst: i == 0 || i + 1 == total,
@@ -568,8 +569,7 @@ fn drive_collect_orbs(
         let u = u.clamp(0.0, 1.0);
         let control = orb.fly_start.lerp(target, 0.45) + orb.control_offset;
         let omt = 1.0 - u;
-        tf.translation =
-            orb.fly_start * (omt * omt) + control * (2.0 * omt * u) + target * (u * u);
+        tf.translation = orb.fly_start * (omt * omt) + control * (2.0 * omt * u) + target * (u * u);
 
         // Leve esticamento e pulso antes da absorção.
         let shrink = if t < 0.75 {
@@ -750,8 +750,8 @@ fn animate_pickup_details(
             continue;
         };
         // Mantém o anel encostado ao chão mesmo enquanto o pickup salta/levita acima.
-        let local_y = (ring.floor_y + 0.045 - root_tf.translation.y)
-            / root_tf.scale.y.abs().max(0.05);
+        let local_y =
+            (ring.floor_y + 0.045 - root_tf.translation.y) / root_tf.scale.y.abs().max(0.05);
         tf.translation = Vec3::new(0.0, local_y, 0.0);
         let breath = 0.92 + 0.14 * ((now * 3.4 + ring.phase).sin() * 0.5 + 0.5);
         // Contrarrota o yaw do pai para o anel girar suavemente no seu ritmo próprio.
@@ -866,9 +866,11 @@ mod tests {
             Transform::from_translation(hero_pos),
             GlobalTransform::from_translation(hero_pos),
         ));
-        app.world()
-            .resource::<CollectBurstQueue>()
-            .push(CollectVisualKind::Gold, Vec3::new(1.0, 1.0, 2.0), 3);
+        app.world().resource::<CollectBurstQueue>().push(
+            CollectVisualKind::Gold,
+            Vec3::new(1.0, 1.0, 2.0),
+            3,
+        );
 
         app.update();
         let spawned = app

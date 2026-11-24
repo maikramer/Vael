@@ -687,9 +687,7 @@ mod tests {
         game.raw_set(KEY_LEVEL, 0).expect("level");
         game.raw_set(KEY_SKILL_POINTS, -2).expect("pontos");
 
-        lua.load("vael.vael.ensure_xp()")
-            .exec()
-            .expect("ensure_xp");
+        lua.load("vael.vael.ensure_xp()").exec().expect("ensure_xp");
 
         assert_eq!(game.raw_get::<f64>(KEY_XP).expect("xp"), 0.0);
         assert_eq!(game.raw_get::<f64>(KEY_XP_NEXT).expect("xp_next"), 100.0);

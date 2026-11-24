@@ -105,7 +105,10 @@ pub(super) fn grow(
                     if let Some(save) = save.as_mut() {
                         save.legacy.insert(field.clone(), json!(today));
                     }
-                    vael_engine::luau::game::apply_patch_json(&BTreeMap::from([(field, json!(today))]));
+                    vael_engine::luau::game::apply_patch_json(&BTreeMap::from([(
+                        field,
+                        json!(today),
+                    )]));
                     today
                 });
                 root.cut_day = Some(day);

@@ -1,4 +1,4 @@
-//! Espelho Rust do estado do jogo (`viber.game()`) — shadow mode.
+//! Espelho Rust do estado do jogo (`vael.game()`) — shadow mode.
 //!
 //! Nesta passagem o Lua continua a ser a fonte de verdade: o plugin só LÊ o
 //! snapshot (`game_to_json`) e copia-o para o [`VaelSave`] e para os
@@ -15,7 +15,7 @@ use crate::rules_authority::{OwnedVitals, RUST_GATE_KEY, VaelRulesAuthority, Vae
 use crate::save::VaelSave;
 
 /// Período do snapshot. 10 Hz chegam para as ondas seguintes lerem estado
-/// fresco; a 60 Hz só se clonava o `viber.game()` inteiro sem necessidade.
+/// fresco; a 60 Hz só se clonava o `vael.game()` inteiro sem necessidade.
 pub const SYNC_PERIOD_SECS: f32 = 0.1;
 
 /// Plugin do espelho de estado.
@@ -61,7 +61,7 @@ pub(crate) fn sync_state_from_lua(
     if !timer.tick(time.delta()).just_finished() {
         return;
     }
-    // O store do processo É o `viber.game()` dos contextos BMS (o proxy lê
+    // O store do processo É o `vael.game()` dos contextos BMS (o proxy lê
     // daqui) — ler por cima, sem handle mlua.
     let kv = vael_engine::luau::game::game_to_json_process();
     if kv.is_empty() {
@@ -119,7 +119,7 @@ fn ensure_rust_gate(rust: bool, kv: &BTreeMap<String, Value>) {
     }
 }
 
-/// Aplica um snapshot do `viber.game()` ao save tipado e aos componentes.
+/// Aplica um snapshot do `vael.game()` ao save tipado e aos componentes.
 ///
 /// Puro: não toca no Lua. As chaves que o schema não conhece (`venom`,
 /// `flasks`, `q.<id>.n`, `dialogue.*`, …) ficam em [`VaelSave::legacy`]; um

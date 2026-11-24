@@ -537,13 +537,19 @@ mod tests {
         let mut people = [actor(1, -3., 0.), actor(2, -1.2, 0.), actor(3, 0., 0.)];
         people[2].mobile = false;
         solve(&mut people, &mut contacts);
-        assert!(!contacts.is_empty(), "corredor em NPC gera contacto com fecho");
+        assert!(
+            !contacts.is_empty(),
+            "corredor em NPC gera contacto com fecho"
+        );
         people.sort_by_key(|m| m.entity.index());
         assert!(people[0].end.x <= -1.99 && people[1].end.x <= -0.999);
         assert_eq!(people[2].end, Vec3::ZERO);
         let mut overlap = [actor(1, 0., 0.), actor(2, 0., 0.)];
         solve(&mut overlap, &mut contacts);
-        assert!(contacts.is_empty(), "spawn sobreposto parado não é esbarrão");
+        assert!(
+            contacts.is_empty(),
+            "spawn sobreposto parado não é esbarrão"
+        );
         assert!(overlap[0].end.distance(overlap[1].end) >= 0.999);
     }
 

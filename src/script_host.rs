@@ -1,4 +1,4 @@
-//! Instalação de `viber.vael` nos contextos BMS **e na REPL do bridge**.
+//! Instalação de `vael.vael` nos contextos BMS **e na REPL do bridge**.
 //!
 //! O host antigo tinha UMA VM partilhada: os plugins do jogo (cofre, XP,
 //! economia, …) instalavam os seus closures Rust nela uma vez, no arranque.
@@ -10,8 +10,8 @@
 //! rules derivadas do `VaelContent`, filas `Arc`) mais UM hook de fn pointer
 //! publicado no `bevy_ext_luau` por [`install_context_hook`]. O
 //! `install_viber_api` do crate corre o hook por contexto novo, DEPOIS da
-//! tabela `viber`, e a REPL dedicada do bridge (`viber.lua`) corre o MESMO
-//! hook — `viber.vael.qa_snapshot`/`dodge`/`attack_motion` existem lá como num
+//! tabela `viber`, e a REPL dedicada do bridge (`vael.lua`) corre o MESMO
+//! hook — `vael.vael.qa_snapshot`/`dodge`/`attack_motion` existem lá como num
 //! script de jogo (era o que faltava: o registo local do Vael não chegava à
 //! REPL, `debug state` morria em `nil.qa_snapshot`). Um hook por processo
 //! (`Once`): apps de teste que constroem vários `App` não empilham hooks.
@@ -30,7 +30,7 @@ fn registry() -> &'static RwLock<Vec<Installer>> {
     REGISTRY.get_or_init(|| RwLock::new(Vec::new()))
 }
 
-/// Regista um instalador `viber.vael` (corre em CADA contexto novo E na REPL).
+/// Regista um instalador `vael.vael` (corre em CADA contexto novo E na REPL).
 ///
 /// Chamado pelos plugins do jogo no arranque, com os dados capturados
 /// (`Arc` de rules, filas partilhadas). A ordem de registo é a ordem de
@@ -49,7 +49,7 @@ pub fn register_installer(installer: impl Fn(&Lua) -> mlua::Result<()> + Send + 
 /// Publica no `bevy_ext_luau` o hook que corre os instaladores locais (uma
 /// vez por processo — `Once`; apps de teste que constroem vários `App`
 /// re-registam sem duplicar). O crate corre-o por contexto BMS e na REPL do
-/// bridge (`viber.lua`), depois da tabela `viber`.
+/// bridge (`vael.lua`), depois da tabela `viber`.
 pub fn install_context_hook() {
     static ONCE: std::sync::Once = std::sync::Once::new();
     ONCE.call_once(|| bevy_ext_luau::add_context_installer(context_hook));
@@ -74,7 +74,7 @@ pub fn run_installers(lua: &Lua) -> mlua::Result<()> {
         .map(|installers| {
             for installer in installers.iter() {
                 if let Err(err) = installer(lua) {
-                    eprintln!("vael: falha a instalar `viber.vael` num contexto: {err}");
+                    eprintln!("vael: falha a instalar `vael.vael` num contexto: {err}");
                 }
             }
             false
@@ -82,7 +82,7 @@ pub fn run_installers(lua: &Lua) -> mlua::Result<()> {
         .unwrap_or(true);
     if failed {
         eprintln!(
-            "vael: registo de instaladores fechado a erro — contextos nascem sem `viber.vael`"
+            "vael: registo de instaladores fechado a erro — contextos nascem sem `vael.vael`"
         );
     }
     Ok(())

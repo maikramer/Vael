@@ -32,7 +32,8 @@ impl Plugin for QuarryPlugin {
             .add_observer(restore::remember)
             .add_systems(
                 vael_engine::scene_loader::SceneLoad,
-                (|mut q: ResMut<Quarry>| q.removed.clear()).before(vael_engine::recipes::spawn::startup),
+                (|mut q: ResMut<Quarry>| q.removed.clear())
+                    .before(vael_engine::recipes::spawn::startup),
             )
             .add_systems(Update, (place, crystal::grow, weather_stone).chain());
     }
@@ -219,7 +220,11 @@ fn formation(id: u32) -> (Mesh, Collider, Collider) {
         pieces.push((offset, Quat::IDENTITY, hull));
         surfaces.push((offset, Quat::IDENTITY, surface));
     }
-    (mesh, Collider::compound(pieces), Collider::compound(surfaces))
+    (
+        mesh,
+        Collider::compound(pieces),
+        Collider::compound(surfaces),
+    )
 }
 
 #[derive(Clone, Copy)]
@@ -549,9 +554,9 @@ mod tests {
                         true,
                     ) {
                         let surface = probe.y - down_dist;
-                        let steppable =
-                            (0.03..=vael_engine::player::HERO_STEP_HEIGHT).contains(&surface)
-                                && down_normal.y >= 0.95;
+                        let steppable = (0.03..=vael_engine::player::HERO_STEP_HEIGHT)
+                            .contains(&surface)
+                            && down_normal.y >= 0.95;
                         assert!(
                             !steppable,
                             "variant {id} scale {scale} angle {k}: step probe found ledge at y={surface:.3}"

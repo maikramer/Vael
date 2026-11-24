@@ -204,7 +204,9 @@ pub(super) fn emit(
                         .map(|(_, at)| at)
                 })
         } else {
-            hit.surface.map(|s| s.point).or_else(|| bark.contact(&hit, normal))
+            hit.surface
+                .map(|s| s.point)
+                .or_else(|| bark.contact(&hit, normal))
         };
         let surface = contact.unwrap_or(
             hit.base + Vec3::new(normal.x * STUMP_RADIUS, hit.height, normal.y * STUMP_RADIUS),

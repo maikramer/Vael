@@ -15,11 +15,11 @@
 //! equipado) reavalia as stats dependentes sem ordem manual. As stats que o
 //! jogo já consumia mantêm as chaves antigas (`damage`, `crit`, `speed`,
 //! `max_hp`, `defense`, …), por isso [`crate::gear::player_stats`] e
-//! `viber.vael.stat(key)` continuam a falar a mesma língua com o Lua.
+//! `vael.vael.stat(key)` continuam a falar a mesma língua com o Lua.
 //!
 //! ## Porque há uma `World` própria
 //!
-//! A bridge `viber.vael` é chamada de dentro do `luau_update`, no meio de um
+//! A bridge `vael.vael` é chamada de dentro do `luau_update`, no meio de um
 //! sistema da App principal: não dá para pedir `AttributesMut` daí. O
 //! [`StatEngine`] guarda uma `World` mínima (só `DependencyGraph`,
 //! `TagResolver` e a entidade do herói) e corre um sistema curto quando o
@@ -50,7 +50,7 @@ pub const VITALITY: &str = "Vitality";
 pub const PRECISION: &str = "Precision";
 pub const SPIRIT: &str = "Spirit";
 
-/// Chave de `viber.vael.attribute`/`stat_sheet` → nome no gauge.
+/// Chave de `vael.vael.attribute`/`stat_sheet` → nome no gauge.
 pub const ATTRIBUTE_KEYS: [(&str, &str); 5] = [
     ("strength", STRENGTH),
     ("agility", AGILITY),
@@ -399,7 +399,7 @@ pub fn modifier_set(
 }
 
 /// Um efeito de talento/item: atributo quando a chave é `strength` & cia.,
-/// senão `Stat.<chave>` (é o que `viber.vael.stat(key)` lê). Não finitos são
+/// senão `Stat.<chave>` (é o que `vael.vael.stat(key)` lê). Não finitos são
 /// ignorados, como no `add_effects` antigo.
 fn add_effects(set: &mut ModifierSet, effects: &BTreeMap<String, f64>) {
     for (key, value) in effects {

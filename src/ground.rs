@@ -37,7 +37,10 @@ pub fn env_enabled(name: &str) -> bool {
 /// Só `1` / `true` / `on` / `yes` liga.
 fn env_enabled_strict(name: &str) -> bool {
     matches!(
-        std::env::var(name).ok().map(|v| v.trim().to_ascii_lowercase()).as_deref(),
+        std::env::var(name)
+            .ok()
+            .map(|v| v.trim().to_ascii_lowercase())
+            .as_deref(),
         Some("1" | "true" | "on" | "yes")
     )
 }
@@ -353,22 +356,27 @@ fn sync_soles(
             *transform = next;
         }
     }
-    let mut spawn = |commands: &mut Commands, body: Entity, transform: &GlobalTransform, load_n: f32| {
-        let feet: Vec<Option<Entity>> = match feet_of(body) {
-            Some(feet) => feet.iter().copied().map(Some).collect(),
-            None => vec![None],
-        };
-        for foot in feet {
-            if live.contains(&(body, foot)) {
-                continue;
-            }
-            let Some(at) = pose(transform, foot) else {
-                continue;
+    let mut spawn =
+        |commands: &mut Commands, body: Entity, transform: &GlobalTransform, load_n: f32| {
+            let feet: Vec<Option<Entity>> = match feet_of(body) {
+                Some(feet) => feet.iter().copied().map(Some).collect(),
+                None => vec![None],
             };
-            live.insert((body, foot));
-            commands.spawn((Sole { body, foot }, at, Imprint::new(Vec2::new(0.05, 0.13), load_n)));
-        }
-    };
+            for foot in feet {
+                if live.contains(&(body, foot)) {
+                    continue;
+                }
+                let Some(at) = pose(transform, foot) else {
+                    continue;
+                };
+                live.insert((body, foot));
+                commands.spawn((
+                    Sole { body, foot },
+                    at,
+                    Imprint::new(Vec2::new(0.05, 0.13), load_n),
+                ));
+            }
+        };
     for (body, transform) in &players {
         spawn(&mut commands, body, transform, 760.0);
     }
@@ -509,7 +517,11 @@ fn weather_props(
         } else {
             let created = weathered.add(WeatheredMaterial {
                 base: base.clone(),
-                extension: if ground { WeatheredExtension::with_exposure(0.18) } else { WeatheredExtension::default() },
+                extension: if ground {
+                    WeatheredExtension::with_exposure(0.18)
+                } else {
+                    WeatheredExtension::default()
+                },
             });
             cache.insert(id, created.clone());
             created

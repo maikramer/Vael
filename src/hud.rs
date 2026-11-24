@@ -915,7 +915,7 @@ mod tests {
             .unwrap_or_else(|err| panic!("{}: {err}", path.display()));
         for bind in ["quest.title", "quest", "quest.text", "quest.active"] {
             assert!(
-                !source.contains(&format!("viber.ui.set(\"{bind}\"")),
+                !source.contains(&format!("vael.ui.set(\"{bind}\"")),
                 "`{bind}` tem dois donos (rules.lua e VaelHud)"
             );
         }

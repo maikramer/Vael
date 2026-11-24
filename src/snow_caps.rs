@@ -121,7 +121,13 @@ impl CapSurface {
     }
 }
 
-type Blocked = Or<(With<CharacterAnimator>, With<PooledTree>, With<Player>, With<SnowCap>, With<IgnoreSnowMesh>)>;
+type Blocked = Or<(
+    With<CharacterAnimator>,
+    With<PooledTree>,
+    With<Player>,
+    With<SnowCap>,
+    With<IgnoreSnowMesh>,
+)>;
 
 fn prop_root(
     start: Entity,
@@ -150,7 +156,11 @@ fn prop_root(
     None
 }
 
-fn ancestor_blocked(start: Entity, parents: &Query<&ChildOf>, blocked: &Query<(), Blocked>) -> bool {
+fn ancestor_blocked(
+    start: Entity,
+    parents: &Query<&ChildOf>,
+    blocked: &Query<(), Blocked>,
+) -> bool {
     let mut current = start;
     for _ in 0..24 {
         if blocked.get(current).is_ok() {
@@ -178,7 +188,9 @@ fn discover(
     blocked: Query<(), Blocked>,
     mut queue: ResMut<CapQueue>,
 ) {
-    if scene.as_deref().and_then(|s| s.id.as_deref()) != Some("main") { return; }
+    if scene.as_deref().and_then(|s| s.id.as_deref()) != Some("main") {
+        return;
+    }
     const BUDGET: usize = 512;
     let now = time.elapsed_secs();
     let (mut seen, mut rootless, mut skipped) = (0, 0, 0);
@@ -189,8 +201,17 @@ fn discover(
         if name.is_some_and(|name| is_ground_name(name.as_str())) {
             continue;
         }
-        let root = stones.get(entity).ok().map(|source| (entity, source.map(|s| s.0.file.display().to_string()).unwrap_or_default()));
-        let Some((root, file)) = root.or_else(|| prop_root(entity, &parents, &nodes, &origins, &gltfs)) else {
+        let root = stones.get(entity).ok().map(|source| {
+            (
+                entity,
+                source
+                    .map(|s| s.0.file.display().to_string())
+                    .unwrap_or_default(),
+            )
+        });
+        let Some((root, file)) =
+            root.or_else(|| prop_root(entity, &parents, &nodes, &origins, &gltfs))
+        else {
             rootless += 1;
             continue;
         };
@@ -210,7 +231,12 @@ fn build(
     mut commands: Commands,
     time: Res<Time<Real>>,
     mut queue: ResMut<CapQueue>,
-    roots: Query<(&GlobalTransform, Option<&Children>, Option<&CapBuilt>, Has<crate::rocks::QuarryStone>)>,
+    roots: Query<(
+        &GlobalTransform,
+        Option<&Children>,
+        Option<&CapBuilt>,
+        Has<crate::rocks::QuarryStone>,
+    )>,
     children: Query<&Children>,
     mesh_entities: Query<(&Mesh3d, &GlobalTransform, Option<&Name>), Without<SnowCap>>,
     caps: Query<Entity, With<SnowCap>>,
@@ -339,10 +365,14 @@ fn build(
         }
         let to_local = root_tf.affine().inverse();
         let stone_skin = if stone {
-            sources.iter().find(|(entity, _)| *entity == root)
+            sources
+                .iter()
+                .find(|(entity, _)| *entity == root)
                 .and_then(|(_, id)| meshes.get(*id))
                 .and_then(|mesh| crate::rocks::snow::SnowSkin::from_mesh(mesh, root_tf))
-        } else { None };
+        } else {
+            None
+        };
         let reader = terrain.reader();
         let task = AsyncComputeTaskPool::get().spawn(async move {
             let mut shelter_cells = HashSet::new();
@@ -362,7 +392,9 @@ fn build(
             PreparedCap {
                 sources,
                 to_local,
-                grid: stone_skin.map(CapSurface::Stone).or_else(|| grid.map(CapSurface::Grid)),
+                grid: stone_skin
+                    .map(CapSurface::Stone)
+                    .or_else(|| grid.map(CapSurface::Grid)),
                 shelter_cells,
             }
         });
@@ -379,7 +411,9 @@ fn update_caps(
     let depth = pack.as_deref().map_or(0.0, SnowState::reference_depth);
     let mut done = 0;
     for (entity, mut cap, mesh, mut visibility) in &mut caps {
-        if (cap.applied - depth).abs() < DEPTH_STEP_M && (depth >= DEPTH_STEP_M) == (cap.applied >= DEPTH_STEP_M) {
+        if (cap.applied - depth).abs() < DEPTH_STEP_M
+            && (depth >= DEPTH_STEP_M) == (cap.applied >= DEPTH_STEP_M)
+        {
             continue;
         }
         if done >= UPDATES_PER_FRAME {
@@ -388,7 +422,11 @@ fn update_caps(
         done += 1;
         cap.applied = depth;
         let show = depth >= DEPTH_STEP_M;
-        let want = if show { Visibility::Inherited } else { Visibility::Hidden };
+        let want = if show {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
         if *visibility != want {
             *visibility = want;
         }
@@ -408,7 +446,8 @@ fn append_triangles(mesh: &Mesh, tf: &GlobalTransform, out: &mut Vec<[Vec3; 3]>)
     if mesh.primitive_topology() != PrimitiveTopology::TriangleList {
         return;
     }
-    let Some(VertexAttributeValues::Float32x3(pos)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) else {
+    let Some(VertexAttributeValues::Float32x3(pos)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION)
+    else {
         return;
     };
     let affine = tf.affine();
@@ -481,7 +520,9 @@ impl CapGrid {
         let cell = (extent / 48.0).clamp(0.08, 0.35);
         let nx = (((max.x - min.x) / cell).ceil() as usize + 1).min(MAX_CELLS);
         let nz = (((max.y - min.y) / cell).ceil() as usize + 1).min(MAX_CELLS);
-        let cell = cell.max((max.x - min.x) / (nx - 1).max(1) as f32).max((max.y - min.y) / (nz - 1).max(1) as f32);
+        let cell = cell
+            .max((max.x - min.x) / (nx - 1).max(1) as f32)
+            .max((max.y - min.y) / (nz - 1).max(1) as f32);
         let mut top = vec![f32::NAN; nx * nz];
         let mut up = vec![0.0f32; nx * nz];
         for tri in tris {
@@ -690,7 +731,8 @@ impl CapGrid {
         let z = i / self.nx;
         let p = self.xz(x, z);
         // Ondulação contínua (~1,5 m): neve fofa não é uma placa.
-        let lump = 0.88 + 0.12 * ((p.x * 2.3 + 1.7).sin() * (p.y * 1.9 + 0.4).sin())
+        let lump = 0.88
+            + 0.12 * ((p.x * 2.3 + 1.7).sin() * (p.y * 1.9 + 0.4).sin())
             + 0.06 * ((p.x * 5.1 - p.y * 3.7).sin());
         self.top[i] + 0.004 + depth * self.weight[i] * lump
     }
@@ -714,7 +756,13 @@ impl CapGrid {
     pub fn mesh(&self, depth: f32, to_local: &Affine3A) -> Mesh {
         let (nx, nz) = (self.nx, self.nz);
         let height: Vec<f32> = (0..nx * nz)
-            .map(|i| if self.weight[i] > 0.0 { self.surface(i, depth) } else { f32::NAN })
+            .map(|i| {
+                if self.weight[i] > 0.0 {
+                    self.surface(i, depth)
+                } else {
+                    f32::NAN
+                }
+            })
             .collect();
 
         let mut positions: Vec<[f32; 3]> = Vec::new();
@@ -747,18 +795,33 @@ impl CapGrid {
             let clamp = |g: f32| g.clamp(-3.0, 3.0);
             Vec3::new(-clamp(dx), 1.0, -clamp(dz)).normalize()
         };
-        let push_vertex = |positions: &mut Vec<[f32; 3]>, normals: &mut Vec<[f32; 3]>, p: Vec3, n: Vec3| -> u32 {
-            positions.push(to_local.transform_point3(p).to_array());
-            normals.push(to_local.transform_vector3(n).normalize_or(up_local).to_array());
-            (positions.len() - 1) as u32
-        };
-        let mut top_vertex = |positions: &mut Vec<[f32; 3]>, normals: &mut Vec<[f32; 3]>, x: usize, z: usize| -> u32 {
+        let push_vertex =
+            |positions: &mut Vec<[f32; 3]>, normals: &mut Vec<[f32; 3]>, p: Vec3, n: Vec3| -> u32 {
+                positions.push(to_local.transform_point3(p).to_array());
+                normals.push(
+                    to_local
+                        .transform_vector3(n)
+                        .normalize_or(up_local)
+                        .to_array(),
+                );
+                (positions.len() - 1) as u32
+            };
+        let mut top_vertex = |positions: &mut Vec<[f32; 3]>,
+                              normals: &mut Vec<[f32; 3]>,
+                              x: usize,
+                              z: usize|
+         -> u32 {
             let i = self.index(x, z);
             if vertex_of[i] != u32::MAX {
                 return vertex_of[i];
             }
             let xz = self.xz(x, z);
-            let v = push_vertex(positions, normals, Vec3::new(xz.x, height[i], xz.y), world_normal(x, z));
+            let v = push_vertex(
+                positions,
+                normals,
+                Vec3::new(xz.x, height[i], xz.y),
+                world_normal(x, z),
+            );
             vertex_of[i] = v;
             v
         };
@@ -802,10 +865,30 @@ impl CapGrid {
             let mid = (a + b) * 0.5;
             let out = (mid - centre).normalize_or(Vec2::X);
             let n = Vec3::new(out.x, 0.35, out.y).normalize();
-            let ta = push_vertex(&mut positions, &mut normals, Vec3::new(a.x, height[p], a.y), n);
-            let tb = push_vertex(&mut positions, &mut normals, Vec3::new(b.x, height[q], b.y), n);
-            let ba = push_vertex(&mut positions, &mut normals, Vec3::new(a.x, self.top[p] - 0.01, a.y), n);
-            let bb = push_vertex(&mut positions, &mut normals, Vec3::new(b.x, self.top[q] - 0.01, b.y), n);
+            let ta = push_vertex(
+                &mut positions,
+                &mut normals,
+                Vec3::new(a.x, height[p], a.y),
+                n,
+            );
+            let tb = push_vertex(
+                &mut positions,
+                &mut normals,
+                Vec3::new(b.x, height[q], b.y),
+                n,
+            );
+            let ba = push_vertex(
+                &mut positions,
+                &mut normals,
+                Vec3::new(a.x, self.top[p] - 0.01, a.y),
+                n,
+            );
+            let bb = push_vertex(
+                &mut positions,
+                &mut normals,
+                Vec3::new(b.x, self.top[q] - 0.01, b.y),
+                n,
+            );
             indices.extend_from_slice(&[ta, ba, tb, tb, ba, bb]);
         }
         let mut mesh = Mesh::new(
@@ -843,7 +926,8 @@ mod tests {
         assert!(grid.weight[edge] < grid.weight[centre] * 0.6);
         assert!((grid.top[centre] - 2.0).abs() < 1e-4);
         let mesh = grid.mesh(0.3, &Affine3A::IDENTITY);
-        let Some(VertexAttributeValues::Float32x3(pos)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) else {
+        let Some(VertexAttributeValues::Float32x3(pos)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION)
+        else {
             panic!("posições");
         };
         let highest = pos.iter().map(|p| p[1]).fold(f32::MIN, f32::max);

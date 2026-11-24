@@ -193,13 +193,21 @@ pub(crate) fn install_lantern_api(state: Res<VaelLanternState>) {
 pub(crate) fn install(lua: &Lua, state: &VaelLanternState) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
-    vael_fn!(lua, vael, "lantern_on", [state = state.clone()], move |_, ()| {
-        Ok(state.get().waist_on)
-    });
+    vael_fn!(
+        lua,
+        vael,
+        "lantern_on",
+        [state = state.clone()],
+        move |_, ()| { Ok(state.get().waist_on) }
+    );
 
-    vael_fn!(lua, vael, "lantern_lit", [state = state.clone()], move |_, ()| {
-        Ok(state.get().lit)
-    });
+    vael_fn!(
+        lua,
+        vael,
+        "lantern_lit",
+        [state = state.clone()],
+        move |_, ()| { Ok(state.get().lit) }
+    );
 
     vael_fn!(
         lua,
@@ -326,7 +334,12 @@ fn toggle_waist_lantern(
     if let Some(toast) = toast.as_mut() {
         let lang = save.as_deref().map_or("pt", save_lang);
         let msg = if next {
-            label(content.as_deref(), lang, "toast.lantern.on", "Lanterna acesa")
+            label(
+                content.as_deref(),
+                lang,
+                "toast.lantern.on",
+                "Lanterna acesa",
+            )
         } else {
             label(
                 content.as_deref(),
@@ -436,10 +449,7 @@ fn prepare_waist_lantern_materials(
     mut materials: Option<ResMut<Assets<StandardMaterial>>>,
     roots: Query<Entity, With<WaistLanternMesh>>,
     children: Query<&Children>,
-    mesh_mats: Query<
-        &MeshMaterial3d<StandardMaterial>,
-        Without<WaistLanternClonedMaterial>,
-    >,
+    mesh_mats: Query<&MeshMaterial3d<StandardMaterial>, Without<WaistLanternClonedMaterial>>,
 ) {
     let Some(materials) = materials.as_deref_mut() else {
         return;
@@ -476,7 +486,12 @@ fn drive_waist_lantern(
     mut materials: Option<ResMut<Assets<StandardMaterial>>>,
     players: Query<&GlobalTransform, With<Player>>,
     mut pivots: Query<
-        (&mut WaistLanternPivot, &mut Transform, &mut Visibility, &GlobalTransform),
+        (
+            &mut WaistLanternPivot,
+            &mut Transform,
+            &mut Visibility,
+            &GlobalTransform,
+        ),
         (Without<TravellerLantern>, Without<WaistLanternCore>),
     >,
     mut cores: Query<
@@ -486,7 +501,11 @@ fn drive_waist_lantern(
     cloned_mats: Query<&WaistLanternClonedMaterial>,
     mut lanterns: Query<
         (&mut Transform, &mut PointLight, &mut Visibility),
-        (With<TravellerLantern>, Without<WaistLanternPivot>, Without<WaistLanternCore>),
+        (
+            With<TravellerLantern>,
+            Without<WaistLanternPivot>,
+            Without<WaistLanternCore>,
+        ),
     >,
     mut commands: Commands,
 ) {
@@ -529,8 +548,10 @@ fn drive_waist_lantern(
                 let local_acc = inv_rot * Vec3::new(accel.x, 0.0, accel.y);
                 let local_vel = inv_rot * Vec3::new(vel.x, 0.0, vel.y);
                 // Aceleração e arrasto do ar balançam a lanterna suavemente.
-                let target_x = (-local_acc.z * 0.022 - local_vel.z * 0.026).clamp(-MAX_SWAY_RAD, MAX_SWAY_RAD);
-                let target_z = (local_acc.x * 0.022 + local_vel.x * 0.022).clamp(-MAX_SWAY_RAD, MAX_SWAY_RAD);
+                let target_x =
+                    (-local_acc.z * 0.022 - local_vel.z * 0.026).clamp(-MAX_SWAY_RAD, MAX_SWAY_RAD);
+                let target_z =
+                    (local_acc.x * 0.022 + local_vel.x * 0.022).clamp(-MAX_SWAY_RAD, MAX_SWAY_RAD);
                 let target = Vec2::new(target_x, target_z);
                 let spring_k = 28.0;
                 let damping = 6.8;
@@ -789,7 +810,9 @@ mod tests {
         let mut pivot_q = app
             .world_mut()
             .query::<(Entity, &WaistLanternPivot, &Visibility)>();
-        let (_, _, vis) = pivot_q.single(app.world()).expect("pivô montado em spine_01");
+        let (_, _, vis) = pivot_q
+            .single(app.world())
+            .expect("pivô montado em spine_01");
         assert_eq!(*vis, Visibility::Inherited);
 
         // Simula uma malha filha do GLB com material partilhado.
@@ -808,9 +831,7 @@ mod tests {
             .id();
         app.world_mut().entity_mut(mesh_root).add_child(child_mesh);
 
-        app.world()
-            .resource::<VaelLanternState>()
-            .request_set(true);
+        app.world().resource::<VaelLanternState>().request_set(true);
         for _ in 0..8 {
             step(&mut app, 0.1);
         }
@@ -834,7 +855,11 @@ mod tests {
             .resource::<Assets<StandardMaterial>>()
             .get(&cloned_handle)
             .unwrap();
-        assert!(cloned.emissive.red > 2.0, "emissivo aceso: {:?}", cloned.emissive);
+        assert!(
+            cloned.emissive.red > 2.0,
+            "emissivo aceso: {:?}",
+            cloned.emissive
+        );
 
         // Ao equipar a tocha na mão, o modelo na cintura esconde-se e a luz segue acesa.
         app.world_mut()
@@ -855,13 +880,33 @@ mod tests {
             .unwrap();
         install(&lua, &state).unwrap();
 
-        assert!(!lua.load("return vael.vael.lantern_on()").eval::<bool>().unwrap());
-        assert!(!lua.load("return vael.vael.lantern_lit()").eval::<bool>().unwrap());
+        assert!(
+            !lua.load("return vael.vael.lantern_on()")
+                .eval::<bool>()
+                .unwrap()
+        );
+        assert!(
+            !lua.load("return vael.vael.lantern_lit()")
+                .eval::<bool>()
+                .unwrap()
+        );
         lua.load("vael.vael.lantern_set(true)").exec().unwrap();
-        assert!(lua.load("return vael.vael.lantern_on()").eval::<bool>().unwrap());
-        assert!(lua.load("return vael.vael.lantern_lit()").eval::<bool>().unwrap());
+        assert!(
+            lua.load("return vael.vael.lantern_on()")
+                .eval::<bool>()
+                .unwrap()
+        );
+        assert!(
+            lua.load("return vael.vael.lantern_lit()")
+                .eval::<bool>()
+                .unwrap()
+        );
         lua.load("vael.vael.lantern_set(false)").exec().unwrap();
-        assert!(!lua.load("return vael.vael.lantern_on()").eval::<bool>().unwrap());
+        assert!(
+            !lua.load("return vael.vael.lantern_on()")
+                .eval::<bool>()
+                .unwrap()
+        );
     }
 
     #[test]

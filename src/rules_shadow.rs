@@ -2,7 +2,7 @@
 //!
 //! O Lua continua a ser a fonte de verdade. Este plugin simula em Rust os
 //! mesmos temporizadores — i-frames, estados (veneno/queimadura/gelo), queda e
-//! respawn — a 60 Hz e compara o resultado com o snapshot de `viber.game()`
+//! respawn — a 60 Hz e compara o resultado com o snapshot de `vael.game()`
 //! que o [`VaelStateSyncPlugin`](crate::state_sync::VaelStateSyncPlugin) lê a
 //! 10 Hz. Não escreve no Lua, no [`VaelSave`], no ECS nem no HUD.
 //!
@@ -14,7 +14,7 @@
 //!
 //! Limites conhecidos:
 //! - `rules.god` (modo DEV) é um local do módulo Lua e não viaja em
-//!   `viber.game()`; com o god ligado o Lua congela os estados e o shadow
+//!   `vael.game()`; com o god ligado o Lua congela os estados e o shadow
 //!   continua a fazer DoT — divergência esperada.
 //! - Dano/cura de criaturas, poções e fogueiras entram no Lua entre dois
 //!   snapshots; o shadow só os vê no snapshot seguinte (daí a tolerância de
@@ -281,7 +281,7 @@ struct LuaSnapshot {
 
 impl LuaSnapshot {
     /// Lê o snapshot do [`PlayerVitals`] e do `legacy` do [`VaelSave`]. Os
-    /// estados, i-frames, `dying` e `death_wait` viajam em `viber.game()` como
+    /// estados, i-frames, `dying` e `death_wait` viajam em `vael.game()` como
     /// chaves que o schema tipado não conhece, por isso vivem em `legacy`.
     /// Sanea como o `ensure_hp` do Lua.
     fn from_state(vitals: &PlayerVitals, save: &VaelSave) -> Self {
@@ -405,7 +405,7 @@ impl VaelRulesShadow {
 
 /// Simula um tick de `rules.tick` para as partes portadas.
 ///
-/// `frozen` é o portão dos estados (`viber.menu_open()`, mais o título);
+/// `frozen` é o portão dos estados (`vael.menu_open()`, mais o título);
 /// `menu_open` é o ecrã de morte aberto (`ui.is_open("death")`), que repõe os
 /// 5 s do fallback. `resists` são as resistências do equipamento/talentos
 /// (`venom_resist`/`burn_resist`). Não toca em ouro, FX, som, UI, save nem
@@ -544,7 +544,7 @@ fn respawn(state: &mut VaelRulesShadow) {
     state.respawned = true;
 }
 
-/// Semeia o estado a partir do KV plano do `viber.game()`.
+/// Semeia o estado a partir do KV plano do `vael.game()`.
 ///
 /// É a leitura da autoridade Rust: corre DEPOIS do Lua no frame, por isso vê
 /// o dano/cura (`M.damage_player`/`M.heal_player`), os itens, o `respawn`
@@ -647,7 +647,7 @@ fn rules_shadow_system(
     let rain = weather
         .as_deref()
         .is_some_and(|w| w.rain >= RAIN_HEAVY as f32);
-    // `viber.menu_open()` é o `MenusOpen::any()`; o título também congela.
+    // `vael.menu_open()` é o `MenusOpen::any()`; o título também congela.
     let frozen = menus.as_deref().is_some_and(MenusOpen::any)
         || modals.as_deref().is_some_and(|m| m.is_open("title"));
     let death_open = modals.as_deref().is_some_and(|m| m.is_open("death"));

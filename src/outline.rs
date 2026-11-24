@@ -96,8 +96,8 @@ impl OutlineStyle {
                 let shimmer = (now * 2.6 + phase).sin() * 0.5 + 0.5;
                 let base = Color::srgb(0.28, 0.94, 0.88)
                     .mix(&Color::srgb(0.68, 0.58, 1.0), shimmer * 0.42);
-                let focus = Color::srgb(0.52, 1.0, 0.95)
-                    .mix(&Color::srgb(0.84, 0.72, 1.0), shimmer * 0.35);
+                let focus =
+                    Color::srgb(0.52, 1.0, 0.95).mix(&Color::srgb(0.84, 0.72, 1.0), shimmer * 0.35);
                 (base, focus)
             }
             Self::Flora => (Color::srgb(0.34, 0.94, 0.52), Color::srgb(0.56, 1.0, 0.70)),
@@ -190,10 +190,7 @@ impl Plugin for VaelOutlinePlugin {
 
 /// Impede que elementos decorativos (glints, anéis de chão, rachaduras) herdem
 /// o outline do pai, sobrescrevendo o volume e o stencil para desligado.
-fn suppress_ignored_outlines(
-    mut commands: Commands,
-    added: Query<Entity, Added<IgnoreOutline>>,
-) {
+fn suppress_ignored_outlines(mut commands: Commands, added: Query<Entity, Added<IgnoreOutline>>) {
     for entity in &added {
         commands.entity(entity).try_insert((
             StopPropagateOutline,
@@ -217,7 +214,11 @@ fn sync_alpha_masks(
     materials: Option<Res<Assets<StandardMaterial>>>,
     meshes: Query<
         (Entity, &MeshMaterial3d<StandardMaterial>),
-        (With<InheritOutline>, Without<OutlineAlphaMask>, Without<IgnoreOutline>),
+        (
+            With<InheritOutline>,
+            Without<OutlineAlphaMask>,
+            Without<IgnoreOutline>,
+        ),
     >,
 ) {
     let Some(materials) = materials else {
@@ -368,9 +369,7 @@ fn update_collectible_outlines(
 
     let mut desired: HashMap<Entity, DesiredOutline> = HashMap::new();
 
-    if !blocked
-        && let Some(player_pose) = players.iter().next()
-    {
+    if !blocked && let Some(player_pose) = players.iter().next() {
         let origin = player_pose.translation();
         let hand = origin + Vec3::Y * 0.8;
         let facing = (player_pose.rotation() * Vec3::Z)
@@ -397,8 +396,8 @@ fn update_collectible_outlines(
                 if !is_log && pos.xz().distance_squared(origin.xz()) > (reach + 4.5).powi(2) {
                     false
                 } else {
-                    let contact = collider
-                        .map_or(pos, |c| c.project_point(pos, tf.rotation(), hand, true).0);
+                    let contact =
+                        collider.map_or(pos, |c| c.project_point(pos, tf.rotation(), hand, true).0);
                     hand.distance_squared(contact) <= reach * reach
                 }
             } else {
@@ -738,9 +737,7 @@ fn remove_outline(
         OutlineWarmUp,
         PropagateOutline,
     )>();
-    if tree_wood_only
-        && let Ok(children) = children_q.get(entity)
-    {
+    if tree_wood_only && let Ok(children) = children_q.get(entity) {
         for child in children.iter() {
             if candidates.get(child).is_ok_and(|(_, _, _, has)| has) {
                 commands.entity(child).try_remove::<InheritOutline>();
@@ -1060,12 +1057,22 @@ mod tests {
 
         app.update();
         app.update();
-        assert_eq!(app.world().get::<AnimatedOutline>(rock).unwrap().focus_weight, 0.0);
+        assert_eq!(
+            app.world()
+                .get::<AnimatedOutline>(rock)
+                .unwrap()
+                .focus_weight,
+            0.0
+        );
 
         // Ativa foco: focus_weight deve subir gradualmente (não saltar de 0 para 1 num frame).
         app.world_mut().resource_mut::<HarvestFocus>().entity = Some(rock);
         app.update();
-        let mid = app.world().get::<AnimatedOutline>(rock).unwrap().focus_weight;
+        let mid = app
+            .world()
+            .get::<AnimatedOutline>(rock)
+            .unwrap()
+            .focus_weight;
         assert!(
             mid > 0.0 && mid < 1.0,
             "focus_weight deve interpolar suavemente no primeiro frame, obteve {mid}"
@@ -1073,7 +1080,14 @@ mod tests {
         for _ in 0..10 {
             app.update();
         }
-        let settled = app.world().get::<AnimatedOutline>(rock).unwrap().focus_weight;
-        assert!(settled > 0.99, "focus_weight deve convergir para 1.0, obteve {settled}");
+        let settled = app
+            .world()
+            .get::<AnimatedOutline>(rock)
+            .unwrap()
+            .focus_weight;
+        assert!(
+            settled > 0.99,
+            "focus_weight deve convergir para 1.0, obteve {settled}"
+        );
     }
 }

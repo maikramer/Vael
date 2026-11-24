@@ -66,7 +66,10 @@ fn frame_trace(
             && p.vel_y.abs() < 0.05
             && !matches!(
                 state,
-                Some(vael_engine::animation::AnimState::Fall | vael_engine::animation::AnimState::Jump)
+                Some(
+                    vael_engine::animation::AnimState::Fall
+                        | vael_engine::animation::AnimState::Jump
+                )
             )
         {
             continue;

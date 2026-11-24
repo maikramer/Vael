@@ -8,7 +8,7 @@ fn both_crossings_play_and_only_a_pause_on_the_deck_gets_an_answer() -> Result<(
         r#"
         game, state, pitches, answered, stories = {hp=100}, {}, {}, 0, 0
         x, y, z = 0, 4, 0
-        viber = {
+        vael = {
             state=function() return state end, game=function() return game end,
             position=function() return 0, 0, 0 end, self_id=function() return 1 end,
             player_position=function() return true, x, y, z end,

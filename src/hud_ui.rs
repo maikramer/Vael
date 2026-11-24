@@ -58,7 +58,7 @@ impl Plugin for VaelHudUiPlugin {
 fn boss_bar_ttl(
     save: Res<VaelSave>,
     // `Time` (virtual) e não `Time<Real>`: o carimbo é escrito pelo
-    // `lib/fsm.lua` com `viber.time()`, que é o `elapsed` do tempo virtual.
+    // `lib/fsm.lua` com `vael.time()`, que é o `elapsed` do tempo virtual.
     // O hit-stop (`Time<Virtual>::relative_speed`) e a pausa do editor fazem
     // o relógio real afastar-se do virtual; comparar os dois esconderia a
     // barra para sempre depois de alguns golpes.
@@ -85,7 +85,7 @@ fn boss_bar_ttl(
     }
 }
 
-/// `viber.time() - boss_bar_t >= TTL`, com os inválidos a contar como stale.
+/// `vael.time() - boss_bar_t >= TTL`, com os inválidos a contar como stale.
 ///
 /// Um carimbo não finito (save antigo/corrompido) ou no "futuro" do relógio
 /// desta sessão vale como sinal nenhum — a mesma regra do `hud.lua`.

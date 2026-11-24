@@ -472,7 +472,9 @@ fn sync_hud(
         m.vitals_visible = true;
         m.journal_enabled = !overlay_up;
 
-        m.stamina = motion.as_deref().map_or(1.0, |bus| (bus.lock().stamina.value / crate::stamina::CAPACITY) as f64);
+        m.stamina = motion.as_deref().map_or(1.0, |bus| {
+            (bus.lock().stamina.value / crate::stamina::CAPACITY) as f64
+        });
         m.lbl_stamina = label(content, lang, "hud.stamina", "FÔLEGO");
         m.health = health;
         m.health_text = format!("{}/{}", round(hp), round(max_hp));

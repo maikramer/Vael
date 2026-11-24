@@ -231,7 +231,7 @@ impl Plugin for VaelEnvironmentPlugin {
             // terreno real e o áudio (sem chuva dupla). Ver `EngineRainVisuals`.
             .insert_resource(EngineRainVisuals(false))
             .init_resource::<VaelEnvControl>()
-            // O kick de exposição da engine (`viber.punch`) é reaplicado por
+            // O kick de exposição da engine (`vael.punch`) é reaplicado por
             // cima do EV do crate: ver `VaelExposureKick`.
             .init_resource::<VaelExposureKick>()
             .add_plugins(group)
@@ -293,8 +293,7 @@ impl Plugin for VaelEnvironmentPlugin {
             // Cascatas do sol pelo preset do jogo, por cima das do crate.
             .add_systems(
                 Update,
-                (fit_vael_sun_cascades, skip_unlit_moon_shadows)
-                    .after(ElementsSystems::Celestial),
+                (fit_vael_sun_cascades, skip_unlit_moon_shadows).after(ElementsSystems::Celestial),
             )
             // A névoa da engine é inserida por `biome_fog_system` (Update,
             // via Commands); este passe corre depois de os comandos assentarem.
@@ -380,7 +379,7 @@ fn night_exposure_floor(
     }
 }
 
-/// Pedidos de QA (`viber.vael.env_*`) para o ambiente: hora, clima e pausa.
+/// Pedidos de QA (`vael.vael.env_*`) para o ambiente: hora, clima e pausa.
 #[derive(Debug, Default)]
 pub struct EnvControl {
     set_hour: Option<f64>,
@@ -390,7 +389,7 @@ pub struct EnvControl {
     info: EnvInfo,
 }
 
-/// Leitura do ambiente para o QA (`viber.vael.env_info()`).
+/// Leitura do ambiente para o QA (`vael.vael.env_info()`).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct EnvInfo {
     pub hour: f64,
@@ -417,7 +416,7 @@ pub struct EnvInfo {
     /// Valores vivos da câmara `ElementsCamera` (QA de exposição/ambiente).
     pub camera_ev100: f32,
     /// EV100 que o `bevy_elements` publicou (dono da exposição; deve ser o
-    /// mesmo que a câmara tem, salvo o kick de `viber.punch`).
+    /// mesmo que a câmara tem, salvo o kick de `vael.punch`).
     pub elements_ev100: f32,
     pub camera_ambient: f32,
     pub camera_env_intensity: f32,
@@ -468,7 +467,13 @@ impl VaelEnvControl {
 /// `config.yaml`.
 fn attach_elements_camera(
     mut commands: Commands,
-    cameras: Query<(Entity, &Camera), (With<Camera3d>, With<vael_engine::recipes::spawn::OrbitCamera>)>,
+    cameras: Query<
+        (Entity, &Camera),
+        (
+            With<Camera3d>,
+            With<vael_engine::recipes::spawn::OrbitCamera>,
+        ),
+    >,
     marked: Query<Entity, With<ElementsCamera>>,
     mut candidate: Local<Option<Entity>>,
     mut streak: Local<u32>,
@@ -672,7 +677,7 @@ fn apply_weather_visibility(
     }
 }
 
-/// Juice de exposição da engine (`viber.punch`) aplicado por cima do EV do
+/// Juice de exposição da engine (`vael.punch`) aplicado por cima do EV do
 /// crate.
 ///
 /// O `drive_postfx` da engine aplica o kick a `Exposure::ev100`; com
@@ -682,7 +687,7 @@ fn apply_weather_visibility(
 /// sem o desfazer, a adaptação do crate lia o EV com o kick e o flash ficava
 /// lido como cena mais escura, arrastando a exposição para baixo.
 ///
-/// O `viber.punch` negativo (o "ai" do dano recebido) escurece por outro
+/// O `vael.punch` negativo (o "ai" do dano recebido) escurece por outro
 /// caminho: empurra o `state.ev100` da engine acima do alvo (piso
 /// `BASE_EV100 + MAX_DARKEN_EV`) e o drive devolve-o ao alvo a `BLEND_RATE`.
 /// Essa escrita também não chega à câmara marcada — o dono aplica o desvio
@@ -714,7 +719,12 @@ fn apply_exposure_kick(
     postfx: Option<Res<PostFxState>>,
     mut kick: ResMut<VaelExposureKick>,
     terrain: Option<Res<vael_engine::terrain::TerrainRuntime>>,
-    mut cameras: Query<(Entity, &ElementsCamera, &GlobalTransform, &mut bevy::camera::Exposure)>,
+    mut cameras: Query<(
+        Entity,
+        &ElementsCamera,
+        &GlobalTransform,
+        &mut bevy::camera::Exposure,
+    )>,
 ) {
     let ev = postfx.as_deref().map_or(0.0, |state| {
         state.kick + (state.ev100 - state.target_ev100).max(0.0)
@@ -722,7 +732,9 @@ fn apply_exposure_kick(
     for (entity, camera, tf, mut exposure) in &mut cameras {
         use vael_engine::terrain::HeightField;
         let mut ev = ev;
-        if camera.auto_exposure && let Some(terrain) = terrain.as_deref() {
+        if camera.auto_exposure
+            && let Some(terrain) = terrain.as_deref()
+        {
             let eye = tf.translation();
             // Sky metering stays active above ground. Below the hillside the
             // camera adapts over the first four metres of overburden.
@@ -731,7 +743,9 @@ fn apply_exposure_kick(
                 ev += cover.clamp(0.0, 1.0) * (exposure.ev100 - INTERIOR_EV100).max(0.0);
             }
         }
-        if ev <= 0.0 { continue; }
+        if ev <= 0.0 {
+            continue;
+        }
         exposure.ev100 -= ev;
         kick.applied.push((entity, ev));
     }
@@ -962,7 +976,7 @@ fn bridge_ui_clock(
     }
 }
 
-// ── QA vivo (`viber.vael.env_*`) ───────────────────────────────────────
+// ── QA vivo (`vael.vael.env_*`) ───────────────────────────────────────
 
 /// Força o clima de `VAEL_START_WEATHER` no arranque (antes do primeiro
 /// probe do céu; um `force` depois não salta o relógio).
@@ -1062,7 +1076,7 @@ fn apply_env_control(
     }
 }
 
-/// Publica a leitura que o QA lê em `viber.vael.env_info()`.
+/// Publica a leitura que o QA lê em `vael.vael.env_info()`.
 fn collect_env_info(
     clock: Res<WorldClock>,
     sun: Res<SunState>,
@@ -1136,7 +1150,7 @@ fn collect_env_info(
 }
 
 /// Arranque: instala `env_set_hour`, `env_pause`, `env_set_weather` e
-/// `env_info` em `viber.vael` (depois do relógio, que cria a tabela).
+/// `env_info` em `vael.vael` (depois do relógio, que cria a tabela).
 fn install_env_api(control: Res<VaelEnvControl>) {
     let inner = control.clone();
     crate::script_host::register_installer(move |lua| install_env_api_inner(lua, &inner));
@@ -1304,14 +1318,34 @@ mod tests {
         let lit = world.spawn((Moon, light(0.05))).id();
         let other = world.spawn(light(0.0)).id();
         world.run_system_once(skip_unlit_moon_shadows).unwrap();
-        assert!(!world.get::<DirectionalLight>(dark).unwrap().shadow_maps_enabled);
-        assert!(world.get::<DirectionalLight>(lit).unwrap().shadow_maps_enabled);
-        assert!(world.get::<DirectionalLight>(other).unwrap().shadow_maps_enabled);
+        assert!(
+            !world
+                .get::<DirectionalLight>(dark)
+                .unwrap()
+                .shadow_maps_enabled
+        );
+        assert!(
+            world
+                .get::<DirectionalLight>(lit)
+                .unwrap()
+                .shadow_maps_enabled
+        );
+        assert!(
+            world
+                .get::<DirectionalLight>(other)
+                .unwrap()
+                .shadow_maps_enabled
+        );
 
         world.resource_mut::<CelestialSettings>().lights = false;
         world.entity_mut(dark).insert(light(0.0));
         world.run_system_once(skip_unlit_moon_shadows).unwrap();
-        assert!(world.get::<DirectionalLight>(dark).unwrap().shadow_maps_enabled);
+        assert!(
+            world
+                .get::<DirectionalLight>(dark)
+                .unwrap()
+                .shadow_maps_enabled
+        );
     }
 
     /// A 2 % de contraste à visibilidade pedida.

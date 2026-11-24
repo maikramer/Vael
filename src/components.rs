@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 #[reflect(Component)]
 pub struct VaelPlayer;
 
-/// Vida do herói. Espelha `hp`/`max_hp` do `viber.game()`.
+/// Vida do herói. Espelha `hp`/`max_hp` do `vael.game()`.
 #[derive(Debug, Clone, PartialEq, Resource, Serialize, Deserialize, Reflect)]
 #[serde(default, rename_all = "snake_case")]
 #[reflect(Resource)]

@@ -2,7 +2,7 @@
 //! devolve o tick ao Lua).
 //!
 //! A partir do momento em que o flag está ligado, o tick por frame de vida,
-//! i-frames, estados e morte é deste módulo: lê o KV do `viber.game()` DEPOIS
+//! i-frames, estados e morte é deste módulo: lê o KV do `vael.game()` DEPOIS
 //! de `luau_update` (apanha o dano/cura do Lua no mesmo frame), simula com o
 //! [`shadow_tick`] do [`crate::rules_shadow`] e escreve de volta só as chaves
 //! que possui. O Lua continua a ser dono do dano/cura (`rules.damage_player`/
@@ -22,7 +22,7 @@
 //!   dono. Para o caminho Rust os ver, o tick emite [`VaelDeathStarted`] no
 //!   frame em que arma a morte; quem trata das consequências
 //!   (`respawn.rs`/cofre) lê a mensagem e faz o mesmo que o `start_death`.
-//! - O `M.god` do `devmode.lua` chega via `viber.game().vael_god` (o Lua
+//! - O `M.god` do `devmode.lua` chega via `vael.game().vael_god` (o Lua
 //!   espelha-o quando a autoridade está ligada); sem esse espelho o god do
 //!   Lua não seria visível daqui.
 //!
@@ -47,9 +47,9 @@ use crate::save::VaelSave;
 
 /// Variável de ambiente que liga a autoridade (`1`/`true`/`on`/`yes`).
 pub const RUST_RULES_ENV: &str = "VAEL_RULES_RUST";
-/// Chave do `viber.game()` que avisa o Lua de que o tick é do Rust.
+/// Chave do `vael.game()` que avisa o Lua de que o tick é do Rust.
 pub const RUST_GATE_KEY: &str = "vael_rust_vitals";
-/// Chave do `viber.game()` com o god do `devmode.lua` (F2).
+/// Chave do `vael.game()` com o god do `devmode.lua` (F2).
 pub const GOD_KEY: &str = "vael_god";
 
 /// Gate da autoridade, lido do ambiente no arranque.
@@ -155,7 +155,7 @@ impl VaelRulesAuthority {
         }
     }
 
-    /// Patch completo do `viber.game()` (só as chaves Rust + o gate).
+    /// Patch completo do `vael.game()` (só as chaves Rust + o gate).
     pub fn patch(&self) -> BTreeMap<String, Value> {
         let mut patch = BTreeMap::new();
         patch.insert("hp".to_string(), json_num(self.state.hp));
@@ -298,7 +298,7 @@ impl Plugin for VaelRulesAuthorityPlugin {
                 rules_authority_system
                     .in_set(VaelRulesSet)
                     // O tick LÊ o que o Lua acabou de fazer no frame e escreve
-                    // as vitais de volta para o `viber.game()`.
+                    // as vitais de volta para o `vael.game()`.
                     .after(vael_engine::luau::bms_bridge::apply_bms_commands)
                     .run_if(vael_engine::app::scripts_enabled)
                     .run_if(vael_engine::scene_loader::scene_settled),
@@ -306,14 +306,14 @@ impl Plugin for VaelRulesAuthorityPlugin {
     }
 }
 
-/// Arranque: liga o gate no `viber.game()` para o Lua saltar as secções
+/// Arranque: liga o gate no `vael.game()` para o Lua saltar as secções
 /// portadas. Desligado, não escreve nada (o jogo fica igual).
 fn apply_rust_gate(config: Res<VaelRulesConfig>) {
     if !config.rust {
         return;
     }
     // O gate vive no STORE do processo: o Lua de qualquer contexto lê-o em
-    // `viber.game()` (o store é o proxy de sempre).
+    // `vael.game()` (o store é o proxy de sempre).
     let mut patch = BTreeMap::new();
     patch.insert(RUST_GATE_KEY.to_string(), Value::Bool(true));
     vael_engine::luau::game::apply_patch_json(&patch);
@@ -345,7 +345,7 @@ fn rules_authority_system(
     }
 
     // Dano/cura/`respawn`/passivas do Lua no frame que acabou de correr —
-    // do STORE do processo (o `viber.game()` dos contextos BMS é este
+    // do STORE do processo (o `vael.game()` dos contextos BMS é este
     // store; sem handle mlua, sem VM partilhada).
     let kv = game_to_json_process();
     authority.seed(&kv);

@@ -25,7 +25,7 @@ pub struct VaelAppOptions {
     /// Porta da bridge de debug; `None` = sem bridge.
     pub bridge_port: Option<u16>,
     /// Mundo COMO O CLI O RECEBEU (antes do `start-scene`): identidade do
-    /// registo de sessão/`viber.ping`. A bridge responde por este caminho.
+    /// registo de sessão/`vael.ping`. A bridge responde por este caminho.
     pub identity: PathBuf,
     /// Wrapper do grupo `DefaultPlugins` (o Vael usa o PIE do Jackdaw).
     pub default_plugins: Option<fn(PluginGroupBuilder) -> PluginGroupBuilder>,
@@ -115,7 +115,8 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // config.yaml do jogo é OBRIGATÓRIO e lido antes de tudo: asset roots e
     // diretórios vêm daí. Os perfis (gráficos, pós-FX, reflexos) decidem-se
     // ANTES da App: o spawn do mundo e o attach da câmara leem-nos no arranque.
-    let world_dir_pre = vael_engine::app::world_base_dir(path).unwrap_or_else(|| PathBuf::from("."));
+    let world_dir_pre =
+        vael_engine::app::world_base_dir(path).unwrap_or_else(|| PathBuf::from("."));
     let config = vael_engine::config::load(&world_dir_pre)?;
     let graphics = vael_engine::graphics::resolve(config.graphics.as_deref());
     vael_engine::postfx::resolve_profile(config.postfx.as_ref());
@@ -129,7 +130,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         .unwrap_or_else(|| "Vael".to_string());
     let (world_dir, asset_roots) = vael_engine::app::world_asset_dirs(path, &config);
     let asset_root = asset_roots[0].clone();
-    // Pasta `scripts/` do projeto para o `viber.load`/`load_json` (loader de
+    // Pasta `scripts/` do projeto para o `vael.load`/`load_json` (loader de
     // módulos): em modo BMS o publisher só escreve o static do store quando
     // o estado publicado traz `Some`, portanto semeia-se AQUI uma vez (o
     // host antigo recebia o dir no plugin).
@@ -255,7 +256,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // este recorte as layers resolvem contra a pasta do mundo
     // (`grass/albedo.ktx2`) e cada albedo vira um `Path not found` no Bevy.
     vael_engine::terrain_host::install_world_assets(&mut app, &config, &world_dir);
-    app.insert_resource(vael_engine::save::SaveDir(Some(config.save_dir().to_path_buf())));
+    app.insert_resource(vael_engine::save::SaveDir(Some(
+        config.save_dir().to_path_buf(),
+    )));
     // O modelo do céu: o IBL e os probes regionais usam a MESMA radiância.
     app.insert_resource(vael_engine::sky::SkyModelState::from_config(&sky_config));
 
@@ -321,7 +324,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     }
     app.add_plugins(plugins);
 
-    // Reflexão dos tipos de jogo no `AppTypeRegistry` (BRP/`viber.query`).
+    // Reflexão dos tipos de jogo no `AppTypeRegistry` (BRP/`vael.query`).
     app.add_plugins(vael_engine::reflect::ReflectPlugin);
     // Picking: só o backend de UI alimenta a `Interaction`; o mesh picking
     // fica com `require_markers` (não raycasta as malhas todas por frame).
@@ -380,9 +383,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         );
     }
     // Documento editável do mundo: num mundo `.bsn` não é carregado (autoria
-    // no Jackdaw; `viber.scene.*` devolve "sem documento").
+    // no Jackdaw; `vael.scene.*` devolve "sem documento").
     // A edição viva é do Jackdaw (`src/editor_link.rs`/`src/live_edit.rs`):
-    // os plugins de `viber.scene --live` reformaram-se.
+    // os plugins de `vael.scene --live` reformaram-se.
     if path
         .extension()
         .and_then(|ext| ext.to_str())
@@ -401,9 +404,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     } else {
         path.to_path_buf()
     };
-    app.insert_resource(vael_engine::save::WorldSaveKey(vael_engine::save::world_save_key(
-        &save_key_path,
-    )));
+    app.insert_resource(vael_engine::save::WorldSaveKey(
+        vael_engine::save::world_save_key(&save_key_path),
+    ));
     let scene_title = world.title.clone();
     // Autoloads do projeto: parseados aqui, spawnados antes da 1.ª cena.
     if project.declared {
@@ -510,13 +513,13 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // jogo e o `VaelPlugin` (lib.rs) já a regista — duplicar dá panic
     // ("plugin was already added").
     app.add_plugins(vael_engine::textures::TexturesPlugin);
-    // Host Luau (BMS 0.24): a superfície `viber.*` vive no bevy_ext_luau
+    // Host Luau (BMS 0.24): a superfície `vael.*` vive no bevy_ext_luau
     // (ondas F2-F8) e o `BmsBridgePlugin` do monólito publica o estado do
     // mundo (ScriptHostState) e aplica os comandos dos scripts com a
     // maquinaria de sempre. Os contextos são por entidade; os instaladores
-    // `viber.vael` do jogo (cofre/XP/quests/…) registam-se no registo GLOBAL
+    // `vael.vael` do jogo (cofre/XP/quests/…) registam-se no registo GLOBAL
     // do crate (`crate::script_host::register_installer`) e correm por
-    // contexto novo E na REPL do bridge (`viber.lua`) — sem `extra_initializers`.
+    // contexto novo E na REPL do bridge (`vael.lua`) — sem `extra_initializers`.
     app.add_plugins(bevy_ext_luau::VaelScriptingPlugin::default());
     // Publica o hook (fn pointer, uma vez por processo) que corre os
     // instaladores locais do jogo nos contextos BMS E na REPL do bridge.
@@ -547,7 +550,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             bevy_ext_save::apply_pending_save_patches::<vael_engine::scene_loader::SceneLoader>
                 .after(vael_engine::scene_loader::drive_scene_loader),
         );
-    // Props em ossos (`viber.attach`).
+    // Props em ossos (`vael.attach`).
     app.add_plugins(vael_engine::attachment::AttachmentPlugin);
     // FX puros sem preset RPG: kick de FOV e hit-stop.
     app.init_resource::<bevy_ext_engine::camera_glue::CameraFx>();
@@ -613,11 +616,11 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         )
             .before(vael_engine::ui::UiSet::Collect),
     );
-    // `viber.ui` e o runtime Luau (BMS): os scripts correm no Update
+    // `vael.ui` e o runtime Luau (BMS): os scripts correm no Update
     // (`vael_engine::luau::bms_bridge::VaelScripts` — o handler `on_update`),
-    // enfileiram mutações `viber.ui.*`, e o `UiSet::Script` aplica-as
+    // enfileiram mutações `vael.ui.*`, e o `UiSet::Script` aplica-as
     // DEPOIS — sem esta ordem o HUD (`combat.lua` combo, profiler) ficava
-    // um frame atrás e o `viber.ui.is_open` do mesmo frame mentia.
+    // um frame atrás e o `vael.ui.is_open` do mesmo frame mentia.
     // O dreno dos comandos BMS corre entre os scripts e a aplicação
     // (`apply_bms_commands`), também antes do set de UI.
     //
@@ -719,7 +722,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
                 timed(Group::Fx, vael_engine::particles::particle_emitter_update),
             )
                 .chain(),
-            timed(Group::Spawner, vael_engine::spawner::instantiate_spawn_groups),
+            timed(
+                Group::Spawner,
+                vael_engine::spawner::instantiate_spawn_groups,
+            ),
         ),
     );
     bevy_ext_core::boot::mark("app.build");
@@ -915,7 +921,7 @@ pub fn build_game_app(opts: VaelGameOptions) -> Result<App> {
     app.add_plugins(crate::ui::VaelUiPlugin);
     // Runtime de ferramentas: acrescenta `vael-tools/*` ao `bevy_remote` que
     // o `build_app` já abriu (ou abre o seu, quando não há --bridge). O
-    // bridge legacy `viber.*` continua no mesmo servidor para compatibilidade.
+    // bridge legacy `vael.*` continua no mesmo servidor para compatibilidade.
     if bridge_port.is_some() || tools_enabled() {
         let port = bridge_port.unwrap_or_else(default_tools_port);
         app.add_plugins(bevy_ext_bridge_runtime::BridgeToolsPlugin { port });

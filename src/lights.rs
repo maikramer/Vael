@@ -61,7 +61,9 @@ use bevy_lights::{
 use vael_engine::ambient::{AuthoredShadowLight, TravellerLantern};
 use vael_engine::particles::{AmbientFx, ParticleEmitter};
 use vael_engine::player::Player;
-use vael_engine::postfx::{NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target};
+use vael_engine::postfx::{
+    NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target,
+};
 // O `ParticleSpec` da ENGINE (o que o `AmbientFx` carrega), não o do
 // `bevy_ext_scene`: são tipos distintos com o mesmo nome.
 use vael_engine::recipes::ParticleSpec;

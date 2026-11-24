@@ -465,7 +465,7 @@ fn publish_markers(
         }
     }
     if let Some((key, value)) = pin_patch {
-        // Store do processo: o `viber.game()` dos contextos BMS lê daqui.
+        // Store do processo: o `vael.game()` dos contextos BMS lê daqui.
         let mut patch = std::collections::BTreeMap::new();
         patch.insert(key, value);
         vael_engine::luau::game::apply_patch_json(&patch);

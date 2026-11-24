@@ -13,7 +13,7 @@
 //!   no chão: `run` / `walk` / `idle` (os que o set tiver). Um estado fora
 //!   destes (ataque, gesto, morte) é de quem o pediu: só volta à locomoção
 //!   quando o runtime o devolve (`then`) a um estado de locomoção;
-//! - [`play_unbound_gesture`]: um `viber.gesture('talk')` do Lua num NPC sem
+//! - [`play_unbound_gesture`]: um `vael.gesture('talk')` do Lua num NPC sem
 //!   rig da engine toca o estado homónimo do set (o próprio NPC ou o modelo
 //!   dentro dele).
 //!
@@ -163,7 +163,7 @@ pub fn state_named<'a>(set: &'a AnimationSet, name: &str) -> Option<&'a str> {
         .map(|state| state.name.as_str())
 }
 
-/// `viber.gesture` sem rig da engine → `AnimationState` do set do NPC.
+/// `vael.gesture` sem rig da engine → `AnimationState` do set do NPC.
 fn play_unbound_gesture(
     gesture: On<vael_engine::luau::runtime::UnboundGesture>,
     children: Query<&Children>,

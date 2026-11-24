@@ -4,7 +4,7 @@
 //! o runtime da bridge (`bevy_ext_bridge_runtime`) é genérico e não conhece o
 //! monólito. Este sistema copia o estado para o [`BridgeReadiness`] do
 //! runtime, e o `vael-tools/ping` publica `ready` + `loading` na forma do
-//! `viber.ping` — sem o espelho, o pong do runtime novo não tinha prontidão
+//! `vael.ping` — sem o espelho, o pong do runtime novo não tinha prontidão
 //! nenhuma e o `wait-ready` do CLI declarava "pronto" com o véu ainda em pé.
 //! Quando o monólito sair (fase H do DELETE-MONOLITH), o dono do véu passa a
 //! escrever o recurso directamente; o contrato fica no runtime.

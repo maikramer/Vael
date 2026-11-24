@@ -99,7 +99,7 @@ fn sfx(world: &mut World, clip: SfxClip, position: Option<Vec3>) {
 }
 
 fn patch_game(_world: &mut World, patch: std::collections::BTreeMap<String, Value>) {
-    // Store do processo: o `viber.game()` de todos os contextos BMS.
+    // Store do processo: o `vael.game()` de todos os contextos BMS.
     vael_engine::luau::game::apply_patch_json(&patch);
 }
 
