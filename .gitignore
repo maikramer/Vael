@@ -11,6 +11,11 @@ shaders/
 logs/
 __pycache__/
 
+# Pré-visualizações de geração (iterações de imagem/3D, `_painted` e LODs
+# derivados): como as imagens de trabalho do pool, ficam no disco. As fontes
+# de `art/bridges` e `art/baleia` são versionadas.
+art/previews/
+
 # Modelos NLU/d1 e o laboratório de treino vivem no checkout irmão CelerAI
 # (models/ + tools/); aqui ficam só os symlinks de consumo (fetch_models.sh).
 assets/public/nlu
