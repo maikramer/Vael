@@ -34,7 +34,8 @@ fn authored_props_in_town_and_interiors_get_one_body_per_model() {
         ("scenes/interiors/house_a.bsn", [1, 1, 1]),
     ] {
         let doc = vael_engine::xml::include::load_world_in(&root.join(scene), root).unwrap();
-        let mut scene_data = vael_engine::recipes::parse_world(&doc.root_attrs, &doc.nodes).unwrap();
+        let mut scene_data =
+            vael_engine::recipes::parse_world(&doc.root_attrs, &doc.nodes).unwrap();
         let mut totals = [0; 3];
         for node in &mut scene_data.entities {
             prepare_node(node);
@@ -43,6 +44,13 @@ fn authored_props_in_town_and_interiors_get_one_body_per_model() {
         eprintln!("{scene} barrel/crate/stool {totals:?}");
         assert!(totals.into_iter().zip(minimum).all(|(n, min)| n >= min));
     }
+}
+
+#[test]
+fn ground_and_own_hull_do_not_eat_the_swing() {
+    assert!(!blocks_swing(1.6, 2.0, 0.4, 0.9));
+    assert!(!blocks_swing(1.6, 2.0, 0.4, 0.0));
+    assert!(blocks_swing(0.4, 2.0, 0.4, 0.0));
 }
 
 #[test]

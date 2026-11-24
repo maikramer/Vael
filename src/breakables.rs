@@ -29,7 +29,10 @@ impl Plugin for BreakablesPlugin {
             .register_type::<PropPickup>()
             .add_systems(Startup, (prepare.before(startup), install))
             .add_systems(SceneLoad, prepare.before(startup))
-            .add_systems(Update, (attach, activate, strike, expire_debris).chain());
+            .add_systems(
+                Update,
+                (attach, free_wrapper, activate, strike, expire_debris).chain(),
+            );
     }
 }
 
@@ -179,6 +182,25 @@ fn attach(mut commands: Commands, new: Query<(Entity, &ScriptProps), Added<Scrip
     }
 }
 
+/// O wrapper do `.bsn` às vezes fica com o corpo estático. Esse volume come
+/// o golpe e prende o prop. O corpo que vale é o do `Breakable`.
+fn free_wrapper(
+    mut commands: Commands,
+    fresh: Query<Entity, Added<Breakable>>,
+    parents: Query<&ChildOf>,
+    shells: Query<(), (With<RigidBody>, Without<Breakable>)>,
+) {
+    for prop in &fresh {
+        let Ok(of) = parents.get(prop) else {
+            continue;
+        };
+        let parent = of.parent();
+        if shells.contains(parent) {
+            commands.entity(parent).remove::<(RigidBody, Collider)>();
+        }
+    }
+}
+
 // Outdoor floor colliders stream around the hero. A distant prop must wait
 // for real support before gravity starts, including after fast travel.
 fn activate(
@@ -188,7 +210,7 @@ fn activate(
     spatial: SpatialQuery,
     sensors: Query<(), With<Sensor>>,
 ) {
-    let Ok((player, hero)) = hero.single() else {
+    let Some((player, hero)) = hero.iter().next() else {
         return;
     };
     for (e, pose, body) in &props {
@@ -196,12 +218,15 @@ fn activate(
         let dist = hero.translation().distance_squared(at);
         if *body == RigidBody::Static && dist < 10.0_f32.powi(2) {
             let filter = SpatialQueryFilter::from_excluded_entities([e, player]);
-            if spatial
-                .cast_ray_predicate(at + Vec3::Y * 0.6, Dir3::NEG_Y, 5., true, &filter, &|hit| {
+            let supported = spatial
+                .cast_ray_predicate(at + Vec3::Y * 1.5, Dir3::NEG_Y, 8., true, &filter, &|hit| {
                     !sensors.contains(hit) && !props.contains(hit)
                 })
-                .is_some()
-            {
+                .is_some();
+            // Caixote encostado ao herói (atalaia, lama): o raio curto nascia
+            // dentro do volume e não achava chão, e o corpo ficava estático.
+            let beside = dist < 4.0_f32.powi(2) && (at.y - hero.translation().y).abs() < 1.6;
+            if supported || beside {
                 commands.entity(e).insert(RigidBody::Dynamic);
             }
         } else if *body == RigidBody::Dynamic && dist > 18.0_f32.powi(2) {
@@ -220,6 +245,15 @@ struct Swing {
     reach: f32,
     arc: f32,
     finisher: bool,
+}
+
+/// Parede entre a mão e o prop. O chão e o colisor do próprio volume
+/// (o wrapper estático fica a ~raio do centro) não contam.
+fn blocks_swing(hit_distance: f32, line_len: f32, radius: f32, normal_y: f32) -> bool {
+    if normal_y > 0.65 {
+        return false;
+    }
+    line_len - hit_distance > radius + 0.05
 }
 
 impl Swing {
@@ -397,6 +431,7 @@ fn strike(
             }
             let hand = swing.at + Vec3::Y * 0.75;
             let line = center - hand;
+            let radius = size.x.max(size.z) * 0.5;
             if let Ok(direction) = Dir3::new(line)
                 && spatial
                     .cast_ray_predicate(
@@ -407,7 +442,10 @@ fn strike(
                         &visible_filter,
                         &|hit| !sensors.contains(hit),
                     )
-                    .is_some_and(|hit| hit.entity != e)
+                    .is_some_and(|hit| {
+                        hit.entity != e
+                            && blocks_swing(hit.distance, line.length(), radius, hit.normal.y)
+                    })
             {
                 continue;
             }
