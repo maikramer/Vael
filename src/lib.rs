@@ -62,6 +62,7 @@ pub mod jump_trace;
 pub mod lantern;
 pub mod lights;
 pub mod live_edit;
+pub mod manga_cinematic;
 pub mod outline;
 pub mod perf_diag;
 pub mod player;
@@ -233,6 +234,8 @@ impl Plugin for VaelPlugin {
         // Jackdaw): substitui o `scripts/cinematic-trigger.lua`. Fora da tupla
         // (15 é o teto do Bevy).
         app.add_plugins(cinematic_trigger::VaelCinematicTriggerPlugin);
+        // Cinemáticas em pranchas de mangá (`data/cutscenes/*.json`, GDD §9).
+        app.add_plugins(manga_cinematic::VaelMangaCinematicPlugin);
         // Relva GPU (`bevy_grass`): campos por bioma, bake das máscaras a
         // partir do `TerrainRuntime`, vento do `WeatherState` e trampling.
         // Vive aqui, não na engine. Fora da tupla (15 é o teto do Bevy).

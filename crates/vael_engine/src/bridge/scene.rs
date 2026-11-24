@@ -800,6 +800,17 @@ pub fn cinematic_play_method(input: In<Option<Value>>, world: &mut World) -> Brp
         anchor: Option<String>,
     }
     let p: Params = params(METHOD_CINEMATIC_PLAY, input.0)?;
+    if world
+        .get_resource::<crate::cinematic::ExternalCinematicIds>()
+        .is_some_and(|ids| ids.0.contains(&p.id))
+    {
+        world.write_message(crate::cinematic::PlayCinematic {
+            id: p.id.clone(),
+            anchor: None,
+            inline: None,
+        });
+        return Ok(json!({ "playing": p.id, "manga": true }));
+    }
     let spec = cinematic_spec(world, &p.id)?;
     let anchor = match &p.anchor {
         Some(name) => {

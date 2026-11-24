@@ -69,6 +69,7 @@ fn drive_cinematic_triggers(
     playback: Option<Res<CinematicPlayback>>,
     menus: Option<Res<MenusOpen>>,
     cinematics: Option<Res<vael_engine::cinematic::CinematicLibrary>>,
+    external: Option<Res<vael_engine::cinematic::ExternalCinematicIds>>,
     mut save: Option<ResMut<VaelSave>>,
     mut play: MessageWriter<PlayCinematic>,
 ) {
@@ -108,9 +109,11 @@ fn drive_cinematic_triggers(
         // Um id sem `<Cinematic>` no mundo não pode queimar o `once`: o
         // pedido é recusado e a marca ficava para sempre (o gatilho nunca
         // mais tocava, nem depois de o autor corrigir o id).
-        if cinematics
-            .as_deref()
-            .is_some_and(|library| !library.0.contains_key(id))
+        let known_external = external.as_deref().is_some_and(|e| e.0.contains(id));
+        if !known_external
+            && cinematics
+                .as_deref()
+                .is_some_and(|library| !library.0.contains_key(id))
         {
             warn_once!("vael: gatilho de cinemática `{id}` sem <Cinematic> — ignorado");
             continue;
@@ -142,7 +145,7 @@ fn already_played(save: &VaelSave, id: &str) -> bool {
         return true;
     }
     // Compatibilidade: o `cinematic-trigger.lua` gravava `cine_<id>` no
-    // `viber.game()`, que o save guarda no `legacy` (chave `cine_<id>`).
+    // `vael.game()`, que o save guarda no `legacy` (chave `cine_<id>`).
     save.legacy.get(&format!("cine_{id}")).is_some_and(truthy)
 }
 
