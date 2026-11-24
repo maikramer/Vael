@@ -25,19 +25,13 @@ use bevy::prelude::*;
 use bevy_playtest::enums::PlaytestStatus;
 use bevy_playtest::scenario::Scenario;
 use tempfile::TempDir;
-use vael::app::{build_game_app, world_ready, VaelGameOptions};
+use vael::app::{VaelGameOptions, build_game_app, world_ready};
 
 const QA_SETTLE_FRAMES: u32 = 120;
 
 /// Oráculo conhecido como ruído no Vael: o default do crate é ±1000 e o
 /// mundo autorado tem entidades legítimas fora disso. Ver `run_case`.
 const PINNED_ORACLE_RULE: &str = "nodes_in_bounds";
-/// Bug conhecido do navmesh: o `landmass_rerecast` rejeita um polígono
-/// côncavo/clockwise do navmesh do mundo e loga `ERROR`. O `rerecast`
-/// vendor já tem o patch `wound_right` (`VIBER_PATCH.md` #4); esta é outra
-/// ocorrência. Fixado como finding conhecido para o resto da bateria correr;
-/// outros `log_error` continuam a falhar.
-const PINNED_LOG_TARGET: &str = "landmass_rerecast";
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Scope {
@@ -158,7 +152,12 @@ fn run_scope(scope: Scope) {
 fn run_case_child(case: &Case, seed: u64) -> Result<(), String> {
     let exe = std::env::current_exe().map_err(|err| format!("current_exe: {err}"))?;
     let mut child = std::process::Command::new(&exe)
-        .args(["--exact", "playtest_child", "--nocapture", "--test-threads=1"])
+        .args([
+            "--exact",
+            "playtest_child",
+            "--nocapture",
+            "--test-threads=1",
+        ])
         .env("VAEL_PLAYTEST_CASE", case.name)
         .env("VAEL_PLAYTEST_SEED", seed.to_string())
         .spawn()
@@ -222,8 +221,8 @@ fn run_case(case: &Case, seed: u64) -> Result<(), String> {
     let scenario_path = root.join(case.file);
     let raw = std::fs::read_to_string(&scenario_path)
         .map_err(|err| format!("ler {}: {err}", scenario_path.display()))?;
-    let mut scenario: Scenario = serde_json::from_str(&raw)
-        .map_err(|err| format!("cenário {}: {err}", case.file))?;
+    let mut scenario: Scenario =
+        serde_json::from_str(&raw).map_err(|err| format!("cenário {}: {err}", case.file))?;
     scenario.bot.seed = seed;
     // Um soak curto para o gate local sem esperar os 600 s do ficheiro.
     if case.scope == Scope::Soak
@@ -312,10 +311,9 @@ fn run_case(case: &Case, seed: u64) -> Result<(), String> {
                 if violation.rule == "log_warn" && !scenario.strict_warnings {
                     return false;
                 }
-                // Bug conhecido do navmesh; ver a constante.
-                if violation.rule == "log_error" && violation.target == PINNED_LOG_TARGET {
-                    return false;
-                }
+                // Nenhum `log_error` está fixado: um navmesh que o landmass
+                // recuse é apanhado pelo `bevy_ext_nav` e só loga `ERROR`
+                // quando a recusa se repete (ver docs/PLAYTEST.md).
                 true
             })
             .map(|violation| (violation.rule.as_str(), violation.target.as_str()))
@@ -324,19 +322,11 @@ fn run_case(case: &Case, seed: u64) -> Result<(), String> {
             return Err(report.findings_summary(case.file));
         }
         println!(
-            "({} findings de `{PINNED_ORACLE_RULE}` e {} de \
-             `log_error/{PINNED_LOG_TARGET}` fixados; ver docs/PLAYTEST.md)",
+            "({} findings de `{PINNED_ORACLE_RULE}` fixados; ver docs/PLAYTEST.md)",
             report
                 .violations
                 .iter()
                 .filter(|violation| violation.rule == PINNED_ORACLE_RULE)
-                .count(),
-            report
-                .violations
-                .iter()
-                .filter(|violation| {
-                    violation.rule == "log_error" && violation.target == PINNED_LOG_TARGET
-                })
                 .count()
         );
     }
