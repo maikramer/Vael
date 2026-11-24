@@ -112,7 +112,10 @@ pub struct Oar {
 
 /// Os barcos de `data/boats.json` já nasceram nesta cena.
 #[derive(Resource, Default)]
-pub struct BoatsSpawned(pub bool);
+struct BoatsSpawned {
+    public_boats: bool,
+    shipyard_boat: bool,
+}
 
 /// Pose guardada de um barco: o `name` (a identidade do `data/boats.json`), a
 /// posição de equilíbrio e o yaw.
@@ -174,6 +177,7 @@ pub struct BoatSpawn {
     pub z: f32,
     #[serde(default)]
     pub yaw: f32,
+    pub mooring: Option<[f32; 3]>,
 }
 
 impl BoatsConfig {
@@ -503,11 +507,15 @@ impl Plugin for VaelBoatPlugin {
             .add_systems(Startup, load_boat_assets)
             .add_systems(
                 FixedPostUpdate,
-                draft::stop_in_shallows
+                (keep_boats_inside_world, draft::stop_in_shallows)
+                    .chain()
                     .after(avian3d::prelude::PhysicsSystems::StepSimulation)
                     .before(avian3d::prelude::PhysicsSystems::Writeback),
             )
-            .add_systems(vael_engine::scene_loader::SceneLoad, despawn_boats_on_scene_load)
+            .add_systems(
+                vael_engine::scene_loader::SceneLoad,
+                despawn_boats_on_scene_load,
+            )
             .add_systems(
                 Update,
                 (
@@ -575,6 +583,26 @@ fn load_boat_assets(
     });
 }
 
+// O Avian já fez o passo, mas ainda não publicou a pose na câmara
+// e no assento. Cancela só a velocidade para fora, deixando virar e voltar.
+fn keep_boats_inside_world(
+    border: Option<Res<bevy_ext_core::WorldBorderConfig>>,
+    mut boats: Query<(&mut Position, &mut LinearVelocity), With<Boat>>,
+) {
+    let Some(border) = border else { return };
+    let limit = border.radius - border.margin - HULL_HALF.z;
+    for (mut position, mut velocity) in &mut boats {
+        let p = position.0;
+        if let Some(clamped) = crate::player::border_clamped_xz(p.x, p.z, limit) {
+            let normal = Vec3::new(clamped.x, 0.0, clamped.y).normalize_or_zero();
+            let outward = velocity.0.dot(normal).max(0.0);
+            position.0.x = clamped.x;
+            position.0.z = clamped.y;
+            velocity.0 -= normal * outward;
+        }
+    }
+}
+
 fn despawn_boats_on_scene_load(
     mut commands: Commands,
     boats: Query<Entity, With<Boat>>,
@@ -583,7 +611,7 @@ fn despawn_boats_on_scene_load(
     for entity in &boats {
         commands.entity(entity).try_despawn();
     }
-    spawned.0 = false;
+    *spawned = BoatsSpawned::default();
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -595,8 +623,19 @@ fn spawn_boats(
     scene: Option<Res<vael_engine::scene_loader::CurrentScene>>,
     root: Option<Res<crate::VaelProjectRoot>>,
     states: Option<Res<BoatStates>>,
+    boats: Query<(Entity, &Name), With<Boat>>,
 ) {
-    if spawned.0 {
+    const SHIPYARD_BOAT: &str = "barco-do-estaleiro";
+    let shipyard_open = crate::concordia::stage("shipyard") == 3;
+    if spawned.shipyard_boat && !shipyard_open {
+        for (entity, name) in &boats {
+            if name.as_str() == SHIPYARD_BOAT {
+                commands.entity(entity).try_despawn();
+            }
+        }
+        spawned.shipyard_boat = false;
+    }
+    if spawned.public_boats && (spawned.shipyard_boat || !shipyard_open) {
         return;
     }
     let (Some(assets), Some(terrain)) = (assets, terrain) else {
@@ -611,10 +650,10 @@ fn spawn_boats(
         .and_then(|scene| scene.id.as_deref())
         .is_some_and(|id| id != vael_engine::project::MAIN_SCENE)
     {
-        spawned.0 = true;
+        spawned.public_boats = true;
+        spawned.shipyard_boat = shipyard_open;
         return;
     }
-    spawned.0 = true;
 
     // A raiz do projeto, não o cwd: `vael-tools run`/`jd` mudam de pasta e o
     // contrato dos loaders é lerem `data/` de `VaelProjectRoot`.
@@ -624,6 +663,13 @@ fn spawn_boats(
         .unwrap_or_else(|| PathBuf::from("data/boats.json"));
     let config = BoatsConfig::load(&config_path);
     for spawn in &config.boats {
+        if spawn.name == SHIPYARD_BOAT {
+            if !shipyard_open || spawned.shipyard_boat {
+                continue;
+            }
+        } else if spawned.public_boats {
+            continue;
+        }
         let body = rowboat_body();
         let saved = states.as_deref().and_then(|states| {
             states
@@ -643,7 +689,10 @@ fn spawn_boats(
                     name: spawn.name.clone(),
                     position: Vec3::new(spawn.x, y, spawn.z),
                     yaw: spawn.yaw,
-                    mooring: None,
+                    mooring: spawn.mooring.map(|stake| Mooring {
+                        stake: Vec3::from_array(stake),
+                        rotation: Quat::from_rotation_y(spawn.yaw),
+                    }),
                 },
             )
         }) else {
@@ -731,6 +780,8 @@ fn spawn_boats(
             ));
         }
     }
+    spawned.public_boats = true;
+    spawned.shipyard_boat = shipyard_open;
 }
 
 /// Tira o herói do barco em que estiver, sem tocar no resto do estado.
@@ -1041,7 +1092,10 @@ fn board_or_leave_boat(
         if landing.is_none() {
             let vessel = riding.boat;
             commands.queue(move |world: &mut World| {
-                if let (Some(name), Some(bus)) = (world.get::<Name>(vessel), world.get_resource::<crate::player::HeroMotionBus>()) {
+                if let (Some(name), Some(bus)) = (
+                    world.get::<Name>(vessel),
+                    world.get_resource::<crate::player::HeroMotionBus>(),
+                ) {
                     bus.lock().stamina.boat = Some(name.to_string());
                 }
             });
@@ -1304,6 +1358,29 @@ fn oar_rotation(boat: &Boat, side: f32) -> Quat {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn sea_limit_preserves_velocity_along_the_boundary() {
+        let mut app = App::new();
+        app.insert_resource(bevy_ext_core::WorldBorderConfig {
+            radius: 3600.0,
+            warn_seconds: 5.0,
+            margin: 160.0,
+        })
+        .add_systems(Update, keep_boats_inside_world);
+        let boat = app
+            .world_mut()
+            .spawn((
+                Boat::default(),
+                Position(Vec3::new(-3450.0, 18.0, 0.0)),
+                LinearVelocity(Vec3::new(-4.0, 0.2, 2.0)),
+            ))
+            .id();
+        app.update();
+        let boat = app.world().entity(boat);
+        assert_eq!(boat.get::<Position>().unwrap().0, Vec3::new(-3440.0 + HULL_HALF.z, 18.0, 0.0));
+        assert_eq!(boat.get::<LinearVelocity>().unwrap().0, Vec3::new(0.0, 0.2, 2.0));
+    }
 
     fn lake_with_rowboat() -> (App, Entity) {
         use avian3d::prelude::PhysicsPlugins;

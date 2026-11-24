@@ -4,7 +4,7 @@ use avian3d::prelude::{Collider, Sensor, ShapeCastConfig, SpatialQuery, SpatialQ
 use bevy::prelude::*;
 use bevy_ext_core::Player;
 use vael_engine::input_map::{Action, ActionMap};
-use vael_engine::luau::components::ScriptInteraction;
+use vael_engine::luau::components::{ScriptInteraction, ScriptProps};
 use vael_engine::physics::VoxelCollider;
 use vael_engine::player::{HERO_CAPSULE_CENTER, HERO_RADIUS};
 use vael_engine::terrain::TerrainRuntime;
@@ -12,7 +12,14 @@ use vael_engine::terrain::TerrainRuntime;
 #[derive(Component)]
 pub(super) struct Landing(pub Vec3);
 
-const LABEL: &str = "Desembarcar na margem";
+const LABEL: &str = "Desembarcar";
+
+type LandingSurfaces<'w, 's> = Query<
+    'w,
+    's,
+    (Has<VoxelCollider>, Option<&'static ScriptProps>),
+    Or<(With<VoxelCollider>, With<ScriptProps>)>,
+>;
 
 #[allow(clippy::too_many_arguments)]
 pub(super) fn update_landing(
@@ -29,7 +36,7 @@ pub(super) fn update_landing(
     >,
     terrain: Option<Res<TerrainRuntime>>,
     spatial: SpatialQuery,
-    ground: Query<(), With<VoxelCollider>>,
+    ground: LandingSurfaces,
     sensors: Query<(), With<Sensor>>,
     map: Option<Res<ActionMap>>,
     time: Res<Time>,
@@ -81,7 +88,7 @@ fn find_landing(
     terrain: &TerrainRuntime,
     spatial: &SpatialQuery,
     filter: &SpatialQueryFilter,
-    ground: &Query<(), With<VoxelCollider>>,
+    ground: &LandingSurfaces,
     sensors: &Query<(), With<Sensor>>,
 ) -> Option<Vec3> {
     let origin = hull.translation;
@@ -96,17 +103,21 @@ fn find_landing(
                 .recip();
             let delta = Quat::from_rotation_y(yaw) * Vec3::new(cos, 0.0, sin) * (rim + reach);
             let p = origin + delta;
-            if !terrain.in_field(p.x, p.z)
-                || terrain
-                    .water_domain_at(p.x, p.z)
-                    .is_some_and(|d| d.depth > 0.04)
-            {
+            if !terrain.in_field(p.x, p.z) {
                 continue;
             }
             let top = Vec3::new(p.x, origin.y + 1.15, p.z);
             let Some(hit) =
                 spatial.cast_ray_predicate(top, Dir3::NEG_Y, 2.45, true, filter, &|e| {
-                    ground.contains(e)
+                    ground.get(e).is_ok_and(|(voxel, props)| {
+                        if voxel {
+                            terrain.water_domain_at(p.x, p.z).is_none_or(|water| water.depth <= 0.04)
+                        } else {
+                            props.is_some_and(|props| props.0.iter().any(|(key, value)| {
+                                key == "boat-landing" && value == "1"
+                            }))
+                        }
+                    })
                 })
             else {
                 continue;

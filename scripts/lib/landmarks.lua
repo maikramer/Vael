@@ -57,6 +57,7 @@ local function list_from_rows(rows)
         radius = tonumber(row.radius) or 0,
         survey = type(row.survey) == "string" and row.survey or "",
         pilgrim = row.pilgrim == true,
+        public = row.public == true,
       }
     end
   end
@@ -120,7 +121,7 @@ end
 function M.available(mark, rules)
   -- O Alto de Vael não é um bioma cartografável: os marcos da peregrinação
   -- estão sempre disponíveis.
-  if mark.biome == "tower" or mark.pilgrim then
+  if mark.biome == "tower" or mark.pilgrim or mark.public then
     return true
   end
   -- Marco editado sem bioma: concatenar em `biome.<nil>` dava erro a cada

@@ -268,6 +268,9 @@ pub struct LandmarkDef {
     pub survey: Option<String>,
     #[serde(skip_serializing_if = "is_false")]
     pub pilgrim: bool,
+    /// Pode ser visitado e assinado sem desbloquear o bioma.
+    #[serde(skip_serializing_if = "is_false")]
+    pub public: bool,
     #[serde(flatten)]
     pub extra: BTreeMap<String, serde_json::Value>,
 }

@@ -53,6 +53,7 @@ pub struct Landmark {
     pub radius: f64,
     pub survey: String,
     pub pilgrim: bool,
+    pub public: bool,
 }
 
 impl Landmark {
@@ -90,6 +91,7 @@ impl Landmark {
             radius,
             survey: def.survey.clone().unwrap_or_default(),
             pilgrim: def.pilgrim,
+            public: def.public,
         })
     }
 }
@@ -238,7 +240,7 @@ pub fn distance_xz(a: [f32; 3], b: [f32; 3]) -> f32 {
 /// Um marco está disponível? Atalaias e marcos da peregrinação não dependem
 /// de bioma revelado; um marco sem bioma fica fechado (o `available` do Lua).
 pub fn available(mark: &Landmark, revealed: bool) -> bool {
-    if mark.is_tower() || mark.pilgrim {
+    if mark.is_tower() || mark.pilgrim || mark.public {
         return true;
     }
     if !mark.has_biome() {
@@ -688,6 +690,7 @@ fn landmark_row(
     row.set("radius", mark.radius)?;
     row.set("survey", mark.survey.as_str())?;
     row.set("pilgrim", mark.pilgrim)?;
+    row.set("public", mark.public)?;
     let revealed = if mark.has_biome() {
         lua_true(game, &format!("{BIOME_KEY_PREFIX}{}", mark.biome))?
     } else {
