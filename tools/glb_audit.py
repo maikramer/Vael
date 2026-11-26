@@ -26,6 +26,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 MESHES = ROOT / "assets/public/assets/meshes"
@@ -246,17 +247,29 @@ def prune(js: dict) -> tuple[dict, dict]:
     return new, {"images": len(drop_img), "textures": len(drop_tex), "bufferViews": len(drop_view)}
 
 
-def validate_images(path: Path) -> list[str]:
-    """`ktx validate` em cada imagem KTX2 embutida."""
+def validate_images(path: Path, *, validate_ktx: bool = True) -> list[str]:
+    """Verifica URIs locais e, se pedido, os bytes KTX2."""
     _version, chunks = read_glb(path)
     js, bin_ = parts(chunks)
     problems = []
     for i, image in enumerate(js.get("images") or []):
         if "bufferView" not in image:
-            continue
-        view = js["bufferViews"][image["bufferView"]]
-        off = view.get("byteOffset", 0)
-        blob = bytes(bin_[off : off + view["byteLength"]])
+            uri = urlsplit(image.get("uri", ""))
+            if uri.scheme or uri.netloc or not uri.path:
+                continue
+            external = path.parent / unquote(uri.path)
+            if not external.is_file():
+                problems.append(f"img{i} ficheiro em falta: {uri.path}")
+                continue
+            if not validate_ktx or external.suffix.lower() != ".ktx2":
+                continue
+            blob = external.read_bytes()
+        else:
+            if not validate_ktx:
+                continue
+            view = js["bufferViews"][image["bufferView"]]
+            off = view.get("byteOffset", 0)
+            blob = bin_[off : off + view["byteLength"]]
         if blob[:4] != b"\xabKTX":
             if image.get("mimeType") == "image/ktx2" or len(blob) == 0:
                 problems.append("img%d %dB sem cabeçalho KTX2" % (i, len(blob)))
@@ -301,7 +314,7 @@ def main() -> int:
             broken += 1
             continue
         empties = empty_images(js)
-        problems = [] if (empties or args.no_ktx) else validate_images(path)
+        problems = [] if empties else validate_images(path, validate_ktx=not args.no_ktx)
         if not empties and not problems:
             continue
         if not args.prune_orphans or problems:

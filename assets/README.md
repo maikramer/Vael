@@ -8,9 +8,9 @@ daqui por URL, e a engine nativa Viber consome-o como root extra declarado no
 ## Packs
 
 `audio-bgm` · `audio-sfx-combat` · `audio-sfx-creatures` · `audio-sfx-ui` ·
-`audio-sfx-vehicles` · `audio-sfx-world` · `characters` · `desert` · `farm` ·
+`audio-vehicles-legacy` · `audio-sfx-world` · `characters` · `desert` · `farm` ·
 `forest` · `infra` · `interiors` · `props` · `swamp` · `terrain` ·
-`vegetation` · `vehicles` · `village`
+`vegetation` · `village`
 
 ### Áudio (BGM + SFX)
 
@@ -21,8 +21,8 @@ audio/bgm/*.ogg              # loops seamless (SA3 Music; -d exacto, @120 BPM)
 audio/sfx/combat/*.ogg       # hits/swings/colheita/arco/escudo
 audio/sfx/creatures/*.ogg    # roars/ferimentos/mortes/slime/lobo
 audio/sfx/player/*.ogg       # hurt/heal do herói
-audio/sfx/ui/*.ogg           # moedas/menus/save/notificações/eventos de corrida
-audio/sfx/vehicles/*.ogg     # motor/nitro/skid/crash/buzina
+audio/sfx/ui/*.ogg           # moedas/menus/save/notificações
+audio/sfx/vehicles/*.ogg     # crash, nitro e skid pré-carregados pelo runtime
 audio/sfx/world/*.ogg        # portas/baús/fogo/passos/itens
 ```
 
@@ -52,6 +52,14 @@ gameassets resume --profile game.yaml --manifest manifests/characters
 
 `resume` é idempotente: detecta por item o estado em disco (PNG/shape/paint) e
 só gera o que falta — com os binários já presentes, o batch valida e faz skip.
+
+Os GLBs podem referenciar texturas em `public/assets/meshes/_textures/`. O
+Bevy partilha a imagem entre materiais quando a URI resolve para o mesmo
+ficheiro. O nome inclui o hash dos bytes, o espaço de cor e os parâmetros
+de amostragem. Versiona os ficheiros referenciados junto com os respetivos
+GLBs. `python3 tools/glb_share_textures.py` pré-visualiza a partilha de
+texturas já embutidas. `--apply` atualiza os GLBs depois de arquivar os
+originais fora do checkout.
 
 > `output_dir` de cada manifest resolve-se contra a pasta **do manifest**, não
 > contra a do `game.yaml`. Como os manifests vivem em `manifests/`, o valor

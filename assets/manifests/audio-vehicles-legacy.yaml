@@ -1,4 +1,4 @@
-# Pool de corrida partilhado, fora da geração do Vale por omissão.
+# Efeitos de corrida pré-carregados pelo bevy_ext_audio, fora da regeneração por omissão.
 output_dir: ../public/assets
 assets:
   - id: sfx/vehicles/crash
@@ -9,22 +9,6 @@ assets:
     pipeline: [audio]
     audio: {duration: 2.0, profile: effects}
     seed: 304
-  - id: sfx/vehicles/engine_rev
-    idea: Arcade race car engine revving up, high revving kart motor roar, aggressive throttle blip, mechanical engine growl
-    kind: prop
-    category: vehicle
-    legacy: true
-    pipeline: [audio]
-    audio: {duration: 2.5, profile: effects}
-    seed: 301
-  - id: sfx/vehicles/horn
-    idea: Arcade car horn beep, cheerful double honk, playful kart horn
-    kind: prop
-    category: vehicle
-    legacy: true
-    pipeline: [audio]
-    audio: {duration: 0.8, profile: effects}
-    seed: 414
   - id: sfx/vehicles/nitro
     idea: Nitro boost activation whoosh, powerful rocket-like surge, jet burst hiss with rising pitch, turbo power up
     kind: prop
